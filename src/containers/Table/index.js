@@ -1,41 +1,10 @@
 
+import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getStore from 'utils/getStore';
-import { Table as TableComp } from 'antd';
-
-const columns = [
-	{
-		dataIndex: 'id',
-		title: 'ID',
-	},
-	{
-		dataIndex: 'name',
-		title: '姓名',
-	},
-	{
-		dataIndex: 'touxiang',
-		title: '头像',
-	},
-	{
-		dataIndex: 'desc',
-		title: '描述',
-	},
-	{
-		dataIndex: 'score',
-		title: '分数',
-	},
-	{
-		dataIndex: 'gpa',
-		title: 'GPA',
-	},
-	{
-		dataIndex: 'birthday',
-		title: '生日',
-	}
-];
-
+import { Table as TableComp, Pagination } from 'antd';
 
 @observer
 export default class Table extends Component {
@@ -46,9 +15,8 @@ export default class Table extends Component {
 	};
 
 	state = {
-		stores: getStore(this.props.route.table),
+		store: getStore(this.props.route.table),
 		selectedRowKeys: [],	// Check here to configure the default column
-		loading: false,
 	};
 
 	componentWillMount() {
@@ -63,16 +31,20 @@ export default class Table extends Component {
 	}
 
 	componentDidMount() {
-		this.state.stores.fetch();
+		this.state.store.fetch();
 	}
 
 	onSelectChange = (selectedRowKeys) => {
 		console.log('selectedRowKeys changed: ', selectedRowKeys);
 		this.setState({ selectedRowKeys });
-	}
+	};
+
+	onPageChange = (page) => {
+		this.state.store.fetch({page});
+	};
 
 	render() {
-		const { stores, loading, selectedRowKeys } = this.state;
+		const { store, selectedRowKeys } = this.state;
 		const rowSelection = {
 			selectedRowKeys,
 			onChange: this.onSelectChange,
@@ -81,7 +53,14 @@ export default class Table extends Component {
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableComp rowSelection={rowSelection} columns={stores.columns} dataSource={stores.dataSource} loading={stores.isFetching}/>
+				<TableComp rowSelection={rowSelection} columns={store.columns} dataSource={store.dataSource} loading={store.isFetching} pagination={false}/>
+				<Pagination
+					className={$$.page}
+					defaultCurrent={1}
+					total={store.total}
+					onChange={this.onPageChange}
+					defaultPageSize={store.size}
+				/>
 			</div>
 		);
 	}
