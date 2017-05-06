@@ -40,7 +40,7 @@ export default class Table extends Component {
 	};
 
 	onPageChange = (page) => {
-		this.state.store.fetch({page});
+		this.state.store.fetch(page);
 	};
 
 	render() {
