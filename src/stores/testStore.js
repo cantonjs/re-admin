@@ -1,21 +1,19 @@
 
-import { observable, extendObservable, computed } from 'mobx';
+import { observable } from 'mobx';
 import schema from 'config/schemas/test/data';
 
 import fakeFetch from 'utils/fakeFetch';
 
 class Store {
-	@observable columns = [];
 	@observable collection = [];
 
 	constructor() {
-		this.columns = schema.map(({ title, key }) => ({
+		this.columns = schema.map(({ title, key, render }) => ({
 			title,
 			key,
+			render,
 			dataIndex: key,
 		}));
-
-		console.log('this.columns', this.columns);
 	}
 
 	async fetch() {
