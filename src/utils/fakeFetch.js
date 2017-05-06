@@ -1,14 +1,15 @@
 
-const fakeData = [
-	{
-		id: 1,
-		name: 'JC',
-	},
-	{
-		id: 2,
-		name: 'Cap31',
-	},
-];
+const fakeData = [];
+
+for (let i = 0; i < 460; i++) {
+	fakeData.push({
+		key: i,
+		name: `User ${i}`,
+		score: 80,
+		desc: `I am User no. ${i}`,
+		touxiang: 'http://baidu.com'
+	});
+}
 
 export default async function fakeFetch() {
 	return new Promise((resolve) => {
