@@ -2,7 +2,7 @@ export default [
 	{
 		path: 'index',  // route时url中的值
 		name: '菜单一',  // 在菜单中显示的名称
-		icon: 'smile',  // 图标是可选的
+		icon: 'appstore',  // 图标是可选的
 		children: [
 			{
 				path: 'option1',
@@ -24,7 +24,7 @@ export default [
 	{
 		path: 'alone',
 		name: '我没有子菜单',
-		icon: 'clock-circle',
+		icon: 'appstore',
 		table: 'a'
 	},
 	{
@@ -81,7 +81,7 @@ export default [
 	{
 		path: 'test',
 		name: '测试',
-		icon: 'eye',
+		icon: 'appstore',
 		children: [
 			{
 				path: 'aaa',
