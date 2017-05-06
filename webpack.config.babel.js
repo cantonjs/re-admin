@@ -65,15 +65,29 @@ module.exports = (webpackEnv = {}) => {
 				{
 					test: /\.scss$/,
 					include: inSrc(),
-					loader: 'sass-loader',
-					options: {
-						includePaths: [inSrc('styles')],
-					},
+					use: [
+						'style-loader',
+						{
+							loader: 'css-loader',
+							options: {
+								sourceMap: isDev,
+								module: true,
+								localIdentName: isDev ?
+									'[path]-[name]-[local]-[hash:base64:3]' : '[hash:base64:7]'
+								,
+							},
+						},
+						{
+							loader: 'sass-loader',
+							options: {
+								includePaths: [inSrc('styles')],
+							},
+						},
+					],
 				},
 				{
 					test: /\.less$/,
 					include: /node_modules/,
-					// loader: 'less-loader',
 					use: [
 						'style-loader',
 						'css-loader',
