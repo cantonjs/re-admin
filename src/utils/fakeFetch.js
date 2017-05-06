@@ -12,7 +12,7 @@ for (let i = 0; i < total; i++) {
 }
 
 
-export default async function fakeFetch(page = 1) {
+export default async function fakeFetch({ page = 1 }) {
 	return new Promise((resolve) => {
 		const start = (page - 1) * 20;
 		const list = fakeData.slice(start, start + 20);

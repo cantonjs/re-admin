@@ -34,7 +34,10 @@ export default class Store {
 
 		const { total, list } = await fakeFetch({
 			count: this.size,
+			page,
 		});
+
+		console.log('list', list);
 
 		const collection = list.map((data, index) => {
 
