@@ -5,14 +5,15 @@ import { observable, computed, toJS } from 'mobx';
 import fakeFetch from 'utils/fakeFetch';
 
 export default class Store {
-	@observable collection = [];
 	@observable total = 0;
 	@observable isFetching = false;
 	@observable page = 1;
 
 	@computed get dataSource() {
-		return toJS(this.collection);
+		return toJS(this.collections.get(this.page));
 	}
+
+	collections = observable.map();
 
 	size = 20;
 
@@ -26,24 +27,27 @@ export default class Store {
 		}));
 	}
 
-	async fetch() {
+	async fetch(page = 1) {
+		if (this.collections.has(page)) { return this; }
+
 		this.isFetching = true;
+
 		const { total, list } = await fakeFetch({
 			count: this.size,
 		});
-		this.isFetching = false;
-		this.total = total;
-		this.collection = list.map((data, index) => {
+
+		const collection = list.map((data, index) => {
 
 			// TODO: should depend on `schema.unique`
 			data.key = data.key || index;
 
 			return data;
 		});
-		return this;
-	}
 
-	setPage(page) {
 		this.page = page;
+		this.isFetching = false;
+		this.total = total;
+		this.collections.set(page, collection);
+		return this;
 	}
 }
