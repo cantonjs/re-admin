@@ -3,6 +3,39 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getStore from 'utils/getStore';
+import { Table as TableComp } from 'antd';
+
+const columns = [
+	{
+		dataIndex: 'id',
+		title: 'ID',
+	},
+	{
+		dataIndex: 'name',
+		title: '姓名',
+	},
+	{
+		dataIndex: 'touxiang',
+		title: '头像',
+	},
+	{
+		dataIndex: 'desc',
+		title: '描述',
+	},
+	{
+		dataIndex: 'score',
+		title: '分数',
+	},
+	{
+		dataIndex: 'gpa',
+		title: 'GPA',
+	},
+	{
+		dataIndex: 'birthday',
+		title: '生日',
+	}
+];
+
 
 @observer
 export default class Table extends Component {
@@ -14,6 +47,8 @@ export default class Table extends Component {
 
 	state = {
 		stores: getStore(this.props.route.table),
+		selectedRowKeys: [],	// Check here to configure the default column
+		loading: false,
 	};
 
 	componentWillMount() {
@@ -31,17 +66,22 @@ export default class Table extends Component {
 		this.state.stores.fetch();
 	}
 
+	onSelectChange = (selectedRowKeys) => {
+		console.log('selectedRowKeys changed: ', selectedRowKeys);
+		this.setState({ selectedRowKeys });
+	}
+
 	render() {
-		const { stores } = this.state;
+		const { stores, loading, selectedRowKeys } = this.state;
+		const rowSelection = {
+			selectedRowKeys,
+			onChange: this.onSelectChange,
+		};
+		const hasSelected = selectedRowKeys.length > 0;
 		return (
 			<div>
 				<h1>Table</h1>
-				{stores.collection.map(({ id, ...data }) =>
-					<div key={id.value}>
-						{console.log(Object.keys(data))}
-						<p>{data.name.name}: {data.name.value}</p>
-					</div>
-				)}
+				<TableComp rowSelection={rowSelection} columns={stores.columns} dataSource={stores.dataSource} loading={stores.isFetching}/>
 			</div>
 		);
 	}
