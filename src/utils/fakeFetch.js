@@ -1,15 +1,12 @@
 
 
-const list = [];
+const fakeData = [];
 const total = 450;
 
-const fakeData = {
-	list,
-	total
-};
+
 
 for (let i = 0; i < total + 1; i++) {
-	list.push({
+	fakeData.push({
 		key: i,
 		name: `User ${i}`,
 		score: 80,
@@ -18,10 +15,16 @@ for (let i = 0; i < total + 1; i++) {
 	});
 }
 
-export default async function fakeFetch() {
+export default async function fakeFetch({ page = 0 }) {
 	return new Promise((resolve) => {
+		const start = (page - 1) * 20;
+		const list = fakeData.slice(start, start + 19);
+		const data = {
+			list,
+			total
+		};
 		setTimeout(() => {
-			resolve(fakeData);
+			resolve(data);
 		}, 1000);
 	});
 }

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getStore from 'utils/getStore';
-import { Table as TableComp, pagination } from 'antd';
+import { Table as TableComp, Pagination } from 'antd';
 
 const columns = [
 	{
@@ -48,7 +48,6 @@ export default class Table extends Component {
 	state = {
 		store: getStore(this.props.route.table),
 		selectedRowKeys: [],	// Check here to configure the default column
-		loading: false,
 	};
 
 	componentWillMount() {
@@ -71,6 +70,11 @@ export default class Table extends Component {
 		this.setState({ selectedRowKeys });
 	}
 
+	onPageChange(page) {
+		this.state.store.fetch({page});
+		this.state.store.setPage(page);
+	}
+
 	render() {
 		const { store, loading, selectedRowKeys } = this.state;
 		const rowSelection = {
@@ -82,7 +86,7 @@ export default class Table extends Component {
 			<div>
 				<h1>Table</h1>
 				<TableComp rowSelection={rowSelection} columns={store.columns} dataSource={store.dataSource} loading={store.isFetching} pagination={false}/>
-				<pagination defaultCurrent={1} total={store.total}/>
+				<Pagination defaultCurrent={1} total={store.total} onChange={this.onPageChange} defaultPageSize={store.size}/>
 			</div>
 		);
 	}
