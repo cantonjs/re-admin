@@ -1,6 +1,7 @@
 
-import './style.css';
+import './reset.css';
 import 'antd/dist/antd.less';
+import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'components/Sidebar';
@@ -14,9 +15,8 @@ export default class App extends Component {
 		const { children } = this.props;
 		return (
 			<div>
-				<h1>Admin</h1>
 				<Sidebar />
-				<div>{children}</div>
+				<div className={$$.main}>{children}</div>
 			</div>
 		);
 	}
