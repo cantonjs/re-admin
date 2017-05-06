@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getStore from 'utils/getStore';
-import { Table as TableComp } from 'antd';
+import { Table as TableComp, pagination } from 'antd';
 
 const columns = [
 	{
@@ -81,7 +81,7 @@ export default class Table extends Component {
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableComp rowSelection={rowSelection} columns={stores.columns} dataSource={stores.dataSource} loading={stores.isFetching}/>
+				<TableComp rowSelection={rowSelection} columns={stores.columns} dataSource={stores.dataSource} loading={stores.isFetching} pagination={false}/>
 			</div>
 		);
 	}
