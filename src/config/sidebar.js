@@ -25,7 +25,7 @@ export default [
 		path: 'alone',
 		name: '我没有子菜单',
 		icon: 'appstore',
-		table: 'a'
+		table: 'test'
 	},
 	{
 		path: 'alone2',
