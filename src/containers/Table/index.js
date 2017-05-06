@@ -2,9 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-
-// TODO: only for developing...
-import stores from 'stores/testStore';
+import getStore from 'utils/getStore';
 
 @observer
 export default class Table extends Component {
@@ -15,19 +13,18 @@ export default class Table extends Component {
 	};
 
 	state = {
-		// stores: getStore(this.props.route.table),
-		stores,
+		stores: getStore(this.props.route.table),
 	};
 
 	componentWillMount() {
 		console.log('table:', this.props.route.table);
 	}
 
-	// componentWillReceiveProps({ route: { table } }) {
-	// 	if (this.props.route.table !== table) {
-	// 		this.setState({ store: getStore(table) });
-	// 	}
-	// }
+	componentWillReceiveProps({ route: { table } }) {
+		if (this.props.route.table !== table) {
+			this.setState({ store: getStore(table) });
+		}
+	}
 
 	componentDidMount() {
 		this.state.stores.fetch();
