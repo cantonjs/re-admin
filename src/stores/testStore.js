@@ -1,11 +1,15 @@
 
-import { observable } from 'mobx';
+import { observable, computed, toJS } from 'mobx';
 import schema from 'config/schemas/test/data';
 
 import fakeFetch from 'utils/fakeFetch';
 
 class Store {
 	@observable collection = [];
+
+	@computed get dataSource() {
+		return toJS(this.collection);
+	}
 
 	constructor() {
 		this.columns = schema.map(({ title, key, render }) => ({
