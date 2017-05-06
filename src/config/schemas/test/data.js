@@ -2,43 +2,43 @@
 module.exports = [
 	{
 		key: 'id',
-		title: 'ID',
+		name: 'ID',
 		dataType: 'int',
 		primary: true,
 	},
 	{
 		key: 'name',
-		title: '姓名',
+		name: '姓名',
 		dataType: 'varchar',
 		validator: [{type: 'string', max: 10, message: '最多10个字符'}],
 	},
 	{
 		key: 'touxiang',
-		title: '头像',
+		name: '头像',
 		dataType: 'varchar',
 		showType: 'image',
 		width: 60,
 	},
 	{
 		key: 'desc',
-		title: '描述',
+		name: '描述',
 		dataType: 'varchar',
 	},
 	{
 		key: 'score',
-		title: '分数',
+		name: '分数',
 		dataType: 'int',
 		max: 18,
 		validator: [{required: true, message: '必填'}],
 	},
 	{
 		key: 'gpa',
-		title: 'GPA',
+		name: 'GPA',
 		dataType: 'float',
 	},
 	{
 		key: 'birthday',
-		title: '生日',
+		name: '生日',
 		dataType: 'datetime',
 	},
 	// 定义针对单条记录的操作
@@ -47,7 +47,7 @@ module.exports = [
 	{
 		// 这个key是我预先定义好的, 注意不要冲突
 		key: 'singleRecordActions',
-		title: '我是自定义操作',	// 列名
+		name: '我是自定义操作',	// 列名
 		width: 300,	// 宽度
 		actions: [
 			{
