@@ -6,10 +6,13 @@ import fakeFetch from 'utils/fakeFetch';
 
 class Store {
 	constructor(data = {}) {
-		const ext = schema.reduce((ext, { key }) => {
+		const ext = schema.reduce((ext, { key, name }) => {
 
 			// TODO: should depend on `dataType`
-			ext[key] = data[key];
+			ext[key] = {
+				name,
+				value: data[key],
+			};
 			return ext;
 
 		}, {});

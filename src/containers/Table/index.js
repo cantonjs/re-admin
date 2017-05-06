@@ -22,6 +22,7 @@ export default class Table extends Component {
 
 	componentWillReceiveProps({ route: { table } }) {
 		if (this.props.route.table !== table) {
+			console.log('table:', table);
 			this.setState({ store: getStore(table) });
 		}
 	}
@@ -36,9 +37,9 @@ export default class Table extends Component {
 			<div>
 				<h1>Table</h1>
 				{stores.collection.map(({ id, ...data }) =>
-					<div key={id}>
+					<div key={id.value}>
 						{console.log(Object.keys(data))}
-						<p>name: {data.name}</p>
+						<p>{data.name.name}: {data.name.value}</p>
 					</div>
 				)}
 			</div>
