@@ -46,7 +46,7 @@ export default class Table extends Component {
 	};
 
 	state = {
-		stores: getStore(this.props.route.table),
+		store: getStore(this.props.route.table),
 		selectedRowKeys: [],	// Check here to configure the default column
 		loading: false,
 	};
@@ -63,7 +63,7 @@ export default class Table extends Component {
 	}
 
 	componentDidMount() {
-		this.state.stores.fetch();
+		this.state.store.fetch();
 	}
 
 	onSelectChange = (selectedRowKeys) => {
@@ -72,7 +72,7 @@ export default class Table extends Component {
 	}
 
 	render() {
-		const { stores, loading, selectedRowKeys } = this.state;
+		const { store, loading, selectedRowKeys } = this.state;
 		const rowSelection = {
 			selectedRowKeys,
 			onChange: this.onSelectChange,
@@ -81,7 +81,8 @@ export default class Table extends Component {
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableComp rowSelection={rowSelection} columns={stores.columns} dataSource={stores.dataSource} loading={stores.isFetching} pagination={false}/>
+				<TableComp rowSelection={rowSelection} columns={store.columns} dataSource={store.dataSource} loading={store.isFetching} pagination={false}/>
+				<pagination defaultCurrent={1} total={store.total}/>
 			</div>
 		);
 	}

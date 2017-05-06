@@ -1,8 +1,15 @@
 
-const fakeData = [];
 
-for (let i = 0; i < 460; i++) {
-	fakeData.push({
+const list = [];
+const total = 450;
+
+const fakeData = {
+	list,
+	total
+};
+
+for (let i = 0; i < total + 1; i++) {
+	list.push({
 		key: i,
 		name: `User ${i}`,
 		score: 80,
