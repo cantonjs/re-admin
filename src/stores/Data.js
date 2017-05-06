@@ -43,7 +43,7 @@ export default class Store {
 		return this;
 	}
 
-	setPageIndex(page) {
+	setPage(page) {
 		this.page = page;
 	}
 }
