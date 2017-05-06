@@ -22,7 +22,13 @@ class Store {
 
 	async fetch() {
 		const collection = await fakeFetch();
-		this.collection = collection;
+		this.collection = collection.map((data, index) => {
+
+			// TODO: should depend on `schema.unique`
+			data.key = data.key || index;
+
+			return data;
+		});
 		return this;
 	}
 }

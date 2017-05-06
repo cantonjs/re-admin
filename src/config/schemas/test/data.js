@@ -4,7 +4,7 @@ module.exports = [
 		key: 'id',
 		title: 'ID',
 		dataType: 'int',
-		primary: true,
+		unique: true,
 	},
 	{
 		key: 'name',
