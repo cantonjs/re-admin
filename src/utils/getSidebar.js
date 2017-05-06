@@ -12,6 +12,6 @@ const merge = (children) => children.map((child, index) => {
 	return child;
 });
 
-export default function readFromSidebar() {
+export default function getSidebar() {
 	return merge(sidebarConfig);
 }

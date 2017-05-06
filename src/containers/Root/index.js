@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import App from 'containers/App';
 import Home from 'containers/Home';
 import NotFound from 'containers/NotFound';
-import readSidebar from './readSidebar';
+import getSidebar from 'utils/getSidebar';
 
 const mapRoutes = (routes) => {
 	if (!routes || !routes.length) { return null; }
@@ -24,7 +24,7 @@ export default function Root() {
 		<Router history={browserHistory}>
 			<Route path="/" component={App}>
 				<IndexRoute component={Home}/>
-				{mapRoutes(readSidebar())}
+				{mapRoutes(getSidebar())}
 				<Route path="*" component={NotFound}/>
 			</Route>
 		</Router>
