@@ -1,7 +1,8 @@
 
 import './style.css';
 import 'antd/dist/antd.less';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class App extends Component {
 	static propTypes = {
@@ -10,6 +11,8 @@ export default class App extends Component {
 
 	render() {
 		const { children } = this.props;
+
+		console.log('props', this.props);
 
 		return (
 			<div>
