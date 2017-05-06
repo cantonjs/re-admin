@@ -6,6 +6,7 @@ import fakeFetch from 'utils/fakeFetch';
 
 class Store {
 	@observable collection = [];
+	@observable isFetching = false;
 
 	@computed get dataSource() {
 		return toJS(this.collection);
@@ -21,7 +22,9 @@ class Store {
 	}
 
 	async fetch() {
+		this.isFetching = true;
 		const collection = await fakeFetch();
+		this.isFetching = false;
 		this.collection = collection.map((data, index) => {
 
 			// TODO: should depend on `schema.unique`
