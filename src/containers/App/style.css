@@ -1,0 +1,49 @@
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+	font: 14px/1.5 -apple-system, 'Avenir Next', 'helvetica neue', 'helvetica', 'arial', 'PingFangSC', 'Source Han Sans CN', 'hiragino sans gb', 'stheiti', '微软雅黑';
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong {
+	font-weight: normal;
+}
+
+a {
+	text-decoration: none;
+	-webkit-touch-callout: none;
+}
+
+ul,
+li {
+	padding: 0;
+	list-style: none;
+}
+
+table {
+	border-spacing: 0;
+}
+
+html {
+	font-size: 10px;
+}
+
+html,
+body {
+	height: 100%;
+}
