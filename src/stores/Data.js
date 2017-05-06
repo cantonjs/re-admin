@@ -1,19 +1,23 @@
 
 import { observable, computed, toJS } from 'mobx';
-import schema from 'config/schemas/test/data';
 
+// TODO
 import fakeFetch from 'utils/fakeFetch';
 
-class Store {
+export default class Store {
 	@observable collection = [];
 	@observable total = 0;
 	@observable isFetching = false;
+	@observable pageIndex = 0;
 
 	@computed get dataSource() {
 		return toJS(this.collection);
 	}
 
-	constructor() {
+	size = 20;
+
+	constructor(schema) {
+		this._schema = schema;
 		this.columns = schema.map(({ title, key, render }) => ({
 			title,
 			key,
@@ -24,7 +28,9 @@ class Store {
 
 	async fetch() {
 		this.isFetching = true;
-		const { total, list } = await fakeFetch();
+		const { total, list } = await fakeFetch({
+			count: this.size,
+		});
 		this.isFetching = false;
 		this.total = total;
 		this.collection = list.map((data, index) => {
@@ -36,6 +42,8 @@ class Store {
 		});
 		return this;
 	}
-}
 
-export default new Store();
+	setPageIndex(index) {
+		this.pageIndex = index;
+	}
+}
