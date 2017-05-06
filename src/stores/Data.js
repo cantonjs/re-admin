@@ -10,7 +10,7 @@ export default class Store {
 	@observable page = 1;
 
 	@computed get dataSource() {
-		return this.collection.get(this.page);
+		return toJS(this.collections.get(this.page));
 	}
 
 	collections = observable.map();
@@ -28,7 +28,7 @@ export default class Store {
 	}
 
 	async fetch(page = 1) {
-		if (this.collection.has(page)) { return this; }
+		if (this.collections.has(page)) { return this; }
 
 		this.isFetching = true;
 
