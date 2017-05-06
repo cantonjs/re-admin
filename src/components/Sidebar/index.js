@@ -1,16 +1,15 @@
-import './style.scss';
+import $$ from './style.scss';
 
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Menu, Icon } from 'antd';
 import items from 'config/sidebar.js';
-import { sidebar, name } from 'config/app.js';
+import { name } from 'config/app.js';
 // import {sidebarCollapseCreator} from '../../redux/Sidebar.js';
 
 
-const SubMenu = Menu.SubMenu;
-const MenuItem = Menu.Item;
-const MenuItemGroup = Menu.ItemGroup;
+const { SubMenu } = Menu;
+const { Item: MenuItem } = Menu;
 
 export default class Sidebar extends Component {
 
@@ -24,39 +23,45 @@ export default class Sidebar extends Component {
 
 	render() {
 		return (
-			<div className="container">
-				<div className="title">{name}</div>
+			<div className={$$.container}>
+				<div className={$$.title}>{name}</div>
 				<Menu
 					onClick={this.handleClick}
-					style={{ width: 240 }}
-					defaultSelectedKeys={['1']}
-					defaultOpenKeys={['sub1']}
+					className={$$.menu}
 					mode="inline"
 					>
-					<SubMenu key="sub1" title={<span><Icon type="mail" /><span>Navigation One</span></span>}>
-					<MenuItemGroup key="g1" title="Item 1">
-					<MenuItem key="1">Option 1</MenuItem>
-					<MenuItem key="2">Option 2</MenuItem>
-					</MenuItemGroup>
-					<MenuItemGroup key="g2" title="Item 2">
-					<MenuItem key="3">Option 3</MenuItem>
-					<MenuItem key="4">Option 4</MenuItem>
-					</MenuItemGroup>
-					</SubMenu>
-					<SubMenu key="sub2" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}>
-					<MenuItem key="5">Option 5</MenuItem>
-					<MenuItem key="6">Option 6</MenuItem>
-					<SubMenu key="sub3" title="Submenu">
-					<MenuItem key="7">Option 7</MenuItem>
-					<MenuItem key="8">Option 8</MenuItem>
-					</SubMenu>
-					</SubMenu>
-					<SubMenu key="sub4" title={<span><Icon type="setting" /><span>Navigation Three</span></span>}>
-					<MenuItem key="9">Option 9</MenuItem>
-					<MenuItem key="10">Option 10</MenuItem>
-					<MenuItem key="11">Option 11</MenuItem>
-					<MenuItem key="12">Option 12</MenuItem>
-					</SubMenu>
+					{items.map((item, index) => {
+						return item.children && item.children.length ?
+							<SubMenu
+								key={index}
+								title={<span>{item.icon && <Icon type={item.icon} />}{item.name}</span>}
+							>
+								{item.children.map((childItem, childIndex) => {
+									return childItem.children && childItem.children.length ?
+											<SubMenu
+												key={'child' + childIndex}
+												title={<span>{childItem.icon && <Icon type={childItem.icon} />}{childItem.name}</span>}
+											>
+												{childItem.children.map((leafItem, leafIndex) =>
+													<MenuItem key={"leaf" + leafIndex}>
+														{leafItem.icon && <Icon type={leafItem.icon} />}
+														<Link to={leafItem.path} style={{ display: 'inline' }}>{leafItem.name}</Link>
+													</MenuItem>
+												)}
+											</SubMenu>
+											:
+											<MenuItem key={'child' + childIndex}>
+												{childItem.icon && <Icon type={childItem.icon} />}
+												<Link to={childItem.path} style={{ display: 'inline' }}>{childItem.name}</Link>
+											</MenuItem>;
+								})}
+							</SubMenu>
+							:
+							<MenuItem key={index}>
+								{item.icon && <Icon type={item.icon} />}
+								<Link to={item.path} style={{ display: 'inline' }}>{item.name}</Link>
+							</MenuItem>;
+					})}
 				</Menu>
 			</div>
 		);
