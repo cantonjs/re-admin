@@ -5,36 +5,24 @@ import schema from 'config/schemas/test/data';
 import fakeFetch from 'utils/fakeFetch';
 
 class Store {
-	constructor(data = {}) {
-		const ext = schema.reduce((ext, { key, name }) => {
+	@observable columns = [];
+	@observable collection = [];
 
-			// TODO: should depend on `dataType`
-			ext[key] = {
-				name,
-				value: data[key],
-			};
-			return ext;
+	constructor() {
+		this.columns = schema.map(({ title, key }) => ({
+			title,
+			key,
+			dataIndex: key,
+		}));
 
-		}, {});
-
-		extendObservable(this, ext);
-	}
-}
-
-class Stores {
-	data = observable.map();
-
-	@computed get collection() {
-		return this.data.values();
+		console.log('this.columns', this.columns);
 	}
 
 	async fetch() {
-		const list = await fakeFetch();
-		list.forEach((data) => {
-			this.data.set(data.id, new Store(data));
-		});
+		const collection = await fakeFetch();
+		this.collection = collection;
 		return this;
 	}
 }
 
-export default new Stores();
+export default new Store();
