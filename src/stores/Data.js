@@ -8,7 +8,7 @@ export default class Store {
 	@observable collection = [];
 	@observable total = 0;
 	@observable isFetching = false;
-	@observable pageIndex = 0;
+	@observable page = 1;
 
 	@computed get dataSource() {
 		return toJS(this.collection);
@@ -43,7 +43,7 @@ export default class Store {
 		return this;
 	}
 
-	setPageIndex(index) {
-		this.pageIndex = index;
+	setPageIndex(page) {
+		this.page = page;
 	}
 }
