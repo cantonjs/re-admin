@@ -1,41 +1,10 @@
 
+import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getStore from 'utils/getStore';
 import { Table as TableComp, Pagination } from 'antd';
-
-const columns = [
-	{
-		dataIndex: 'id',
-		title: 'ID',
-	},
-	{
-		dataIndex: 'name',
-		title: '姓名',
-	},
-	{
-		dataIndex: 'touxiang',
-		title: '头像',
-	},
-	{
-		dataIndex: 'desc',
-		title: '描述',
-	},
-	{
-		dataIndex: 'score',
-		title: '分数',
-	},
-	{
-		dataIndex: 'gpa',
-		title: 'GPA',
-	},
-	{
-		dataIndex: 'birthday',
-		title: '生日',
-	}
-];
-
 
 @observer
 export default class Table extends Component {
@@ -68,15 +37,14 @@ export default class Table extends Component {
 	onSelectChange = (selectedRowKeys) => {
 		console.log('selectedRowKeys changed: ', selectedRowKeys);
 		this.setState({ selectedRowKeys });
-	}
+	};
 
-	onPageChange(page) {
+	onPageChange = (page) => {
 		this.state.store.fetch({page});
-		this.state.store.setPage(page);
-	}
+	};
 
 	render() {
-		const { store, loading, selectedRowKeys } = this.state;
+		const { store, selectedRowKeys } = this.state;
 		const rowSelection = {
 			selectedRowKeys,
 			onChange: this.onSelectChange,
@@ -86,7 +54,13 @@ export default class Table extends Component {
 			<div>
 				<h1>Table</h1>
 				<TableComp rowSelection={rowSelection} columns={store.columns} dataSource={store.dataSource} loading={store.isFetching} pagination={false}/>
-				<Pagination defaultCurrent={1} total={store.total} onChange={this.onPageChange} defaultPageSize={store.size}/>
+				<Pagination
+					className={$$.page}
+					defaultCurrent={1}
+					total={store.total}
+					onChange={this.onPageChange}
+					defaultPageSize={store.size}
+				/>
 			</div>
 		);
 	}
