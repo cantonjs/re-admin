@@ -1,14 +1,9 @@
 
-const caches = {};
-
-export default function getStore(tableKey, type = 'data') {
-	if (caches[tableKey]) { return caches[tableKey]; }
-
+export default function getSchema(tableKey, type = 'data') {
 	try {
 		const context = require.context('config/schemas', true, /\.js$/);
-		const schema = context(`./${tableKey}/${type}.js`);
-		caches[tableKey] = schema;
-		return schema;
+		const result = context(`./${tableKey}/${type}.js`);
+		return result.default || result;
 	}
 	catch (err) {
 		console.error(`找不到 "${tableKey}" 相关的 schema`);

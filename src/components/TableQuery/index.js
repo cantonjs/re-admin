@@ -3,12 +3,12 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Row, Col, Button, Icon } from 'antd';
-import QueryField from 'components/QueryField';
 
 @Form.create()
 export default class TableQuery extends Component {
 	static propTypes = {
 		form: PropTypes.object.isRequired,
+		children: PropTypes.node,
 	};
 
 	static childContextTypes = {
@@ -41,14 +41,17 @@ export default class TableQuery extends Component {
 	}
 
 	render() {
-		const expand = this.state.expand;
+		const {
+			props: { children },
+			state: { expand },
+		} = this;
 		return (
 			<Form
 				className={$$.container}
 				onSubmit={this.handleSearch}
 			>
 				<Row gutter={40}>
-					<QueryField label="fork" name="shit" />
+					{children}
 				</Row>
 				<Row>
 					<Col span={24} style={{ textAlign: 'right' }}>

@@ -27,16 +27,17 @@ export default class Table extends Component {
 
 	componentWillMount() {
 		const { table } = this.props.route;
+		const dataSchema = getSchema(table, 'data');
+		const QueryComponent = getSchema(table, 'query');
 		this.state = {
-			tableStore: getStore(getSchema(table)),
+			QueryComponent,
+			tableStore: getStore(dataSchema),
 			selectedRowKeys: [],	// Check here to configure the default column
 		};
-		console.log('table:', table);
 	}
 
 	componentWillReceiveProps({ route: { table } }) {
 		if (this.props.route.table !== table) {
-			console.log('table:', table);
 			this.setState({ tableStore: getStore(getSchema(table)) });
 		}
 	}
@@ -82,15 +83,15 @@ export default class Table extends Component {
 				route: { table },
 				location,
 			},
-			state: { tableStore, selectedRowKeys },
+			state: { QueryComponent, tableStore, selectedRowKeys },
 		} = this;
 		const hasSelected = selectedRowKeys.length > 0;
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableQuery
-					table={table}
-				/>
+				<TableQuery>
+					<QueryComponent />
+				</TableQuery>
 				<TableBody
 					location={location}
 					store={tableStore}
