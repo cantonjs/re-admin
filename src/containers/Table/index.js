@@ -80,6 +80,7 @@ export default class Table extends Component {
 			onChange: this.onSelectChange,
 		};
 		const hasSelected = selectedRowKeys.length > 0;
+		const { page = 1 } = this.props.location.query;
 		return (
 			<div>
 				<h1>Table</h1>
@@ -92,7 +93,7 @@ export default class Table extends Component {
 				/>
 				<Pagination
 					className={$$.page}
-					defaultCurrent={1}
+					defaultCurrent={+page}
 					total={store.total}
 					onChange={this.onPageChange}
 					defaultPageSize={store.size}
