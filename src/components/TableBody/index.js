@@ -29,7 +29,7 @@ export default class TableBody extends Component {
 	render() {
 		const { onRowSelectChange, selectedRowKeys, onPageChange, store, location } = this.props;
 		const { columns, dataSource, isFetching, total, size } = store;
-		const defaultCurrent = +location.query.page || 0;
+		const defaultCurrent = +location.query.page || 1;
 		const rowSelection = {
 			selectedRowKeys,
 			onChange: onRowSelectChange,
