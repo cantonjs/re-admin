@@ -18,10 +18,6 @@ export default class TableBody extends Component {
 		onRowSelectChange: PropTypes.func.isRequired,
 	};
 
-	handleClick = (e) => {
-		console.log('click ', e);
-	}
-
 	render() {
 		const { onRowSelectChange, selectedRowKeys, columns, dataSource, isFetching, defaultCurrent, total, onPageChange, defaultPageSize } = this.props;
 		const rowSelection = {
