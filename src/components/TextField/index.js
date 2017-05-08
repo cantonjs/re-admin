@@ -1,9 +1,9 @@
 
 import React from 'react';
-import QueryField from 'components/QueryField';
+import Field from 'components/Field';
 
 export default function TextField(props) {
 	return (
-		<QueryField {...props} />
+		<Field {...props} />
 	);
 }

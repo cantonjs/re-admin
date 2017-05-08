@@ -29,7 +29,7 @@ export default class TableQuery extends Component {
 		const { form, onQuery } = this.props;
 		e.preventDefault();
 		form.validateFields((err, values) => {
-			__DEV__ && console.error(err);
+			err && __DEV__ && console.error(err);
 			onQuery(values);
 		});
 	}

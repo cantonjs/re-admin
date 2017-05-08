@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Fields, { TextField } from 'components/Fields';
+import { Fields, TextField } from 'components/Fields';
 
 export default function TestQuery() {
 	return (

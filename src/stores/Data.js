@@ -1,5 +1,6 @@
 
 import { observable, computed, toJS } from 'mobx';
+import getSchema from 'utils/getSchema';
 
 // TODO
 import fakeFetch from 'utils/fakeFetch';
@@ -7,17 +8,18 @@ import fakeFetch from 'utils/fakeFetch';
 class DataStore {
 	@observable total = 0;
 	@observable isFetching = false;
-	@observable page = 1;
+	@observable search = '?';
 
 	@computed get dataSource() {
-		return toJS(this.collections.get(this.page));
+		return toJS(this.collections.get(this.search));
 	}
 
 	collections = observable.map();
 
 	size = 20;
 
-	constructor(schema) {
+	constructor(table, schema) {
+		this._table = table;
 		this._schema = schema;
 		this.columns = schema.map(({ title, key, render }) => ({
 			title,
@@ -27,23 +29,27 @@ class DataStore {
 		}));
 	}
 
-	async fetch(query = {}) {
+	async fetch(query = {}, search) {
 		const page = (function () {
 			const p = query.page || 1;
 			return p < 1 ? 1 : p;
 		}());
 
-		if (this.collections.has(page)) {
-			this.page = page;
+		query = {
+			count: this.size,
+			...query,
+			page,
+		};
+
+		if (this.collections.has(search)) {
+			this.search = search;
 			return this;
 		}
 
 		this.isFetching = true;
 
-		const { total, list } = await fakeFetch({
-			count: this.size,
-			page,
-		});
+		__DEV__ && console.log('[fetch]', `GET: /${this._table}`, query);
+		const { total, list } = await fakeFetch(query);
 
 		// console.log('list', list);
 
@@ -55,20 +61,21 @@ class DataStore {
 			return data;
 		});
 
-		this.page = page;
+		this.search = search;
 		this.isFetching = false;
 		this.total = total;
-		this.collections.set(page, collection);
+		this.collections.set(search, collection);
 		return this;
 	}
 }
 
-const caches = new WeakMap();
+const caches = {};
 
-export default function getDataStore(schema) {
-	if (caches.has(schema)) { return caches.get(schema); }
+export default function getDataStore(table) {
+	const schema = getSchema(table);
+	if (caches.hasOwnProperty(table)) { return caches[table]; }
 
-	const store = new DataStore(schema);
-	caches.set(schema, store);
+	const store = new DataStore(table, schema);
+	caches[table] = store;
 	return store;
 }

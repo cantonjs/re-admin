@@ -19,6 +19,7 @@ export default class Table extends Component {
 		location: PropTypes.shape({
 			query: PropTypes.object,
 			pathname: PropTypes.string,
+			search: PropTypes.string,
 		}),
 		route: PropTypes.shape({
 			table: PropTypes.string.isRequired,
@@ -27,18 +28,20 @@ export default class Table extends Component {
 
 	componentWillMount() {
 		const { table } = this.props.route;
-		const dataSchema = getSchema(table, 'data');
 		const QueryComponent = getSchema(table, 'query');
 		this.state = {
 			QueryComponent,
-			tableStore: getStore(dataSchema),
+			tableStore: getStore(table),
 			selectedRowKeys: [],	// Check here to configure the default column
 		};
 	}
 
 	componentWillReceiveProps({ route: { table } }) {
 		if (this.props.route.table !== table) {
-			this.setState({ tableStore: getStore(getSchema(table)) });
+			this.setState({
+				QueryComponent: getSchema(table, 'query'),
+				tableStore: getStore(table),
+			});
 		}
 	}
 
@@ -61,7 +64,8 @@ export default class Table extends Component {
 	};
 
 	_fetch() {
-		this.state.tableStore.fetch(this.props.location.query);
+		const { query, search } = this.props.location;
+		this.state.tableStore.fetch(query, search);
 	}
 
 	onSelectChange = (selectedRowKeys) => {
@@ -75,10 +79,7 @@ export default class Table extends Component {
 
 	render() {
 		const {
-			props: {
-				route: { table },
-				location,
-			},
+			props: { location },
 			state: { QueryComponent, tableStore, selectedRowKeys },
 		} = this;
 		const hasSelected = selectedRowKeys.length > 0;
