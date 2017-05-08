@@ -9,6 +9,7 @@ class DataStore {
 	@observable total = 0;
 	@observable isFetching = false;
 	@observable search = '?';
+	@observable selectedKeys = [];
 
 	@computed get dataSource() {
 		return toJS(this.collections.get(this.search));
@@ -48,7 +49,7 @@ class DataStore {
 
 		this.isFetching = true;
 
-		__DEV__ && console.log('[fetch]', `GET: /${this._table}`, query);
+		__DEV__ && console.log(`[fetch] GET: /${this._table}`, query);
 		const { total, list } = await fakeFetch(query);
 
 		// console.log('list', list);
@@ -66,6 +67,18 @@ class DataStore {
 		this.total = total;
 		this.collections.set(search, collection);
 		return this;
+	}
+
+	setSelectedKeys(selectedKeys) {
+		this.selectedKeys = selectedKeys;
+	}
+
+	async update(body) {
+		console.log(`[fetch] PUT: /${this._table}/${this.selectedKeys.join(',')}`, body);
+	}
+
+	async remove() {
+		console.log(`[fetch] REMOVE: /${this._table}/${this.selectedKeys.join(',')}`);
 	}
 }
 
