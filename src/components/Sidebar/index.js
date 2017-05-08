@@ -39,18 +39,18 @@ export default class Sidebar extends Component {
 								{item.children.map((childItem, childIndex) => {
 									return childItem.children && childItem.children.length ?
 											<SubMenu
-												key={'child' + childIndex}
+												key={index + '-' + childIndex}
 												title={<span>{childItem.icon && <Icon type={childItem.icon} />}{childItem.name}</span>}
 											>
 												{childItem.children.map((leafItem, leafIndex) =>
-													<MenuItem key={"leaf" + leafIndex}>
+													<MenuItem key={index + '-' + childIndex + '-' + leafIndex}>
 														{leafItem.icon && <Icon type={leafItem.icon} />}
 														<Link to={leafItem.path} style={{ display: 'inline' }}>{leafItem.name}</Link>
 													</MenuItem>
 												)}
 											</SubMenu>
 											:
-											<MenuItem key={'child' + childIndex}>
+											<MenuItem key={index + '-' + childIndex}>
 												{childItem.icon && <Icon type={childItem.icon} />}
 												<Link to={childItem.path} style={{ display: 'inline' }}>{childItem.name}</Link>
 											</MenuItem>;
