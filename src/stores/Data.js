@@ -42,7 +42,7 @@ export default class Store {
 			page,
 		});
 
-		console.log('list', list);
+		// console.log('list', list);
 
 		const collection = list.map((data, index) => {
 
