@@ -2,7 +2,7 @@
 import React from 'react';
 import { Fields, TextField } from 'Schemas';
 
-export default function TestQuerySchema() {
+export default function TestHeader() {
 	return (
 		<Fields>
 			<TextField
