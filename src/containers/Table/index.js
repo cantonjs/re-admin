@@ -3,7 +3,8 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import getStore from 'utils/getStore';
+import getSchema from 'utils/getSchema';
+import getStore from 'stores/Data';
 import { omit } from 'lodash';
 
 import TableBody from 'components/TableBody';
@@ -24,19 +25,19 @@ export default class Table extends Component {
 		}),
 	};
 
-	state = {
-		store: getStore(this.props.route.table),
-		selectedRowKeys: [],	// Check here to configure the default column
-	};
-
 	componentWillMount() {
-		console.log('table:', this.props.route.table);
+		const { table } = this.props.route;
+		this.state = {
+			tableStore: getStore(getSchema(table)),
+			selectedRowKeys: [],	// Check here to configure the default column
+		};
+		console.log('table:', table);
 	}
 
 	componentWillReceiveProps({ route: { table } }) {
 		if (this.props.route.table !== table) {
 			console.log('table:', table);
-			this.setState({ store: getStore(table) });
+			this.setState({ tableStore: getStore(getSchema(table)) });
 		}
 	}
 
@@ -63,7 +64,7 @@ export default class Table extends Component {
 	}
 
 	_fetch() {
-		this.state.store.fetch(this.props.location.query);
+		this.state.tableStore.fetch(this.props.location.query);
 	}
 
 	onSelectChange = (selectedRowKeys) => {
@@ -78,11 +79,10 @@ export default class Table extends Component {
 	render() {
 		const {
 			props: {
-				location: { query: { page = 1 } },
 				route: { table },
 				location,
 			},
-			state: { store, selectedRowKeys },
+			state: { tableStore, selectedRowKeys },
 		} = this;
 		const hasSelected = selectedRowKeys.length > 0;
 		return (
@@ -93,8 +93,7 @@ export default class Table extends Component {
 				/>
 				<TableBody
 					location={location}
-					store={store}
-					defaultCurrent={+page}
+					store={tableStore}
 					onPageChange={this.onPageChange}
 					selectedRowKeys={selectedRowKeys}
 					onRowSelectChange={this.onSelectChange}

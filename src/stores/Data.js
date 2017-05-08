@@ -4,7 +4,7 @@ import { observable, computed, toJS } from 'mobx';
 // TODO
 import fakeFetch from 'utils/fakeFetch';
 
-export default class Store {
+class DataStore {
 	@observable total = 0;
 	@observable isFetching = false;
 	@observable page = 1;
@@ -58,4 +58,14 @@ export default class Store {
 		this.collections.set(page, collection);
 		return this;
 	}
+}
+
+const caches = new WeakMap();
+
+export default function getDataStore(schema) {
+	if (caches.has(schema)) { return caches.get(schema); }
+
+	const store = new DataStore(schema);
+	caches.set(schema, store);
+	return store;
 }

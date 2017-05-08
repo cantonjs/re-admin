@@ -1,6 +1,4 @@
 
-import Store from 'stores/Data';
-
 const caches = {};
 
 export default function getStore(tableKey, type = 'data') {
@@ -9,9 +7,8 @@ export default function getStore(tableKey, type = 'data') {
 	try {
 		const context = require.context('config/schemas', true, /\.js$/);
 		const schema = context(`./${tableKey}/${type}.js`);
-		const store = new Store(schema);
-		caches[tableKey] = store;
-		return store;
+		caches[tableKey] = schema;
+		return schema;
 	}
 	catch (err) {
 		console.error(`找不到 "${tableKey}" 相关的 schema`);
