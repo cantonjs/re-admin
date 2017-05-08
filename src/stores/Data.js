@@ -27,7 +27,12 @@ export default class Store {
 		}));
 	}
 
-	async fetch(page = 1) {
+	async fetch(query = {}) {
+		const page = (function () {
+			const p = query.page || 1;
+			return p < 1 ? 1 : p;
+		}());
+
 		if (this.collections.has(page)) { return this; }
 
 		this.isFetching = true;

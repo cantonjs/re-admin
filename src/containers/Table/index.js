@@ -5,10 +5,18 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getStore from 'utils/getStore';
 import { Table as TableComp, Pagination } from 'antd';
+import { omit } from 'lodash';
 
 @observer
 export default class Table extends Component {
 	static propTypes = {
+		router: PropTypes.shape({
+			push: PropTypes.func.isRequired,
+		}),
+		location: PropTypes.shape({
+			query: PropTypes.object,
+			pathname: PropTypes.string,
+		}),
 		route: PropTypes.shape({
 			table: PropTypes.string.isRequired,
 		}),
@@ -31,7 +39,29 @@ export default class Table extends Component {
 	}
 
 	componentDidMount() {
-		this.state.store.fetch();
+		this._fetch();
+	}
+
+	componentDidUpdate(prevProps) {
+		const { location } = this.props;
+		if (prevProps.location !== location) {
+			this._fetch();
+		}
+	}
+
+	_query(newQuery, omitPaths = []) {
+		const { router, location: { pathname, query } } = this.props;
+		router.push({
+			pathname,
+			query: omit({
+				...query,
+				...newQuery,
+			}, omitPaths),
+		});
+	}
+
+	_fetch() {
+		this.state.store.fetch(this.props.location.query);
 	}
 
 	onSelectChange = (selectedRowKeys) => {
@@ -40,7 +70,7 @@ export default class Table extends Component {
 	};
 
 	onPageChange = (page) => {
-		this.state.store.fetch(page);
+		this._query({ page });
 	};
 
 	render() {
@@ -53,7 +83,13 @@ export default class Table extends Component {
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableComp rowSelection={rowSelection} columns={store.columns} dataSource={store.dataSource} loading={store.isFetching} pagination={false}/>
+				<TableComp
+					rowSelection={rowSelection}
+					columns={store.columns}
+					dataSource={store.dataSource}
+					loading={store.isFetching}
+					pagination={false}
+				/>
 				<Pagination
 					className={$$.page}
 					defaultCurrent={1}
