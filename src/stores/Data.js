@@ -29,7 +29,7 @@ class DataStore {
 		}));
 	}
 
-	async fetch(query = {}, search) {
+	async fetch(query = {}, search = '?') {
 		const page = (function () {
 			const p = query.page || 1;
 			return p < 1 ? 1 : p;
