@@ -2,8 +2,8 @@
 import React from 'react';
 import { Toolbar } from 'Schemas';
 
-export default function TestToolbar(props) {
+export default function TestToolbar() {
 	return (
-		<Toolbar {...props} />
+		<Toolbar />
 	);
 }
