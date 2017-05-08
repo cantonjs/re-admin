@@ -93,14 +93,9 @@ export default class Table extends Component {
 				/>
 				<TableBody
 					location={location}
-					table={table}
-					columns={store.columns}
-					dataSource={store.dataSource}
-					isFetching={store.isFetching}
+					store={store}
 					defaultCurrent={+page}
-					total={store.total}
 					onPageChange={this.onPageChange}
-					defaultPageSize={store.size}
 					selectedRowKeys={selectedRowKeys}
 					onRowSelectChange={this.onSelectChange}
 				/>
