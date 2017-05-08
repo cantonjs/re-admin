@@ -8,6 +8,7 @@ import { Table as TableComp, Pagination } from 'antd';
 import { omit } from 'lodash';
 
 import TableBody from 'components/TableBody';
+import TableQuery from 'components/TableQuery';
 
 @observer
 export default class Table extends Component {
@@ -82,6 +83,7 @@ export default class Table extends Component {
 		return (
 			<div>
 				<h1>Table</h1>
+				<TableQuery />
 				<TableBody
 					columns={store.columns}
 					dataSource={store.dataSource}
