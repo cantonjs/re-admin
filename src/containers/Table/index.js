@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getSchema from 'utils/getSchema';
 import getStore from 'stores/Data';
-import { omit } from 'lodash';
+import { pick } from 'lodash';
 
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
@@ -53,16 +53,12 @@ export default class Table extends Component {
 		}
 	}
 
-	_query(newQuery, omitPaths = []) {
-		const { router, location: { pathname, query } } = this.props;
-		router.push({
-			pathname,
-			query: omit({
-				...query,
-				...newQuery,
-			}, omitPaths),
-		});
-	}
+	_query = (query, pickPaths = []) => {
+		const { router, location: { pathname, query: locQuery } } = this.props;
+		query = { ...locQuery, ...query };
+		if (pickPaths.length) { query = pick(query, pickPaths); }
+		router.push({ pathname, query });
+	};
 
 	_fetch() {
 		this.state.tableStore.fetch(this.props.location.query);
@@ -89,7 +85,7 @@ export default class Table extends Component {
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableQuery>
+				<TableQuery onQuery={this._query}>
 					<QueryComponent />
 				</TableQuery>
 				<TableBody

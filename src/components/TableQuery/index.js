@@ -9,6 +9,7 @@ export default class TableQuery extends Component {
 	static propTypes = {
 		form: PropTypes.object.isRequired,
 		children: PropTypes.node,
+		onQuery: PropTypes.func.isRequired,
 	};
 
 	static childContextTypes = {
@@ -25,14 +26,18 @@ export default class TableQuery extends Component {
 	};
 
 	handleSearch = (e) => {
+		const { form, onQuery } = this.props;
 		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
-			console.log('Received values of form: ', values);
+		form.validateFields((err, values) => {
+			__DEV__ && console.error(err);
+			onQuery(values);
 		});
 	}
 
 	handleReset = () => {
-		this.props.form.resetFields();
+		const { form, onQuery } = this.props;
+		form.resetFields();
+		onQuery({}, ['page']);
 	}
 
 	toggle = () => {

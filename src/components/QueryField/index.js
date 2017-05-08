@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col, Input } from 'antd';
+import { withRouter } from 'react-router';
 
 const FormItem = Form.Item;
 
@@ -10,6 +11,7 @@ const formItemLayout = {
 	wrapperCol: { span: 19 },
 };
 
+@withRouter
 export default class QueryField extends Component {
 	static propTypes = {
 		component: PropTypes.oneOfType([
@@ -18,6 +20,12 @@ export default class QueryField extends Component {
 		]),
 		label: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
+		location: PropTypes.shape({
+			query: PropTypes.object.isRequired,
+		}).isRequired,
+		params: PropTypes.any.isRequired,
+		router: PropTypes.any.isRequired,
+		routes: PropTypes.any.isRequired,
 	};
 
 	static defaultProps = {
@@ -34,6 +42,12 @@ export default class QueryField extends Component {
 				component: Comp,
 				label,
 				name,
+				location: { query },
+
+				params,
+				router,
+				routes,
+
 				...other,
 			},
 			context: {
@@ -43,7 +57,9 @@ export default class QueryField extends Component {
 		return (
 			<Col span={8}>
 				<FormItem {...formItemLayout} label={label}>
-					{getFieldDecorator(name)(
+					{getFieldDecorator(name, {
+						initialValue: query[name],
+					})(
 						<Comp {...other} />
 					)}
 				</FormItem>
