@@ -37,7 +37,7 @@ export default class TableQuery extends Component {
 	handleReset = () => {
 		const { form, onQuery } = this.props;
 		form.resetFields();
-		onQuery({}, ['page']);
+		onQuery({});
 	}
 
 	toggle = () => {

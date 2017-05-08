@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getSchema from 'utils/getSchema';
 import getStore from 'stores/Data';
-import { pick } from 'lodash';
 
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
@@ -56,11 +55,16 @@ export default class Table extends Component {
 		}
 	}
 
-	_query = (query, pickPaths = []) => {
+	_updateQuery(query, shouldReplace) {
 		const { router, location: { pathname, query: locQuery } } = this.props;
-		query = { ...locQuery, ...query };
-		if (pickPaths.length) { query = pick(query, pickPaths); }
-		router.push({ pathname, query });
+		router.push({
+			pathname,
+			query: shouldReplace ? query : { ...locQuery, ...query },
+		});
+	}
+
+	_handleQuery = (query) => {
+		this._updateQuery(query, true);
 	};
 
 	_fetch() {
@@ -74,7 +78,7 @@ export default class Table extends Component {
 	};
 
 	onPageChange = (page) => {
-		this._query({ page });
+		this._updateQuery({ page });
 	};
 
 	render() {
@@ -86,7 +90,7 @@ export default class Table extends Component {
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableQuery onQuery={this._query}>
+				<TableQuery onQuery={this._handleQuery}>
 					<QueryComponent />
 				</TableQuery>
 				<TableBody
