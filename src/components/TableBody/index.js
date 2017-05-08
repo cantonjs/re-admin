@@ -3,23 +3,33 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 
+@observer
 export default class TableBody extends Component {
 
 	static propTypes = {
-		columns: PropTypes.array.isRequired,
-		dataSource: PropTypes.array,
-		isFetching: PropTypes.bool.isRequired,
-		defaultCurrent: PropTypes.number.isRequired,
-		total: PropTypes.number.isRequired,
+		store: PropTypes.shape({
+			columns: PropTypes.array.isRequired,
+			dataSource: PropTypes.array,
+			isFetching: PropTypes.bool.isRequired,
+			total: PropTypes.number.isRequired,
+			size: PropTypes.number.isRequired,
+
+		}),
+		location: PropTypes.shape({
+			query: PropTypes.object,
+			pathname: PropTypes.string,
+		}),
 		onPageChange: PropTypes.func.isRequired,
-		defaultPageSize: PropTypes.number.isRequired,
 		selectedRowKeys: PropTypes.array.isRequired,
 		onRowSelectChange: PropTypes.func.isRequired,
 	};
 
 	render() {
-		const { onRowSelectChange, selectedRowKeys, columns, dataSource, isFetching, defaultCurrent, total, onPageChange, defaultPageSize } = this.props;
+		const { onRowSelectChange, selectedRowKeys, onPageChange, store, location } = this.props;
+		const { columns, dataSource, isFetching, total, size } = store;
+		const defaultCurrent = +location.query.page || 0;
 		const rowSelection = {
 			selectedRowKeys,
 			onChange: onRowSelectChange,
@@ -38,7 +48,7 @@ export default class TableBody extends Component {
 					defaultCurrent={defaultCurrent}
 					total={total}
 					onChange={onPageChange}
-					defaultPageSize={defaultPageSize}
+					defaultPageSize={size}
 				/>
 			</div>
 		);
