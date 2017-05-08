@@ -1,34 +1,53 @@
 
-import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import { Form, Col, Input } from 'antd';
+
+const FormItem = Form.Item;
+
+const formItemLayout = {
+	labelCol: { span: 5 },
+	wrapperCol: { span: 19 },
+};
 
 export default class QueryField extends Component {
 	static propTypes = {
-		className: PropTypes.string,
-		containerClassName: PropTypes.string,
 		component: PropTypes.oneOfType([
 			PropTypes.string,
 			PropTypes.func,
-		]).isRequired,
-		title: PropTypes.string.isRequired,
-		key: PropTypes.string.isRequired,
+		]),
+		label: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+	};
+
+	static defaultProps = {
+		component: Input,
+	};
+
+	static contextTypes = {
+		form: PropTypes.object,
 	};
 
 	render() {
 		const {
-			component: Comp,
-			containerClassName,
-			className,
-			title,
-			...other,
-		} = this.props;
+			props: {
+				component: Comp,
+				label,
+				name,
+				...other,
+			},
+			context: {
+				form: { getFieldDecorator },
+			},
+		} = this;
 		return (
-			<div className={classnames($$.container, containerClassName)}>
-				<h1 className={$$.title}>{title} :</h1>
-				<Comp className={classnames($$.content, className)} {...other} />
-			</div>
+			<Col span={8}>
+				<FormItem {...formItemLayout} label={label}>
+					{getFieldDecorator(name)(
+						<Comp {...other} />
+					)}
+				</FormItem>
+			</Col>
 		);
 	}
 }

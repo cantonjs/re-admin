@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { Component } from 'react';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import App from 'containers/App';
 import Home from 'containers/Home';
@@ -19,14 +19,16 @@ const mapRoutes = (routes) => {
 	});
 };
 
-export default function Root() {
-	return (
-		<Router history={browserHistory}>
-			<Route path="/" component={App}>
-				<IndexRoute component={Home}/>
-				{mapRoutes(getSidebar())}
-				<Route path="*" component={NotFound}/>
-			</Route>
-		</Router>
-	);
+export default class Root extends Component {
+	render() {
+		return (
+			<Router history={browserHistory}>
+				<Route path="/" component={App}>
+					<IndexRoute component={Home}/>
+					{mapRoutes(getSidebar())}
+					<Route path="*" component={NotFound}/>
+				</Route>
+			</Router>
+		);
+	}
 }

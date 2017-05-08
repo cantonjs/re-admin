@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getStore from 'utils/getStore';
-import { Table as TableComp, Pagination } from 'antd';
 import { omit } from 'lodash';
 
 import TableBody from 'components/TableBody';
@@ -77,14 +76,19 @@ export default class Table extends Component {
 	};
 
 	render() {
-		const { store, selectedRowKeys } = this.state;
+		const {
+			props: { location: { query: { page = 1 } }, route: { table } },
+			state: { store, selectedRowKeys },
+		} = this;
 		const hasSelected = selectedRowKeys.length > 0;
-		const { page = 1 } = this.props.location.query;
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableQuery />
+				<TableQuery
+					table={table}
+				/>
 				<TableBody
+					table={table}
 					columns={store.columns}
 					dataSource={store.dataSource}
 					isFetching={store.isFetching}

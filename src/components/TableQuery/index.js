@@ -1,11 +1,25 @@
 import $$ from './style.scss';
 
 import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon } from 'antd';
+import PropTypes from 'prop-types';
+import { Form, Row, Col, Button, Icon } from 'antd';
+import QueryField from 'components/QueryField';
 
-const FormItem = Form.Item;
+@Form.create()
+export default class TableQuery extends Component {
+	static propTypes = {
+		form: PropTypes.object.isRequired,
+	};
 
-class TableQuery extends Component {
+	static childContextTypes = {
+		form: PropTypes.object,
+	};
+
+	getChildContext() {
+		const { form } = this.props;
+		return { form };
+	}
+
 	state = {
 		expand: false,
 	};
@@ -27,35 +41,14 @@ class TableQuery extends Component {
 	}
 
 	render() {
-		const { getFieldDecorator } = this.props.form;
-		const formItemLayout = {
-			labelCol: { span: 5 },
-			wrapperCol: { span: 19 },
-		};
-
-		// To generate mock Form.Item
-		const children = [];
-		for (let i = 0; i < 10; i++) {
-			children.push(
-				<Col span={8} key={i}>
-					<FormItem {...formItemLayout} label={`Field ${i}`}>
-						{getFieldDecorator(`field-${i}`)(
-							<Input placeholder="placeholder" />
-						)}
-					</FormItem>
-				</Col>
-			);
-		}
-
 		const expand = this.state.expand;
-		const shownCount = expand ? children.length : 6;
 		return (
 			<Form
 				className={$$.container}
 				onSubmit={this.handleSearch}
 			>
 				<Row gutter={40}>
-					{children.slice(0, shownCount)}
+					<QueryField label="fork" name="shit" />
 				</Row>
 				<Row>
 					<Col span={24} style={{ textAlign: 'right' }}>
@@ -72,5 +65,3 @@ class TableQuery extends Component {
 		);
 	}
 }
-
-export default Form.create()(TableQuery);
