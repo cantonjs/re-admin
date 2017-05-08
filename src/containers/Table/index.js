@@ -7,6 +7,8 @@ import getStore from 'utils/getStore';
 import { Table as TableComp, Pagination } from 'antd';
 import { omit } from 'lodash';
 
+import TableBody from 'components/TableBody';
+
 @observer
 export default class Table extends Component {
 	static propTypes = {
@@ -75,28 +77,21 @@ export default class Table extends Component {
 
 	render() {
 		const { store, selectedRowKeys } = this.state;
-		const rowSelection = {
-			selectedRowKeys,
-			onChange: this.onSelectChange,
-		};
 		const hasSelected = selectedRowKeys.length > 0;
 		const { page = 1 } = this.props.location.query;
 		return (
 			<div>
 				<h1>Table</h1>
-				<TableComp
-					rowSelection={rowSelection}
+				<TableBody
 					columns={store.columns}
 					dataSource={store.dataSource}
-					loading={store.isFetching}
-					pagination={false}
-				/>
-				<Pagination
-					className={$$.page}
+					isFetching={store.isFetching}
 					defaultCurrent={+page}
 					total={store.total}
-					onChange={this.onPageChange}
+					onPageChange={this.onPageChange}
 					defaultPageSize={store.size}
+					selectedRowKeys={selectedRowKeys}
+					onRowSelectChange={this.onSelectChange}
 				/>
 			</div>
 		);
