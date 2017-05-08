@@ -33,7 +33,10 @@ class DataStore {
 			return p < 1 ? 1 : p;
 		}());
 
-		if (this.collections.has(page)) { return this; }
+		if (this.collections.has(page)) {
+			this.page = page;
+			return this;
+		}
 
 		this.isFetching = true;
 
