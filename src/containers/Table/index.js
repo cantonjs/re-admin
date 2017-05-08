@@ -77,7 +77,11 @@ export default class Table extends Component {
 
 	render() {
 		const {
-			props: { location: { query: { page = 1 } }, route: { table } },
+			props: {
+				location: { query: { page = 1 } },
+				route: { table },
+				location,
+			},
 			state: { store, selectedRowKeys },
 		} = this;
 		const hasSelected = selectedRowKeys.length > 0;
@@ -88,6 +92,7 @@ export default class Table extends Component {
 					table={table}
 				/>
 				<TableBody
+					location={location}
 					table={table}
 					columns={store.columns}
 					dataSource={store.dataSource}
