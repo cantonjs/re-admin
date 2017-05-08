@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { TextField } from 'components/QueryComponents';
+import Fields, { TextField } from 'components/Fields';
 
 export default function TestQuery() {
 	return (
-		<div>
+		<Fields>
 			<TextField
 				name="name"
 				label="用户名"
@@ -15,6 +15,6 @@ export default function TestQuery() {
 				label="博客地址"
 				placeholder="请输入网址"
 			/>
-		</div>
+		</Fields>
 	);
 }

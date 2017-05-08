@@ -12,7 +12,7 @@ const formItemLayout = {
 };
 
 @withRouter
-export default class QueryField extends Component {
+export default class Field extends Component {
 	static propTypes = {
 		component: PropTypes.oneOfType([
 			PropTypes.string,
