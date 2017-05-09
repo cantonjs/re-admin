@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'antd';
 import ButtonRemove from 'components/ButtonRemove';
 import ButtonUpdate from 'components/ButtonUpdate';
+import ButtonCreate from 'components/ButtonCreate';
 
 const { Group } = Button;
 
@@ -15,7 +16,7 @@ export default class Toolbar extends Component {
 				<Row justify="space-around">
 					<Col span={12}>
 						<Group>
-							<Button type="primary">新建</Button>
+							<ButtonCreate />
 							<ButtonUpdate />
 							<ButtonRemove />
 						</Group>

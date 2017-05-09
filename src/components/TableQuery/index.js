@@ -1,5 +1,5 @@
-import $$ from './style.scss';
 
+import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Row, Col, Button, Icon } from 'antd';
@@ -30,14 +30,14 @@ export default class TableQuery extends Component {
 		e.preventDefault();
 		form.validateFields((err, values) => {
 			err && __DEV__ && console.error(err);
-			onQuery(values);
+			onQuery(values, { shouldReplace: true });
 		});
 	}
 
 	handleReset = () => {
 		const { form, onQuery } = this.props;
 		form.resetFields();
-		onQuery({});
+		onQuery({}, { shouldReplace: true });
 	}
 
 	toggle = () => {
@@ -50,10 +50,12 @@ export default class TableQuery extends Component {
 			props: { children },
 			state: { expand },
 		} = this;
+
 		return (
 			<Form
 				className={$$.container}
 				onSubmit={this.handleSearch}
+				layout="inline"
 			>
 				<Row gutter={40}>
 					{children}

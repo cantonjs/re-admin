@@ -2,6 +2,7 @@
 import { observable, computed, toJS } from 'mobx';
 import getSchema from 'utils/getSchema';
 import jsxToPlainObject from 'utils/jsxToPlainObject';
+import { omit } from 'lodash';
 
 // TODO
 import fakeFetch from 'utils/fakeFetch';
@@ -39,7 +40,7 @@ class DataStore {
 
 		query = {
 			count: this.size,
-			...query,
+			...omit(query, ['action']),
 			page,
 		};
 
@@ -74,6 +75,10 @@ class DataStore {
 		this.selectedKeys = selectedKeys;
 	}
 
+	async create(body) {
+		console.log(`[fetch] POST: /${this._table}`, body);
+	}
+
 	async update(body) {
 		console.log(`[fetch] PUT: /${this._table}/${this.selectedKeys.join(',')}`, body);
 	}
@@ -87,7 +92,7 @@ const caches = {};
 
 export default function getDataStore(table) {
 	const schema = jsxToPlainObject(getSchema(table));
-	console.log('schema', schema);
+	// console.log('schema', schema);
 	if (caches.hasOwnProperty(table)) { return caches[table]; }
 
 	const store = new DataStore(table, schema);

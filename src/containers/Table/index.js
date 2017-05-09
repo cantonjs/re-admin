@@ -3,11 +3,13 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import getSchema from 'utils/getSchema';
+import getComponents from 'utils/getComponents';
 import getStore from 'stores/Data';
+import { omit } from 'lodash';
 
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
+import ActionModal from 'components/ActionModal';
 
 @observer
 export default class Table extends Component {
@@ -27,18 +29,21 @@ export default class Table extends Component {
 
 	static childContextTypes = {
 		store: PropTypes.object,
+		updateLocationQuery: PropTypes.func,
 	};
 
 	getChildContext() {
 		const { store } = this.state;
-		return { store };
+		return {
+			store,
+			updateLocationQuery: ::this.updateQuery,
+		};
 	}
 
 	componentWillMount() {
 		const { table } = this.props.route;
 		this.state = {
-			QueryComponent: getSchema(table, 'query'),
-			ToolbarComponent: getSchema(table, 'toolbar'),
+			...getComponents(table),
 			store: getStore(table),
 		};
 	}
@@ -46,8 +51,7 @@ export default class Table extends Component {
 	componentWillReceiveProps({ route: { table } }) {
 		if (this.props.route.table !== table) {
 			this.setState({
-				QueryComponent: getSchema(table, 'query'),
-				ToolbarComponent: getSchema(table, 'toolbar'),
+				...getComponents(table),
 				store: getStore(table),
 			});
 		}
@@ -64,16 +68,12 @@ export default class Table extends Component {
 		}
 	}
 
-	_updateQuery(query, shouldReplace) {
+	updateQuery = (newQuery, options = {}) => {
+		const { shouldReplace, omitPaths } = options;
 		const { router, location: { pathname, query: locQuery } } = this.props;
-		router.push({
-			pathname,
-			query: shouldReplace ? query : { ...locQuery, ...query },
-		});
-	}
-
-	_handleQuery = (query) => {
-		this._updateQuery(query, true);
+		let query = shouldReplace ? newQuery : { ...locQuery, ...newQuery };
+		if (omitPaths) { query = omit(query, omitPaths); }
+		router.push({ pathname, query });
 	};
 
 	_fetch() {
@@ -82,13 +82,14 @@ export default class Table extends Component {
 	}
 
 	_handlePageChange = (page) => {
-		this._updateQuery({ page });
+		this.updateQuery({ page });
 	};
 
 	render() {
 		const {
 			props: { location },
 			state: {
+				DataComponent,
 				QueryComponent,
 				ToolbarComponent,
 				store,
@@ -97,8 +98,8 @@ export default class Table extends Component {
 
 		return (
 			<div>
-				<TableQuery onQuery={this._handleQuery}>
-					<QueryComponent />
+				<TableQuery onQuery={this.updateQuery}>
+					{new QueryComponent().props.children}
 				</TableQuery>
 
 				<ToolbarComponent />
@@ -108,6 +109,13 @@ export default class Table extends Component {
 					store={store}
 					onPageChange={this._handlePageChange}
 				/>
+
+				<ActionModal
+					location={location}
+					store={store}
+				>
+					{new DataComponent().props.children}
+				</ActionModal>
 			</div>
 		);
 	}

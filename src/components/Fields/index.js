@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 
 export default class Fields extends Component {
@@ -7,15 +7,19 @@ export default class Fields extends Component {
 		children: PropTypes.node,
 	};
 
-	constructor(props) {
-		super(props);
-
-		console.log('fields props', props);
-	}
-
 	render() {
+		const { children } = this.props;
 		return (
-			<div>{this.props.children}</div>
+			<div>{children}</div>
 		);
 	}
+
+	// render() {
+	// 	const { children, ...other } = this.props;
+	// 	return (
+	// 		<div>
+	// 			{Children.map(children, (child) => cloneElement(child, other))}
+	// 		</div>
+	// 	);
+	// }
 }

@@ -5,15 +5,14 @@ import { observer } from 'mobx-react';
 import { Button } from 'antd';
 
 @observer
-export default class ButtonUpdate extends Component {
+export default class ButtonCreate extends Component {
 	static propTypes = {
 		label: PropTypes.node,
-		multiLabel: PropTypes.node,
 	};
 
 	static defaultProps = {
-		label: '修改',
-		multiLabel: '批量修改',
+		label: '新建',
+		type: 'primary',
 	};
 
 	static contextTypes = {
@@ -22,25 +21,22 @@ export default class ButtonUpdate extends Component {
 	};
 
 	_handleClick = () => {
-		const { updateLocationQuery, store } = this.context;
-		updateLocationQuery({
-			action: 'update',
-			actionKey: store.selectedKeys,
-		});
+		this.context.updateLocationQuery({ action: 'create' });
 	};
 
 	render() {
 		const {
-			props: { label, multiLabel, ...other },
-			context: { store: { selectedKeys: { length } } },
+			props: {
+				label,
+				...other,
+			},
 		} = this;
 		return (
 			<Button
 				{...other}
 				onClick={this._handleClick}
-				disabled={!length}
 			>
-				{length > 1 ? multiLabel : label}
+				{label}
 			</Button>
 		);
 	}

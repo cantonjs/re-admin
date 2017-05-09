@@ -1,5 +1,5 @@
-import $$ from './style.scss';
 
+import $$ from './style.scss';
 import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
