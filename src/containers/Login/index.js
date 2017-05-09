@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { name } from 'config/app.js';
+import cookie from 'utils/cookie';
+import fakeLogin from 'utils/fakeLogin';
 
 const FormItem = Form.Item;
 
@@ -11,13 +13,31 @@ const FormItem = Form.Item;
 export default class Login extends Component {
 	static propTypes = {
 		form: PropTypes.object.isRequired,
+		location: PropTypes.shape({
+			query: PropTypes.object,
+		}),
+		router: PropTypes.shape({
+			replace: PropTypes.func,
+		}),
 	};
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
+		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
+				const { username, password } = values;
 				console.log('Received values of form: ', values);
+				const { accessToekn, error } = await fakeLogin({ username, password });
+				if (error) {
+					console.error(error);
+				}
+				else {
+					const { ref } = this.props.location;
+					cookie.set('accessToekn', accessToekn, { maxAge: 60 * 60 * 24 * 7 });
+					const url = ref || '/';
+					this.props.router.replace(url);
+				}
+
 			}
 		});
 	}
@@ -28,7 +48,7 @@ export default class Login extends Component {
 				<h1 className={$$.title}>{ name }</h1>
 				<Form onSubmit={this.handleSubmit} className={$$.form}>
 					<FormItem>
-						{getFieldDecorator('userName', {
+						{getFieldDecorator('username', {
 							rules: [{ required: true, message: 'Please input your username!' }],
 						})(
 							<Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
@@ -42,12 +62,6 @@ export default class Login extends Component {
 						)}
 					</FormItem>
 					<FormItem>
-						{getFieldDecorator('remember', {
-							valuePropName: 'checked',
-							initialValue: true,
-						})(
-							<Checkbox>Remember me</Checkbox>
-						)}
 						<Button type="primary" htmlType="submit" className={$$.bt}>
 							Log in
 						</Button>
