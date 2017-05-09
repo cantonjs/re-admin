@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getComponents from 'utils/getComponents';
 import getStore from 'stores/Data';
-import { omit } from 'lodash';
+import { omit, isEqual } from 'lodash';
 
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
@@ -61,10 +61,21 @@ export default class Table extends Component {
 		this._fetch();
 	}
 
-	componentDidUpdate(prevProps) {
-		const { location } = this.props;
-		if (prevProps.location !== location) {
+	componentDidUpdate({ location: prevLocation }) {
+		const { pathname, query } = this.props.location;
+
+		if (location === prevLocation) { return; }
+
+		if (prevLocation.pathname !== pathname) {
 			this._fetch();
+		}
+		else if (prevLocation.query !== location.query) {
+			const blackList = ['action', 'selectedKeys'];
+			const prevQuery = omit(prevLocation.query, blackList);
+			const nextQuery = omit(query, blackList);
+			if (!isEqual(prevQuery, nextQuery)) {
+				this._fetch();
+			}
 		}
 	}
 

@@ -20,6 +20,8 @@ class DataStore {
 	collections = observable.map();
 
 	size = __DEV__ ? 5 : 20;
+	_prevQuery = {};
+	_pervSearch = '?';
 
 	constructor(table, schema) {
 		this._table = table;
@@ -32,7 +34,10 @@ class DataStore {
 		}));
 	}
 
-	async fetch(query = {}, search = '?') {
+	async fetch(query = this._prevQuery, search = this._prevSearch) {
+		this._prevQuery = query;
+		this._prevSearch = search;
+
 		const page = (function () {
 			const p = query.page || 1;
 			return p < 1 ? 1 : p;
@@ -71,20 +76,29 @@ class DataStore {
 		return this;
 	}
 
+	_sync() {
+		this.collections.clear();
+		this.fetch();
+	}
+
 	setSelectedKeys(selectedKeys) {
 		this.selectedKeys = selectedKeys;
 	}
 
 	async create(body) {
 		console.log(`[fetch] POST: /${this._table}`, body);
+		this._sync();
 	}
 
 	async update(body) {
 		console.log(`[fetch] PUT: /${this._table}/${this.selectedKeys.join(',')}`, body);
+		this._sync();
 	}
 
 	async remove() {
 		console.log(`[fetch] REMOVE: /${this._table}/${this.selectedKeys.join(',')}`);
+		this.selectedKeys = [];
+		this._sync();
 	}
 }
 

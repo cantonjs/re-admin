@@ -29,7 +29,9 @@ export default class ActionModal extends Component {
 	};
 
 	close() {
-		this.context.updateLocationQuery({}, { omitPaths: ['action'] });
+		this.context.updateLocationQuery({}, {
+			omitPaths: ['action', 'selectedKeys'],
+		});
 	}
 
 	_handleOk = () => {

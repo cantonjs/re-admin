@@ -25,7 +25,7 @@ export default class ButtonUpdate extends Component {
 		const { updateLocationQuery, store } = this.context;
 		updateLocationQuery({
 			action: 'update',
-			actionKey: store.selectedKeys,
+			selectedKeys: store.selectedKeys.join(','),
 		});
 	};
 
