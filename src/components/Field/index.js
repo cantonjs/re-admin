@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col, Input } from 'antd';
 import { withRouter } from 'react-router';
+import { returnsArgument } from 'empty-functions';
 
 const FormItem = Form.Item;
 
@@ -50,16 +51,19 @@ export default class Field extends Component {
 
 				...other,
 			},
-			context: {
-				form: { getFieldDecorator },
-			},
+			context: { form },
 		} = this;
+
+		const decoratorFn = form && form.getFieldDecorator;
+		const decorator = decoratorFn ?
+			decoratorFn(name, { initialValue: query[name] }) :
+			returnsArgument
+		;
+
 		return (
 			<Col span={8}>
 				<FormItem {...formItemLayout} label={label}>
-					{getFieldDecorator(name, {
-						initialValue: query[name],
-					})(
+					{decorator(
 						<Comp {...other} />
 					)}
 				</FormItem>

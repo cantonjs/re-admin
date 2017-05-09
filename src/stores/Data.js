@@ -17,7 +17,7 @@ class DataStore {
 
 	collections = observable.map();
 
-	size = 20;
+	size = __DEV__ ? 5 : 20;
 
 	constructor(table, schema) {
 		this._table = table;
