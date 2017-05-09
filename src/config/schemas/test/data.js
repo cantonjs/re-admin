@@ -36,6 +36,7 @@ export default function TestDataSchema() {
 				name="gpa"
 				label="GPA"
 				dataType={Number}
+				shouldHideInTable
 			/>
 			<TextField
 				name="birthday"

@@ -30,12 +30,16 @@ export default class Field extends Component {
 		dataType: PropTypes.func,
 		unique: PropTypes.bool,
 		validator: PropTypes.array,
+		shouldHideInTable: PropTypes.bool,
+		shouldHideInForm: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		component: Input,
 		labelCol: { span: 8 },
 		wrapperCol: { span: 16 },
+		shouldHideInTable: false,
+		shouldHideInForm: false,
 	};
 
 	static contextTypes = {
@@ -67,6 +71,7 @@ export default class Field extends Component {
 				name,
 				labelCol,
 				wrapperCol,
+				shouldHideInForm,
 
 				location,
 				params,
@@ -75,11 +80,14 @@ export default class Field extends Component {
 				dataType,
 				unique,
 				validator,
+				shouldHideInTable,
 
 				...other,
 			},
 			context: { form },
 		} = this;
+
+		if (shouldHideInForm) { return null; }
 
 		const decoratorFn = form && form.getFieldDecorator;
 		const decorator = decoratorFn ?

@@ -38,12 +38,15 @@ class DataStore {
 	constructor(table, schema) {
 		this._table = table;
 		this._schema = schema;
-		this.columns = schema.map(({ label, name, render }) => ({
-			title: label,
-			key: name,
-			dataIndex: name,
-			render,
-		}));
+		this.columns = schema
+			.filter(({ shouldHideInTable }) => !shouldHideInTable)
+			.map(({ label, name, render }) => ({
+				title: label,
+				key: name,
+				dataIndex: name,
+				render,
+			}))
+		;
 
 		const unique = schema.find((s) => s.unique);
 		this._uniqueKey = unique && unique.name;
