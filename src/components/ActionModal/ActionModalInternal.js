@@ -17,10 +17,20 @@ const formItemLayout = {
 @Form.create()
 export default class ActionModalInternal extends Component {
 	static propTypes = {
+		form: PropTypes.object,
 		children: PropTypes.node,
 		title: PropTypes.string,
 		onSubmit: PropTypes.func.isRequired,
 	};
+
+	static childContextTypes = {
+		form: PropTypes.object,
+	};
+
+	getChildContext() {
+		const { form } = this.props;
+		return { form };
+	}
 
 	componentDidUpdate() {
 		if (this.props.title) {

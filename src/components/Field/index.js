@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
 import { Form, Input } from 'antd';
 import { withRouter } from 'react-router';
 import { returnsArgument } from 'empty-functions';
@@ -10,7 +9,6 @@ import { UPDATER, QUERIER } from 'constants/Issuers';
 const FormItem = Form.Item;
 
 @withRouter
-@observer
 export default class Field extends Component {
 	static propTypes = {
 		component: PropTypes.oneOfType([
