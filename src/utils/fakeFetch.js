@@ -1,3 +1,4 @@
+
 const fakeData = [];
 const total = 450;
 
@@ -7,10 +8,9 @@ for (let i = 0; i < total; i++) {
 		name: `User ${i}`,
 		score: 80,
 		desc: `I am User no. ${i}`,
-		touxiang: 'http://baidu.com'
+		avatar: 'http://baidu.com'
 	});
 }
-
 
 export default async function fakeFetch({ page, count }) {
 	return new Promise((resolve) => {

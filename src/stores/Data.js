@@ -1,6 +1,7 @@
 
 import { observable, computed, toJS } from 'mobx';
 import getSchema from 'utils/getSchema';
+import jsxToPlainObject from 'utils/jsxToPlainObject';
 
 // TODO
 import fakeFetch from 'utils/fakeFetch';
@@ -22,11 +23,11 @@ class DataStore {
 	constructor(table, schema) {
 		this._table = table;
 		this._schema = schema;
-		this.columns = schema.map(({ title, key, render }) => ({
-			title,
-			key,
+		this.columns = schema.map(({ label, name, render }) => ({
+			title: label,
+			key: name,
+			dataIndex: name,
 			render,
-			dataIndex: key,
 		}));
 	}
 
@@ -85,7 +86,8 @@ class DataStore {
 const caches = {};
 
 export default function getDataStore(table) {
-	const schema = getSchema(table);
+	const schema = jsxToPlainObject(getSchema(table));
+	console.log('schema', schema);
 	if (caches.hasOwnProperty(table)) { return caches[table]; }
 
 	const store = new DataStore(table, schema);
