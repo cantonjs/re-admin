@@ -3,14 +3,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import ActionModalInternal from './ActionModalInternal';
+import { map } from 'lodash';
 import * as Actions from 'constants/Actions';
-import { map, reduce } from 'lodash';
+import * as Issuers from 'constants/Issuers';
+import { returnsArgument } from 'empty-functions';
 
-const actionNames = map(Actions, ({ name }) => name);
-const actionLabelsMap = reduce(Actions, (map, { name, label }) => {
-	map[name] = label;
-	return map;
-}, {});
+const issuersMap = {
+	[Actions.CREATE]: Issuers.CREATER,
+	[Actions.UPDATE]: Issuers.UPDATER,
+};
+const actionNames = map(Actions, returnsArgument);
+const actionLabelsMap = {
+	[Actions.CREATE]: '创建',
+	[Actions.UPDATE]: '更新',
+	// [Actions.REMOVE]: '删除',
+};
 
 @observer
 export default class ActionModal extends Component {
@@ -27,6 +34,14 @@ export default class ActionModal extends Component {
 		store: PropTypes.object.isRequired,
 		updateLocationQuery: PropTypes.func.isRequired,
 	};
+
+	static childContextTypes = {
+		issuer: PropTypes.string,
+	};
+
+	getChildContext() {
+		return { issuer: issuersMap[this.props.location.query.action] };
+	}
 
 	close() {
 		this.context.updateLocationQuery({}, {

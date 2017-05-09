@@ -4,7 +4,7 @@ const total = 450;
 
 for (let i = 0; i < total; i++) {
 	fakeData.push({
-		id: i,
+		id: `id_${i}`,
 		name: `User ${i}`,
 		score: 80,
 		desc: `I am User no. ${i}`,

@@ -1,29 +1,16 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import { Form, Input } from 'antd';
 import { withRouter } from 'react-router';
 import { returnsArgument } from 'empty-functions';
+import { UPDATER, QUERIER } from 'constants/Issuers';
 
 const FormItem = Form.Item;
 
-// const formItemLayout = {
-// 	labelCol: { span: 8 },
-// 	wrapperCol: { span: 16 },
-// };
-
-const formItemLayout = {
-	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 8 },
-	},
-	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 16 },
-	},
-};
-
 @withRouter
+@observer
 export default class Field extends Component {
 	static propTypes = {
 		component: PropTypes.oneOfType([
@@ -53,7 +40,24 @@ export default class Field extends Component {
 
 	static contextTypes = {
 		form: PropTypes.object,
+		store: PropTypes.object,
+		issuer: PropTypes.string,
 	};
+
+	_getValue(name) {
+		const {
+			props: { location: { query } },
+			context: { store: { selection }, issuer },
+		} = this;
+
+		if (issuer === QUERIER) {
+			return query[name];
+		}
+		else if (selection.length === 1 && issuer === UPDATER) {
+			return selection[0][name];
+		}
+		return '';
+	}
 
 	render() {
 		const {
@@ -61,10 +65,10 @@ export default class Field extends Component {
 				component: Comp,
 				label,
 				name,
-				location: { query },
 				labelCol,
 				wrapperCol,
 
+				location,
 				params,
 				router,
 				routes,
@@ -79,7 +83,7 @@ export default class Field extends Component {
 
 		const decoratorFn = form && form.getFieldDecorator;
 		const decorator = decoratorFn ?
-			decoratorFn(name, { initialValue: query[name] }) :
+			decoratorFn(name, { initialValue: this._getValue(name) }) :
 			returnsArgument
 		;
 

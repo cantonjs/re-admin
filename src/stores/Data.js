@@ -13,8 +13,20 @@ class DataStore {
 	@observable search = '?';
 	@observable selectedKeys = [];
 
+	@computed get collection() {
+		return this.collections.get(this.search);
+	}
+
 	@computed get dataSource() {
-		return toJS(this.collections.get(this.search));
+		return toJS(this.collection);
+	}
+
+	@computed get selection() {
+		const { selectedKeys, collection, _uniqueKey } = this;
+		if (!collection) { return []; }
+		return this.collection.filter((item, index) =>
+			selectedKeys.includes(_uniqueKey ? item[_uniqueKey] : index)
+		);
 	}
 
 	collections = observable.map();
@@ -32,6 +44,9 @@ class DataStore {
 			dataIndex: name,
 			render,
 		}));
+
+		const unique = schema.find((s) => s.unique);
+		this._uniqueKey = unique && unique.name;
 	}
 
 	async fetch(query = this._prevQuery, search = this._prevSearch) {
@@ -62,10 +77,7 @@ class DataStore {
 		// console.log('list', list);
 
 		const collection = list.map((data, index) => {
-
-			// TODO: should depend on `schema.unique`
-			data.key = data.key || index;
-
+			data.key = this._uniqueKey ? data[this._uniqueKey] : index;
 			return data;
 		});
 

@@ -3,6 +3,7 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Row, Col, Button, Icon } from 'antd';
+import { QUERIER } from 'constants/Issuers';
 
 @Form.create()
 export default class TableQuery extends Component {
@@ -14,11 +15,12 @@ export default class TableQuery extends Component {
 
 	static childContextTypes = {
 		form: PropTypes.object,
+		issuer: PropTypes.string,
 	};
 
 	getChildContext() {
 		const { form } = this.props;
-		return { form };
+		return { form, issuer: QUERIER };
 	}
 
 	state = {

@@ -8,7 +8,6 @@ export default function TestDataSchema() {
 			<TextField
 				name="id"
 				label="ID"
-				dataType={Number}
 				unique
 			/>
 			<TextField
