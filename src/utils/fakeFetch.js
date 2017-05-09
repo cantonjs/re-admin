@@ -3,7 +3,7 @@ const total = 450;
 
 for (let i = 0; i < total; i++) {
 	fakeData.push({
-		key: i,
+		id: i,
 		name: `User ${i}`,
 		score: 80,
 		desc: `I am User no. ${i}`,
@@ -12,10 +12,10 @@ for (let i = 0; i < total; i++) {
 }
 
 
-export default async function fakeFetch({ page = 1 }) {
+export default async function fakeFetch({ page, count }) {
 	return new Promise((resolve) => {
-		const start = (page - 1) * 20;
-		const list = fakeData.slice(start, start + 20);
+		const start = (page - 1) * count;
+		const list = fakeData.slice(start, start + count);
 		const data = {
 			list,
 			total
