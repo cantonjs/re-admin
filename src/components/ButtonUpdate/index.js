@@ -14,6 +14,7 @@ export default class ButtonUpdate extends Component {
 	static defaultProps = {
 		label: '修改',
 		multiLabel: '批量修改',
+		type: 'primary',
 	};
 
 	static contextTypes = {
