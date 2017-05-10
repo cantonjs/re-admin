@@ -10,6 +10,7 @@ export const base = Ask.create({
 	parser(data) {
 		let error;
 		const { errors, errcode, code, errmsg } = data;
+
 		if (errors) {
 			error = errors.length ? errors[0] : errors;
 		}

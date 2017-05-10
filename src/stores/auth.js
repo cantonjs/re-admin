@@ -6,10 +6,6 @@ import { message } from 'antd';
 import { base } from 'utils/asks';
 import getAppConfig from 'utils/getAppConfig.js';
 
-// TODO
-import fakeLogin from 'utils/fakeLogin';
-import fakeAuth from 'utils/fakeAuth';
-
 const { basePath, loginPath, getUserPath } = getAppConfig().auth;
 const ask = base.clone(basePath);
 
@@ -25,15 +21,11 @@ class AuthStore {
 		let isOk = false;
 		try {
 
-			// TODO
-			__DEV__ && console.log(ask.clone({
+			const { accessToken, expiresIn } = await ask.fork({
 				url: getUserPath,
 				query: {
 					accessToken: this.getAccessToken(),
 				},
-			}));
-			const { accessToken, expiresIn } = await fakeAuth({
-				accessToken: this.getAccessToken(),
 			});
 
 			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
@@ -52,17 +44,13 @@ class AuthStore {
 	async login(body) {
 		this.isFetching = true;
 		let isOk = false;
+
 		try {
-
-			// TODO
-			const { accessToken, expiresIn } = await fakeLogin(body);
-
-			__DEV__ && console.log(ask.clone({
+			const { accessToken, expiresIn } = await ask.fork({
 				url: loginPath,
 				method: 'POST',
 				body,
-			}));
-
+			});
 			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
 			isOk = true;
 			message.success('登录成功');

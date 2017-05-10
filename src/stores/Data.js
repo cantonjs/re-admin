@@ -6,9 +6,6 @@ import { omit } from 'lodash';
 import { base } from 'utils/asks';
 import showError from 'utils/showError';
 
-// TODO
-import fakeFetch from 'utils/fakeFetch';
-
 class DataStore {
 	@observable total = 0;
 	@observable isFetching = false;
@@ -80,13 +77,8 @@ class DataStore {
 
 		this.isFetching = true;
 
-		__DEV__ && console.log(`[fetch] GET: /${this._table}`, query);
-		__DEV__ && console.log(this._ask.clone({ query }));
-
 		try {
-			const { total, list } = await fakeFetch(query);
-
-			// console.log('list', list);
+			const { total, list } = await this._ask.fork({ query });
 
 			const collection = list.map((data, index) => {
 				data.key = this._uniqueKey ? data[this._uniqueKey] : index;
@@ -116,13 +108,10 @@ class DataStore {
 
 	async create(body) {
 		try {
-
-			console.log(`[fetch] POST: /${this._table}`, body);
-			__DEV__ && console.log(this._ask.clone({
+			await this._ask.fork({
 				method: 'POST',
 				body,
-			}));
-
+			});
 			this._sync();
 		}
 		catch (err) {
@@ -132,13 +121,11 @@ class DataStore {
 
 	async update(body) {
 		try {
-
-			console.log(`[fetch] PUT: /${this._table}/${this.selectedKeys.join(',')}`, body);
-			__DEV__ && console.log(await this._ask.fork({
+			await this._ask.fork({
 				url: this.selectedKeys.join(','),
 				method: 'PUT',
 				body,
-			}));
+			});
 
 			this._sync();
 		}
@@ -149,13 +136,10 @@ class DataStore {
 
 	async remove() {
 		try {
-
-			console.log(`[fetch] REMOVE: /${this._table}/${this.selectedKeys.join(',')}`);
-			__DEV__ && console.log(this._ask.clone({
+			await this._ask.fork({
 				url: this.selectedKeys.join(','),
 				method: 'DELETE',
-			}));
-
+			});
 			this._sync();
 			this.selectedKeys = [];
 		}

@@ -63,10 +63,11 @@ export default class ActionModal extends Component {
 	};
 
 	_handleSubmit = (err, values) => {
-		const { store, location: { query: { action } } } = this.props;
-		console.log('err', err);
-		console.log('submit values', values);
-		store[action](values);
+		if (!err) {
+			const { store, location: { query: { action } } } = this.props;
+			console.log('submit values', values);
+			store[action](values);
+		}
 	};
 
 	_saveForm = (form) => {

@@ -36,6 +36,11 @@ module.exports = (webpackEnv = {}) => {
 					test: /\.js$/,
 					include: [srcDir, testDir],
 					loader: 'babel-loader',
+					options: {
+						plugins: [
+							'transform-async-to-generator',
+						],
+					},
 				},
 				{
 					test: /\.css$/,

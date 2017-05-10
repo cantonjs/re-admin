@@ -26,10 +26,13 @@ export default class Login extends Component {
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
 				const { username, password } = values;
-				await authStore.login({ username, password });
-				const { ref } = this.props.location.query;
-				const url = ref || '/';
-				this.props.router.replace(url);
+				const isOk = await authStore.login({ username, password });
+
+				if (isOk) {
+					const { ref } = this.props.location.query;
+					const url = ref || '/';
+					this.props.router.replace(url);
+				}
 			}
 		});
 	}
