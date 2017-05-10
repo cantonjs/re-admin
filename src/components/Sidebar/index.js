@@ -4,12 +4,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Menu, Icon } from 'antd';
 import items from 'config/sidebar.js';
-import { name } from 'config/app.js';
+import getAppConfig from 'utils/getAppConfig.js';
 // import {sidebarCollapseCreator} from '../../redux/Sidebar.js';
 
-
-const { SubMenu } = Menu;
-const { Item: MenuItem } = Menu;
+const { name } = getAppConfig();
+const { SubMenu, Item: MenuItem } = Menu;
 
 export default class Sidebar extends Component {
 

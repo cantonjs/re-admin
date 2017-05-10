@@ -1,9 +1,17 @@
 
-export default function jsxToPlainObject(createSchema) {
-	const schemaElement = createSchema();
-	// console.log('schemaElement', schemaElement);
-	return schemaElement.props.children.map(({ props, type }) => ({
-		...props,
-		component: type,
-	}));
+import { isValidElement } from 'react';
+
+export default function jsxToPlainObject(jsxSchema) {
+	if (!isValidElement(jsxSchema)) { return jsxSchema; }
+
+	const { children, ...other } = jsxSchema.props;
+
+	if (children) {
+		return children.map(({ props, type }) => ({
+			...props,
+			component: type,
+		}));
+	}
+
+	return other;
 };

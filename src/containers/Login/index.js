@@ -3,9 +3,10 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
-import { name } from 'config/app.js';
+import getAppConfig from 'utils/getAppConfig';
 import authStore from 'stores/auth';
 
+const { name } = getAppConfig();
 const FormItem = Form.Item;
 
 @Form.create()

@@ -3,6 +3,8 @@ import { observable, computed, toJS } from 'mobx';
 import getSchema from 'utils/getSchema';
 import jsxToPlainObject from 'utils/jsxToPlainObject';
 import { omit } from 'lodash';
+import { base } from 'utils/asks';
+import showError from 'utils/showError';
 
 // TODO
 import fakeFetch from 'utils/fakeFetch';
@@ -50,6 +52,10 @@ class DataStore {
 
 		const unique = schema.find((s) => s.unique);
 		this._uniqueKey = unique && unique.name;
+
+		this._ask = base.clone({
+			url: table,
+		});
 	}
 
 	async fetch(query = this._prevQuery, search = this._prevSearch) {
@@ -75,19 +81,27 @@ class DataStore {
 		this.isFetching = true;
 
 		__DEV__ && console.log(`[fetch] GET: /${this._table}`, query);
-		const { total, list } = await fakeFetch(query);
+		__DEV__ && console.log(this._ask.clone({ query }));
 
-		// console.log('list', list);
+		try {
+			const { total, list } = await fakeFetch(query);
 
-		const collection = list.map((data, index) => {
-			data.key = this._uniqueKey ? data[this._uniqueKey] : index;
-			return data;
-		});
+			// console.log('list', list);
 
-		this.search = search;
+			const collection = list.map((data, index) => {
+				data.key = this._uniqueKey ? data[this._uniqueKey] : index;
+				return data;
+			});
+
+			this.search = search;
+			this.total = total;
+			this.collections.set(search, collection);
+		}
+		catch (err) {
+			showError('请求失败：', err.message);
+		}
+
 		this.isFetching = false;
-		this.total = total;
-		this.collections.set(search, collection);
 		return this;
 	}
 
@@ -101,19 +115,53 @@ class DataStore {
 	}
 
 	async create(body) {
-		console.log(`[fetch] POST: /${this._table}`, body);
-		this._sync();
+		try {
+
+			console.log(`[fetch] POST: /${this._table}`, body);
+			__DEV__ && console.log(this._ask.clone({
+				method: 'POST',
+				body,
+			}));
+
+			this._sync();
+		}
+		catch (err) {
+			showError('创建失败：', err.message);
+		}
 	}
 
 	async update(body) {
-		console.log(`[fetch] PUT: /${this._table}/${this.selectedKeys.join(',')}`, body);
-		this._sync();
+		try {
+
+			console.log(`[fetch] PUT: /${this._table}/${this.selectedKeys.join(',')}`, body);
+			__DEV__ && console.log(await this._ask.fork({
+				url: this.selectedKeys.join(','),
+				method: 'PUT',
+				body,
+			}));
+
+			this._sync();
+		}
+		catch (err) {
+			showError('修改失败：', err.message);
+		}
 	}
 
 	async remove() {
-		console.log(`[fetch] REMOVE: /${this._table}/${this.selectedKeys.join(',')}`);
-		this.selectedKeys = [];
-		this._sync();
+		try {
+
+			console.log(`[fetch] REMOVE: /${this._table}/${this.selectedKeys.join(',')}`);
+			__DEV__ && console.log(this._ask.clone({
+				url: this.selectedKeys.join(','),
+				method: 'DELETE',
+			}));
+
+			this._sync();
+			this.selectedKeys = [];
+		}
+		catch (err) {
+			showError('删除失败：', err.message);
+		}
 	}
 }
 

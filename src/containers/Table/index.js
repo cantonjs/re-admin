@@ -100,8 +100,8 @@ export default class Table extends Component {
 		const {
 			props: { location },
 			state: {
-				DataComponent,
-				QueryComponent,
+				dataNodes,
+				queryNodes,
 				ToolbarComponent,
 				store,
 			},
@@ -110,7 +110,7 @@ export default class Table extends Component {
 		return (
 			<div>
 				<TableQuery onQuery={this.updateQuery}>
-					{new QueryComponent().props.children}
+					{queryNodes}
 				</TableQuery>
 
 				<ToolbarComponent />
@@ -125,7 +125,7 @@ export default class Table extends Component {
 					location={location}
 					store={store}
 				>
-					{new DataComponent().props.children}
+					{dataNodes}
 				</ActionModal>
 			</div>
 		);

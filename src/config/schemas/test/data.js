@@ -2,51 +2,48 @@
 import React from 'react';
 import { Fields, TextField } from 'Schemas';
 
-export default function TestDataSchema() {
-	return (
-		<Fields>
-			<TextField
-				name="id"
-				label="ID"
-				unique
-			/>
-			<TextField
-				name="name"
-				label="用户名"
-				placeholder="请输入用户名"
-				validator={[{ type: 'string', max: 10, message: '最多10个字符' }]}
-			/>
-			<TextField
-				name="avatar"
-				label="头像"
-				width={60}
-			/>
-			<TextField
-				name="desc"
-				label="描述"
-				placeholder="请输入描述"
-			/>
-			<TextField
-				name="score"
-				label="分数"
-				max={18}
-				validator={[{ required: true, message: '必填' }]}
-			/>
-			<TextField
-				name="gpa"
-				label="GPA"
-				dataType={Number}
-				shouldHideInTable
-			/>
-			<TextField
-				name="birthday"
-				label="生日"
-				dataType={Date}
-			/>
-		</Fields>
-	);
-}
-
+export default (
+	<Fields>
+		<TextField
+			name="id"
+			label="ID"
+			unique
+		/>
+		<TextField
+			name="name"
+			label="用户名"
+			placeholder="请输入用户名"
+			validator={[{ type: 'string', max: 10, message: '最多10个字符' }]}
+		/>
+		<TextField
+			name="avatar"
+			label="头像"
+			width={60}
+		/>
+		<TextField
+			name="desc"
+			label="描述"
+			placeholder="请输入描述"
+		/>
+		<TextField
+			name="score"
+			label="分数"
+			max={18}
+			validator={[{ required: true, message: '必填' }]}
+		/>
+		<TextField
+			name="gpa"
+			label="GPA"
+			dataType={Number}
+			shouldHideInTable
+		/>
+		<TextField
+			name="birthday"
+			label="生日"
+			dataType={Date}
+		/>
+	</Fields>
+);
 
 // module.exports = [
 // 	{
