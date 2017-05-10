@@ -5,13 +5,35 @@ import { ACCESS_TOKEN } from 'constants/CookieKeys';
 
 // TODO
 import fakeLogin from 'utils/fakeLogin';
+import fakeAuth from 'utils/fakeAuth';
 
 class AuthStore {
-	@observable accessToken = '';
 	@observable isFetching = false;
 
-	async auth(accessToken) {
-		console.log('accessToken', accessToken);
+	getAccessToken() {
+		return cookie.get(ACCESS_TOKEN);
+	}
+
+	async auth() {
+		this.isFetching = true;
+		let isOk = false;
+		try {
+			const { accessToken, expiresIn } = await fakeAuth({
+				accessToken: this.getAccessToken(),
+			});
+			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
+			this.accessToken = accessToken;
+			isOk = true;
+
+			__DEV__ && console.log('Auth success');
+		}
+		catch (err) {
+
+			// TODO: should handle error
+			console.error('Auth failed:', err);
+		}
+		this.isFetching = false;
+		return isOk;
 	}
 
 	async login(body) {
@@ -20,20 +42,18 @@ class AuthStore {
 		try {
 			const { accessToken, expiresIn } = await fakeLogin(body);
 			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
-			this.accessToken = accessToken;
 			isOk = true;
 		}
 		catch (err) {
 
 			// TODO: should handle error
-			console.error('login faild:', err);
+			console.error('Login failed:', err);
 		}
 		this.isFetching = false;
 		return isOk;
 	}
 
 	logout() {
-		this.accessToken = '';
 		cookie.remove(ACCESS_TOKEN);
 	}
 }
