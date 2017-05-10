@@ -2,6 +2,7 @@
 import { observable } from 'mobx';
 import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
+import messageStore from 'stores/message';
 
 // TODO
 import fakeLogin from 'utils/fakeLogin';
@@ -28,9 +29,7 @@ class AuthStore {
 			__DEV__ && console.log('Auth success');
 		}
 		catch (err) {
-
-			// TODO: should handle error
-			console.error('Auth failed:', err);
+			messageStore.push(err.message, 'error');
 		}
 		this.isFetching = false;
 		return isOk;
@@ -45,9 +44,7 @@ class AuthStore {
 			isOk = true;
 		}
 		catch (err) {
-
-			// TODO: should handle error
-			console.error('Login failed:', err);
+			messageStore.push(err.message, 'error');
 		}
 		this.isFetching = false;
 		return isOk;
