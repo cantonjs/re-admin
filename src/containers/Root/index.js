@@ -6,6 +6,7 @@ import Home from 'containers/Home';
 import Login from 'containers/Login';
 import NotFound from 'containers/NotFound';
 import getSidebar from 'utils/getSidebar';
+import authStore from 'stores/Auth';
 
 const mapRoutes = (routes) => {
 	if (!routes || !routes.length) { return null; }
@@ -20,12 +21,26 @@ const mapRoutes = (routes) => {
 	});
 };
 
+const onEnter = async (nextState, replace, next) => {
+	const { pathname, search } = nextState.location;
+	const isOk = await authStore.auth();
+	if (!isOk) {
+		replace({
+			pathname: '/login',
+			query: {
+				ref: encodeURIComponent(pathname + search),
+			},
+		});
+	}
+	next();
+};
+
 export default class Root extends Component {
 	render() {
 		return (
 			<Router history={browserHistory}>
 				<Route path="login" component={Login} />
-				<Route path="/" component={App}>
+				<Route path="/" component={App} onEnter={onEnter}>
 					<IndexRoute component={Home}/>
 					{mapRoutes(getSidebar())}
 					<Route path="*" component={NotFound}/>
