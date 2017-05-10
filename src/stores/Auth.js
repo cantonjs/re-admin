@@ -16,9 +16,12 @@ class AuthStore {
 
 	async login(body) {
 		this.isFetching = true;
+		let isOk = false;
 		try {
 			const { accessToken, expiresIn } = await fakeLogin(body);
 			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
+			this.accessToken = accessToken;
+			isOk = true;
 		}
 		catch (err) {
 
@@ -26,9 +29,11 @@ class AuthStore {
 			console.error('login faild:', err);
 		}
 		this.isFetching = false;
+		return isOk;
 	}
 
 	logout() {
+		this.accessToken = '';
 		cookie.remove(ACCESS_TOKEN);
 	}
 }
