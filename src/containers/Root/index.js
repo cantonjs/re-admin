@@ -6,7 +6,7 @@ import Home from 'containers/Home';
 import Login from 'containers/Login';
 import NotFound from 'containers/NotFound';
 import getSidebar from 'utils/getSidebar';
-import authStore from 'stores/Auth';
+import authStore from 'stores/auth';
 
 const mapRoutes = (routes) => {
 	if (!routes || !routes.length) { return null; }
@@ -28,7 +28,8 @@ const onEnter = async (nextState, replace, next) => {
 		replace({
 			pathname: '/login',
 			query: {
-				ref: encodeURIComponent(pathname + search),
+				// ref: encodeURIComponent(pathname + search),
+				ref: pathname + search,
 			},
 		});
 	}

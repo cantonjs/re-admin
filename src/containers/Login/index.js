@@ -4,9 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
 import { name } from 'config/app.js';
-import cookie from 'utils/cookie';
-import authStore from 'stores/Auth';
-
+import authStore from 'stores/auth';
 
 const FormItem = Form.Item;
 
@@ -34,6 +32,7 @@ export default class Login extends Component {
 			}
 		});
 	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		return (
