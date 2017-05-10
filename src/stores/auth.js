@@ -42,6 +42,7 @@ class AuthStore {
 			const { accessToken, expiresIn } = await fakeLogin(body);
 			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
 			isOk = true;
+			messageStore.push('登录成功', 'success');
 		}
 		catch (err) {
 			messageStore.push(err.message, 'error');
