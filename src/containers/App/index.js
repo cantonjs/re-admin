@@ -1,5 +1,5 @@
 
-import './reset.css';
+import './reset.scss';
 import 'antd/dist/antd.less';
 import $$ from './style.scss';
 import React, { Component } from 'react';
