@@ -29,7 +29,7 @@ class AuthStore {
 			__DEV__ && console.log('Auth success');
 		}
 		catch (err) {
-			messageStore.push(err.message, 'error');
+			messageStore.push('登录凭证已失效，请重新登录', 'error');
 		}
 		this.isFetching = false;
 		return isOk;
@@ -45,7 +45,7 @@ class AuthStore {
 			messageStore.push('登录成功', 'success');
 		}
 		catch (err) {
-			messageStore.push(err.message, 'error');
+			messageStore.push(`登录失败：${err.message}`, 'error');
 		}
 		this.isFetching = false;
 		return isOk;

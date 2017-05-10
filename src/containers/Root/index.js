@@ -28,7 +28,6 @@ const onEnter = async (nextState, replace, next) => {
 		replace({
 			pathname: '/login',
 			query: {
-				// ref: encodeURIComponent(pathname + search),
 				ref: pathname + search,
 			},
 		});
