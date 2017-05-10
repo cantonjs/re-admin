@@ -27,10 +27,8 @@ export default class Login extends Component {
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
 				const { username, password } = values;
-				console.log('Received values of form: ', values);
-				const { accessToken, expiresIn } = await authStore.login({ username, password });
+				await authStore.login({ username, password });
 				const { ref } = this.props.location.query;
-				cookie.set('accessToken', accessToken, { maxAge: expiresIn });
 				const url = ref || '/';
 				this.props.router.replace(url);
 			}
