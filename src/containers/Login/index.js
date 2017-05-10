@@ -2,7 +2,7 @@
 import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import { name } from 'config/app.js';
 import cookie from 'utils/cookie';
 import fakeLogin from 'utils/fakeLogin';
@@ -27,13 +27,13 @@ export default class Login extends Component {
 			if (!err) {
 				const { username, password } = values;
 				console.log('Received values of form: ', values);
-				const { accessToekn, error } = await fakeLogin({ username, password });
+				const { accessToken, error } = await fakeLogin({ username, password });
 				if (error) {
 					console.error(error);
 				}
 				else {
 					const { ref } = this.props.location;
-					cookie.set('accessToekn', accessToekn, { maxAge: 60 * 60 * 24 * 7 });
+					cookie.set('accessToken', accessToken, { maxAge: 60 * 60 * 24 * 7 });
 					const url = ref || '/';
 					this.props.router.replace(url);
 				}
