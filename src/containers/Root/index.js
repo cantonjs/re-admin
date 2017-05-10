@@ -21,56 +21,6 @@ const mapRoutes = (routes) => {
 	});
 };
 
-// const onEnter = (nextState, replace, callback) => {
-// 	// setTimeout(() => {
-// 	// 	replace('/login');
-// 	// 	callback();
-// 	// }, 2000);
-// 	const { pathname, search } = nextState.location;
-// 	authStore.auth().then((isOk) => {
-// 		console.log('isOk', isOk);
-// 		if (isOk) { callback(); }
-// 		else {
-// 			replace('/login');
-// 			console.log('fork?');
-// 			// replace({
-// 			// 	pathname: '/login',
-// 			// 	query: {
-// 			// 		ref: encodeURIComponent(pathname + search),
-// 			// 	},
-// 			// });
-// 			callback();
-// 		}
-// 	})
-// 	.catch((err) => {
-// 		replace('/login');
-// 		console.log('replaced?', err);
-// 	})
-// };
-
-// const onEnter = (nextState, replace, callback) => {
-// 	const { pathname, search } = nextState.location;
-// 	authStore.auth().then((isOk) => {
-// 		console.log('isOk', isOk);
-// 		if (isOk) { callback(); }
-// 		else {
-// 			replace('/login');
-// 			console.log('fork?');
-// 			// replace({
-// 			// 	pathname: '/login',
-// 			// 	query: {
-// 			// 		ref: encodeURIComponent(pathname + search),
-// 			// 	},
-// 			// });
-// 			callback(new Error('Auth failed'));
-// 		}
-// 	})
-// 	.catch((err) => {
-// 		replace('/login');
-// 		console.log('replaced?', err);
-// 	})
-// };
-
 const onEnter = async (nextState, replace, next) => {
 	const { pathname, search } = nextState.location;
 	const isOk = await authStore.auth();
