@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
 import { name } from 'config/app.js';
 import cookie from 'utils/cookie';
-import fakeLogin from 'utils/fakeLogin';
+import authStore from 'stores/Auth';
+
 
 const FormItem = Form.Item;
 
@@ -27,17 +28,11 @@ export default class Login extends Component {
 			if (!err) {
 				const { username, password } = values;
 				console.log('Received values of form: ', values);
-				const { accessToken, error } = await fakeLogin({ username, password });
-				if (error) {
-					console.error(error);
-				}
-				else {
-					const { ref } = this.props.location;
-					cookie.set('accessToken', accessToken, { maxAge: 60 * 60 * 24 * 7 });
-					const url = ref || '/';
-					this.props.router.replace(url);
-				}
-
+				const { accessToken, expiresIn } = await authStore.login({ username, password });
+				const { ref } = this.props.location.query;
+				cookie.set('accessToken', accessToken, { maxAge: expiresIn });
+				const url = ref || '/';
+				this.props.router.replace(url);
 			}
 		});
 	}
@@ -49,21 +44,21 @@ export default class Login extends Component {
 				<Form onSubmit={this.handleSubmit} className={$$.form}>
 					<FormItem>
 						{getFieldDecorator('username', {
-							rules: [{ required: true, message: 'Please input your username!' }],
+							rules: [{ required: true, message: '请输入用户名!' }],
 						})(
-							<Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+							<Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="用户名" />
 						)}
 					</FormItem>
 					<FormItem>
 						{getFieldDecorator('password', {
-							rules: [{ required: true, message: 'Please input your Password!' }],
+							rules: [{ required: true, message: '请输入密码!' }],
 						})(
-							<Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
+							<Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="密码" />
 						)}
 					</FormItem>
 					<FormItem>
 						<Button type="primary" htmlType="submit" className={$$.bt}>
-							Log in
+							登录
 						</Button>
 					</FormItem>
 				</Form>
