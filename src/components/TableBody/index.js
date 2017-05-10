@@ -34,7 +34,7 @@ export default class TableBody extends Component {
 		const {
 			columns, dataSource, isFetching, total, size, selectedKeys
 		} = store;
-		const defaultCurrent = +location.query.page || 1;
+		const current = +location.query.page || 1;
 		const rowSelection = {
 			selectedRowKeys: selectedKeys,
 			onChange: this._handleSelectChange,
@@ -50,7 +50,7 @@ export default class TableBody extends Component {
 				/>
 				<Pagination
 					className={$$.page}
-					defaultCurrent={defaultCurrent}
+					current={current}
 					total={total}
 					onChange={onPageChange}
 					defaultPageSize={size}
