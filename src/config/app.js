@@ -6,8 +6,7 @@ export default (
 	<Fields
 		name="上帝的看板"
 		api={{
-			baseURL: 'http://localhost:3001/api',
-			timeout: 15000,
+			baseURL: '//localhost:3001/api',
 		}}
 		auth={{
 			basePath: 'auth',
@@ -16,9 +15,7 @@ export default (
 		}}
 		upload={{
 			imagePath: '//jsonplaceholder.typicode.com/posts/',
-			imageSizeLimit: 3072,
 			filePath: 'upload/file',
-			fileSizeLimit: 10240,
 		}}
 	/>
 );

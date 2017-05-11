@@ -5,17 +5,11 @@ import PropTypes from 'prop-types';
 import Field from 'components/Field';
 import { Upload, Icon, Modal } from 'antd';
 
-function getBase64(img, callback) {
-	const reader = new FileReader();
-	reader.addEventListener('load', () => callback(reader.result));
-	reader.readAsDataURL(img);
-}
-
 export default class ImageField extends Component {
 	static propTypes = {
 		max: PropTypes.number,
-		strategy: PropTypes.func,
 		render: PropTypes.func,
+		strategy: PropTypes.string,
 	};
 
 	static defaultProps = {
@@ -39,7 +33,18 @@ export default class ImageField extends Component {
 		// }],
 	};
 
-	customRequest = this.context.appConfig.upload.strategies[this.props.strategy];
+	componentWillMount() {
+		const {
+			props: { strategy },
+			context: { appConfig: { upload: { strategies } } },
+		} = this;
+		if (__DEV__ && strategy && !strategies.hasOwnProperty(strategy)) {
+			console.warn(
+				`Strategy "${strategy}" is NOT defined in config file`
+			);
+		}
+		this.customRequest = strategies[strategy];
+	}
 
 	_handleCloseModal = () => this.setState({ previewVisible: false })
 
@@ -51,7 +56,6 @@ export default class ImageField extends Component {
 	};
 
 	_handleChange = ({ fileList }) => {
-		// console.log('onchange', fileList);
 		this.setState({ fileList });
 	};
 

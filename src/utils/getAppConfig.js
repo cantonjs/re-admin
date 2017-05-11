@@ -10,15 +10,17 @@ const getAppConfig = memoize(function () {
 		upload: {},
 	});
 
-	if (config.upload) {
-		config.upload = defaults(config.upload, {
-			imagePath: 'upload/image',
-			imageSizeLimit: 3072,
-			filePath: 'upload/file',
-			fileSizeLimit: 10240,
-			strategies: {},
-		});
-	}
+	config.api = defaults(config.api, {
+		timeout: 15000,
+	});
+
+	config.upload = defaults(config.upload, {
+		imagePath: 'upload/image',
+		imageSizeLimit: 3072,
+		filePath: 'upload/file',
+		fileSizeLimit: 10240,
+		strategies: {},
+	});
 
 	return config;
 });
