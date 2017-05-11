@@ -20,14 +20,14 @@ class AuthStore {
 		this.isFetching = true;
 		let isOk = false;
 		try {
+			const query = {};
+			const token = this.getAccessToken();
+			if (token) { query.accessToken = token; }
 
 			const { accessToken, expiresIn } = await ask.fork({
 				url: getUserPath,
-				query: {
-					accessToken: this.getAccessToken(),
-				},
+				query,
 			});
-
 			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
 			this.accessToken = accessToken;
 			isOk = true;

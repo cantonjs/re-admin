@@ -1,6 +1,7 @@
 
 import { observable, computed, toJS } from 'mobx';
 import getSchema from 'utils/getSchema';
+import authStore from 'stores/auth';
 import jsxToPlainObject from 'utils/jsxToPlainObject';
 import { omit } from 'lodash';
 import { base } from 'utils/asks';
@@ -52,6 +53,13 @@ class DataStore {
 
 		this._ask = base.clone({
 			url: table,
+			query: {
+				accessToken({ remove }) {
+					const token = authStore.getAccessToken();
+					if (!token) { remove(); }
+					else { return token; }
+				},
+			}
 		});
 	}
 
