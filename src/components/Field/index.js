@@ -30,6 +30,7 @@ export default class Field extends Component {
 		validator: PropTypes.array,
 		shouldHideInTable: PropTypes.bool,
 		shouldHideInForm: PropTypes.bool,
+		noFieldDecorator: PropTypes.bool,
 	};
 
 	static defaultProps = {
@@ -38,6 +39,7 @@ export default class Field extends Component {
 		wrapperCol: { span: 16 },
 		shouldHideInTable: false,
 		shouldHideInForm: false,
+		noFieldDecorator: false,
 	};
 
 	static contextTypes = {
@@ -70,6 +72,7 @@ export default class Field extends Component {
 				labelCol,
 				wrapperCol,
 				shouldHideInForm,
+				noFieldDecorator,
 
 				location,
 				params,
@@ -87,7 +90,7 @@ export default class Field extends Component {
 
 		if (shouldHideInForm) { return null; }
 
-		const decoratorFn = form && form.getFieldDecorator;
+		const decoratorFn = !noFieldDecorator && form && form.getFieldDecorator;
 		const decorator = decoratorFn ?
 			decoratorFn(name, { initialValue: this._getValue(name) }) :
 			returnsArgument

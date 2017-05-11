@@ -4,9 +4,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Field from 'components/Field';
 import { Upload, Icon, Modal } from 'antd';
+import { UPDATER } from 'constants/Issuers';
 
 export default class ImageField extends Component {
 	static propTypes = {
+		name: PropTypes.string.isRequired,
 		max: PropTypes.number,
 		render: PropTypes.func,
 		strategy: PropTypes.string,
@@ -19,31 +21,58 @@ export default class ImageField extends Component {
 
 	static contextTypes = {
 		appConfig: PropTypes.object,
+		store: PropTypes.object,
+		form: PropTypes.object,
+		issuer: PropTypes.string,
 	};
 
-	state = {
-		previewVisible: false,
-		previewImage: '',
-		fileList: [],
-		// fileList: [{
-		// 	uid: -1,
-		// 	name: 'xxx.png',
-		// 	status: 'done',
-		// 	url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-		// }],
-	};
+	// state = {
+	// 	previewVisible: false,
+	// 	previewImage: '',
+	// 	// fileList: [],
+	// 	// fileList: [{
+	// 	// 	uid: -1,
+	// 	// 	name: 'xxx.png',
+	// 	// 	status: 'done',
+	// 	// 	url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+	// 	// }],
+	// 	fileList: [{
+	// 		url: this.context.store.,
+	// 	}],
+	// };
 
-	componentWillMount() {
+	constructor(props, context) {
+		super(props, context);
+
+		const { strategy, name } = props;
 		const {
-			props: { strategy },
-			context: { appConfig: { upload: { strategies } } },
-		} = this;
+			appConfig: { upload: { strategies } },
+			store: { selection },
+			issuer,
+		} = context;
+
 		if (__DEV__ && strategy && !strategies.hasOwnProperty(strategy)) {
 			console.warn(
 				`Strategy "${strategy}" is NOT defined in config file`
 			);
 		}
 		this.customRequest = strategies[strategy];
+
+		const state = {
+			previewVisible: false,
+			previewImage: '',
+			fileList: [],
+		};
+		if (issuer === UPDATER && selection.length === 1) {
+			const urls = selection[0][name];
+			urls
+				.split(',')
+				.map((url) => url.trim())
+				.filter(Boolean)
+				.forEach((url, index) => state.fileList.push({ uid: -index, url }))
+			;
+		}
+		this.state = state;
 	}
 
 	_handleCloseModal = () => this.setState({ previewVisible: false })
@@ -56,6 +85,19 @@ export default class ImageField extends Component {
 	};
 
 	_handleChange = ({ fileList }) => {
+		const url = fileList
+			.filter(({ status }) => status === 'done')
+			.map(({ thumbUrl }) => thumbUrl)
+			.join(',')
+		;
+
+		console.log('setFieldsValue', {
+			[this.props.name]: url,
+		});
+
+		this.context.form.setFieldsValue({
+			[this.props.name]: url,
+		});
 		this.setState({ fileList });
 	};
 
@@ -83,6 +125,7 @@ export default class ImageField extends Component {
 					fileList={fileList}
 					onPreview={this._handlePreview}
 					onChange={this._handleChange}
+					noFieldDecorator
 				>
 					{fileList.length < max ? uploadButton : null}
 				</Field>
