@@ -14,5 +14,11 @@ export default (
 			loginPath: 'login',
 			getUserPath: 'getUser'
 		}}
+		upload={{
+			imagePath: '//jsonplaceholder.typicode.com/posts/',
+			imageSizeLimit: 3072,
+			filePath: 'upload/file',
+			fileSizeLimit: 10240,
+		}}
 	/>
 );

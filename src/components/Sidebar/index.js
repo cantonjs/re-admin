@@ -1,10 +1,10 @@
-import $$ from './style.scss';
 
+import $$ from './style.scss';
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Menu, Icon } from 'antd';
 import items from 'config/sidebar.js';
-import getAppConfig from 'utils/getAppConfig.js';
+import getAppConfig from 'utils/getAppConfig';
 // import {sidebarCollapseCreator} from '../../redux/Sidebar.js';
 
 const { name } = getAppConfig();

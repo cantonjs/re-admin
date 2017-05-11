@@ -19,7 +19,7 @@ let testDB = new Array(total).fill().map((_, index) => ({
 	name: `User ${index}`,
 	score: 80,
 	desc: `I am User no. ${index}`,
-	avatar: 'http://baidu.com'
+	avatar: `https://unsplash.it/100/100/?random=${index}`,
 }));
 
 const verify = async (ctx, next) => {

@@ -1,8 +1,26 @@
 
 import jsxToPlainObject from 'utils/jsxToPlainObject';
-import { memoize } from 'lodash';
+import { memoize, defaults } from 'lodash';
 import appConfig from 'config/app';
 
-export default memoize(function getAppConfig() {
-	return jsxToPlainObject(appConfig);
+const getAppConfig = memoize(function () {
+	const config = defaults(jsxToPlainObject(appConfig), {
+		api: {},
+		auth: {},
+		upload: {},
+	});
+
+	if (config.upload) {
+		config.upload = defaults(config.upload, {
+			imagePath: 'upload/image',
+			imageSizeLimit: 3072,
+			filePath: 'upload/file',
+			fileSizeLimit: 10240,
+			strategies: {},
+		});
+	}
+
+	return config;
 });
+
+export default getAppConfig;

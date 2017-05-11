@@ -7,6 +7,7 @@ export default (
 		<Text
 			name="id"
 			label="ID"
+			disabled
 			unique
 		/>
 		<Text

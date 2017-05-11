@@ -5,11 +5,20 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'components/Sidebar';
+import getAppConfig from 'utils/getAppConfig';
 
 export default class App extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 	};
+
+	static childContextTypes = {
+		appConfig: PropTypes.object,
+	};
+
+	getChildContext() {
+		return { appConfig: getAppConfig() };
+	}
 
 	render() {
 		const { children } = this.props;
