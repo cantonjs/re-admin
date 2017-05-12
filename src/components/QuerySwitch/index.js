@@ -5,7 +5,7 @@ import { Checkbox } from 'antd';
 import panelsStore from 'stores/panels';
 
 @observer
-export default class AdvancedSearchSwitch extends Component {
+export default class QuerySwitch extends Component {
 	_handleToggle = (ev) => {
 		panelsStore.updateQuery(ev.target.checked);
 	};

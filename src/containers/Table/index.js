@@ -109,7 +109,7 @@ export default class Table extends Component {
 
 		return (
 			<div>
-				{panelsStore.isShowQuery &&
+				{queryNodes && panelsStore.isShowQuery &&
 					<TableQuery onQuery={this.updateQuery}>
 						{queryNodes}
 					</TableQuery>
