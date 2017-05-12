@@ -6,8 +6,8 @@ import { QUERY_PANEL, SIDEBAR_PANEL } from 'constants/CookieKeys';
 const maxAge = 60 * 60 * 24 * 30;
 
 class PanelsStore {
-	@observable isShowSidebar = true;
-	@observable isShowQuery = false;
+	@observable isShowSidebar = cookie.get(SIDEBAR_PANEL) !== 'false';
+	@observable isShowQuery = cookie.get(QUERY_PANEL) !== 'false';
 
 	updateSidebar(val) {
 		this.isShowSidebar = val;
