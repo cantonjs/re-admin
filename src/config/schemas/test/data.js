@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Fields, Text, Image } from 'Schemas';
+import { Fields, Text, Select, Option, Image } from 'Schemas';
 
 export default (
 	<Fields>
@@ -32,6 +32,13 @@ export default (
 			max={18}
 			validator={[{ required: true, message: '必填' }]}
 		/>
+		<Select
+			name="fav"
+			label="爱好"
+		>
+			<Option value="1">吃饭</Option>
+			<Option value="2">睡觉</Option>
+		</Select>
 		<Text
 			name="gpa"
 			label="GPA"

@@ -60,7 +60,7 @@ export default class ImageField extends Component {
 		};
 
 		if (issuer === UPDATER && selection.length === 1) {
-			const urls = selection[0][name];
+			const urls = selection[0][name] || '';
 			urls
 				.split(',')
 				.map((url) => url.trim())
