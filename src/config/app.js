@@ -7,6 +7,7 @@ export default (
 		name="上帝的看板"
 		api={{
 			baseURL: '//localhost:3001/api',
+			count: 5,
 		}}
 		auth={{
 			basePath: 'auth',

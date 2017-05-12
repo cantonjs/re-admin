@@ -73,6 +73,7 @@ export default class Field extends Component {
 				wrapperCol,
 				shouldHideInForm,
 				noFieldDecorator,
+				validator,
 
 				location,
 				params,
@@ -80,7 +81,6 @@ export default class Field extends Component {
 				routes,
 				dataType,
 				unique,
-				validator,
 				shouldHideInTable,
 
 				...other,
@@ -92,7 +92,10 @@ export default class Field extends Component {
 
 		const decoratorFn = !noFieldDecorator && form && form.getFieldDecorator;
 		const decorator = decoratorFn ?
-			decoratorFn(name, { initialValue: this._getValue(name) }) :
+			decoratorFn(name, {
+				initialValue: this._getValue(name),
+				rules: validator,
+			}) :
 			returnsArgument
 		;
 

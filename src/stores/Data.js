@@ -6,6 +6,7 @@ import jsxToPlainObject from 'utils/jsxToPlainObject';
 import { omit } from 'lodash';
 import { base } from 'utils/asks';
 import showError from 'utils/showError';
+import getAppConfig from 'utils/getAppConfig.js';
 
 class DataStore {
 	@observable total = 0;
@@ -31,7 +32,7 @@ class DataStore {
 
 	collections = observable.map();
 
-	size = __DEV__ ? 5 : 20;
+	size = getAppConfig().api.count;
 	_prevQuery = {};
 	_pervSearch = '?';
 

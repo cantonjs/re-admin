@@ -12,6 +12,7 @@ const getAppConfig = memoize(function () {
 
 	config.api = defaults(config.api, {
 		timeout: 15000,
+		count: 20,
 	});
 
 	config.upload = defaults(config.upload, {

@@ -25,7 +25,7 @@ export default class App extends Component {
 	render() {
 		const { children } = this.props;
 		return (
-			<div>
+			<div className={$$.container}>
 				<Sidebar />
 				<div className={$$.main}>{children}</div>
 			</div>
