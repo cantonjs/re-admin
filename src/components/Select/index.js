@@ -10,9 +10,9 @@ export default class SelectField extends Component {
 	};
 
 	static defaultProps = {
-		cell: function SelectCell({ children, renderText }) {
+		render: (value, records, index, { children }) => {
 			const options = Children.toArray(children);
-			const option = options.find(({ props }) => props.value === renderText);
+			const option = options.find(({ props }) => props.value === value);
 			return option ? <span>{option.props.children}</span> : null;
 		},
 	};

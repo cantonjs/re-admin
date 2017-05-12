@@ -42,11 +42,11 @@ class DataStore {
 		this._schema = schema;
 		this.columns = schema
 			.filter(({ shouldHideInTable }) => !shouldHideInTable)
-			.map(({ render, cell, ...other }) => ({
-				title: other.label,
-				key: other.name,
-				dataIndex: other.name,
-				render: cell ? (...args) => Cell.render(cell, other, ...args) : render,
+			.map(({ render, ...props }) => ({
+				title: props.label,
+				key: props.name,
+				dataIndex: props.name,
+				render: render ? (...args) => render(...args, props) : undefined,
 			}))
 		;
 
