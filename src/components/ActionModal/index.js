@@ -53,9 +53,12 @@ export default class ActionModal extends Component {
 		if (this._form) {
 			this._form.validateFields((err, values) => {
 				this._handleSubmit(err, values);
+				if (!err) { this.close(); }
 			});
 		}
-		this.close();
+		else {
+			this.close();
+		}
 	};
 
 	_handleCancel = () => {
@@ -77,7 +80,7 @@ export default class ActionModal extends Component {
 		const {
 			props: {
 				children,
-				location: { query: { action } }
+				location: { query: { action }, search }
 			},
 		} = this;
 
@@ -87,13 +90,14 @@ export default class ActionModal extends Component {
 		return (
 			<ActionModalInternal
 				ref={this._saveForm}
+				search={search}
 				visible={isVisible}
 				title={title}
 				onSubmit={this._handleSubmit}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
 			>
-				{isVisible ? children : null}
+				{children}
 			</ActionModalInternal>
 		);
 	}

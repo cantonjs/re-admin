@@ -20,6 +20,7 @@ export default class ActionModalInternal extends Component {
 		form: PropTypes.object,
 		children: PropTypes.node,
 		title: PropTypes.string,
+		search: PropTypes.string,
 		onSubmit: PropTypes.func.isRequired,
 	};
 
@@ -44,6 +45,7 @@ export default class ActionModalInternal extends Component {
 				children,
 				title,
 				onSubmit,
+				search,
 				...other,
 			},
 		} = this;
@@ -52,6 +54,7 @@ export default class ActionModalInternal extends Component {
 			<Modal
 				title={title || this._prevTitle}
 				maskClosable={false}
+				key={search}
 				{...other}
 			>
 				<Form onSubmit={onSubmit}>
