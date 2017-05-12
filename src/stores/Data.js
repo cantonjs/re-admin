@@ -7,6 +7,7 @@ import { omit } from 'lodash';
 import { base } from 'utils/asks';
 import showError from 'utils/showError';
 import getAppConfig from 'utils/getAppConfig.js';
+import Cell from 'components/Cell';
 
 class DataStore {
 	@observable total = 0;
@@ -41,11 +42,11 @@ class DataStore {
 		this._schema = schema;
 		this.columns = schema
 			.filter(({ shouldHideInTable }) => !shouldHideInTable)
-			.map(({ label, name, render }) => ({
-				title: label,
-				key: name,
-				dataIndex: name,
-				render,
+			.map(({ render, cell, ...other }) => ({
+				title: other.label,
+				key: other.name,
+				dataIndex: other.name,
+				render: cell ? (...args) => Cell.render(cell, other, ...args) : render,
 			}))
 		;
 
