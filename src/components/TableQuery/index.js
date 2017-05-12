@@ -23,11 +23,7 @@ export default class TableQuery extends Component {
 		return { form, issuer: QUERIER };
 	}
 
-	state = {
-		expand: false,
-	};
-
-	handleSearch = (e) => {
+	_handleSearch = (e) => {
 		const { form, onQuery } = this.props;
 		e.preventDefault();
 		form.validateFields((err, values) => {
@@ -36,7 +32,7 @@ export default class TableQuery extends Component {
 		});
 	}
 
-	handleReset = () => {
+	_handleReset = () => {
 		const { form, onQuery } = this.props;
 		form.resetFields();
 		onQuery({}, { shouldReplace: true });
@@ -50,27 +46,25 @@ export default class TableQuery extends Component {
 	render() {
 		const {
 			props: { children },
-			state: { expand },
 		} = this;
 
 		return (
 			<Form
 				className={$$.container}
-				onSubmit={this.handleSearch}
+				onSubmit={this._handleSearch}
 				layout="inline"
 			>
 				<Row gutter={40}>
 					{children}
 				</Row>
 				<Row>
-					<Col span={24} style={{ textAlign: 'right' }}>
-						<Button type="primary" htmlType="submit">Search</Button>
-						<Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
-							Clear
+					<Col span={24} className={$$.footer}>
+						<Button type="primary" htmlType="submit">
+							查询
 						</Button>
-						<a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
-							Collapse <Icon type={expand ? 'up' : 'down'} />
-						</a>
+						<Button className={$$.clearButton} onClick={this._handleReset}>
+							清空
+						</Button>
 					</Col>
 				</Row>
 			</Form>
