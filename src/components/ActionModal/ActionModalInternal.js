@@ -51,6 +51,7 @@ export default class ActionModalInternal extends Component {
 		return (
 			<Modal
 				title={title || this._prevTitle}
+				maskClosable={false}
 				{...other}
 			>
 				<Form onSubmit={onSubmit}>

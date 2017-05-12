@@ -65,7 +65,6 @@ export default class ActionModal extends Component {
 	_handleSubmit = (err, values) => {
 		if (!err) {
 			const { store, location: { query: { action } } } = this.props;
-			console.log('submit values', values);
 			store[action](values);
 		}
 	};
@@ -83,17 +82,18 @@ export default class ActionModal extends Component {
 		} = this;
 
 		const title = actionLabelsMap[action];
+		const isVisible = actionNames.includes(action);
 
 		return (
 			<ActionModalInternal
 				ref={this._saveForm}
-				visible={actionNames.includes(action)}
+				visible={isVisible}
 				title={title}
 				onSubmit={this._handleSubmit}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
 			>
-				{children}
+				{isVisible ? children : null}
 			</ActionModalInternal>
 		);
 	}

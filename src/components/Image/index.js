@@ -59,8 +59,6 @@ export default class ImageField extends Component {
 			fileList: [],
 		};
 
-		console.log('issuer === UPDATER', issuer === UPDATER);
-
 		if (issuer === UPDATER && selection.length === 1) {
 			const urls = selection[0][name];
 			urls
