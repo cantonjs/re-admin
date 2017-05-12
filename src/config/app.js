@@ -14,7 +14,7 @@ export default (
 			getUserPath: 'getUser'
 		}}
 		upload={{
-			imagePath: '//jsonplaceholder.typicode.com/posts/',
+			imagePath: '//localhost:3001/api/upload/image',
 			filePath: 'upload/file',
 		}}
 	/>

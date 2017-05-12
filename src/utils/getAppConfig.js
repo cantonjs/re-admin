@@ -20,6 +20,7 @@ const getAppConfig = memoize(function () {
 		filePath: 'upload/file',
 		fileSizeLimit: 10240,
 		strategies: {},
+		requireAccessToken: false,
 	});
 
 	return config;

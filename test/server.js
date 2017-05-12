@@ -76,6 +76,9 @@ router
 		testDB = testDB.filter((data) => !keysArr.includes(data.id));
 		ctx.body = { ok: true };
 	})
+	.post('/api/upload/image', async (ctx) => {
+		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };
+	})
 ;
 
 app

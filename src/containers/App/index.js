@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'components/Sidebar';
 import getAppConfig from 'utils/getAppConfig';
+import auth from 'stores/auth';
 
 export default class App extends Component {
 	static propTypes = {
@@ -14,10 +15,11 @@ export default class App extends Component {
 
 	static childContextTypes = {
 		appConfig: PropTypes.object,
+		auth: PropTypes.object,
 	};
 
 	getChildContext() {
-		return { appConfig: getAppConfig() };
+		return { appConfig: getAppConfig(), auth };
 	}
 
 	render() {

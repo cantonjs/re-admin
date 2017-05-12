@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import Field from 'components/Field';
 import { Upload, Icon, Modal } from 'antd';
 import { UPDATER } from 'constants/Issuers';
+import withAppConfig from 'utils/withAppConfig';
 
+@withAppConfig('upload')
 export default class ImageField extends Component {
 	static propTypes = {
 		name: PropTypes.string.isRequired,
@@ -20,49 +22,45 @@ export default class ImageField extends Component {
 	};
 
 	static contextTypes = {
-		appConfig: PropTypes.object,
 		store: PropTypes.object,
+		auth: PropTypes.object,
 		form: PropTypes.object,
 		issuer: PropTypes.string,
 	};
-
-	// state = {
-	// 	previewVisible: false,
-	// 	previewImage: '',
-	// 	// fileList: [],
-	// 	// fileList: [{
-	// 	// 	uid: -1,
-	// 	// 	name: 'xxx.png',
-	// 	// 	status: 'done',
-	// 	// 	url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-	// 	// }],
-	// 	fileList: [{
-	// 		url: this.context.store.,
-	// 	}],
-	// };
 
 	constructor(props, context) {
 		super(props, context);
 
 		const { strategy, name } = props;
 		const {
-			appConfig: { upload: { strategies } },
 			store: { selection },
 			issuer,
+			auth,
 		} = context;
+		const strategies = this.getAppConfig('strategies');
+		const imagePath = this.getAppConfig('imagePath');
+		const requireAccessToken = this.getAppConfig('requireAccessToken');
 
 		if (__DEV__ && strategy && !strategies.hasOwnProperty(strategy)) {
 			console.warn(
 				`Strategy "${strategy}" is NOT defined in config file`
 			);
 		}
-		this.customRequest = strategies[strategy];
+		this._customRequest = strategies[strategy];
+
+		const search = requireAccessToken ?
+			`?accessToken=${auth.getAccessToken()}` : ''
+		;
+		this._uploadPath = imagePath + search;
 
 		const state = {
 			previewVisible: false,
 			previewImage: '',
 			fileList: [],
 		};
+
+		console.log('issuer === UPDATER', issuer === UPDATER);
+
 		if (issuer === UPDATER && selection.length === 1) {
 			const urls = selection[0][name];
 			urls
@@ -85,50 +83,57 @@ export default class ImageField extends Component {
 	};
 
 	_handleChange = ({ fileList }) => {
-		const url = fileList
+		this.setState({ fileList });
+	};
+
+	_getValueFromEvent = ({ fileList }) => {
+		const urls = fileList
 			.filter(({ status }) => status === 'done')
-			.map(({ thumbUrl }) => thumbUrl)
+			.map(({ thumbUrl, response }) => response.url || thumbUrl)
 			.join(',')
 		;
-
-		console.log('setFieldsValue', {
-			[this.props.name]: url,
-		});
-
-		this.context.form.setFieldsValue({
-			[this.props.name]: url,
-		});
-		this.setState({ fileList });
+		return urls;
 	};
 
 	render() {
 		const {
-			props: { max, strategy, ...other },
+			props: { max, strategy, name, ...other },
 			state: { previewVisible, previewImage, fileList },
-			context: { appConfig: { upload: { imagePath } } },
-			customRequest,
+			context: { form },
+			_customRequest,
+			_uploadPath,
 		} = this;
+
+		const decorator = form.getFieldDecorator(name, {
+			getValueFromEvent: this._getValueFromEvent,
+		});
+
 		const uploadButton = (
 			<div className={$$.uploadButton}>
 				<Icon className={$$.uploadButtonIcon} type="plus" />
 			</div>
 		);
+
 		return (
 			<div>
-				<Field
-					{...other}
-					className={$$.container}
-					component={Upload}
-					customRequest={customRequest}
-					action={imagePath}
-					listType="picture-card"
-					fileList={fileList}
-					onPreview={this._handlePreview}
-					onChange={this._handleChange}
-					noFieldDecorator
-				>
-					{fileList.length < max ? uploadButton : null}
-				</Field>
+				{decorator(
+					<Field
+						{...other}
+						name={name}
+						className={$$.container}
+						component={Upload}
+						customRequest={_customRequest}
+						action={_uploadPath}
+						listType="picture-card"
+						fileList={fileList}
+						onPreview={this._handlePreview}
+						onChange={this._handleChange}
+						multi={max > 1}
+						noFieldDecorator
+					>
+						{fileList.length < max ? uploadButton : null}
+					</Field>
+				)}
 				<Modal
 					visible={previewVisible}
 					footer={null}
