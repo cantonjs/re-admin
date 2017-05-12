@@ -28,6 +28,7 @@ export default class Field extends Component {
 		dataType: PropTypes.func,
 		unique: PropTypes.bool,
 		validator: PropTypes.array,
+		disabled: PropTypes.bool,
 		shouldHideInTable: PropTypes.bool,
 		shouldHideInForm: PropTypes.bool,
 		noFieldDecorator: PropTypes.bool,
@@ -37,6 +38,7 @@ export default class Field extends Component {
 		component: Input,
 		labelCol: { span: 8 },
 		wrapperCol: { span: 16 },
+		disabled: false,
 		shouldHideInTable: false,
 		shouldHideInForm: false,
 		noFieldDecorator: false,
@@ -74,6 +76,7 @@ export default class Field extends Component {
 				shouldHideInForm,
 				noFieldDecorator,
 				validator,
+				disabled,
 
 				location,
 				params,
@@ -90,7 +93,9 @@ export default class Field extends Component {
 
 		if (shouldHideInForm) { return null; }
 
-		const decoratorFn = !noFieldDecorator && form && form.getFieldDecorator;
+		const decoratorFn = !disabled && !noFieldDecorator &&
+			form && form.getFieldDecorator
+		;
 		const decorator = decoratorFn ?
 			decoratorFn(name, {
 				initialValue: this._getValue(name),
@@ -106,7 +111,7 @@ export default class Field extends Component {
 				wrapperCol={wrapperCol}
 			>
 				{decorator(
-					<Comp {...other} />
+					<Comp {...other} disabled={disabled} />
 				)}
 			</FormItem>
 		);
