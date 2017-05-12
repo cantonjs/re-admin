@@ -1,10 +1,10 @@
 
-import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getComponents from 'utils/getComponents';
 import getStore from 'stores/Data';
+import panelsStore from 'stores/panels';
 import { omit, isEqual } from 'lodash';
 
 import TableBody from 'components/TableBody';
@@ -109,9 +109,11 @@ export default class Table extends Component {
 
 		return (
 			<div>
-				<TableQuery onQuery={this.updateQuery}>
-					{queryNodes}
-				</TableQuery>
+				{panelsStore.isShowQuery &&
+					<TableQuery onQuery={this.updateQuery}>
+						{queryNodes}
+					</TableQuery>
+				}
 
 				<ToolbarComponent />
 

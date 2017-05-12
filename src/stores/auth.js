@@ -4,7 +4,7 @@ import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
 import { base } from 'utils/asks';
-import getAppConfig from 'utils/getAppConfig.js';
+import getAppConfig from 'utils/getAppConfig';
 
 const { basePath, loginPath, getUserPath } = getAppConfig().auth;
 const ask = base.clone(basePath);

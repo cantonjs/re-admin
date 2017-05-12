@@ -6,6 +6,7 @@ import { Row, Col, Button } from 'antd';
 import ButtonRemove from 'components/ButtonRemove';
 import ButtonUpdate from 'components/ButtonUpdate';
 import ButtonCreate from 'components/ButtonCreate';
+import AdvancedSearchSwitch from 'components/AdvancedSearchSwitch';
 
 const { Group } = Button;
 
@@ -21,10 +22,8 @@ export default class Toolbar extends Component {
 							<ButtonRemove />
 						</Group>
 					</Col>
-					<Col span={12}>
-						<Group>
-							<Button>高级搜索</Button>
-						</Group>
+					<Col span={12} className={$$.right}>
+						<AdvancedSearchSwitch />
 					</Col>
 				</Row>
 			</div>

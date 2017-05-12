@@ -40,7 +40,7 @@ export default class TableBody extends Component {
 			onChange: this._handleSelectChange,
 		};
 		return (
-			<div className={$$.container}>
+			<div>
 				<TableComp
 					rowSelection={rowSelection}
 					columns={columns}
@@ -49,7 +49,7 @@ export default class TableBody extends Component {
 					pagination={false}
 				/>
 				<Pagination
-					className={$$.page}
+					className={$$.pagination}
 					current={current}
 					total={total}
 					onChange={onPageChange}
