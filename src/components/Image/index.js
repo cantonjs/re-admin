@@ -2,18 +2,19 @@
 import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Field from 'components/Field';
 import { Upload, Icon, Modal } from 'antd';
-import { UPDATER } from 'constants/Issuers';
 import withAppConfig from 'utils/withAppConfig';
+import withField from 'utils/withField';
 
+@withField
 @withAppConfig('upload')
 export default class ImageField extends Component {
 	static propTypes = {
-		name: PropTypes.string.isRequired,
 		max: PropTypes.number,
 		render: PropTypes.func,
 		strategy: PropTypes.string,
+		getValue: PropTypes.func.isRequired,
+		getFieldDecorator: PropTypes.func.isRequired,
 	};
 
 	static defaultProps = {
@@ -22,21 +23,14 @@ export default class ImageField extends Component {
 	};
 
 	static contextTypes = {
-		store: PropTypes.object,
 		auth: PropTypes.object,
-		form: PropTypes.object,
-		issuer: PropTypes.string,
 	};
 
 	constructor(props, context) {
 		super(props, context);
 
-		const { strategy, name } = props;
-		const {
-			store: { selection },
-			issuer,
-			auth,
-		} = context;
+		const { strategy, getValue } = props;
+		const { auth } = context;
 		const strategies = this.getAppConfig('strategies');
 		const imagePath = this.getAppConfig('imagePath');
 		const requireAccessToken = this.getAppConfig('requireAccessToken');
@@ -59,15 +53,22 @@ export default class ImageField extends Component {
 			fileList: [],
 		};
 
-		if (issuer === UPDATER && selection.length === 1) {
-			const urls = selection[0][name] || '';
-			urls
-				.split(',')
-				.map((url) => url.trim())
-				.filter(Boolean)
-				.forEach((url, index) => state.fileList.push({ uid: -index, url }))
-			;
-		}
+		getValue()
+			.split(',')
+			.map((url) => url.trim())
+			.filter(Boolean)
+			.forEach((url, index) => state.fileList.push({ uid: -index, url }))
+		;
+
+		// if (issuer === UPDATER && selection.length === 1) {
+		// 	const urls = selection[0][name] || '';
+		// 	urls
+		// 		.split(',')
+		// 		.map((url) => url.trim())
+		// 		.filter(Boolean)
+		// 		.forEach((url, index) => state.fileList.push({ uid: -index, url }))
+		// 	;
+		// }
 		this.state = state;
 	}
 
@@ -95,14 +96,17 @@ export default class ImageField extends Component {
 
 	render() {
 		const {
-			props: { max, strategy, name, ...other },
+			props: {
+				max, strategy, getFieldDecorator,
+				getValue,
+				...other,
+			},
 			state: { previewVisible, previewImage, fileList },
-			context: { form },
 			_customRequest,
 			_uploadPath,
 		} = this;
 
-		const decorator = form.getFieldDecorator(name, {
+		const decorator = getFieldDecorator({
 			getValueFromEvent: this._getValueFromEvent,
 		});
 
@@ -115,11 +119,9 @@ export default class ImageField extends Component {
 		return (
 			<div>
 				{decorator(
-					<Field
+					<Upload
 						{...other}
-						name={name}
 						className={$$.container}
-						component={Upload}
 						customRequest={_customRequest}
 						action={_uploadPath}
 						listType="picture-card"
@@ -130,7 +132,7 @@ export default class ImageField extends Component {
 						noFieldDecorator
 					>
 						{fileList.length < max ? uploadButton : null}
-					</Field>
+					</Upload>
 				)}
 				<Modal
 					visible={previewVisible}

@@ -1,6 +1,5 @@
 
 export Fields from 'components/Fields';
-export Field from 'components/Field';
 export Text from 'components/Text';
 export Image from 'components/Image';
 export Select from 'components/Select';

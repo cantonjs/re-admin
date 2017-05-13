@@ -7,7 +7,6 @@ import { omit } from 'lodash';
 import { base } from 'utils/asks';
 import showError from 'utils/showError';
 import getAppConfig from 'utils/getAppConfig.js';
-import Cell from 'components/Cell';
 
 class DataStore {
 	@observable total = 0;
