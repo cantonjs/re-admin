@@ -25,7 +25,6 @@ export default class TableBody extends Component {
 	};
 
 	_handleSelectChange = (selectedRowKeys) => {
-		// console.log('selectedRowKeys changed: ', selectedRowKeys);
 		this.props.store.setSelectedKeys(selectedRowKeys);
 	};
 

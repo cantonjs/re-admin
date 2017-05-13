@@ -1,16 +1,13 @@
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'utils/PropTypes';
 import { Input } from 'antd';
 import withField from 'utils/withField';
 
 @withField
 export default class TextField extends Component {
 	static propTypes = {
-		component: PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.func,
-		]),
+		component: PropTypes.component,
 		validator: PropTypes.array,
 		getValue: PropTypes.func.isRequired,
 		getFieldDecorator: PropTypes.func.isRequired,

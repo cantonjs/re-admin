@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Upload, Icon, Modal } from 'antd';
 import withAppConfig from 'utils/withAppConfig';
 import withField from 'utils/withField';
+import ImageTableCell from './ImageTableCell';
 
 @withField
 @withAppConfig('upload')
@@ -19,7 +20,9 @@ export default class ImageField extends Component {
 
 	static defaultProps = {
 		max: 1,
-		render: (src) => <img src={src} className={$$.thumb} />,
+		render: (src, records, index, props) =>
+			<ImageTableCell {...props} url={src} />
+		,
 	};
 
 	static contextTypes = {
@@ -60,19 +63,12 @@ export default class ImageField extends Component {
 			.forEach((url, index) => state.fileList.push({ uid: -index, url }))
 		;
 
-		// if (issuer === UPDATER && selection.length === 1) {
-		// 	const urls = selection[0][name] || '';
-		// 	urls
-		// 		.split(',')
-		// 		.map((url) => url.trim())
-		// 		.filter(Boolean)
-		// 		.forEach((url, index) => state.fileList.push({ uid: -index, url }))
-		// 	;
-		// }
 		this.state = state;
 	}
 
-	_handleCloseModal = () => this.setState({ previewVisible: false })
+	_handleCloseModal = () => {
+		this.setState({ previewVisible: false });
+	};
 
 	_handlePreview = (file) => {
 		this.setState({
