@@ -1,4 +1,5 @@
 
+import $$ from './style.scss';
 import React, { Component, Children, cloneElement } from 'react';
 import { Form, Modal } from 'antd';
 import PropTypes from 'prop-types';
@@ -56,6 +57,7 @@ export default class ActionModalInternal extends Component {
 				maskClosable={false}
 				key={search}
 				{...other}
+				wrapClassName={$$.modal}
 			>
 				<Form onSubmit={onSubmit}>
 					{Children.map(
