@@ -11,7 +11,12 @@ import QuerySwitch from 'components/QuerySwitch';
 const { Group } = Button;
 
 export default class Toolbar extends Component {
+	static propTypes = {
+		hasQueryFields: PropTypes.bool,
+	};
+
 	render() {
+		const { hasQueryFields } = this.props;
 		return (
 			<div className={$$.container}>
 				<Row justify="space-around">
@@ -23,7 +28,9 @@ export default class Toolbar extends Component {
 						</Group>
 					</Col>
 					<Col span={12} className={$$.right}>
-						<QuerySwitch />
+						{hasQueryFields &&
+							<QuerySwitch />
+						}
 					</Col>
 				</Row>
 			</div>

@@ -10,6 +10,7 @@ import { omit, isEqual } from 'lodash';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import ActionModal from 'components/ActionModal';
+import Toolbar from 'components/Toolbar';
 
 @observer
 export default class Table extends Component {
@@ -102,7 +103,7 @@ export default class Table extends Component {
 			state: {
 				dataNodes,
 				queryNodes,
-				ToolbarComponent,
+				toolbarNodes,
 				store,
 			},
 		} = this;
@@ -115,7 +116,7 @@ export default class Table extends Component {
 					</TableQuery>
 				}
 
-				<ToolbarComponent />
+				<Toolbar hasQueryFields={!!queryNodes}>{toolbarNodes}</Toolbar>
 
 				<TableBody
 					location={location}

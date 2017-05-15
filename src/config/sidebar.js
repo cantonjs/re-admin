@@ -30,7 +30,7 @@ export default [
 	{
 		path: 'alone2',
 		name: '我没有图标',
-		table: 'b'
+		table: 'hello'
 	},
 	{
 		path: 'noiconhaha',
