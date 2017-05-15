@@ -1,6 +1,7 @@
 
 import { resolve } from 'path';
 import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -103,6 +104,14 @@ export default () => {
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 				__DEV__: isDev,
+			}),
+			new HtmlWebpackPlugin({
+				filename: 'index.html',
+				template: './src/index.html',
+				minify: {
+					collapseWhitespace: true,
+					minifyJS: true,
+				},
 			}),
 		],
 		resolve: {
