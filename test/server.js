@@ -17,7 +17,7 @@ let total = 450;
 let testDB = new Array(total).fill().map((_, index) => ({
 	id: `id_${index}`,
 	name: `User ${index}`,
-	score: 80,
+	score: 20,
 	desc: `I am User no. ${index}`,
 	avatar: `https://unsplash.it/100/100/?random=${index}`,
 }));
