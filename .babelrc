@@ -1,15 +1,32 @@
 {
 	"presets": [
 		"react",
-		["es2015", { "modules": false }],
+		["es2015"],
 		"stage-0-without-async",
 	],
 	"plugins": [
 		"transform-decorators-legacy",
-		"lodash",
-		["import", {
-			"libraryName": "antd",
-			"style": true,
-		}],
+		// "lodash",
+		// ["import", {
+		// 	"libraryName": "antd",
+		// 	"style": true,
+		// }],
 	],
+	"env": {
+		"webpack": {
+			"presets": [
+				["es2015", { "modules": false }],
+				"stage-0-without-async",
+			],
+			"plugins": [
+				"transform-decorators-legacy",
+				"transform-async-to-generator",
+				"lodash",
+				["import", {
+					"libraryName": "antd",
+					"style": true,
+				}],
+			],
+		},
+	},
 }

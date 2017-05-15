@@ -1,6 +1,6 @@
 
-const { resolve } = require('path');
-const webpack = require('webpack');
+import { resolve } from 'path';
+import webpack from 'webpack';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -9,11 +9,9 @@ const isDev = process.env.NODE_ENV !== 'production';
 const PROJECT_PATH = __dirname;
 const inProject = (...args) => resolve(PROJECT_PATH, ...args);
 const inSrc = inProject.bind(null, 'src');
-const inTest = inProject.bind(null, 'test');
 const srcDir = inSrc();
-const testDir = inTest();
 
-module.exports = () => {
+export default () => {
 	const config = {
 		devtool: isDev ? 'source-map' : 'none',
 		entry: {
@@ -32,18 +30,18 @@ module.exports = () => {
 			rules: [
 				{
 					test: /\.js$/,
-					include: [srcDir, testDir],
+					include: srcDir,
 					loader: 'babel-loader',
 					options: {
 						plugins: [
 							isDev && 'react-hot-loader/babel',
-							'transform-async-to-generator',
 						].filter(Boolean),
+						forceEnv: 'webpack',
 					},
 				},
 				{
 					test: /\.css$/,
-					include: inSrc(),
+					include: srcDir,
 					use: [
 						'style-loader',
 						{
@@ -68,7 +66,7 @@ module.exports = () => {
 				},
 				{
 					test: /\.scss$/,
-					include: inSrc(),
+					include: srcDir,
 					use: [
 						'style-loader',
 						{
