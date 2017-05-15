@@ -4,8 +4,8 @@ const webpack = require('webpack');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+const backendServerPort = process.env.BACKEND_SERVER_PORT || 3001;
 const isDev = process.env.NODE_ENV !== 'production';
-
 const PROJECT_PATH = __dirname;
 const inProject = (...args) => resolve(PROJECT_PATH, ...args);
 const inSrc = inProject.bind(null, 'src');
@@ -13,17 +13,15 @@ const inTest = inProject.bind(null, 'test');
 const srcDir = inSrc();
 const testDir = inTest();
 
-module.exports = (webpackEnv = {}) => {
-	const { minify } = webpackEnv;
-
+module.exports = () => {
 	const config = {
-		devtool: 'source-map',
+		devtool: isDev ? 'source-map' : 'none',
 		entry: {
 			app: [
 				'babel-polyfill',
-				'react-hot-loader/patch',
-				'./src/index.js',
-			],
+				isDev && 'react-hot-loader/patch',
+				`./src/boot/${isDev ? 'dev' : 'prod'}.js`,
+			].filter(Boolean),
 		},
 		output: {
 			filename: 'bundle.js',
@@ -38,8 +36,9 @@ module.exports = (webpackEnv = {}) => {
 					loader: 'babel-loader',
 					options: {
 						plugins: [
+							isDev && 'react-hot-loader/babel',
 							'transform-async-to-generator',
-						],
+						].filter(Boolean),
 					},
 				},
 				{
@@ -125,15 +124,11 @@ module.exports = (webpackEnv = {}) => {
 			historyApiFallback: {
 				disableDotRule: true,
 			},
+			proxy: {
+				'/api': `http://127.0.0.1:${backendServerPort}`,
+			}
 		},
 	};
-
-
-	if (minify) {
-		config.plugins.push(
-			new webpack.optimize.UglifyJsPlugin(),
-		);
-	}
 
 	return config;
 };

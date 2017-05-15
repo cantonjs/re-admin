@@ -7,7 +7,7 @@ const koaBody = require('koa-body');
 const app = new Koa();
 const router = new Router();
 
-const port = 3001;
+const port = process.env.BACKEND_SERVER_PORT || 3001;
 
 const validAccessToken = 'paiBei4uChua8Aipooc9joeS';
 // const expiresIn = 86400;

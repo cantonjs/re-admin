@@ -6,7 +6,7 @@ export default (
 	<Fields
 		name="上帝的看板"
 		api={{
-			baseURL: '//localhost:3001/api',
+			baseURL: '/api',
 			count: 5,
 		}}
 		auth={{
@@ -15,7 +15,7 @@ export default (
 			getUserPath: 'getUser'
 		}}
 		upload={{
-			imagePath: '//localhost:3001/api/upload/image',
+			imagePath: '/api/upload/image',
 			filePath: 'upload/file',
 		}}
 	/>

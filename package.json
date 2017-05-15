@@ -6,7 +6,9 @@
   "scripts": {
     "start": "yarn server | yarn client",
     "client": "webpack-dev-server",
-    "server": "babel-node test/server"
+    "server": "babel-node test/server",
+    "prebuild": "rimraf dist && mkdirp dist",
+    "build": "NODE_ENV=production webpack --progress --colors -p"
   },
   "files": [
     "README.md",
