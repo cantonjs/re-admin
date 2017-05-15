@@ -1,25 +1,18 @@
 
+import './reset.scss';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import App from 'containers/App';
-import Home from 'containers/Home';
+import IndexView from 'containers/IndexView';
 import Login from 'containers/Login';
 import NotFound from 'containers/NotFound';
-import getSidebar from 'utils/getSidebar';
+import getAppConfig from 'utils/getAppConfig';
+import getRoutes from 'utils/getRoutes';
 import authStore from 'stores/auth';
 
-const mapRoutes = (routes) => {
-	if (!routes || !routes.length) { return null; }
-
-	return routes.map(({ children, ...route }, index) => {
-		return (
-			<Route {...route} key={index}>
-				{mapRoutes(children)}
-				<Route path="*" component={NotFound}/>
-			</Route>
-		);
-	});
-};
+const appConfig = getAppConfig();
+const { router, views } = appConfig;
 
 const onEnter = async (nextState, replace, next) => {
 	const { pathname, search } = nextState.location;
@@ -36,14 +29,23 @@ const onEnter = async (nextState, replace, next) => {
 };
 
 export default class Root extends Component {
+	static childContextTypes = {
+		appConfig: PropTypes.object,
+	};
+
+	getChildContext() {
+		return { appConfig };
+	}
+
 	render() {
 		return (
 			<Router history={browserHistory}>
-				<Route path="login" component={Login} />
+				<Route path="login" component={views.login || Login} />
 				<Route path="/" component={App} onEnter={onEnter}>
-					<IndexRoute component={Home}/>
-					{mapRoutes(getSidebar())}
-					<Route path="*" component={NotFound}/>
+					<IndexRoute component={views.index || IndexView}/>
+					{router}
+					{getRoutes()}
+					<Route path="*" component={views.notFound || NotFound}/>
 				</Route>
 			</Router>
 		);

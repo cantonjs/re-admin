@@ -3,10 +3,8 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
-import getAppConfig from 'utils/getAppConfig';
 import authStore from 'stores/auth';
 
-const { name } = getAppConfig();
 const FormItem = Form.Item;
 
 @Form.create()
@@ -19,6 +17,10 @@ export default class Login extends Component {
 		router: PropTypes.shape({
 			replace: PropTypes.func,
 		}),
+	};
+
+	static contextTypes = {
+		appConfig: PropTypes.object,
 	};
 
 	handleSubmit = (e) => {
@@ -38,10 +40,13 @@ export default class Login extends Component {
 	}
 
 	render() {
-		const { getFieldDecorator } = this.props.form;
+		const {
+			props: { form: { getFieldDecorator } },
+			context: { appConfig: { name } },
+		} = this;
 		return (
 			<div className={$$.container}>
-				<h1 className={$$.title}>{ name }</h1>
+				<h1 className={$$.title}>{name}</h1>
 				<Form onSubmit={this.handleSubmit} className={$$.form}>
 					<FormItem>
 						{getFieldDecorator('username', {

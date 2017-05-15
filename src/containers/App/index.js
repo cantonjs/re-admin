@@ -1,12 +1,10 @@
 
-import './reset.scss';
 import 'antd/dist/antd.less';
 import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import Sidebar from 'components/Sidebar';
-import getAppConfig from 'utils/getAppConfig';
 import auth from 'stores/auth';
 import panelsStore from 'stores/panels';
 
@@ -17,12 +15,11 @@ export default class App extends Component {
 	};
 
 	static childContextTypes = {
-		appConfig: PropTypes.object,
 		auth: PropTypes.object,
 	};
 
 	getChildContext() {
-		return { appConfig: getAppConfig(), auth };
+		return { auth };
 	}
 
 	render() {

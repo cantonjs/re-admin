@@ -5,6 +5,8 @@ import appConfig from 'config/app';
 
 const getAppConfig = memoize(function () {
 	const config = defaults(jsxToPlainObject(appConfig), {
+		router: [],
+		views: {},
 		api: {},
 		auth: {},
 		upload: {},
