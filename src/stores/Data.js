@@ -1,8 +1,7 @@
 
 import { observable, computed, toJS } from 'mobx';
-import getSchema from 'utils/getSchema';
 import authStore from 'stores/auth';
-import jsxToPlainObject from 'utils/jsxToPlainObject';
+import getDataSchema from 'utils/getDataSchema';
 import { omit } from 'lodash';
 import { base } from 'utils/asks';
 import showError from 'utils/showError';
@@ -161,7 +160,7 @@ class DataStore {
 const caches = {};
 
 export default function getDataStore(table) {
-	const schema = jsxToPlainObject(getSchema(table));
+	const schema = getDataSchema(table);
 	// console.log('schema', schema);
 	if (caches.hasOwnProperty(table)) { return caches[table]; }
 

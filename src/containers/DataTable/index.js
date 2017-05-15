@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import getComponents from 'utils/getComponents';
+import getDataNodes from 'utils/getDataNodes';
 import getStore from 'stores/Data';
 import panelsStore from 'stores/panels';
 import { omit, isEqual } from 'lodash';
@@ -13,7 +13,7 @@ import ActionModal from 'components/ActionModal';
 import Toolbar from 'components/Toolbar';
 
 @observer
-export default class Table extends Component {
+export default class DataTable extends Component {
 	static propTypes = {
 		router: PropTypes.shape({
 			push: PropTypes.func.isRequired,
@@ -44,7 +44,7 @@ export default class Table extends Component {
 	componentWillMount() {
 		const { table } = this.props.route;
 		this.state = {
-			...getComponents(table),
+			...getDataNodes(table),
 			store: getStore(table),
 		};
 	}
@@ -52,7 +52,7 @@ export default class Table extends Component {
 	componentWillReceiveProps({ route: { table } }) {
 		if (this.props.route.table !== table) {
 			this.setState({
-				...getComponents(table),
+				...getDataNodes(table),
 				store: getStore(table),
 			});
 		}

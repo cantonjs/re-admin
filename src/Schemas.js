@@ -1,9 +1,6 @@
 
-export Fields from 'components/Fields';
-export Text from 'components/Text';
-export Image from 'components/Image';
-export Select from 'components/Select';
-export Option from 'components/Option';
-export Toolbar from 'components/Toolbar';
-export ButtonRemove from 'components/ButtonRemove';
-export ButtonUpdate from 'components/ButtonUpdate';
+const { getSchemaComponents } = require('utils/getComponent');
+
+getSchemaComponents().forEach((name) => {
+	exports[name] = name;
+});

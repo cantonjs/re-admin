@@ -1,17 +1,17 @@
 
 import { isValidElement } from 'react';
 
-export default function jsxToPlainObject(jsxSchema) {
-	if (!isValidElement(jsxSchema)) { return jsxSchema; }
-
-	const { children, ...other } = jsxSchema.props;
-
-	if (children) {
-		return children.map(({ props, type }) => ({
-			...props,
-			component: type,
-		}));
+const jsxToPlainObject = function jsxToPlainObject(children) {
+	if (isValidElement(children)) {
+		return {
+			...children.props,
+			component: children.type,
+		};
 	}
-
-	return other;
+	else if (Array.isArray(children)) {
+		return children.map(jsxToPlainObject);
+	}
+	return children;
 };
+
+export default jsxToPlainObject;
