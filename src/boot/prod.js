@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import Root from 'containers/Root';
+import Admin from 'containers/Admin';
 
 const mount = document.getElementById('mount');
-render(<Root />, mount);
+render(<Admin />, mount);

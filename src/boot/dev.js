@@ -2,17 +2,17 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import Root from 'containers/Root';
+import Admin from 'containers/Admin';
 
 const mount = document.getElementById('mount');
 
-render(<AppContainer><Root /></AppContainer>, mount);
+render(<AppContainer><Admin /></AppContainer>, mount);
 
 if (module.hot) {
-	module.hot.accept('../containers/Root', () => {
-		const NextRoot = require('../containers/Root').default;
+	module.hot.accept('../containers/Admin', () => {
+		const Next = require('../containers/Admin').default;
 		render(
-			<AppContainer><NextRoot /></AppContainer>,
+			<AppContainer><Next /></AppContainer>,
 			mount
 		);
 	});

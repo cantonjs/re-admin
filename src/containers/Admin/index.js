@@ -28,7 +28,7 @@ const onEnter = async (nextState, replace, next) => {
 	next();
 };
 
-export default class Root extends Component {
+export default class Admin extends Component {
 	static childContextTypes = {
 		appConfig: PropTypes.object,
 	};
