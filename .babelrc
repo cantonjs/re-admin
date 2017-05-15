@@ -6,11 +6,6 @@
 	],
 	"plugins": [
 		"transform-decorators-legacy",
-		// "lodash",
-		// ["import", {
-		// 	"libraryName": "antd",
-		// 	"style": true,
-		// }],
 	],
 	"env": {
 		"webpack": {
