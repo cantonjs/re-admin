@@ -23,7 +23,7 @@ export default () => {
 			].filter(Boolean),
 		},
 		output: {
-			filename: 'bundle.js',
+			filename: 'bundle.[hash:7].js',
 			path: resolve(__dirname, 'dist'),
 			publicPath: '/',
 		},
