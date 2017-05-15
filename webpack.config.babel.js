@@ -100,7 +100,7 @@ export default () => {
 			],
 		},
 		plugins: [
-			!isDev && new webpack.HotModuleReplacementPlugin(),
+			isDev && new webpack.HotModuleReplacementPlugin(),
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 				__DEV__: isDev,
