@@ -1,6 +1,6 @@
 
 import $$ from './style.scss';
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Row, Col, Button, Icon } from 'antd';
 import { QUERIER } from 'constants/Issuers';
@@ -47,6 +47,8 @@ export default class TableQuery extends Component {
 		const {
 			props: { children },
 		} = this;
+
+		if (!Children.count(children)) { return null; }
 
 		return (
 			<Form

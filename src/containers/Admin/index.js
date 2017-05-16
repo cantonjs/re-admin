@@ -1,52 +1,30 @@
 
-import './reset.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import getAppConfig from 'utils/getAppConfig';
-import getRoutes from 'utils/getRoutes';
-import authStore from 'stores/auth';
-import DataStore from 'stores/Data';
-
-const appConfig = getAppConfig();
-const { router, views } = appConfig;
-
-const onEnter = async (nextState, replace, next) => {
-	const { pathname, search } = nextState.location;
-	const isOk = await authStore.auth();
-	if (!isOk) {
-		replace({
-			pathname: '/login',
-			query: {
-				ref: pathname + search,
-			},
-		});
-	}
-	next();
-};
+import AdminContext from 'containers/AdminContext';
+import getConfig from './getConfig';
 
 export default class Admin extends Component {
-	static childContextTypes = {
-		appConfig: PropTypes.object,
-		authStore: PropTypes.object,
-		DataStore: PropTypes.func,
+	static propTypes = {
+		config: PropTypes.shape({
+			name: PropTypes.string,
+			sidebar: PropTypes.array,
+			tables: PropTypes.object,
+			api: PropTypes.object,
+			auth: PropTypes.object,
+			upload: PropTypes.object,
+			router: PropTypes.any,
+			views: PropTypes.object,
+		}),
 	};
 
-	getChildContext() {
-		return { appConfig, authStore, DataStore };
+	componentWillMount() {
+		this._config = getConfig(this.props.config);
 	}
 
 	render() {
 		return (
-			<Router history={browserHistory}>
-				<Route path="login" component={views.login} />
-				<Route path="/" component={views.frame} onEnter={onEnter}>
-					<IndexRoute component={views.index}/>
-					{router}
-					{getRoutes()}
-					<Route path="*" component={views.notFound}/>
-				</Route>
-			</Router>
+			<AdminContext appConfig={this._config} />
 		);
 	}
 }

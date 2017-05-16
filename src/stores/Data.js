@@ -1,23 +1,28 @@
 
 import { observable, computed, toJS } from 'mobx';
-import authStore from 'stores/auth';
-import getDataSchema from 'utils/getDataSchema';
 import { omit } from 'lodash';
-import { base } from 'utils/asks';
+import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
-import getAppConfig from 'utils/getAppConfig.js';
+import jsxToPlainObject from 'utils/jsxToPlainObject';
 
 const caches = {};
+let appConfig = {};
+let authStore = {};
 
 export default class DataStore {
 	static get(table) {
-		const schema = getDataSchema(table);
+		const schema = appConfig.tables[table].data;
 		// console.log('schema', schema);
 		if (caches.hasOwnProperty(table)) { return caches[table]; }
 
-		const store = new DataStore(table, schema);
+		const store = new DataStore(table, jsxToPlainObject(schema));
 		caches[table] = store;
 		return store;
+	}
+
+	static setup(config, auth) {
+		appConfig = config;
+		authStore = auth;
 	}
 
 	@observable total = 0;
@@ -43,7 +48,7 @@ export default class DataStore {
 
 	collections = observable.map();
 
-	size = getAppConfig().api.count;
+	size = appConfig.api.count;
 	_prevQuery = {};
 	_pervSearch = '?';
 
@@ -63,7 +68,7 @@ export default class DataStore {
 		const unique = schema.find((s) => s.unique);
 		this._uniqueKey = unique && unique.name;
 
-		this._ask = base.clone({
+		this._ask = getAsk(appConfig).clone({
 			url: table,
 			query: {
 				accessToken({ remove }) {

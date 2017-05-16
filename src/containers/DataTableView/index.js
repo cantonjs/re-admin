@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import getDataNodes from 'utils/getDataNodes';
 import panelsStore from 'stores/panels';
 import { omit, isEqual } from 'lodash';
 
@@ -33,6 +32,7 @@ export default class DataTableView extends Component {
 	};
 
 	static contextTypes = {
+		appConfig: PropTypes.object,
 		DataStore: PropTypes.func.isRequired,
 	};
 
@@ -46,17 +46,19 @@ export default class DataTableView extends Component {
 
 	componentWillMount() {
 		const { table } = this.props.route;
+		const { DataStore } = this.context;
 		this.state = {
-			...getDataNodes(table),
-			store: this.context.DataStore.get(table),
+			...this._getDataNodes(table),
+			store: DataStore.get(table),
 		};
 	}
 
 	componentWillReceiveProps({ route: { table } }) {
+		const { DataStore } = this.context;
 		if (this.props.route.table !== table) {
 			this.setState({
-				...getDataNodes(table),
-				store: this.context.DataStore.get(table),
+				...this._getDataNodes(table),
+				store: DataStore.get(table),
 			});
 		}
 	}
@@ -100,26 +102,33 @@ export default class DataTableView extends Component {
 		this.updateQuery({ page });
 	};
 
+	_getDataNodes(table) {
+		const { appConfig } = this.context;
+		return appConfig.tables[table];
+	}
+
 	render() {
 		const {
 			props: { location },
 			state: {
-				dataNodes,
-				queryNodes,
-				toolbarNodes,
+				data,
+				query,
+				toolbar,
 				store,
 			},
 		} = this;
 
+		const hasQueryFields = !!query.length;
+
 		return (
 			<div>
-				{queryNodes && panelsStore.isShowQuery &&
+				{hasQueryFields && panelsStore.isShowQuery &&
 					<TableQuery onQuery={this.updateQuery}>
-						{queryNodes}
+						{query}
 					</TableQuery>
 				}
 
-				<Toolbar hasQueryFields={!!queryNodes}>{toolbarNodes}</Toolbar>
+				<Toolbar hasQueryFields={hasQueryFields}>{toolbar}</Toolbar>
 
 				<TableBody
 					location={location}
@@ -131,7 +140,7 @@ export default class DataTableView extends Component {
 					location={location}
 					store={store}
 				>
-					{dataNodes}
+					{data}
 				</ActionModal>
 			</div>
 		);

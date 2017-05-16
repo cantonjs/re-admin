@@ -2,7 +2,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import Text from 'components/Text';
+import Text from 'schemas/Text';
 
 export default class SelectField extends Component {
 	static propTypes = {
@@ -16,6 +16,8 @@ export default class SelectField extends Component {
 			return option ? <span>{option.props.children}</span> : null;
 		},
 	};
+
+	static defaultChildComponent = Select.Option;
 
 	render() {
 		const { props } = this;

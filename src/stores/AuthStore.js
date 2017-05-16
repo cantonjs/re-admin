@@ -3,14 +3,15 @@ import { observable } from 'mobx';
 import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
-import { base } from 'utils/asks';
-import getAppConfig from 'utils/getAppConfig';
+import getAsk from 'utils/getAsk';
 
-const { basePath, loginPath, getUserPath } = getAppConfig().auth;
-const ask = base.clone(basePath);
-
-class AuthStore {
+export default class AuthStore {
 	@observable isFetching = false;
+
+	constructor(config) {
+		this._config = config.auth;
+		this._ask = getAsk(config).clone(this._config.basePath);
+	}
 
 	getAccessToken() {
 		return cookie.get(ACCESS_TOKEN);
@@ -24,8 +25,8 @@ class AuthStore {
 			const token = this.getAccessToken();
 			if (token) { query.accessToken = token; }
 
-			const { accessToken, expiresIn } = await ask.fork({
-				url: getUserPath,
+			const { accessToken, expiresIn } = await this._ask.fork({
+				url: this._config.getUserPath,
 				query,
 			});
 			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
@@ -46,8 +47,8 @@ class AuthStore {
 		let isOk = false;
 
 		try {
-			const { accessToken, expiresIn } = await ask.fork({
-				url: loginPath,
+			const { accessToken, expiresIn } = await this._ask.fork({
+				url: this._config.loginPath,
 				method: 'POST',
 				body,
 			});
@@ -66,5 +67,3 @@ class AuthStore {
 		cookie.remove(ACCESS_TOKEN);
 	}
 }
-
-export default new AuthStore();

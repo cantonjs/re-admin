@@ -1,19 +1,15 @@
 
 import jsxToPlainObject from 'utils/jsxToPlainObject';
+import plainObjectToJsx from 'utils/plainObjectToJsx';
 import { defaults } from 'lodash';
-import appConfig from 'config/app';
 import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
 import DataTableView from 'containers/DataTableView';
 import NotFoundView from 'containers/NotFoundView';
 
-let cache;
-
-export default function getAppConfig() {
-	if (cache) { return cache; }
-
-	const config = defaults(jsxToPlainObject(appConfig), {
+export default function getAppConfig(appConfig) {
+	const config = Object.assign({
 		name: 'Admin',
 		sidebar: [],
 		router: [],
@@ -21,7 +17,7 @@ export default function getAppConfig() {
 		api: {},
 		auth: {},
 		upload: {},
-	});
+	}, jsxToPlainObject(appConfig));
 
 	config.views = defaults(config.views, {
 		index: IndexView,
@@ -59,5 +55,16 @@ export default function getAppConfig() {
 		requireAccessToken: false,
 	});
 
-	return (cache = config);
+	config.tables = Object.keys(config.tables).reduce((tables, key) => {
+		const table = defaults(config.tables[key] || {}, {
+			data: [],
+			query: [],
+		});
+		table.data = plainObjectToJsx(table.data);
+		table.query = plainObjectToJsx(table.query);
+		tables[key] = table;
+		return tables;
+	}, {});
+
+	return config;
 };

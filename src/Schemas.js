@@ -1,5 +1,5 @@
 
-const context = require.context('components', true, /index\.js$/);
+const context = require.context('schemas', true, /index\.js$/);
 context.keys().map((modulePath) => {
 	const [, moduleName] = modulePath.split('/');
 	const result = context(modulePath);
