@@ -7,7 +7,6 @@ import { observer } from 'mobx-react';
 
 @observer
 export default class TableBody extends Component {
-
 	static propTypes = {
 		store: PropTypes.shape({
 			columns: PropTypes.array.isRequired,

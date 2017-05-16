@@ -3,7 +3,6 @@ import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
-import authStore from 'stores/auth';
 
 const FormItem = Form.Item;
 
@@ -21,19 +20,24 @@ export default class LoginView extends Component {
 
 	static contextTypes = {
 		appConfig: PropTypes.object,
+		authStore: PropTypes.object,
 	};
 
-	handleSubmit = (e) => {
+	_handleSubmit = (e) => {
 		e.preventDefault();
-		this.props.form.validateFields(async (err, values) => {
+		const {
+			props: { form, location, router },
+			context: { authStore },
+		} = this;
+		form.validateFields(async (err, values) => {
 			if (!err) {
 				const { username, password } = values;
 				const isOk = await authStore.login({ username, password });
 
 				if (isOk) {
-					const { ref } = this.props.location.query;
+					const { ref } = location.query;
 					const url = ref || '/';
-					this.props.router.replace(url);
+					router.replace(url);
 				}
 			}
 		});
@@ -47,7 +51,7 @@ export default class LoginView extends Component {
 		return (
 			<div className={$$.container}>
 				<h1 className={$$.title}>{name}</h1>
-				<Form onSubmit={this.handleSubmit} className={$$.form}>
+				<Form onSubmit={this._handleSubmit} className={$$.form}>
 					<FormItem>
 						{getFieldDecorator('username', {
 							rules: [{ required: true, message: '请输入用户名!' }],

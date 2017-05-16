@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import getDataNodes from 'utils/getDataNodes';
-import getStore from 'stores/Data';
 import panelsStore from 'stores/panels';
 import { omit, isEqual } from 'lodash';
 
@@ -13,7 +12,7 @@ import ActionModal from 'components/ActionModal';
 import Toolbar from 'components/Toolbar';
 
 @observer
-export default class DataTable extends Component {
+export default class DataTableView extends Component {
 	static propTypes = {
 		router: PropTypes.shape({
 			push: PropTypes.func.isRequired,
@@ -33,6 +32,10 @@ export default class DataTable extends Component {
 		updateLocationQuery: PropTypes.func,
 	};
 
+	static contextTypes = {
+		DataStore: PropTypes.func.isRequired,
+	};
+
 	getChildContext() {
 		const { store } = this.state;
 		return {
@@ -45,7 +48,7 @@ export default class DataTable extends Component {
 		const { table } = this.props.route;
 		this.state = {
 			...getDataNodes(table),
-			store: getStore(table),
+			store: this.context.DataStore.get(table),
 		};
 	}
 
@@ -53,7 +56,7 @@ export default class DataTable extends Component {
 		if (this.props.route.table !== table) {
 			this.setState({
 				...getDataNodes(table),
-				store: getStore(table),
+				store: this.context.DataStore.get(table),
 			});
 		}
 	}

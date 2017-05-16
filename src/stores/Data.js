@@ -7,7 +7,19 @@ import { base } from 'utils/asks';
 import showError from 'utils/showError';
 import getAppConfig from 'utils/getAppConfig.js';
 
-class DataStore {
+const caches = {};
+
+export default class DataStore {
+	static get(table) {
+		const schema = getDataSchema(table);
+		// console.log('schema', schema);
+		if (caches.hasOwnProperty(table)) { return caches[table]; }
+
+		const store = new DataStore(table, schema);
+		caches[table] = store;
+		return store;
+	}
+
 	@observable total = 0;
 	@observable isFetching = false;
 	@observable search = '?';
@@ -155,16 +167,4 @@ class DataStore {
 			showError('删除失败：', err.message);
 		}
 	}
-}
-
-const caches = {};
-
-export default function getDataStore(table) {
-	const schema = getDataSchema(table);
-	// console.log('schema', schema);
-	if (caches.hasOwnProperty(table)) { return caches[table]; }
-
-	const store = new DataStore(table, schema);
-	caches[table] = store;
-	return store;
 }

@@ -2,7 +2,6 @@
 import React from 'react';
 import { Route } from 'react-router';
 import getAppConfig from 'utils/getAppConfig';
-import NotFound from 'containers/NotFound';
 
 const { views, sidebar } = getAppConfig();
 
@@ -12,7 +11,7 @@ const mapRoutes = (routes) => {
 	return routes.map(({ children, ...route }, index) =>
 		<Route {...route} key={index}>
 			{mapRoutes(children)}
-			<Route path="*" component={views.notFound || NotFound}/>
+			<Route path="*" component={views.notFound}/>
 		</Route>
 	);
 };

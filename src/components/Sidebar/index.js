@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Menu, Icon } from 'antd';
-import User from 'components/User';
+import Logout from 'components/Logout';
 
 const { SubMenu, Item: MenuItem } = Menu;
 
@@ -12,6 +12,8 @@ export default class Sidebar extends Component {
 	static contextTypes = {
 		appConfig: PropTypes.object,
 	};
+
+	static isPrivate = true;
 
 	state = {
 		openKeys: [],
@@ -80,7 +82,7 @@ export default class Sidebar extends Component {
 							</MenuItem>;
 					})}
 				</Menu>
-				<User className={$$.footer} />
+				<Logout className={$$.footer} />
 			</div>
 		);
 	}

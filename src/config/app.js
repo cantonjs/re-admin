@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Fields } from 'Schemas';
+// import { Fields } from 'Schemas';
+import Fields from 'components/Fields';
 import sidebar from './sidebar';
 
 export default (

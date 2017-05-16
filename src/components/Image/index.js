@@ -26,14 +26,14 @@ export default class ImageField extends Component {
 	};
 
 	static contextTypes = {
-		auth: PropTypes.object,
+		authStore: PropTypes.object,
 	};
 
 	constructor(props, context) {
 		super(props, context);
 
 		const { strategy, getValue } = props;
-		const { auth } = context;
+		const { authStore } = context;
 		const strategies = this.getAppConfig('strategies');
 		const imagePath = this.getAppConfig('imagePath');
 		const requireAccessToken = this.getAppConfig('requireAccessToken');
@@ -46,7 +46,7 @@ export default class ImageField extends Component {
 		this._customRequest = strategies[strategy];
 
 		const search = requireAccessToken ?
-			`?accessToken=${auth.getAccessToken()}` : ''
+			`?accessToken=${authStore.getAccessToken()}` : ''
 		;
 		this._uploadPath = imagePath + search;
 

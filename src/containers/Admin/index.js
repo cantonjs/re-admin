@@ -3,13 +3,10 @@ import './reset.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import App from 'containers/App';
-import IndexView from 'containers/IndexView';
-import Login from 'containers/Login';
-import NotFound from 'containers/NotFound';
 import getAppConfig from 'utils/getAppConfig';
 import getRoutes from 'utils/getRoutes';
 import authStore from 'stores/auth';
+import DataStore from 'stores/Data';
 
 const appConfig = getAppConfig();
 const { router, views } = appConfig;
@@ -31,21 +28,23 @@ const onEnter = async (nextState, replace, next) => {
 export default class Admin extends Component {
 	static childContextTypes = {
 		appConfig: PropTypes.object,
+		authStore: PropTypes.object,
+		DataStore: PropTypes.func,
 	};
 
 	getChildContext() {
-		return { appConfig };
+		return { appConfig, authStore, DataStore };
 	}
 
 	render() {
 		return (
 			<Router history={browserHistory}>
-				<Route path="login" component={views.login || Login} />
-				<Route path="/" component={App} onEnter={onEnter}>
-					<IndexRoute component={views.index || IndexView}/>
+				<Route path="login" component={views.login} />
+				<Route path="/" component={views.frame} onEnter={onEnter}>
+					<IndexRoute component={views.index}/>
 					{router}
 					{getRoutes()}
-					<Route path="*" component={views.notFound || NotFound}/>
+					<Route path="*" component={views.notFound}/>
 				</Route>
 			</Router>
 		);

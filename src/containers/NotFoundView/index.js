@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-export default function NotFound() {
+export default function NotFoundView() {
 	return (
 		<p>Sorry, Page Not Found</p>
 	);
