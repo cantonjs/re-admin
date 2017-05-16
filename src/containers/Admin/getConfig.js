@@ -8,7 +8,7 @@ import LoginView from 'containers/LoginView';
 import DataTableView from 'containers/DataTableView';
 import NotFoundView from 'containers/NotFoundView';
 
-export default function getAppConfig(appConfig) {
+export default function getAppConfig(appConfig = {}) {
 	const config = Object.assign({
 		name: 'Admin',
 		sidebar: [],

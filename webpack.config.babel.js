@@ -4,22 +4,24 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
 const backendServerPort = process.env.BACKEND_SERVER_PORT || 3001;
 const isDev = process.env.NODE_ENV !== 'production';
 const PROJECT_PATH = __dirname;
 const inProject = (...args) => resolve(PROJECT_PATH, ...args);
 const inSrc = inProject.bind(null, 'src');
 const srcDir = inSrc();
+const inTest = inProject.bind(null, 'test');
+const testDir = inTest();
 
-export default () => {
+export default (env = {}) => {
+	const { build, min } = env;
 	const config = {
 		devtool: isDev ? 'source-map' : 'none',
 		entry: {
 			app: [
 				'babel-polyfill',
 				isDev && 'react-hot-loader/patch',
-				`./src/boot/${isDev ? 'dev' : 'prod'}.js`,
+				'./test/client.js',
 			].filter(Boolean),
 		},
 		output: {
@@ -31,13 +33,13 @@ export default () => {
 			rules: [
 				{
 					test: /\.js$/,
-					include: srcDir,
+					include: [srcDir, testDir],
 					loader: 'babel-loader',
 					options: {
 						plugins: [
 							isDev && 'react-hot-loader/babel',
 						].filter(Boolean),
-						forceEnv: 'webpack',
+						forceEnv: build ? 'build' : 'webpack',
 					},
 				},
 				{
@@ -105,9 +107,9 @@ export default () => {
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 				__DEV__: isDev,
 			}),
-			new HtmlWebpackPlugin({
+			!build && new HtmlWebpackPlugin({
 				filename: 'index.html',
-				template: './src/index.html',
+				template: './test/index.html',
 				minify: {
 					collapseWhitespace: true,
 					minifyJS: true,
@@ -115,14 +117,14 @@ export default () => {
 			}),
 		].filter(Boolean),
 		resolve: {
-			modules: [srcDir, 'node_modules'],
+			modules: [srcDir, testDir, 'node_modules'],
 			extensions: ['.js'],
 		},
 		resolveLoader: {
 			moduleExtensions: ['-loader'],
 		},
 		devServer: {
-			contentBase: 'src',
+			contentBase: 'test',
 			hot: true,
 			stats: {
 				chunkModules: false,
@@ -136,6 +138,23 @@ export default () => {
 			}
 		},
 	};
+
+	if (build) {
+		config.entry = './src/index.js';
+		Object.assign(config.output, {
+			library: 'ReAdmin',
+			libraryTarget: 'umd',
+			filename: `re-admin${min ? '.min' : ''}.js`,
+		});
+		config.externals = {
+			react: 'React',
+			'react-dom': 'ReactDom',
+			'react-router': 'ReactRouter',
+			mobx: 'mobx',
+			'mobx-react': 'mobxReact',
+			antd: 'antd',
+		};
+	}
 
 	return config;
 };

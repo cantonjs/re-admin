@@ -1,5 +1,6 @@
 
-import { Text, Select, Option, Image } from 'schemas';
+// eslint-disable-next-line
+import { Text, Select, Option, Image } from '../../../src';
 
 export default {
 	data: [

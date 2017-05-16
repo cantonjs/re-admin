@@ -11,16 +11,25 @@
 		"webpack": {
 			"presets": [
 				["es2015", { "modules": false }],
-				"stage-0-without-async",
+				"stage-0",
 			],
 			"plugins": [
 				"transform-decorators-legacy",
-				"transform-async-to-generator",
 				"lodash",
 				["import", {
 					"libraryName": "antd",
 					"style": true,
 				}],
+			],
+		},
+		"build": {
+			"presets": [
+				["es2015", { "modules": false }],
+				"stage-0",
+			],
+			"plugins": [
+				"transform-decorators-legacy",
+				"lodash",
 			],
 		},
 	},
