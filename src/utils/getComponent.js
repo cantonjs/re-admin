@@ -19,9 +19,4 @@ export function getComponents(children = []) {
 	});
 }
 
-export function getSchemaComponents() {
-	return context.keys().map((modulePath) => {
-		const [, moduleName] = modulePath.split('/');
-		return moduleName;
-	});
-};
+export { context };

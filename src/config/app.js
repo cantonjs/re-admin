@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { Fields } from 'Schemas';
+import sidebar from './sidebar';
 
 export default (
 	<Fields
 		name="上帝的看板"
+		sidebar={sidebar}
 		api={{
 			baseURL: '/api',
 			count: 5,

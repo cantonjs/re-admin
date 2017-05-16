@@ -1,16 +1,37 @@
 
 import jsxToPlainObject from 'utils/jsxToPlainObject';
-import { memoize, defaults } from 'lodash';
+import { defaults } from 'lodash';
 import appConfig from 'config/app';
+import DataTable from 'containers/DataTable';
+import NotFound from 'containers/NotFound';
 
-const getAppConfig = memoize(function () {
+let cache;
+
+export default function getAppConfig() {
+	if (cache) { return cache; }
+
 	const config = defaults(jsxToPlainObject(appConfig), {
+		name: 'Admin',
+		sidebar: [],
 		router: [],
 		views: {},
 		api: {},
 		auth: {},
 		upload: {},
 	});
+
+	config.sidebar = (function () {
+		const mergeItem = (children) => children.map((child, index) => {
+			if (child.children) { mergeItem(child.children); }
+			else if (!child.component) {
+				child.component = child.table ? DataTable : NotFound;
+			}
+			child.key = index;
+			return child;
+		});
+
+		return mergeItem(config.sidebar);
+	}());
 
 	config.api = defaults(config.api, {
 		timeout: 15000,
@@ -26,7 +47,5 @@ const getAppConfig = memoize(function () {
 		requireAccessToken: false,
 	});
 
-	return config;
-});
-
-export default getAppConfig;
+	return (cache = config);
+};

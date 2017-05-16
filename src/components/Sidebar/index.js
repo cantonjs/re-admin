@@ -1,21 +1,26 @@
 
 import $$ from './style.scss';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Menu, Icon } from 'antd';
-import items from 'config/sidebar.js';
-import getAppConfig from 'utils/getAppConfig';
 import User from 'components/User';
 
-const { name } = getAppConfig();
 const { SubMenu, Item: MenuItem } = Menu;
 
 export default class Sidebar extends Component {
+	static contextTypes = {
+		appConfig: PropTypes.object,
+	};
+
 	state = {
-		openKeys: []
+		openKeys: [],
 	};
 
 	render() {
+		const {
+			context: { appConfig: { sidebar, name } },
+		} = this;
 		return (
 			<div className={$$.container}>
 				<div className={$$.title}>{name}</div>
@@ -23,7 +28,7 @@ export default class Sidebar extends Component {
 					className={$$.menu}
 					mode="inline"
 				>
-					{items.map((item, index) => {
+					{sidebar.map((item, index) => {
 						return item.children && item.children.length ?
 							<SubMenu
 								key={index}

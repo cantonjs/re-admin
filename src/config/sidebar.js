@@ -1,3 +1,4 @@
+
 export default [
 	{
 		path: 'index',  // route时url中的值
