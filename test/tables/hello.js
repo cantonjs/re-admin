@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Fields, Text } from '../../../src'; // eslint-disable-line
+import { Fields, Text } from '../../src'; // eslint-disable-line
 
 export default (
 	<Fields>

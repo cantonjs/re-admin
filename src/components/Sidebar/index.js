@@ -21,7 +21,7 @@ export default class Sidebar extends Component {
 
 	render() {
 		const {
-			context: { appConfig: { sidebar, title } },
+			context: { appConfig: { navigator, title } },
 		} = this;
 		return (
 			<div className={$$.container}>
@@ -30,14 +30,14 @@ export default class Sidebar extends Component {
 					className={$$.menu}
 					mode="inline"
 				>
-					{sidebar.map((item, index) => {
+					{navigator.menus.map((item, index) => {
 						return item.children && item.children.length ?
 							<SubMenu
 								key={index}
 								title={
 									<span>
 										{item.icon && <Icon type={item.icon} />}
-										{item.name}
+										{item.title}
 									</span>
 								}
 							>
@@ -48,7 +48,7 @@ export default class Sidebar extends Component {
 										title={
 											<span>
 												{childItem.icon && <Icon type={childItem.icon} />}
-												{childItem.name}
+												{childItem.title}
 											</span>
 										}
 									>
@@ -60,7 +60,7 @@ export default class Sidebar extends Component {
 												<Link
 													to={leafItem.path}
 													style={{ display: 'inline' }}
-												>{leafItem.name}</Link>
+												>{leafItem.title}</Link>
 											</MenuItem>
 										)}
 									</SubMenu> :
@@ -69,7 +69,7 @@ export default class Sidebar extends Component {
 										<Link
 											to={childItem.path}
 											style={{ display: 'inline' }}
-										>{childItem.name}</Link>
+										>{childItem.title}</Link>
 									</MenuItem>
 							)}
 							</SubMenu> :
@@ -78,7 +78,7 @@ export default class Sidebar extends Component {
 								<Link
 									to={item.path}
 									style={{ display: 'inline' }}
-								>{item.name}</Link>
+								>{item.title}</Link>
 							</MenuItem>;
 					})}
 				</Menu>

@@ -36,7 +36,7 @@ export default class AdminContext extends Component {
 	render() {
 		const {
 			appConfig,
-			appConfig: { router, views },
+			appConfig: { views },
 		} = this.props;
 
 		const handleEnter = async (nextState, replace, next) => {
@@ -58,7 +58,7 @@ export default class AdminContext extends Component {
 				<Route path="login" component={views.login} />
 				<Route path="/" component={views.frame} onEnter={handleEnter}>
 					<IndexRoute component={views.index}/>
-					{router}
+					{appConfig.navigator.routes}
 					{getRoutes(appConfig)}
 					<Route path="*" component={views.notFound}/>
 				</Route>

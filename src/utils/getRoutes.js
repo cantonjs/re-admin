@@ -4,17 +4,19 @@ import { Route } from 'react-router';
 
 let cache;
 
-export default function getRoutes({ views, sidebar }) {
-	const mapRoutes = (routes) => {
-		if (!routes || !routes.length) { return null; }
+export default function getRoutes({ navigator }) {
+	const mapRoutes = (menus) => {
+		if (!menus || !menus.length) { return null; }
 
-		return routes.map(({ children, ...route }, index) =>
+		return menus.map(({ children, ...route }, index) =>
 			<Route {...route} key={index}>
-				{mapRoutes(children)}
-				<Route path="*" component={views.notFound}/>
+				{!!children && mapRoutes(children)}
+				{!!children &&
+					<Route path="*" component={navigator.notFound}/>
+				}
 			</Route>
 		);
 	};
 
-	return cache || (cache = mapRoutes(sidebar));
+	return cache || (cache = mapRoutes(navigator.menus));
 }

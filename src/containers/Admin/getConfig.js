@@ -40,7 +40,7 @@ export default function getAppConfig(appConfig = {}) {
 
 	const config = Object.assign({
 		title: 'Admin',
-		sidebar: [],
+		navigator: {},
 		router: [],
 		views: {},
 		api: {},
@@ -57,10 +57,10 @@ export default function getAppConfig(appConfig = {}) {
 		frame: FrameView,
 	});
 
-	config.sidebar = (function () {
-		const { dataTable, notFound } = config.views;
-		const mergeItem = (children) => children.map((child, index) => {
-			if (child.children) { mergeItem(child.children); }
+	config.navigator = (function () {
+		const mergeMenus = (children) => [].concat(children).map((child, index) => {
+			const { dataTable, notFound } = config.navigator;
+			if (child.children) { mergeMenus(child.children); }
 			else if (!child.component) {
 				child.component = child.table ? dataTable : notFound;
 			}
@@ -68,7 +68,17 @@ export default function getAppConfig(appConfig = {}) {
 			return child;
 		});
 
-		return mergeItem(config.sidebar);
+		config.navigator = defaults(config.navigator, {
+			index: IndexView,
+			login: LoginView,
+			dataTable: DataTableView,
+			notFound: NotFoundView,
+			frame: FrameView,
+			menus: [],
+			routes: [],
+		});
+		config.navigator.menus = mergeMenus(config.navigator.menus);
+		return config.navigator;
 	}());
 
 	config.api = defaults(config.api, {
