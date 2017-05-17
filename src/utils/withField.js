@@ -24,6 +24,7 @@ export default function withField(WrappedComponent) {
 			wrapperCol: PropTypes.object,
 			shouldHideInForm: PropTypes.bool,
 			shouldHideInTable: PropTypes.bool,
+			shouldShowInQuery: PropTypes.bool,
 			dataType: PropTypes.func,
 			unique: PropTypes.bool,
 			disabled: PropTypes.bool,
@@ -53,9 +54,10 @@ export default function withField(WrappedComponent) {
 		getFieldDecorator = (options) => {
 			const {
 				props: { name, disabled },
-				context: { form: { getFieldDecorator } },
+				context: { form: { getFieldDecorator }, issuer },
 			} = this;
-			return disabled ? returnsArgument : getFieldDecorator(name, options);
+			const isDisabled = disabled && issuer !== QUERIER;
+			return isDisabled ? returnsArgument : getFieldDecorator(name, options);
 		};
 
 		render() {
@@ -65,6 +67,9 @@ export default function withField(WrappedComponent) {
 					labelCol,
 					wrapperCol,
 					shouldHideInForm,
+
+					disabled,
+					shouldShowInQuery,
 
 					name,
 					location,
@@ -76,6 +81,9 @@ export default function withField(WrappedComponent) {
 					shouldHideInTable,
 
 					...other,
+				},
+				context: {
+					issuer,
 				},
 			} = this;
 
@@ -89,6 +97,7 @@ export default function withField(WrappedComponent) {
 				>
 					<WrappedComponent
 						{...other}
+						disabled={disabled && issuer !== QUERIER}
 						getValue={this.getValue}
 						getFieldDecorator={this.getFieldDecorator}
 					/>

@@ -46,11 +46,11 @@ export default class LoginView extends Component {
 	render() {
 		const {
 			props: { form: { getFieldDecorator } },
-			context: { appConfig: { name } },
+			context: { appConfig: { title } },
 		} = this;
 		return (
 			<div className={$$.container}>
-				<h1 className={$$.title}>{name}</h1>
+				<h1 className={$$.title}>{title}</h1>
 				<Form onSubmit={this._handleSubmit} className={$$.form}>
 					<FormItem>
 						{getFieldDecorator('username', {

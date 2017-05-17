@@ -16,10 +16,12 @@ export default class Admin extends Component {
 			router: PropTypes.any,
 			views: PropTypes.object,
 		}),
+		children: PropTypes.node,
 	};
 
 	componentWillMount() {
-		this._config = getConfig(this.props.config);
+		const { children, config } = this.props;
+		this._config = getConfig(children || config);
 	}
 
 	render() {

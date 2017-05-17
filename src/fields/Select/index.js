@@ -2,7 +2,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import Text from 'schemas/Text';
+import Text from 'fields/Text';
 
 export default class SelectField extends Component {
 	static propTypes = {

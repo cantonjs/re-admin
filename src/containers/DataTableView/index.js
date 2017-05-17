@@ -104,17 +104,22 @@ export default class DataTableView extends Component {
 
 	_getDataNodes(table) {
 		const { appConfig } = this.context;
-		return appConfig.tables[table];
+		const { data, title } = appConfig.tables[table];
+		return {
+			title,
+			form: data.filter(({ props }) => !props.shouldHideInForm),
+			query: data.filter(({ props }) => props.shouldShowInQuery),
+		};
 	}
 
 	render() {
 		const {
 			props: { location },
 			state: {
-				data,
-				query,
-				toolbar,
 				store,
+				title,
+				form,
+				query,
 			},
 		} = this;
 
@@ -122,13 +127,15 @@ export default class DataTableView extends Component {
 
 		return (
 			<div>
+				<h1>{title}</h1>
+
 				{hasQueryFields && panelsStore.isShowQuery &&
 					<TableQuery onQuery={this.updateQuery}>
 						{query}
 					</TableQuery>
 				}
 
-				<Toolbar hasQueryFields={hasQueryFields}>{toolbar}</Toolbar>
+				<Toolbar hasQueryFields={hasQueryFields} />
 
 				<TableBody
 					location={location}
@@ -140,7 +147,7 @@ export default class DataTableView extends Component {
 					location={location}
 					store={store}
 				>
-					{data}
+					{form}
 				</ActionModal>
 			</div>
 		);

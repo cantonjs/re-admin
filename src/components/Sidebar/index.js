@@ -21,11 +21,11 @@ export default class Sidebar extends Component {
 
 	render() {
 		const {
-			context: { appConfig: { sidebar, name } },
+			context: { appConfig: { sidebar, title } },
 		} = this;
 		return (
 			<div className={$$.container}>
-				<div className={$$.title}>{name}</div>
+				<div className={$$.title}>{title}</div>
 				<Menu
 					className={$$.menu}
 					mode="inline"
