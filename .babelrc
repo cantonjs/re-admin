@@ -8,12 +8,13 @@
 		"transform-decorators-legacy",
 	],
 	"env": {
-		"webpack": {
+		"dev": {
 			"presets": [
 				["es2015", { "modules": false }],
 				"stage-0",
 			],
 			"plugins": [
+				"react-hot-loader/babel",
 				"transform-decorators-legacy",
 				"lodash",
 				["import", {
