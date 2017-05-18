@@ -37,7 +37,7 @@ export default (env = {}) => {
 					include: [srcDir, testDir],
 					loader: 'babel-loader',
 					options: {
-						forceEnv: build ? 'build' : 'dev',
+						forceEnv: build ? 'es' : 'demo',
 					},
 				},
 				{

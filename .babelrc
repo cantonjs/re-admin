@@ -1,6 +1,6 @@
 {
 	"env": {
-		"node": {
+		"development": {
 			"presets": [
 				"es2015",
 				"stage-0-without-async",
@@ -9,7 +9,7 @@
 				"transform-decorators-legacy",
 			],
 		},
-		"dev": {
+		"demo": {
 			"presets": [
 				"react",
 				["es2015", { "modules": false }],
@@ -25,7 +25,7 @@
 				}],
 			],
 		},
-		"build": {
+		"es": {
 			"presets": [
 				"react",
 				["es2015", { "modules": false }],
