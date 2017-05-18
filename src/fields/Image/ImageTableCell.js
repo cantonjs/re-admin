@@ -1,5 +1,5 @@
 
-import $$ from './style.scss';
+import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { Modal } from 'antd';
@@ -40,13 +40,16 @@ export default class ImageTableCell extends Component {
 					footer={null}
 					onCancel={this._handleCloseModal}
 				>
-					<img className={$$.image} src={url} />
+					<img style={styles.image} src={url} />
 				</Modal>
 				<img
 					src={url}
-					className={$$.thumb}
+					style={{
+						...styles.thumb,
+						width: thumbWidth,
+						height: thumbHeight,
+					}}
 					onClick={this._handlePreview}
-					style={{ width: thumbWidth, height: thumbHeight }}
 				/>
 			</div>
 		);

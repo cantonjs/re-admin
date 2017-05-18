@@ -1,5 +1,4 @@
 
-import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -7,6 +6,43 @@ import { Menu, Icon } from 'antd';
 import Logout from 'components/Logout';
 
 const { SubMenu, Item: MenuItem } = Menu;
+
+const border = '1px solid rgb(233, 233, 233)';
+const styles = {
+	container: {
+		width: 240,
+		position: 'fixed',
+		left: 0,
+		top: 0,
+		bottom: 0,
+		display: 'flex',
+		flexDirection: 'column',
+		zIndex: 9,
+		borderRight: border,
+	},
+	title: {
+		height: 64,
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		fontSize: 20,
+		borderBottom: border,
+		backgroundColor: '#fff',
+	},
+	menu: {
+		flexGrow: 1,
+		overflowY: 'scroll',
+		borderRightWidth: 0,
+	},
+	footer: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 44,
+		fontSize: 14,
+		borderTop: border,
+	},
+};
 
 export default class Sidebar extends Component {
 	static contextTypes = {
@@ -24,10 +60,10 @@ export default class Sidebar extends Component {
 			context: { appConfig: { navigator, title } },
 		} = this;
 		return (
-			<div className={$$.container}>
-				<div className={$$.title}>{title}</div>
+			<div style={styles.container}>
+				<div style={styles.title}>{title}</div>
 				<Menu
-					className={$$.menu}
+					style={styles.menu}
 					mode="inline"
 				>
 					{navigator.menus.map((item, index) => {
@@ -82,7 +118,7 @@ export default class Sidebar extends Component {
 							</MenuItem>;
 					})}
 				</Menu>
-				<Logout className={$$.footer} />
+				<Logout style={styles.footer} />
 			</div>
 		);
 	}

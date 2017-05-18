@@ -1,5 +1,5 @@
 
-import $$ from './style.scss';
+import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Icon, Modal } from 'antd';
@@ -107,8 +107,8 @@ export default class ImageField extends Component {
 		});
 
 		const uploadButton = (
-			<div className={$$.uploadButton}>
-				<Icon className={$$.uploadButtonIcon} type="plus" />
+			<div style={styles.uploadButton}>
+				<Icon style={styles.uploadButtonIcon} type="plus" />
 			</div>
 		);
 
@@ -117,7 +117,7 @@ export default class ImageField extends Component {
 				{decorator(
 					<Upload
 						{...other}
-						className={$$.container}
+						style={styles.container}
 						customRequest={_customRequest}
 						action={_uploadPath}
 						listType="picture-card"
@@ -135,7 +135,7 @@ export default class ImageField extends Component {
 					footer={null}
 					onCancel={this._handleCloseModal}
 				>
-					<img className={$$.image} src={previewImage} />
+					<img style={styles.image} src={previewImage} />
 				</Modal>
 			</div>
 		);

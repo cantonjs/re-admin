@@ -1,4 +1,6 @@
 
+import 'antd/dist/antd.less';
+import './reset.scss';
 import React, { Component } from 'react';
 import { Admin, Title, Table, API, Auth, Upload, Navigator, Menu } from '../src'; // eslint-disable-line
 import test from './tables/test';

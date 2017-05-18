@@ -1,10 +1,17 @@
 
-import 'antd/dist/antd.less';
-import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'components/Sidebar';
-import panelsStore from 'stores/panels';
+import panelsStore from 'stores/panelsStore';
+
+const styles = {
+	container: {
+		minWidth: 1024,
+	},
+	main: {
+		padding: '40px 60px 40px 300px',
+	},
+};
 
 export default class FrameView extends Component {
 	static propTypes = {
@@ -14,11 +21,11 @@ export default class FrameView extends Component {
 	render() {
 		const { children } = this.props;
 		return (
-			<div className={$$.container}>
+			<div style={styles.container}>
 				{panelsStore.isShowSidebar &&
 					<Sidebar />
 				}
-				<div className={$$.main}>{children}</div>
+				<div style={styles.main}>{children}</div>
 			</div>
 		);
 	}

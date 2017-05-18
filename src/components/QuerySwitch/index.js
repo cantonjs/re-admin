@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Checkbox } from 'antd';
-import panelsStore from 'stores/panels';
+import panelsStore from 'stores/panelsStore';
 
 @observer
 export default class QuerySwitch extends Component {

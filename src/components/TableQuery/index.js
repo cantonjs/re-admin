@@ -1,9 +1,22 @@
 
-import $$ from './style.scss';
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Row, Col, Button, Icon } from 'antd';
+import { Form, Row, Col, Button } from 'antd';
 import { QUERIER } from 'constants/Issuers';
+
+const styles = {
+	container: {
+		padding: 20,
+		border: '1px solid #eee',
+		margin: '20px 0',
+	},
+	footer: {
+		textAlign: 'right',
+	},
+	clearButton: {
+		marginLeft: 8,
+	},
+};
 
 @Form.create()
 export default class TableQuery extends Component {
@@ -52,7 +65,7 @@ export default class TableQuery extends Component {
 
 		return (
 			<Form
-				className={$$.container}
+				style={styles.container}
 				onSubmit={this._handleSearch}
 				layout="inline"
 			>
@@ -60,11 +73,11 @@ export default class TableQuery extends Component {
 					{children}
 				</Row>
 				<Row>
-					<Col span={24} className={$$.footer}>
+					<Col span={24} style={styles.footer}>
 						<Button type="primary" htmlType="submit">
 							查询
 						</Button>
-						<Button className={$$.clearButton} onClick={this._handleReset}>
+						<Button style={styles.clearButton} onClick={this._handleReset}>
 							清空
 						</Button>
 					</Col>

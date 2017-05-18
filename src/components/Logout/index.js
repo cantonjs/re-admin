@@ -9,7 +9,7 @@ const confirm = Modal.confirm;
 @withRouter
 export default class Logout extends Component {
 	static propTypes = {
-		className: PropTypes.string,
+		style: PropTypes.object,
 		router: PropTypes.object,
 	};
 
@@ -30,10 +30,10 @@ export default class Logout extends Component {
 	};
 
 	render() {
-		const { className } = this.props;
+		const { style } = this.props;
 		return (
 			<a
-				className={className}
+				style={style}
 				onClick={this._handleClick}
 				href="#"
 			>退出登录</a>

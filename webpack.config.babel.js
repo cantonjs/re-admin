@@ -2,7 +2,7 @@
 import { resolve } from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+// import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const backendServerPort = process.env.BACKEND_SERVER_PORT || 3001;
@@ -42,7 +42,7 @@ export default (env = {}) => {
 				},
 				{
 					test: /\.css$/,
-					include: srcDir,
+					include: [srcDir, testDir],
 					use: [
 						'style-loader',
 						{
@@ -67,7 +67,7 @@ export default (env = {}) => {
 				},
 				{
 					test: /\.scss$/,
-					include: srcDir,
+					include: [srcDir, testDir],
 					use: [
 						'style-loader',
 						{
@@ -155,22 +155,22 @@ export default (env = {}) => {
 			antd: 'antd',
 		};
 
-		config.module.rules
-			.filter(({ test }) =>
-				['.less', '.scss', '.css'].some((ext) => test.test(ext))
-			)
-			.forEach((rule) => {
-				const [, ...use] = rule.use;
-				rule.use = ExtractTextPlugin.extract({
-					fallback: 'style-loader',
-					use,
-				});
-			})
-		;
+		// config.module.rules
+		// 	.filter(({ test }) =>
+		// 		['.less', '.scss', '.css'].some((ext) => test.test(ext))
+		// 	)
+		// 	.forEach((rule) => {
+		// 		const [, ...use] = rule.use;
+		// 		rule.use = ExtractTextPlugin.extract({
+		// 			fallback: 'style-loader',
+		// 			use,
+		// 		});
+		// 	})
+		// ;
 
-		config.plugins.push(
-			new ExtractTextPlugin(`re-admin${min ? '.min' : ''}.css`)
-		);
+		// config.plugins.push(
+		// 	new ExtractTextPlugin(`re-admin${min ? '.min' : ''}.css`)
+		// );
 	}
 
 	return config;

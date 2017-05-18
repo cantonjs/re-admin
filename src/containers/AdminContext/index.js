@@ -1,11 +1,10 @@
 
-import './reset.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import getRoutes from 'utils/getRoutes';
 import AuthStore from 'stores/AuthStore';
-import DataStore from 'stores/Data';
+import DataStore from 'stores/DataStore';
 
 export default class AdminContext extends Component {
 	static propTypes = {

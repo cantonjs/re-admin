@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import panelsStore from 'stores/panels';
+import panelsStore from 'stores/panelsStore';
 import { omit, isEqual } from 'lodash';
 
 import TableBody from 'components/TableBody';

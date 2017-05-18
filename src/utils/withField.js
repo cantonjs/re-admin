@@ -8,6 +8,12 @@ import { Form } from 'antd';
 
 const FormItem = Form.Item;
 
+const styles = {
+	container: {
+		marginBottom: 12,
+	},
+};
+
 export default function withField(WrappedComponent) {
 	@withRouter
 	class WithField extends Component {
@@ -94,6 +100,7 @@ export default function withField(WrappedComponent) {
 					label={label}
 					labelCol={labelCol}
 					wrapperCol={wrapperCol}
+					style={styles.container}
 				>
 					<WrappedComponent
 						{...other}

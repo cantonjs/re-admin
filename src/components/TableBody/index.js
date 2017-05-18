@@ -1,9 +1,15 @@
 
-import $$ from './style.scss';
 import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
+
+const styles = {
+	pagination: {
+		marginTop: 20,
+		textAlign: 'right',
+	},
+};
 
 @observer
 export default class TableBody extends Component {
@@ -47,7 +53,7 @@ export default class TableBody extends Component {
 					pagination={false}
 				/>
 				<Pagination
-					className={$$.pagination}
+					className={styles.pagination}
 					current={current}
 					total={total}
 					onChange={onPageChange}

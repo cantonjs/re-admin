@@ -1,10 +1,32 @@
 
-import $$ from './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
 
 const FormItem = Form.Item;
+
+const styles = {
+	container: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		flexDirection: 'column',
+		height: '100%',
+	},
+	title: {
+		marginTop: -160,
+	},
+	form: {
+		maxWidth: 300,
+		padding: 20,
+		border: '1px solid #eee',
+		marginTop: 10,
+		width: '100%',
+	},
+	button: {
+		width: '100%',
+	},
+};
 
 @Form.create()
 export default class LoginView extends Component {
@@ -49,9 +71,9 @@ export default class LoginView extends Component {
 			context: { appConfig: { title } },
 		} = this;
 		return (
-			<div className={$$.container}>
-				<h1 className={$$.title}>{title}</h1>
-				<Form onSubmit={this._handleSubmit} className={$$.form}>
+			<div style={styles.container}>
+				<h1 style={styles.title}>{title}</h1>
+				<Form onSubmit={this._handleSubmit} style={styles.form}>
 					<FormItem>
 						{getFieldDecorator('username', {
 							rules: [{ required: true, message: '请输入用户名!' }],
@@ -67,7 +89,7 @@ export default class LoginView extends Component {
 						)}
 					</FormItem>
 					<FormItem>
-						<Button type="primary" htmlType="submit" className={$$.bt}>
+						<Button type="primary" htmlType="submit" style={styles.button}>
 							登录
 						</Button>
 					</FormItem>
