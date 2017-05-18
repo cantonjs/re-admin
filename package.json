@@ -24,7 +24,10 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
-  "author": "cap32",
+  "author": [
+    "cap32",
+    "jc"
+  ],
   "license": "MIT",
   "dependencies": {
     "cookie": "^0.3.1",
