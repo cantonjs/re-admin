@@ -1,8 +1,8 @@
 {
-  "name": "fe-admin-boilerplate",
+  "name": "re-admin",
   "version": "0.0.0",
-  "description": "fe-admin-boilerplate",
-  "repository": "cantonjs/fe-admin-boilerplate",
+  "description": "re-admin",
+  "repository": "cantonjs/re-admin",
   "scripts": {
     "start": "yarn server | yarn client",
     "client": "webpack-dev-server",

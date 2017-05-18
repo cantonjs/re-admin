@@ -1,10 +1,6 @@
-# fe-admin-boilerplate
+# re-admin
 
-## Usage
-
-```bash
-yarn start
-```
+*Document is coming soon...*
 
 ## License
 
