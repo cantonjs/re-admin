@@ -5,12 +5,14 @@
   "repository": "cantonjs/fe-admin-boilerplate",
   "scripts": {
     "start": "yarn server | yarn client",
-    "client": "webpack-dev-server",
-    "server": "nodemon test/server",
-    "prebuild": "rimraf dist && mkdirp dist",
-    "build:umd": "cross-env NODE_ENV=production webpack --env.build --progress --colors",
+    "client": "BABEL_ENV=node webpack-dev-server",
+    "server": "BABEL_ENV=node nodemon test/server",
+    "prebuild": "rimraf dist lib es && mkdirp dist lib es",
+    "build:es": "cross-env NODE_ENV=production BABEL_ENV=build babel src -d es",
+    "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel src -d lib",
+    "build:umd": "cross-env NODE_ENV=production BABEL_ENV=node webpack --env.build --progress --colors",
     "build:min": "yarn build:umd -- --env.min -p",
-    "build": "yarn build:umd && yarn build:min"
+    "build": "yarn build:es && yarn build:cjs && yarn build:umd && yarn build:min"
   },
   "files": [
     "README.md",

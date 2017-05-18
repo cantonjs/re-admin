@@ -1,15 +1,17 @@
 {
-	"presets": [
-		"react",
-		["es2015"],
-		"stage-0-without-async",
-	],
-	"plugins": [
-		"transform-decorators-legacy",
-	],
 	"env": {
+		"node": {
+			"presets": [
+				"es2015",
+				"stage-0-without-async",
+			],
+			"plugins": [
+				"transform-decorators-legacy",
+			],
+		},
 		"dev": {
 			"presets": [
+				"react",
 				["es2015", { "modules": false }],
 				"stage-0",
 			],
@@ -25,7 +27,19 @@
 		},
 		"build": {
 			"presets": [
+				"react",
 				["es2015", { "modules": false }],
+				"stage-0",
+			],
+			"plugins": [
+				"transform-decorators-legacy",
+				"lodash",
+			],
+		},
+		"cjs": {
+			"presets": [
+				"react",
+				"es2015",
 				"stage-0",
 			],
 			"plugins": [
