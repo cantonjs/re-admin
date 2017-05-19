@@ -37,7 +37,7 @@ const parseSchemaNodes = (nodes) => {
 export default function getAppConfig(appConfig = {}) {
 	appConfig = parseSchemaNodes(appConfig);
 
-	__DEV__ && console.log('appConfig', appConfig);
+	// __DEV__ && console.log('appConfig', appConfig);
 
 	const config = Object.assign({
 		title: 'Admin',

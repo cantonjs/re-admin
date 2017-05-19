@@ -6,11 +6,18 @@ import { message } from 'antd';
 import getAsk from 'utils/getAsk';
 import { isString } from 'lodash';
 
-const verifyAndSaveAccessToken = (token, maxAge = 60) => {
+const verifyAndSaveAccessToken = (token, maxAge) => {
 	if (!isString(token)) {
 		throw new Error(`"accessToken" is INVALID, received "${token}"`);
 	}
-	cookie.set(ACCESS_TOKEN, token, { maxAge });
+
+	if (!+maxAge) {
+		__DEV__ && console.warn(
+			'Missing `expiresIn` attribute.'
+		);
+	}
+
+	maxAge && cookie.set(ACCESS_TOKEN, token, { maxAge });
 };
 
 export default class AuthStore {
@@ -22,7 +29,7 @@ export default class AuthStore {
 	}
 
 	getAccessToken() {
-		return cookie.get(ACCESS_TOKEN);
+		return this.accessToken || cookie.get(ACCESS_TOKEN);
 	}
 
 	async auth() {
