@@ -1,8 +1,9 @@
 
-const context = require.context('schemas', true, /\w\/index\.js$/);
-context.keys().map((modulePath) => {
-	const [, moduleName] = modulePath.split('/');
-	const result = context(modulePath);
-	const component = result.default || result;
-	exports[moduleName] = component;
-});
+export API from './API';
+export Auth from './Auth';
+export Fields from './Fields';
+export Menu from './Menu';
+export Navigator from './Navigator';
+export Table from './Table';
+export Title from './Title';
+export Upload from './Upload';

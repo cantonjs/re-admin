@@ -1,8 +1,5 @@
 
-const context = require.context('fields', true, /\w\/index\.js$/);
-context.keys().map((modulePath) => {
-	const [, moduleName] = modulePath.split('/');
-	const result = context(modulePath);
-	const component = result.default || result;
-	exports[moduleName] = component;
-});
+export Image from './Image';
+export Option from './Option';
+export Select from './Select';
+export Text from './Text';
