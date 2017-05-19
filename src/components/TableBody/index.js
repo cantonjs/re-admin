@@ -53,7 +53,7 @@ export default class TableBody extends Component {
 					pagination={false}
 				/>
 				<Pagination
-					className={styles.pagination}
+					style={styles.pagination}
 					current={current}
 					total={total}
 					onChange={onPageChange}

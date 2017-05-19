@@ -99,7 +99,6 @@ export default function getAppConfig(appConfig = {}) {
 	config.tables = Object.keys(config.tables).reduce((tables, key) => {
 		const table = defaults(config.tables[key] || {}, {
 			data: [],
-			title: key,
 		});
 		table.data = plainObjectToJsx(table.data);
 		tables[key] = table;

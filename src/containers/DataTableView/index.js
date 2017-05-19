@@ -23,6 +23,7 @@ export default class DataTableView extends Component {
 		}),
 		route: PropTypes.shape({
 			table: PropTypes.string.isRequired,
+			title: PropTypes.string,
 		}),
 	};
 
@@ -114,7 +115,7 @@ export default class DataTableView extends Component {
 
 	render() {
 		const {
-			props: { location },
+			props: { location, route },
 			state: {
 				store,
 				title,
@@ -127,7 +128,7 @@ export default class DataTableView extends Component {
 
 		return (
 			<div>
-				<h1>{title}</h1>
+				<h1>{title || route.title || route.table}</h1>
 
 				{hasQueryFields && panelsStore.isShowQuery &&
 					<TableQuery onQuery={this.updateQuery}>

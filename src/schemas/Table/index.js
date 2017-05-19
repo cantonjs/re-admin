@@ -16,7 +16,7 @@ TableSchema.setConfig = ({ name, title, children }, tables) => {
 		children = children.props.children;
 	}
 	tables[name] = {
-		title: title || name,
+		title: title,
 		data: children,
 	};
 };
