@@ -103,7 +103,7 @@ export default class DataStore {
 		this.isFetching = true;
 
 		try {
-			const { total, list } = await this._ask.fork({ query });
+			const { total, list = [] } = await this._ask.fork({ query });
 
 			const collection = list.map((data, index) => {
 				data.key = this._uniqueKey ? data[this._uniqueKey] : index;
