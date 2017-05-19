@@ -4,6 +4,14 @@ import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
 import getAsk from 'utils/getAsk';
+import { isString } from 'lodash';
+
+const verifyAndSaveAccessToken = (token, maxAge = 60) => {
+	if (!isString(token)) {
+		throw new Error(`"accessToken" is INVALID, received "${token}"`);
+	}
+	cookie.set(ACCESS_TOKEN, token, { maxAge });
+};
 
 export default class AuthStore {
 	@observable isFetching = false;
@@ -29,13 +37,16 @@ export default class AuthStore {
 				url: this._config.getUserPath,
 				query,
 			});
-			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
+
+			verifyAndSaveAccessToken(accessToken, expiresIn);
+
 			this.accessToken = accessToken;
 			isOk = true;
 
 			__DEV__ && console.log('Auth success');
 		}
 		catch (err) {
+			__DEV__ && console.error(err);
 			message.error('登录凭证已失效，请重新登录');
 		}
 		this.isFetching = false;
@@ -52,7 +63,9 @@ export default class AuthStore {
 				method: 'POST',
 				body,
 			});
-			cookie.set(ACCESS_TOKEN, accessToken, { maxAge: expiresIn });
+
+			verifyAndSaveAccessToken(accessToken, expiresIn);
+
 			isOk = true;
 			message.success('登录成功');
 		}
