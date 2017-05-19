@@ -10,6 +10,11 @@ AuthSchema.propTypes = {
 	basePath: PropTypes.string.isRequired,
 	loginPath: PropTypes.string.isRequired,
 	getUserPath: PropTypes.string.isRequired,
+	defaultLoginRedirection: PropTypes.string,
+};
+
+AuthSchema.defaultProps = {
+	defaultLoginRedirection: '/',
 };
 
 AuthSchema.setConfig = (props, auth) => {

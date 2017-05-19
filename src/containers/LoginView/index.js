@@ -49,7 +49,10 @@ export default class LoginView extends Component {
 		e.preventDefault();
 		const {
 			props: { form, location, router },
-			context: { authStore },
+			context: {
+				authStore,
+				appConfig: { auth: { defaultLoginRedirection } },
+			},
 		} = this;
 		form.validateFields(async (err, values) => {
 			if (!err) {
@@ -58,7 +61,7 @@ export default class LoginView extends Component {
 
 				if (isOk) {
 					const { ref } = location.query;
-					const url = ref || '/';
+					const url = ref || defaultLoginRedirection;
 					router.replace(url);
 				}
 			}

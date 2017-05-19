@@ -42,21 +42,11 @@ export default function getAppConfig(appConfig = {}) {
 	const config = Object.assign({
 		title: 'Admin',
 		navigator: {},
-		router: [],
-		views: {},
 		api: {},
 		auth: {},
 		upload: {},
 		tables: {},
 	}, jsxToPlainObject(appConfig));
-
-	config.views = defaults(config.views, {
-		index: IndexView,
-		login: LoginView,
-		dataTable: DataTableView,
-		notFound: NotFoundView,
-		frame: FrameView,
-	});
 
 	config.navigator = (function () {
 		const mergeMenus = (children) => [].concat(children).map((child, index) => {
