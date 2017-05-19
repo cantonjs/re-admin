@@ -84,6 +84,7 @@ export default function withField(WrappedComponent) {
 					routes,
 					dataType,
 					unique,
+					render,
 					shouldHideInTable,
 
 					...other,
