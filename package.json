@@ -73,7 +73,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.0.0",
     "eslint-plugin-standard": "^3.0.1",
-    "extract-text-webpack-plugin": "^2.1.0",
     "html-webpack-plugin": "^2.28.0",
     "kcors": "2",
     "koa": "^2.2.0",
