@@ -41,7 +41,7 @@ export default class AuthStore {
 
 			const { accessToken, expiresIn } = await this._ask.fork({
 				url: this._config.getUserPath,
-				[appConfig.api.accessTokenLocation]: {
+				[this._apiConfig.accessTokenLocation]: {
 					[this._apiConfig.accessTokenName]({ remove }) {
 						if (!token) { remove(); }
 						else { return token; }
