@@ -75,6 +75,8 @@ export default function getAppConfig(appConfig = {}) {
 	config.api = defaults(config.api, {
 		timeout: 15000,
 		count: 20,
+		accessTokenName: 'X-ACCESS-TOKEN',
+		accessTokenLocation: 'header',
 	});
 
 	config.upload = defaults(config.upload, {

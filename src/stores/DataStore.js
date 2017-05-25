@@ -70,8 +70,8 @@ export default class DataStore {
 
 		this._ask = getAsk(appConfig).clone({
 			url: table,
-			query: {
-				accessToken({ remove }) {
+			[appConfig.api.accessTokenLocation]: {
+				[appConfig.api.accessTokenName]({ remove }) {
 					const token = authStore.getAccessToken();
 					if (!token) { remove(); }
 					else { return token; }

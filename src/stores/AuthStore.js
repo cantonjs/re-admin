@@ -24,6 +24,7 @@ export default class AuthStore {
 	@observable isFetching = false;
 
 	constructor(config) {
+		this._apiConfig = config.api;
 		this._config = config.auth;
 		this._ask = getAsk(config).clone(this._config.basePath);
 	}
@@ -36,13 +37,16 @@ export default class AuthStore {
 		this.isFetching = true;
 		let isOk = false;
 		try {
-			const query = {};
 			const token = this.getAccessToken();
-			if (token) { query.accessToken = token; }
 
 			const { accessToken, expiresIn } = await this._ask.fork({
 				url: this._config.getUserPath,
-				query,
+				[appConfig.api.accessTokenLocation]: {
+					[this._apiConfig.accessTokenName]({ remove }) {
+						if (!token) { remove(); }
+						else { return token; }
+					},
+				},
 			});
 
 			verifyAndSaveAccessToken(accessToken, expiresIn);

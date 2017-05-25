@@ -26,7 +26,8 @@ export default class ImageField extends Component {
 	};
 
 	static contextTypes = {
-		authStore: PropTypes.object,
+		authStore: PropTypes.object.isRequired,
+		appConfig: PropTypes.object.isRequired,
 	};
 
 	constructor(props, context) {
@@ -37,6 +38,7 @@ export default class ImageField extends Component {
 		const strategies = this.getAppConfig('strategies');
 		const imagePath = this.getAppConfig('imagePath');
 		const requireAccessToken = this.getAppConfig('requireAccessToken');
+		const { accessTokenName } = context.appConfig.api;
 
 		if (__DEV__ && strategy && !strategies.hasOwnProperty(strategy)) {
 			console.warn(
@@ -45,8 +47,9 @@ export default class ImageField extends Component {
 		}
 		this._customRequest = strategies[strategy];
 
+		// TODO: should suppport `accessToken` in header
 		const search = requireAccessToken ?
-			`?accessToken=${authStore.getAccessToken()}` : ''
+			`?${accessTokenName}=${authStore.getAccessToken()}` : ''
 		;
 		this._uploadPath = imagePath + search;
 

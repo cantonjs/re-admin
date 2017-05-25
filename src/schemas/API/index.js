@@ -10,11 +10,15 @@ APISchema.propTypes = {
 	baseURL: PropTypes.string.isRequired,
 	timeout: PropTypes.number,
 	count: PropTypes.number,
+	accessTokenName: PropTypes.string,
+	accessTokenLocation: PropTypes.oneOf(['header', 'query']),
 };
 
 APISchema.defaultProps = {
 	timeout: 15000,
 	count: 20,
+	accessTokenName: 'X-ACCESS-TOKEN',
+	accessTokenLocation: 'header',
 };
 
 APISchema.setConfig = (props, api) => {
