@@ -43,7 +43,7 @@ NavigatorSchema.setConfig = ({ children }, navigator) => {
 	};
 
 	navigator.menus = navigator.menus || [];
-	navigator.menus.push(...getChildren(children).filter(Boolean));
+	navigator.menus.push(...[].concat(getChildren(children)).filter(Boolean));
 };
 NavigatorSchema.schemaName = 'navigator';
 NavigatorSchema.DataType = Object;
