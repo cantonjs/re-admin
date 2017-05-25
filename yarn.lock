@@ -2829,9 +2829,9 @@ htmlparser2@~3.3.0:
     domutils "1.1"
     readable-stream "1.0"
 
-http-ask@^0.0.0-rc5:
-  version "0.0.0-rc5"
-  resolved "http://registry.npm.taobao.org/http-ask/download/http-ask-0.0.0-rc5.tgz#ea3702409320976c56493437f422cfae14526bed"
+http-ask@^0.0.0-rc6:
+  version "0.0.0-rc6"
+  resolved "http://registry.npm.taobao.org/http-ask/download/http-ask-0.0.0-rc6.tgz#7fbd9f8fef96dd464fe6d24c9f274c25b4a053ab"
   dependencies:
     isomorphic-fetch "^2.2.1"
     object-assign "^4.1.0"
