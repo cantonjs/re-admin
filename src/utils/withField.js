@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { returnsArgument } from 'empty-functions';
 import { UPDATER, QUERIER } from 'constants/Issuers';
 import { Form } from 'antd';
+import { omit } from 'lodash';
 
 const FormItem = Form.Item;
 
@@ -13,6 +14,8 @@ const styles = {
 		marginBottom: 12,
 	},
 };
+
+// FIXME: There is a bug when both `shouldHideInForm` and `shouldShowInQuery` are true
 
 export default function withField(WrappedComponent) {
 	@withRouter
@@ -34,6 +37,12 @@ export default function withField(WrappedComponent) {
 			dataType: PropTypes.func,
 			unique: PropTypes.bool,
 			disabled: PropTypes.bool,
+			validator: PropTypes.array,
+			render: PropTypes.func,
+		};
+
+		static defaultProps = {
+			validator: [],
 		};
 
 		static contextTypes = {
@@ -41,6 +50,23 @@ export default function withField(WrappedComponent) {
 			store: PropTypes.object,
 			issuer: PropTypes.string,
 		};
+
+		componentWillMount() {
+			const {
+				props: { validator },
+				context: { issuer },
+			} = this;
+
+			if (issuer !== QUERIER) {
+				this._validator = validator;
+			}
+			else {
+				this._validator = validator.map((options) =>
+					omit(options, ['required'])
+				);
+			}
+
+		}
 
 		getValue = () => {
 			const {
@@ -85,6 +111,7 @@ export default function withField(WrappedComponent) {
 					dataType,
 					unique,
 					render,
+					validator,
 					shouldHideInTable,
 
 					...other,
@@ -107,6 +134,7 @@ export default function withField(WrappedComponent) {
 						{...other}
 						disabled={disabled && issuer !== QUERIER}
 						getValue={this.getValue}
+						validator={this._validator}
 						getFieldDecorator={this.getFieldDecorator}
 					/>
 				</FormItem>
