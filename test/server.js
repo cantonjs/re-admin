@@ -35,7 +35,7 @@ router
 	})
 	.post('/api/auth/login', async (ctx) => {
 		const { username, password } = ctx.request.body;
-		if (username === 'admin' && password === '123456') {
+		if (username === 'admin' && password === '000000') {
 			ctx.body = { accessToken: validAccessToken, expiresIn };
 		}
 		else {

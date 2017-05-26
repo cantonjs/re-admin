@@ -20,7 +20,13 @@ export default class App extends Component {
 					</Menu>
 				</Navigator>
 
-				<API baseURL="/api" count={5} />
+				<API
+					baseURL="/api"
+					count={5}
+					accessTokenName="accessToken"
+					accessTokenLocation="query"
+				/>
+
 				<Auth basePath="auth" loginPath="login" getUserPath="getUser" />
 				<Upload imagePath="/api/upload/image" filePath="upload/file" />
 
