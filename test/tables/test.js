@@ -10,6 +10,7 @@ export default (
 			disabled
 			unique
 			shouldShowInQuery
+			shouldHideInForm
 		/>
 		<Text
 			name="name"

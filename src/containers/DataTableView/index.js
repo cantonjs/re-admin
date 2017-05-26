@@ -109,7 +109,7 @@ export default class DataTableView extends Component {
 		return {
 			title,
 			form: data.filter(({ props }) => !props.shouldHideInForm),
-			query: data.filter(({ props }) => props.shouldShowInQuery),
+			query: data,
 		};
 	}
 

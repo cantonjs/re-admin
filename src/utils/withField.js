@@ -15,8 +15,6 @@ const styles = {
 	},
 };
 
-// FIXME: There is a bug when both `shouldHideInForm` and `shouldShowInQuery` are true
-
 export default function withField(WrappedComponent) {
 	@withRouter
 	class WithField extends Component {
@@ -88,7 +86,8 @@ export default function withField(WrappedComponent) {
 				props: { name, disabled },
 				context: { form: { getFieldDecorator }, issuer },
 			} = this;
-			const isDisabled = disabled && issuer !== QUERIER;
+			const isInQuery = issuer === QUERIER;
+			const isDisabled = disabled && !isInQuery;
 			return isDisabled ? returnsArgument : getFieldDecorator(name, options);
 		};
 
@@ -101,7 +100,6 @@ export default function withField(WrappedComponent) {
 					shouldHideInForm,
 
 					disabled,
-					shouldShowInQuery,
 
 					name,
 					location,
@@ -112,6 +110,7 @@ export default function withField(WrappedComponent) {
 					unique,
 					render,
 					validator,
+					shouldShowInQuery,
 					shouldHideInTable,
 
 					...other,
@@ -121,7 +120,10 @@ export default function withField(WrappedComponent) {
 				},
 			} = this;
 
-			if (shouldHideInForm) { return null; }
+			const isInQuery = issuer === QUERIER;
+
+			if (shouldHideInForm && !isInQuery) { return null; }
+			if (isInQuery && !shouldShowInQuery) { return null; }
 
 			return (
 				<FormItem
@@ -132,7 +134,7 @@ export default function withField(WrappedComponent) {
 				>
 					<WrappedComponent
 						{...other}
-						disabled={disabled && issuer !== QUERIER}
+						disabled={disabled && !isInQuery}
 						getValue={this.getValue}
 						validator={this._validator}
 						getFieldDecorator={this.getFieldDecorator}
