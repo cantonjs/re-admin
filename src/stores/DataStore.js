@@ -1,6 +1,6 @@
 
 import { observable, computed, toJS } from 'mobx';
-import { omit } from 'lodash';
+import { omit, isString, isNumber } from 'lodash';
 import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
 import jsxToPlainObject from 'utils/jsxToPlainObject';
@@ -159,10 +159,14 @@ export default class DataStore {
 		}
 	}
 
-	async remove() {
+	async remove(keys) {
 		try {
+			if (isNumber(keys) || isString(keys)) { keys = [keys]; }
+			if (!Array.isArray(keys)) { keys = this.selectedKeys; }
+			if (!keys.length) { return; }
+
 			await this._ask.fork({
-				url: this.selectedKeys.join(','),
+				url: keys.join(','),
 				method: 'DELETE',
 			});
 			this._sync();

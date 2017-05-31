@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Fields, Text, Select, Option, Image } from '../../src';
+import { Fields, Text, Select, Option, Image, Actions, Remove, Update } from '../../src';
 
 export default (
 	<Fields>
@@ -39,6 +39,7 @@ export default (
 			label="分数"
 			max={18}
 			validator={[{ required: true, message: '必填' }]}
+			shouldHideInTable
 		/>
 		<Select
 			name="fav"
@@ -57,6 +58,12 @@ export default (
 			name="birthday"
 			label="生日"
 			dataType={Date}
+			shouldHideInTable
 		/>
+		<Actions>
+			<Remove />
+			<span className="ant-divider" />
+			<Update />
+		</Actions>
 	</Fields>
 );
