@@ -40,13 +40,15 @@ export default class ActionModal extends Component {
 	};
 
 	getChildContext() {
-		return { issuer: issuersMap[this.props.location.query.action] };
+		return { issuer: issuersMap[this.props.location.query._action] };
 	}
 
 	close() {
-		this.context.updateLocationQuery({}, {
-			omitPaths: ['action', 'selectedKeys'],
+		const { updateLocationQuery, store } = this.context;
+		updateLocationQuery({}, {
+			omitPaths: ['_action', '_keys', '_names'],
 		});
+		store.setSelectedKeys([]);
 	}
 
 	_handleOk = () => {
@@ -67,8 +69,8 @@ export default class ActionModal extends Component {
 
 	_handleSubmit = (err, values) => {
 		if (!err) {
-			const { store, location: { query: { action } } } = this.props;
-			store[action](values);
+			const { store, location: { query: { _action, _keys } } } = this.props;
+			store[_action](values, _keys);
 		}
 	};
 
@@ -80,12 +82,12 @@ export default class ActionModal extends Component {
 		const {
 			props: {
 				children,
-				location: { query: { action }, search }
+				location: { query: { _action }, search }
 			},
 		} = this;
 
-		const title = actionLabelsMap[action];
-		const isVisible = actionNames.includes(action);
+		const title = actionLabelsMap[_action];
+		const isVisible = actionNames.includes(_action);
 
 		return (
 			<ActionModalInternal

@@ -64,20 +64,58 @@ export default function withField(WrappedComponent) {
 				);
 			}
 
+			this._shouldShow = this._detectShouldShow();
+		}
+
+		_detectShouldShow() {
+			const {
+				props: {
+					name,
+					location: { query: { _names } },
+					shouldShowInQuery,
+					shouldHideInForm,
+				},
+				context: {
+					issuer,
+				},
+			} = this;
+
+			const isInQuery = issuer === QUERIER;
+
+			if (
+				(!isInQuery && shouldHideInForm) ||
+				(isInQuery && !shouldShowInQuery)
+			) {
+				return null;
+			}
+
+			const isUpdater = issuer === UPDATER;
+
+			if (isUpdater && _names) {
+				const names = _names.split(',');
+				if (names.length && names.indexOf(name) < 0) { return null; }
+			}
+
+			return true;
 		}
 
 		getValue = () => {
 			const {
 				props: { name, location: { query } },
-				context: { store: { selection }, issuer },
+				context: { store, issuer },
 			} = this;
 
+			const selectedKeys = (query._keys || '').split(',');
+
 			if (issuer === QUERIER) {
-				return query[name];
+				return query[name] || '';
 			}
-			else if (selection.length === 1 && issuer === UPDATER) {
-				return selection[0][name];
+
+			else if (selectedKeys.length === 1 && issuer === UPDATER) {
+				const item = store.findItemByKey(selectedKeys[0]);
+				return item ? item[name] : '';
 			}
+
 			return '';
 		};
 
@@ -92,13 +130,13 @@ export default function withField(WrappedComponent) {
 		};
 
 		render() {
+			if (!this._shouldShow) { return null; }
+
 			const {
 				props: {
 					label,
 					labelCol,
 					wrapperCol,
-					shouldHideInForm,
-
 					disabled,
 
 					name,
@@ -110,6 +148,7 @@ export default function withField(WrappedComponent) {
 					unique,
 					render,
 					validator,
+					shouldHideInForm,
 					shouldShowInQuery,
 					shouldHideInTable,
 
@@ -122,8 +161,19 @@ export default function withField(WrappedComponent) {
 
 			const isInQuery = issuer === QUERIER;
 
-			if (shouldHideInForm && !isInQuery) { return null; }
-			if (isInQuery && !shouldShowInQuery) { return null; }
+			// if (
+			// 	(!isInQuery && shouldHideInForm) ||
+			// 	(isInQuery && !shouldShowInQuery)
+			// ) {
+			// 	return null;
+			// }
+
+			// const isUpdater = issuer === UPDATER;
+
+			// if (isUpdater && _names) {
+			// 	const names = _names.split(',');
+			// 	if (names.length && names.indexOf(name) < 0) { return null; }
+			// }
 
 			return (
 				<FormItem

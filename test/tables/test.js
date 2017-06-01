@@ -62,8 +62,7 @@ export default (
 		/>
 		<Actions>
 			<Remove />
-			<span className="ant-divider" />
-			<Update />
+			<Update names={['name', 'avatar']} />
 		</Actions>
 	</Fields>
 );

@@ -1,16 +1,19 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
-import { Modal, Button } from 'antd';
+import { propTypes as MobxPropTypes } from 'mobx-react';
+import { Button } from 'antd';
+import withActions from 'utils/withActions';
 
-const confirm = Modal.confirm;
-
-@observer
+@withActions
 export default class ButtonRemove extends Component {
 	static propTypes = {
 		label: PropTypes.node,
 		multiLabel: PropTypes.node,
+		actions: PropTypes.shape({
+			requestRemove: PropTypes.func.isRequired,
+			selectedKeys: MobxPropTypes.observableArray.isRequired,
+		}).isRequired,
 	};
 
 	static defaultProps = {
@@ -19,30 +22,17 @@ export default class ButtonRemove extends Component {
 		type: 'danger',
 	};
 
-	static contextTypes = {
-		store: PropTypes.object.isRequired,
-	};
-
-	_handleClick = () => {
-		confirm({
-			title: '确定删除？',
-			content: '该操作将不能撤销',
-			onOk: () => {
-				this.context.store.remove();
-			},
-			okText: '删除',
-		});
-	};
-
 	render() {
 		const {
-			props: { label, multiLabel, ...other },
-			context: { store: { selectedKeys: { length } } },
+			props: {
+				actions: { selectedKeys: { length }, requestRemove },
+				label, multiLabel, ...other,
+			},
 		} = this;
 		return (
 			<Button
 				{...other}
-				onClick={this._handleClick}
+				onClick={requestRemove}
 				disabled={!length}
 			>
 				{length > 1 ? multiLabel : label}

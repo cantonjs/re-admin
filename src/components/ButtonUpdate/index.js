@@ -1,14 +1,19 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
+import { propTypes as MobxPropTypes } from 'mobx-react';
 import { Button } from 'antd';
+import withActions from 'utils/withActions';
 
-@observer
+@withActions
 export default class ButtonUpdate extends Component {
 	static propTypes = {
 		label: PropTypes.node,
 		multiLabel: PropTypes.node,
+		actions: PropTypes.shape({
+			requestUpdate: PropTypes.func.isRequired,
+			selectedKeys: MobxPropTypes.observableArray.isRequired,
+		}).isRequired,
 	};
 
 	static defaultProps = {
@@ -17,28 +22,17 @@ export default class ButtonUpdate extends Component {
 		type: 'primary',
 	};
 
-	static contextTypes = {
-		store: PropTypes.object.isRequired,
-		updateLocationQuery: PropTypes.func.isRequired,
-	};
-
-	_handleClick = () => {
-		const { updateLocationQuery, store } = this.context;
-		updateLocationQuery({
-			action: 'update',
-			selectedKeys: store.selectedKeys.join(','),
-		});
-	};
-
 	render() {
 		const {
-			props: { label, multiLabel, ...other },
-			context: { store: { selectedKeys: { length } } },
+			props: {
+				actions: { selectedKeys: { length }, requestUpdate },
+				label, multiLabel, ...other,
+			},
 		} = this;
 		return (
 			<Button
 				{...other}
-				onClick={this._handleClick}
+				onClick={requestUpdate}
 				disabled={!length}
 			>
 				{length > 1 ? multiLabel : label}

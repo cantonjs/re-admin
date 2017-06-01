@@ -3,11 +3,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { Button } from 'antd';
+import withActions from 'utils/withActions';
 
+@withActions
 @observer
 export default class ButtonCreate extends Component {
 	static propTypes = {
 		label: PropTypes.node,
+		actions: PropTypes.shape({
+			requestCreate: PropTypes.func.isRequired,
+		}).isRequired,
 	};
 
 	static defaultProps = {
@@ -15,18 +20,10 @@ export default class ButtonCreate extends Component {
 		type: 'primary',
 	};
 
-	static contextTypes = {
-		store: PropTypes.object.isRequired,
-		updateLocationQuery: PropTypes.func.isRequired,
-	};
-
-	_handleClick = () => {
-		this.context.updateLocationQuery({ action: 'create' });
-	};
-
 	render() {
 		const {
 			props: {
+				actions,
 				label,
 				...other,
 			},
@@ -34,7 +31,7 @@ export default class ButtonCreate extends Component {
 		return (
 			<Button
 				{...other}
-				onClick={this._handleClick}
+				onClick={actions.requestCreate}
 			>
 				{label}
 			</Button>

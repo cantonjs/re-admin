@@ -131,6 +131,14 @@ export default class DataStore {
 		this.selectedKeys = selectedKeys;
 	}
 
+	findItemByKey(key) {
+		const { collection, _uniqueKey } = this;
+		if (!collection) { return []; }
+		return collection.find((item, index) =>
+			key === (_uniqueKey ? item[_uniqueKey] : index)
+		);
+	}
+
 	async create(body) {
 		try {
 			await this._ask.fork({
@@ -144,10 +152,10 @@ export default class DataStore {
 		}
 	}
 
-	async update(body) {
+	async update(body, keys) {
 		try {
 			await this._ask.fork({
-				url: this.selectedKeys.join(','),
+				url: keys,
 				method: 'PUT',
 				body,
 			});

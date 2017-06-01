@@ -34,9 +34,8 @@ export default class ActionModalInternal extends Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.title) {
-			this._prevTitle = this.props.title;
-		}
+		const { title } = this.props;
+		if (title) { this._prevTitle = title; }
 	}
 
 	render() {
