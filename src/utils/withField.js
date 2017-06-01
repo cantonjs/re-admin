@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import { UPDATER, QUERIER } from 'constants/Issuers';
+import router from 'stores/router';
+import { observer } from 'mobx-react';
 
 const styles = {
 	container: {
@@ -11,16 +12,11 @@ const styles = {
 };
 
 export default function withField(WrappedComponent) {
-	@withRouter
+
+	@observer
 	class WithField extends Component {
 		static propTypes = {
 			name: PropTypes.string.isRequired,
-			location: PropTypes.shape({
-				query: PropTypes.object.isRequired,
-			}).isRequired,
-			params: PropTypes.any.isRequired,
-			router: PropTypes.any.isRequired,
-			routes: PropTypes.any.isRequired,
 			label: PropTypes.string.isRequired,
 			labelCol: PropTypes.object,
 			wrapperCol: PropTypes.object,
@@ -54,10 +50,10 @@ export default function withField(WrappedComponent) {
 		}
 
 		_detectShouldShow() {
+			const { _names } = router.location.query;
 			const {
 				props: {
 					name,
-					location: { query: { _names } },
 					shouldShowInQuery,
 					shouldHideInForm,
 				},
@@ -86,8 +82,9 @@ export default function withField(WrappedComponent) {
 		}
 
 		getValue = () => {
+			const { query } = router.location;
 			const {
-				props: { name, location: { query } },
+				props: { name },
 				context: { store, issuer },
 			} = this;
 
@@ -113,10 +110,6 @@ export default function withField(WrappedComponent) {
 					disabled,
 					required,
 
-					location,
-					params,
-					router,
-					routes,
 					dataType,
 					unique,
 					render,
@@ -145,6 +138,5 @@ export default function withField(WrappedComponent) {
 		}
 	}
 
-	console.dir(WithField);
 	return WithField;
 }

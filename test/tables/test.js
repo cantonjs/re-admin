@@ -62,7 +62,7 @@ export default (
 			dataType={Date}
 			shouldHideInTable
 		/>
-		<Actions label="自定义操作">
+		<Actions>
 			<Remove />
 			<Update names={['name', 'avatar']} />
 		</Actions>
