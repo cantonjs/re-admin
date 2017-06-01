@@ -1,6 +1,8 @@
 
 import React, { Component, Children, cloneElement } from 'react';
-import { Form, Modal } from 'antd';
+import { Modal } from 'antd';
+import { Form } from 'components/Nested';
+
 import PropTypes from 'prop-types';
 
 const formItemLayout = {
@@ -14,7 +16,6 @@ const formItemLayout = {
 	},
 };
 
-@Form.create()
 export default class ActionModalInternal extends Component {
 	static propTypes = {
 		form: PropTypes.object,
@@ -24,18 +25,17 @@ export default class ActionModalInternal extends Component {
 		onSubmit: PropTypes.func.isRequired,
 	};
 
-	static childContextTypes = {
-		form: PropTypes.object,
-	};
-
-	getChildContext() {
-		const { form } = this.props;
-		return { form };
-	}
-
 	componentDidUpdate() {
 		const { title } = this.props;
 		if (title) { this._prevTitle = title; }
+	}
+
+	_saveForm = (form) => {
+		if (form) { this.form = form; }
+	};
+
+	submit() {
+		return this.form.form.submit();
 	}
 
 	render() {
@@ -56,7 +56,7 @@ export default class ActionModalInternal extends Component {
 				key={search}
 				{...other}
 			>
-				<Form onSubmit={onSubmit}>
+				<Form ref={this._saveForm} onSubmit={onSubmit}>
 					{Children.map(
 						children,
 						(child) => cloneElement(child, formItemLayout),

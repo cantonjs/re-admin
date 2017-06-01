@@ -16,19 +16,20 @@ export default (
 			name="name"
 			label="用户名"
 			placeholder="请输入用户名"
-			validator={[{
-				type: 'string',
-				required: true,
-				max: 10,
-				message: '最多10个字符',
-			}]}
+			// validations={[{
+			// 	type: 'string',
+			// 	required: true,
+			// 	max: 10,
+			// 	message: '最多10个字符',
+			// }]}
+			required
 			shouldShowInQuery
 		/>
-		<Image
+		{/*<Image
 			name="avatar"
 			label="头像"
 			width={60}
-		/>
+		/>*/}
 		<Text
 			name="desc"
 			label="描述"
@@ -38,7 +39,8 @@ export default (
 			name="score"
 			label="分数"
 			max={18}
-			validator={[{ required: true, message: '必填' }]}
+			required
+			// validations={[{ required: true, message: '必填' }]}
 			shouldHideInTable
 		/>
 		<Select
@@ -60,7 +62,7 @@ export default (
 			dataType={Date}
 			shouldHideInTable
 		/>
-		<Actions>
+		<Actions label="自定义操作">
 			<Remove />
 			<Update names={['name', 'avatar']} />
 		</Actions>

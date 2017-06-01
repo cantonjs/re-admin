@@ -14,7 +14,7 @@ export default (
 			name="name"
 			label="用户名"
 			placeholder="请输入用户名"
-			validator={[{ type: 'string', max: 10, message: '最多10个字符' }]}
+			validation={[{ type: 'string', max: 10, message: '最多10个字符' }]}
 		/>
 		<Text
 			name="birthday"

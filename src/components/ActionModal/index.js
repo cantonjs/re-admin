@@ -16,7 +16,6 @@ const actionNames = map(Actions, returnsArgument);
 const actionLabelsMap = {
 	[Actions.CREATE]: '创建',
 	[Actions.UPDATE]: '更新',
-	// [Actions.REMOVE]: '删除',
 };
 
 @observer
@@ -52,31 +51,28 @@ export default class ActionModal extends Component {
 	}
 
 	_handleOk = () => {
-		if (this._form) {
-			this._form.validateFields((err, values) => {
-				this._handleSubmit(err, values);
-				if (!err) { this.close(); }
-			});
-		}
-		else {
-			this.close();
-		}
+		if (this._form) { this._form.submit(); }
+		else { this.close(); }
 	};
 
 	_handleCancel = () => {
 		this.close();
 	};
 
-	_handleSubmit = (err, values) => {
-		if (!err) {
+	_handleSubmit = (data, { isInvalid }) => {
+		if (!isInvalid) {
 			const { store, location: { query: { _action, _keys } } } = this.props;
-			store[_action](values, _keys);
+			store[_action](data, _keys);
+			this.close();
+		}
+		else if (__DEV__) {
+			console.warn('INVALID');
 		}
 	};
 
 	_saveForm = (form) => {
 		if (form) { this._form = form; }
-	}
+	};
 
 	render() {
 		const {

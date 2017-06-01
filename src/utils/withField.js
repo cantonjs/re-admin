@@ -2,12 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import { returnsArgument } from 'empty-functions';
 import { UPDATER, QUERIER } from 'constants/Issuers';
-import { Form } from 'antd';
-import { omit } from 'lodash';
-
-const FormItem = Form.Item;
 
 const styles = {
 	container: {
@@ -32,38 +27,29 @@ export default function withField(WrappedComponent) {
 			shouldHideInForm: PropTypes.bool,
 			shouldHideInTable: PropTypes.bool,
 			shouldShowInQuery: PropTypes.bool,
+			required: PropTypes.bool,
 			dataType: PropTypes.func,
 			unique: PropTypes.bool,
 			disabled: PropTypes.bool,
-			validator: PropTypes.array,
+			validations: PropTypes.array,
 			render: PropTypes.func,
 		};
 
 		static defaultProps = {
-			validator: [],
+			labelCol: { span: 8 },
+			wrapperCol: { span: 16 },
+			shouldHideInForm: false,
+			shouldHideInTable: false,
+			disabled: false,
+			...WrappedComponent.defaultProps,
 		};
 
 		static contextTypes = {
-			form: PropTypes.object,
 			store: PropTypes.object,
 			issuer: PropTypes.string,
 		};
 
 		componentWillMount() {
-			const {
-				props: { validator },
-				context: { issuer },
-			} = this;
-
-			if (issuer !== QUERIER) {
-				this._validator = validator;
-			}
-			else {
-				this._validator = validator.map((options) =>
-					omit(options, ['required'])
-				);
-			}
-
 			this._shouldShow = this._detectShouldShow();
 		}
 
@@ -119,27 +105,14 @@ export default function withField(WrappedComponent) {
 			return '';
 		};
 
-		getFieldDecorator = (options) => {
-			const {
-				props: { name, disabled },
-				context: { form: { getFieldDecorator }, issuer },
-			} = this;
-			const isInQuery = issuer === QUERIER;
-			const isDisabled = disabled && !isInQuery;
-			return isDisabled ? returnsArgument : getFieldDecorator(name, options);
-		};
-
 		render() {
 			if (!this._shouldShow) { return null; }
 
 			const {
 				props: {
-					label,
-					labelCol,
-					wrapperCol,
 					disabled,
+					required,
 
-					name,
 					location,
 					params,
 					router,
@@ -147,7 +120,6 @@ export default function withField(WrappedComponent) {
 					dataType,
 					unique,
 					render,
-					validator,
 					shouldHideInForm,
 					shouldShowInQuery,
 					shouldHideInTable,
@@ -161,53 +133,18 @@ export default function withField(WrappedComponent) {
 
 			const isInQuery = issuer === QUERIER;
 
-			// if (
-			// 	(!isInQuery && shouldHideInForm) ||
-			// 	(isInQuery && !shouldShowInQuery)
-			// ) {
-			// 	return null;
-			// }
-
-			// const isUpdater = issuer === UPDATER;
-
-			// if (isUpdater && _names) {
-			// 	const names = _names.split(',');
-			// 	if (names.length && names.indexOf(name) < 0) { return null; }
-			// }
-
 			return (
-				<FormItem
-					label={label}
-					labelCol={labelCol}
-					wrapperCol={wrapperCol}
-					style={styles.container}
-				>
-					<WrappedComponent
-						{...other}
-						disabled={disabled && !isInQuery}
-						getValue={this.getValue}
-						validator={this._validator}
-						getFieldDecorator={this.getFieldDecorator}
-					/>
-				</FormItem>
+				<WrappedComponent
+					wrapperStyle={styles.container}
+					{...other}
+					required={required && !isInQuery}
+					disabled={disabled && !isInQuery}
+					getValue={this.getValue}
+				/>
 			);
 		}
 	}
 
-	function BasicField(props) {
-		return (
-			<WithField {...props} />
-		);
-	}
-
-	BasicField.defaultProps = {
-		labelCol: { span: 8 },
-		wrapperCol: { span: 16 },
-		shouldHideInForm: false,
-		shouldHideInTable: false,
-		disabled: false,
-		...WrappedComponent.defaultProps,
-	};
-
-	return BasicField;
+	console.dir(WithField);
+	return WithField;
 }

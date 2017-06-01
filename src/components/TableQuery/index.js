@@ -1,7 +1,9 @@
 
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
+import { Form, Submit, Reset } from 'components/Nested';
+
 import { QUERIER } from 'constants/Issuers';
 
 const styles = {
@@ -18,43 +20,38 @@ const styles = {
 	},
 };
 
-@Form.create()
 export default class TableQuery extends Component {
 	static propTypes = {
-		form: PropTypes.object.isRequired,
 		children: PropTypes.node,
 		onQuery: PropTypes.func.isRequired,
 	};
 
 	static childContextTypes = {
-		form: PropTypes.object,
 		issuer: PropTypes.string,
 	};
 
 	getChildContext() {
-		const { form } = this.props;
-		return { form, issuer: QUERIER };
+		return { issuer: QUERIER };
 	}
 
-	_handleSearch = (e) => {
-		const { form, onQuery } = this.props;
-		e.preventDefault();
-		form.validateFields((err, values) => {
-			err && __DEV__ && console.error(err);
-			onQuery(values, { shouldReplace: true });
-		});
-	}
+	_handleSearch = (data) => {
+		const { onQuery } = this.props;
+		onQuery(data, { shouldReplace: true });
+	};
 
 	_handleReset = () => {
-		const { form, onQuery } = this.props;
-		form.resetFields();
+		const { onQuery } = this.props;
 		onQuery({}, { shouldReplace: true });
-	}
+	};
 
 	toggle = () => {
 		const { expand } = this.state;
 		this.setState({ expand: !expand });
-	}
+	};
+
+	_saveForm = (form) => {
+		if (form) { this._form = form; }
+	};
 
 	render() {
 		const {
@@ -65,6 +62,7 @@ export default class TableQuery extends Component {
 
 		return (
 			<Form
+				ref={this._saveForm}
 				style={styles.container}
 				onSubmit={this._handleSearch}
 				layout="inline"
@@ -74,12 +72,10 @@ export default class TableQuery extends Component {
 				</Row>
 				<Row>
 					<Col span={24} style={styles.footer}>
-						<Button type="primary" htmlType="submit">
-							查询
-						</Button>
-						<Button style={styles.clearButton} onClick={this._handleReset}>
+						<Submit type="primary">查询</Submit>
+						<Reset style={styles.clearButton} onClick={this._handleReset}>
 							清空
-						</Button>
+						</Reset>
 					</Col>
 				</Row>
 			</Form>

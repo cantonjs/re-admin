@@ -1,7 +1,7 @@
 
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Select } from 'antd';
+import { Select } from 'components/Nested';
 import Text from 'fields/Text';
 
 export default class SelectField extends Component {
