@@ -38,14 +38,6 @@ export default class DataStore {
 		return toJS(this.collection);
 	}
 
-	@computed get selection() {
-		const { selectedKeys, collection, _uniqueKey } = this;
-		if (!collection) { return []; }
-		return this.collection.filter((item, index) =>
-			selectedKeys.includes(_uniqueKey ? item[_uniqueKey] : index)
-		);
-	}
-
 	collections = observable.map();
 
 	size = appConfig.api.count;
