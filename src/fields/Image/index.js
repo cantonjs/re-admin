@@ -106,6 +106,7 @@ export default class ImageField extends Component {
 			<div>
 				<Upload
 					{...other}
+					defaultValue={getValue()}
 					style={styles.container}
 					customRequest={_customRequest}
 					action={_uploadPath}
