@@ -40,6 +40,9 @@ export default function createComponent(Comp, options = {}) {
 			return (
 				<Item
 					label={label}
+					labelCol={labelCol}
+					wrapperCol={wrapperCol}
+					colon={colon}
 					required={required}
 					validateStatus={isValid ? 'error' : 'success'}
 					help={errorMessage}

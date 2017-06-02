@@ -59,7 +59,7 @@ export default class ImageField extends Component {
 			fileList: [],
 		};
 
-		getValue()
+		(getValue() || '')
 			.split(',')
 			.map((url) => url.trim())
 			.filter(Boolean)

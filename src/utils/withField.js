@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { UPDATER, QUERIER } from 'constants/Issuers';
 import router from 'stores/router';
 import { observer } from 'mobx-react';
+import { isUndefined } from 'lodash';
 
 const styles = {
 	container: {
@@ -16,8 +17,9 @@ export default function withField(WrappedComponent) {
 	@observer
 	class WithField extends Component {
 		static propTypes = {
-			name: PropTypes.string.isRequired,
-			label: PropTypes.string.isRequired,
+			name: PropTypes.string,
+			value: PropTypes.any,
+			label: PropTypes.string,
 			labelCol: PropTypes.object,
 			wrapperCol: PropTypes.object,
 			shouldHideInForm: PropTypes.bool,
@@ -82,11 +84,16 @@ export default function withField(WrappedComponent) {
 		}
 
 		getValue = () => {
-			const { query } = router.location;
 			const {
-				props: { name },
+				props: { name, value },
 				context: { store, issuer },
 			} = this;
+
+			if (!isUndefined(value)) { return value; }
+
+			const { query } = router.location;
+
+			if (!name) { return ''; }
 
 			const selectedKeys = (query._keys || '').split(',');
 

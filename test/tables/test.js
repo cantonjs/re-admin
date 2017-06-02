@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Fields, Text, Select, Option, Image, Actions, Remove, Update } from '../../src';
+import { Fields, Text, Select, Option, Image, ArrayOf, Actions, Remove, Update } from '../../src';
 
 export default (
 	<Fields>
@@ -35,6 +35,18 @@ export default (
 			label="描述"
 			placeholder="请输入描述"
 		/>
+
+
+		<ArrayOf
+			name="tags"
+			label="标签"
+		>
+			<Text
+				placeholder="请输入标签"
+			/>
+		</ArrayOf>
+
+
 		<Text
 			name="score"
 			label="分数"

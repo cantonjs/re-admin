@@ -55,7 +55,14 @@ export default class NForm extends Component {
 	};
 
 	render() {
-		const { layout, prefixCls, className, ...other } = this.props;
+		const {
+			layout, prefixCls, className,
+
+			// eslint-disable-next-line
+			labelCol, wrapperCol, render, wrapperStyle,
+
+			...other,
+		} = this.props;
 		const customClassName = className ? ` ${className}` : '';
 		return (
 			<NestedForm
