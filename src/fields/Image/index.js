@@ -2,7 +2,8 @@
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Upload, Icon, Modal } from 'antd';
+import { Icon, Modal } from 'antd';
+import { Upload } from 'components/Nested';
 import withAppConfig from 'utils/withAppConfig';
 import withField from 'utils/withField';
 import ImageTableCell from './ImageTableCell';
@@ -15,7 +16,6 @@ export default class ImageField extends Component {
 		render: PropTypes.func,
 		strategy: PropTypes.string,
 		getValue: PropTypes.func.isRequired,
-		getFieldDecorator: PropTypes.func.isRequired,
 	};
 
 	static defaultProps = {
@@ -84,19 +84,10 @@ export default class ImageField extends Component {
 		this.setState({ fileList });
 	};
 
-	_getValueFromEvent = ({ fileList }) => {
-		const urls = fileList
-			.filter(({ status }) => status === 'done')
-			.map(({ thumbUrl, response }) => response.url || thumbUrl)
-			.join(',')
-		;
-		return urls;
-	};
-
 	render() {
 		const {
 			props: {
-				max, strategy, getFieldDecorator,
+				max, strategy,
 				getValue,
 				...other,
 			},
@@ -104,10 +95,6 @@ export default class ImageField extends Component {
 			_customRequest,
 			_uploadPath,
 		} = this;
-
-		const decorator = getFieldDecorator({
-			getValueFromEvent: this._getValueFromEvent,
-		});
 
 		const uploadButton = (
 			<div style={styles.uploadButton}>
@@ -117,22 +104,20 @@ export default class ImageField extends Component {
 
 		return (
 			<div>
-				{decorator(
-					<Upload
-						{...other}
-						style={styles.container}
-						customRequest={_customRequest}
-						action={_uploadPath}
-						listType="picture-card"
-						fileList={fileList}
-						onPreview={this._handlePreview}
-						onChange={this._handleChange}
-						multi={max > 1}
-						noFieldDecorator
-					>
-						{fileList.length < max ? uploadButton : null}
-					</Upload>
-				)}
+				<Upload
+					{...other}
+					style={styles.container}
+					customRequest={_customRequest}
+					action={_uploadPath}
+					listType="picture-card"
+					fileList={fileList}
+					onPreview={this._handlePreview}
+					onChange={this._handleChange}
+					multi={max > 1}
+					noFieldDecorator
+				>
+					{fileList.length < max ? uploadButton : null}
+				</Upload>
 				<Modal
 					visible={previewVisible}
 					footer={null}

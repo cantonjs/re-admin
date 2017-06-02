@@ -25,11 +25,11 @@ export default (
 			required
 			shouldShowInQuery
 		/>
-		{/*<Image
+		<Image
 			name="avatar"
 			label="头像"
 			width={60}
-		/>*/}
+		/>
 		<Text
 			name="desc"
 			label="描述"

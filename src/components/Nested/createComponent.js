@@ -47,8 +47,8 @@ export default function createComponent(Comp, options = {}) {
 				>
 					<Comp
 						onKeyPress={onKeyPress}
-						onChange={mapChange ? mapChange(onChange) : onChange}
 						{...other}
+						onChange={mapChange ? mapChange(onChange) : onChange}
 						value={value}
 					/>
 				</Item>
