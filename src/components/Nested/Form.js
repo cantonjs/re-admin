@@ -59,7 +59,7 @@ export default class NForm extends Component {
 			layout, prefixCls, className,
 
 			// eslint-disable-next-line
-			labelCol, wrapperCol, render, wrapperStyle,
+			labelCol, wrapperCol, render, wrapperStyle, colon,
 
 			...other,
 		} = this.props;

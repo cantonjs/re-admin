@@ -45,6 +45,7 @@ export default function withField(WrappedComponent) {
 		static contextTypes = {
 			store: PropTypes.object,
 			issuer: PropTypes.string,
+			getParentValue: PropTypes.func,
 		};
 
 		componentWillMount() {
@@ -86,15 +87,13 @@ export default function withField(WrappedComponent) {
 		getValue = () => {
 			const {
 				props: { name, value },
-				context: { store, issuer },
+				context: { store, issuer, getParentValue },
 			} = this;
 
 			if (!isUndefined(value)) { return value; }
-
-			const { query } = router.location;
-
 			if (!name) { return ''; }
 
+			const { query } = router.location;
 			const selectedKeys = (query._keys || '').split(',');
 
 			if (issuer === QUERIER) {
@@ -102,7 +101,9 @@ export default function withField(WrappedComponent) {
 			}
 
 			else if (selectedKeys.length === 1 && issuer === UPDATER) {
-				const item = store.findItemByKey(selectedKeys[0]);
+				const item = getParentValue ?
+					getParentValue() : store.findItemByKey(selectedKeys[0])
+				;
 				return item ? item[name] : '';
 			}
 

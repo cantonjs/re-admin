@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Fields, Text, Select, Option, Image, ArrayOf, Actions, Remove, Update } from '../../src';
+import { Fields, Text, Select, Option, Image, ArrayOf, ObjectOf, Actions, Remove, Update } from '../../src';
 
 export default (
 	<Fields>
@@ -35,6 +35,37 @@ export default (
 			label="描述"
 			placeholder="请输入描述"
 		/>
+
+
+		<ObjectOf
+			name="pet"
+			label="宠物"
+		>
+			<Text
+				name="name"
+				label="宠物名字"
+				placeholder="请输入宠物名字"
+			/>
+			<Text
+				name="type"
+				label="宠物物种"
+				placeholder="请输入宠物物种"
+			/>
+			<ArrayOf name="languages" label="语言">
+				<ObjectOf>
+					<Text
+						name="name"
+						label="语言名称"
+						placeholder="请输入语言名称"
+					/>
+					<Text
+						name="score"
+						label="语言成绩"
+						placeholder="请输入语言成绩"
+					/>
+				</ObjectOf>
+			</ArrayOf>
+		</ObjectOf>
 
 
 		<ArrayOf

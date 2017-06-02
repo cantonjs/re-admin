@@ -21,6 +21,15 @@ let testDB = new Array(total).fill().map((_, index) => ({
 	desc: `I am User no. ${index}`,
 	tags: ['hello', 'world'],
 	avatar: `https://unsplash.it/100/100/?random=${index}`,
+	pet: {
+		name: 'Bobby',
+		type: 'dog',
+		languages: [
+			{ name: 'Javascript', score: 70 },
+			{ name: 'HTML', score: 90 },
+			{ name: 'CSS', score: 32 },
+		],
+	},
 }));
 
 const verify = async (ctx, next) => {

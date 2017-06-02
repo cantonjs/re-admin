@@ -17,11 +17,6 @@ export default class ArrayOf extends Component {
 		name: PropTypes.string,
 		children: PropTypes.node,
 		getValue: PropTypes.func.isRequired,
-		required: PropTypes.bool,
-		label: PropTypes.node,
-		labelCol: PropTypes.object,
-		wrapperCol: PropTypes.object,
-		colon: PropTypes.bool,
 		wrapperStyle: PropTypes.object,
 		defaultItemValue: PropTypes.any,
 		addButtonLabel: PropTypes.node,
@@ -58,9 +53,7 @@ export default class ArrayOf extends Component {
 
 	render() {
 		const {
-			getValue, children, name, addButtonLabel,
-			label, labelCol, wrapperCol, colon, required, wrapperStyle,
-
+			getValue, children, name, addButtonLabel, wrapperStyle,
 			...other,
 		} = this.props;
 
@@ -68,13 +61,9 @@ export default class ArrayOf extends Component {
 
 		return (
 			<Item
-				label={label}
-				labelCol={labelCol}
-				wrapperCol={wrapperCol}
-				colon={colon}
-				required={required}
 				// validateStatus={isValid ? 'error' : 'success'}
 				// help={errorMessage}
+				{...other}
 				style={wrapperStyle}
 			>
 				{this._state.map(({ value, key }) =>
