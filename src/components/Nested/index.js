@@ -15,7 +15,7 @@ export const Select = createComponent(AntdSelect, {
 	displayName: 'NestedSelect',
 	mapChange(onChange) {
 		return (value) => {
-			onChange({ currentTarget: { value } });
+			onChange(null, value);
 		};
 	},
 });

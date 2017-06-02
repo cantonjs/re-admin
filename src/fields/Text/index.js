@@ -25,7 +25,7 @@ export default class TextField extends Component {
 		} = this;
 
 		return (
-			<Comp {...other} />
+			<Comp {...other} defaultValue={getValue()} />
 		);
 	}
 }
