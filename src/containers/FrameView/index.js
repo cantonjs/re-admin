@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'components/Sidebar';
 import panelsStore from 'stores/panelsStore';
@@ -37,13 +37,15 @@ export default class FrameView extends Component {
 	}
 
 	render() {
-		const { children } = this.props;
+		const { children, location: { pathname } } = this.props;
 		return (
 			<div style={styles.container}>
 				{panelsStore.isShowSidebar &&
 					<Sidebar />
 				}
-				<div style={styles.main}>{children}</div>
+				<div style={styles.main}>
+					{cloneElement(children, { key: pathname })}
+				</div>
 			</div>
 		);
 	}
