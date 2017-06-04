@@ -35,7 +35,7 @@
     "empty-functions": "^1.0.2",
     "http-ask": "^0.0.0-rc6",
     "lodash": "^4.17.4",
-    "react-nested-form": "^0.0.0-4"
+    "react-nested-form": "^0.0.0-6"
   },
   "peerDependencies": {
     "antd": "^2.10.0",
