@@ -40,6 +40,7 @@ export default (
 		<ObjectOf
 			name="pet"
 			label="宠物"
+			shouldHideInTable
 		>
 			<Text
 				name="name"
@@ -79,12 +80,11 @@ export default (
 
 
 		<Text
-			name="score"
-			label="分数"
-			max={18}
+			name="fee"
+			label="薪酬"
 			required
-			// validations={[{ required: true, message: '必填' }]}
-			shouldHideInTable
+			inputFilter={(value) => /^\$/.test(value) ? value : ('$' + (value / 100).toFixed(2))}
+			outputFilter={(value) => value.slice(1) * 100}
 		/>
 		<Select
 			name="fav"

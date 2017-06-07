@@ -11,11 +11,11 @@ let authStore = {};
 
 export default class DataStore {
 	static get(table) {
-		const schema = appConfig.tables[table].data;
-		// console.log('schema', schema);
+		const tableConfig = appConfig.tables[table];
 		if (caches.hasOwnProperty(table)) { return caches[table]; }
 
-		const store = new DataStore(table, jsxToPlainObject(schema));
+		const schema = jsxToPlainObject(tableConfig.data);
+		const store = new DataStore(table, schema, tableConfig);
 		caches[table] = store;
 		return store;
 	}
@@ -44,9 +44,11 @@ export default class DataStore {
 	_prevQuery = {};
 	_pervSearch = '?';
 
-	constructor(table, schema) {
+	constructor(table, schema, { inputFilter, outputFilter }) {
 		this._table = table;
 		this._schema = schema;
+		this._inputFilter = inputFilter;
+		this._outputFilter = outputFilter;
 		this.columns = schema
 			.filter(({ shouldHideInTable }) => !shouldHideInTable)
 			.map(({ render, ...props }) => ({
@@ -95,7 +97,8 @@ export default class DataStore {
 		this.isFetching = true;
 
 		try {
-			const { total, list = [] } = await this._ask.fork({ query });
+			const res = await this._ask.fork({ query });
+			const { total, list = [] } = this._inputFilter(res);
 
 			const collection = list.map((data, index) => {
 				data.key = this._uniqueKey ? data[this._uniqueKey] : index;
@@ -135,7 +138,7 @@ export default class DataStore {
 		try {
 			await this._ask.fork({
 				method: 'POST',
-				body,
+				body: this._outputFilter(body, 'create'),
 			});
 			this._sync();
 		}
@@ -149,7 +152,7 @@ export default class DataStore {
 			await this._ask.fork({
 				url: keys,
 				method: 'PUT',
-				body,
+				body: this._outputFilter(body, 'update'),
 			});
 
 			this._sync();

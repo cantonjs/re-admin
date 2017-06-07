@@ -1,6 +1,7 @@
 
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
+import { returnsArgument } from 'empty-functions';
 
 export default function TableSchema() {
 	return (<noscript />);
@@ -9,6 +10,13 @@ export default function TableSchema() {
 TableSchema.propTypes = {
 	name: PropTypes.string.isRequired,
 	title: PropTypes.string,
+	inputFilter: PropTypes.func,
+	outputFilter: PropTypes.func,
+};
+
+TableSchema.defaultProps = {
+	inputFilter: returnsArgument,
+	outputFilter: returnsArgument,
 };
 
 TableSchema.setConfig = ({ name, title, children }, tables) => {
