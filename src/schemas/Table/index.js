@@ -19,12 +19,12 @@ TableSchema.defaultProps = {
 	outputFilter: returnsArgument,
 };
 
-TableSchema.setConfig = ({ name, title, children }, tables) => {
+TableSchema.setConfig = ({ name, children, ...other }, tables) => {
 	if (Children.count(children) === 1 && children.type === 'noscript') {
 		children = children.props.children;
 	}
 	tables[name] = {
-		title: title,
+		...other,
 		data: children,
 	};
 };
