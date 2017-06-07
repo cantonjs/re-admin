@@ -34,6 +34,8 @@ export default class ActionModal extends Component {
 		updateLocationQuery: PropTypes.func.isRequired,
 	};
 
+	static omitPaths = ['_action', '_keys', '_names'];
+
 	static childContextTypes = {
 		issuer: PropTypes.string,
 	};
@@ -45,7 +47,7 @@ export default class ActionModal extends Component {
 	close() {
 		const { updateLocationQuery, store } = this.context;
 		updateLocationQuery({}, {
-			omitPaths: ['_action', '_keys', '_names'],
+			omitPaths: ActionModal.omitPaths,
 		});
 		store.setSelectedKeys([]);
 	}

@@ -77,7 +77,7 @@ export default class DataTableView extends Component {
 			this._fetch();
 		}
 		else if (prevLocation.query !== location.query) {
-			const blackList = ['action', 'selectedKeys'];
+			const blackList = ActionModal.omitPaths;
 			const prevQuery = omit(prevLocation.query, blackList);
 			const nextQuery = omit(query, blackList);
 			if (!isEqual(prevQuery, nextQuery)) {
