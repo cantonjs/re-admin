@@ -46,7 +46,7 @@ export default class LoginView extends Component {
 		this._handleSubmit = this._handleSubmit.bind(this);
 	}
 
-	async _handleSubmit(data) {
+	_handleSubmit = async (data) => {
 		const {
 			props: { location, router },
 			context: {
@@ -62,7 +62,7 @@ export default class LoginView extends Component {
 			const url = ref || defaultLoginRedirection;
 			router.replace(url);
 		}
-	}
+	};
 
 	render() {
 		const {
