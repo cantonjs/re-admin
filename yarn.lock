@@ -5185,9 +5185,9 @@ react-lazy-load@^3.0.10:
     lodash.throttle "^4.0.0"
     prop-types "^15.5.8"
 
-react-nested-form@^0.0.0-7:
-  version "0.0.0-7"
-  resolved "http://registry.npm.taobao.org/react-nested-form/download/react-nested-form-0.0.0-7.tgz#77e6bd21959c677476d818de71d2caf56284a677"
+react-nested-form@^0.0.0-8:
+  version "0.0.0-8"
+  resolved "http://registry.npm.taobao.org/react-nested-form/download/react-nested-form-0.0.0-8.tgz#7781ea52eaded519986c2aeb3dd29168023ec202"
   dependencies:
     array-find "^1.0.0"
     empty-functions "^1.0.2"
