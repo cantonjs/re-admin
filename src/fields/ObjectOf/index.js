@@ -4,6 +4,7 @@ import PropTypes from 'utils/PropTypes';
 import withField from 'utils/withField';
 import { Form } from 'components/Nested';
 import { Form as AntdForm } from 'antd';
+import { returnsArgument } from 'empty-functions';
 
 const { Item } = AntdForm;
 
@@ -28,6 +29,7 @@ export default class ObjectOf extends Component {
 
 	static defaultProps = {
 		render: (value = {}) => JSON.stringify(value),
+		dataType: returnsArgument,
 	};
 
 	static childContextTypes = {

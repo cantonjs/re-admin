@@ -5,6 +5,7 @@ import { UPDATER, QUERIER } from 'constants/Issuers';
 import router from 'stores/router';
 import { observer } from 'mobx-react';
 import { isUndefined } from 'lodash';
+import { parseDataType, dataTypes } from './dataType';
 
 const styles = {
 	container: {
@@ -19,6 +20,7 @@ export default function withField(WrappedComponent) {
 		static propTypes = {
 			name: PropTypes.string,
 			value: PropTypes.any,
+			defaultValue: PropTypes.any,
 			label: PropTypes.string,
 			labelCol: PropTypes.object,
 			wrapperCol: PropTypes.object,
@@ -26,7 +28,10 @@ export default function withField(WrappedComponent) {
 			shouldHideInTable: PropTypes.bool,
 			shouldShowInQuery: PropTypes.bool,
 			required: PropTypes.bool,
-			dataType: PropTypes.func,
+			dataType: PropTypes.oneOfType([
+				PropTypes.func,
+				PropTypes.oneOf(dataTypes),
+			]),
 			unique: PropTypes.bool,
 			disabled: PropTypes.bool,
 			validations: PropTypes.array,
@@ -39,6 +44,7 @@ export default function withField(WrappedComponent) {
 			shouldHideInForm: false,
 			shouldHideInTable: false,
 			disabled: false,
+			dataType: 'string',
 			...WrappedComponent.defaultProps,
 		};
 
@@ -84,7 +90,7 @@ export default function withField(WrappedComponent) {
 			return true;
 		}
 
-		getValue = () => {
+		_getValueBaseOnIssuer() {
 			const {
 				props: { name, value },
 				context: { store, issuer, getParentValue },
@@ -108,6 +114,13 @@ export default function withField(WrappedComponent) {
 			}
 
 			return '';
+		}
+
+		getValue = () => {
+			return parseDataType(
+				this._getValueBaseOnIssuer(),
+				this.props.dataType,
+			);
 		};
 
 		render() {
@@ -117,8 +130,10 @@ export default function withField(WrappedComponent) {
 				props: {
 					disabled,
 					required,
+					// value,
+					// defaultValue,
+					// dataType,
 
-					dataType,
 					unique,
 					render,
 					shouldHideInForm,

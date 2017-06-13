@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Fields, Text, Select, Option, Image, ArrayOf, ObjectOf, Actions, Remove, Update } from '../../src';
+import { Fields, Text, Select, Option, Image, Slider, ArrayOf, ObjectOf, Actions, Remove, Update } from '../../src';
 
 export default (
 	<Fields>
@@ -93,16 +93,16 @@ export default (
 			<Option value="1">吃饭</Option>
 			<Option value="2">睡觉</Option>
 		</Select>
-		<Text
+		<Slider
 			name="gpa"
 			label="GPA"
-			dataType={Number}
+			dataType="integer"
 			shouldHideInTable
 		/>
 		<Text
 			name="birthday"
 			label="生日"
-			dataType={Date}
+			dataType="date"
 			shouldHideInTable
 		/>
 		<Actions>

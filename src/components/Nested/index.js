@@ -5,6 +5,7 @@ import {
 	Input as AntdInput,
 	Select as AntdSelect,
 	Upload as AntdUpload,
+	Slider as AntdSlider,
 } from 'antd';
 
 export Form from './Form';
@@ -13,6 +14,15 @@ export Reset from './Reset';
 
 export const Input = createComponent(AntdInput, {
 	displayName: 'NestedInput',
+});
+
+export const Slider = createComponent(AntdSlider, {
+	displayName: 'NestedSlider',
+	mapChange(onChange) {
+		return (value) => {
+			onChange(null, value);
+		};
+	},
 });
 
 export const Select = createComponent(AntdSelect, {

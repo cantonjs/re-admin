@@ -7,6 +7,7 @@ import withField from 'utils/withField';
 import { Form, Button, Icon } from 'antd';
 import ArrayItem from './ArrayItem';
 import { remove } from 'lodash';
+import { returnsArgument } from 'empty-functions';
 
 const { Item } = Form;
 
@@ -26,6 +27,7 @@ export default class ArrayOf extends Component {
 		defaultItemValue: '',
 		addButtonLabel: '增加项',
 		render: (value = []) => value.join(','),
+		dataType: returnsArgument,
 	};
 
 	_uuid = 0;

@@ -19,7 +19,7 @@ export default (
 		<Text
 			name="birthday"
 			label="生日"
-			dataType={Date}
+			dataType="date"
 		/>
 	</Fields>
 );

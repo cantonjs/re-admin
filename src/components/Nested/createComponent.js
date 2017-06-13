@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { nestify } from 'react-nested-form';
 import { Form } from 'antd';
+import { parseDataType } from 'utils/dataType';
 
 const { Item } = Form;
 
@@ -22,6 +23,8 @@ export default function createComponent(Comp, options = {}) {
 			wrapperCol: PropTypes.object,
 			colon: PropTypes.bool,
 			wrapperStyle: PropTypes.object,
+			defaultValue: PropTypes.any,
+			dataType: PropTypes.any,
 		};
 
 		static displayName = displayName;
@@ -32,6 +35,8 @@ export default function createComponent(Comp, options = {}) {
 					value, errorMessage, isRequired, isPristine, onKeyPress, onChange,
 				},
 				label, labelCol, wrapperCol, colon, required, wrapperStyle,
+				defaultValue, dataType,
+
 				...other,
 			} = this.props;
 
@@ -52,7 +57,8 @@ export default function createComponent(Comp, options = {}) {
 						onKeyPress={onKeyPress}
 						{...other}
 						onChange={mapChange ? mapChange(onChange) : onChange}
-						value={value}
+						defaultValue={parseDataType(defaultValue, dataType)}
+						value={parseDataType(value, dataType)}
 					/>
 				</Item>
 			);
