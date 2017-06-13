@@ -130,9 +130,9 @@ export default function withField(WrappedComponent) {
 				props: {
 					disabled,
 					required,
-					// value,
-					// defaultValue,
-					// dataType,
+					value,
+					defaultValue,
+					dataType,
 
 					unique,
 					render,
