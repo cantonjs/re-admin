@@ -9,7 +9,7 @@ const { Item } = Form;
 export default function createComponent(Comp, options = {}) {
 
 	const {
-		displayName = 'NestedFormElement',
+		displayName = 'NestElement',
 		mapChange,
 	} = options;
 
@@ -54,6 +54,7 @@ export default function createComponent(Comp, options = {}) {
 						onKeyPress={onKeyPress}
 						{...other}
 						onChange={mapChange ? mapChange(onChange) : onChange}
+						defaultValue={value}
 						value={value}
 					/>
 				</Item>

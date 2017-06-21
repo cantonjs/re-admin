@@ -3,6 +3,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import kcors from 'kcors';
 import koaBody from 'koa-body';
+import ms from 'ms';
 
 const app = new Koa();
 const router = new Router();
@@ -30,7 +31,8 @@ let testDB = new Array(total).fill().map((_, index) => ({
 			{ name: 'CSS', score: 32 },
 		],
 	},
-}));
+	createdAt: new Date(Date.now() - ms(`${total - index}d`)).toISOString(),
+})).reverse();
 
 const verify = async (ctx, next) => {
 	const { accessToken } = ctx.query || {};

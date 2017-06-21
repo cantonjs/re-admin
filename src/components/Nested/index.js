@@ -6,18 +6,24 @@ import {
 	Select as AntdSelect,
 	Upload as AntdUpload,
 	Slider as AntdSlider,
+	DatePicker as AntdDatePicker,
 } from 'antd';
+
+const {
+	// MonthPicker: AntdMonthPicker,
+	RangePicker: AntdRangePicker,
+} = AntdDatePicker;
 
 export Form from './Form';
 export Submit from './Submit';
 export Reset from './Reset';
 
 export const Input = createComponent(AntdInput, {
-	displayName: 'NestedInput',
+	displayName: 'NestInput',
 });
 
 export const Slider = createComponent(AntdSlider, {
-	displayName: 'NestedSlider',
+	displayName: 'NestSlider',
 	mapChange(onChange) {
 		return (value) => {
 			onChange(null, value);
@@ -26,7 +32,7 @@ export const Slider = createComponent(AntdSlider, {
 });
 
 export const Select = createComponent(AntdSelect, {
-	displayName: 'NestedSelect',
+	displayName: 'NestSelect',
 	mapChange(onChange) {
 		return (value) => {
 			onChange(null, value);
@@ -34,8 +40,26 @@ export const Select = createComponent(AntdSelect, {
 	},
 });
 
+export const DatePicker = createComponent(AntdDatePicker, {
+	displayName: 'NestDatePicker',
+	mapChange(onChange) {
+		return (date) => {
+			onChange(null, date);
+		};
+	},
+});
+
+export const RangePicker = createComponent(AntdRangePicker, {
+	displayName: 'NestRangePicker',
+	mapChange(onChange) {
+		return (date) => {
+			onChange(null, date);
+		};
+	},
+});
+
 export const Upload = createComponent(AntdUpload, {
-	displayName: 'NestedUpload',
+	displayName: 'NestUpload',
 	mapChange(onChange) {
 		return (ev) => {
 			const { fileList } = ev;

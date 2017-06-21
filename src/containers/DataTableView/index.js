@@ -108,8 +108,30 @@ export default class DataTableView extends Component {
 		const { data, title } = appConfig.tables[table];
 		return {
 			title,
-			form: data.filter(({ props }) => !props.shouldHideInForm),
-			query: data,
+			form: data
+				.filter(({ props }) => !props.shouldHideInForm)
+				.map((child, index) => {
+					const {
+						props: { formComponent: Comp, ...other },
+						key,
+					} = child;
+					return Comp ? (
+						<Comp {...other} key={key || index} />
+					) : child
+					;
+				}),
+			query: data
+				.filter(({ props }) => props.shouldShowInQuery)
+				.map((child, index) => {
+					const {
+						props: { queryComponent: Comp, ...other },
+						key,
+					} = child;
+					return Comp ? (
+						<Comp {...other} key={key || index} />
+					) : child
+					;
+				}),
 		};
 	}
 

@@ -44,7 +44,7 @@ export default function withField(WrappedComponent) {
 			shouldHideInForm: false,
 			shouldHideInTable: false,
 			disabled: false,
-			dataType: 'string',
+			dataType: 'any',
 			...WrappedComponent.defaultProps,
 		};
 

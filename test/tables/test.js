@@ -1,6 +1,10 @@
 
 import React from 'react';
-import { Fields, Text, Select, Option, Image, Slider, ArrayOf, ObjectOf, Actions, Remove, Update } from '../../src';
+import {
+	Fields, Text, Select, Option, Image, Slider, RangePicker, DatePicker,
+	ArrayOf, ObjectOf,
+	Actions, Remove, Update,
+} from '../../src';
 
 export default (
 	<Fields>
@@ -12,19 +16,25 @@ export default (
 			shouldShowInQuery
 			shouldHideInForm
 		/>
+
 		<Text
 			name="name"
 			label="用户名"
 			placeholder="请输入用户名"
-			// validations={[{
-			// 	type: 'string',
-			// 	required: true,
-			// 	max: 10,
-			// 	message: '最多10个字符',
-			// }]}
+			maxLength={10}
 			required
 			shouldShowInQuery
 		/>
+
+		<DatePicker
+			name="createdAt"
+			dataType="date"
+			label="创建日期"
+			disabled
+			shouldShowInQuery
+			queryComponent={RangePicker}
+		/>
+
 		<Image
 			name="avatar"
 			label="头像"
@@ -68,7 +78,6 @@ export default (
 			</ArrayOf>
 		</ObjectOf>
 
-
 		<ArrayOf
 			name="tags"
 			label="标签"
@@ -77,7 +86,6 @@ export default (
 				placeholder="请输入标签"
 			/>
 		</ArrayOf>
-
 
 		<Text
 			name="fee"
@@ -105,6 +113,7 @@ export default (
 			dataType="date"
 			shouldHideInTable
 		/>
+
 		<Actions>
 			<Remove />
 			<Update names={['name', 'avatar']} />

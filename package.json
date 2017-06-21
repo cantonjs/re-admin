@@ -35,7 +35,8 @@
     "empty-functions": "^1.0.2",
     "http-ask": "^0.0.0-rc6",
     "lodash": "^4.17.4",
-    "react-nested-form": "^0.0.0-8"
+    "moment": "^2.18.1",
+    "react-nested-form": "^0.0.0-10"
   },
   "peerDependencies": {
     "antd": "^2.10.0",
@@ -85,6 +86,7 @@
     "mkdirp": "^0.5.1",
     "mobx": "^3.1.9",
     "mobx-react": "^4.1.8",
+    "ms": "^2.0.0",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",

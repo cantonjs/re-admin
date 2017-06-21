@@ -24,8 +24,13 @@ export default class TextField extends Component {
 			},
 		} = this;
 
+		const value = getValue();
 		return (
-			<Comp {...other} defaultValue={getValue()} value={getValue()} />
+			<Comp
+				{...other}
+				defaultValue={value}
+				value={value}
+			/>
 		);
 	}
 }
