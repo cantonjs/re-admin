@@ -1,5 +1,4 @@
 
-
 import createComponent from './createComponent';
 import {
 	Input as AntdInput,
@@ -24,51 +23,32 @@ export const Input = createComponent(AntdInput, {
 
 export const Slider = createComponent(AntdSlider, {
 	displayName: 'NestSlider',
-	mapChange(onChange) {
-		return (value) => {
-			onChange(null, value);
-		};
-	},
+	onChange(value) { return value; },
 });
 
 export const Select = createComponent(AntdSelect, {
 	displayName: 'NestSelect',
-	mapChange(onChange) {
-		return (value) => {
-			onChange(null, value);
-		};
-	},
+	onChange(value) { return value; },
 });
 
 export const DatePicker = createComponent(AntdDatePicker, {
 	displayName: 'NestDatePicker',
-	mapChange(onChange) {
-		return (date) => {
-			onChange(null, date);
-		};
-	},
+	onChange(value) { return value; },
 });
 
 export const RangePicker = createComponent(AntdRangePicker, {
 	displayName: 'NestRangePicker',
-	mapChange(onChange) {
-		return (date) => {
-			onChange(null, date);
-		};
-	},
+	onChange(value) { return value; },
 });
 
 export const Upload = createComponent(AntdUpload, {
 	displayName: 'NestUpload',
-	mapChange(onChange) {
-		return (ev) => {
-			const { fileList } = ev;
-			const value = fileList
-				.filter(({ status }) => status === 'done')
-				.map(({ thumbUrl, response }) => response.url || thumbUrl)
-				.join(',')
-			;
-			onChange(ev, value);
-		};
+	onChange(ev) {
+		return ev
+			.fileList
+			.filter(({ status }) => status === 'done')
+			.map(({ thumbUrl, response }) => response.url || thumbUrl)
+			.join(',')
+		;
 	},
 });

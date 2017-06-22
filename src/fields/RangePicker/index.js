@@ -3,7 +3,7 @@ import React from 'react';
 import { RangePicker } from 'components/Nested';
 import Text from 'fields/Text';
 import moment from 'moment';
-import { isString, isObject, isFunction } from 'lodash';
+import { isString, isObject, isFunction, isUndefined } from 'lodash';
 
 const rangeInputFilter = (range) => range.map((val) => {
 	if (isObject(val)) { return val; }
@@ -15,12 +15,6 @@ const rangeOutputFilter = (range) => {
 		if (val && isFunction(val.toISOString)) { return val.toISOString(); }
 		else if (isString(val)) { return val; }
 	}).filter((val) => val).join(',');
-
-
-	// TODO
-	// console.log('output', `"${output}"`);
-
-
 	return output;
 };
 
@@ -46,13 +40,13 @@ const buildInDefaultProps = {
 	},
 };
 
-
-// TODO
-// const shouldIgnoreEmpty = (value, pristineValue) => {
-// 	console.log('value', value);
-// 	return pristineValue;
-// };
-
+const shouldIgnoreEmpty = (value, pristineValue) => {
+	if (!pristineValue) { return true; }
+	if (isFunction(pristineValue.every)) {
+		return pristineValue.every((item) => isUndefined(item));
+	}
+	return true;
+};
 
 export default function RangePickerField(props) {
 	return (
@@ -60,13 +54,7 @@ export default function RangePickerField(props) {
 			dataType="date"
 			{...buildInDefaultProps}
 			{...props}
-
-
-			// TODO
-			// shouldIgnoreEmpty={shouldIgnoreEmpty}
-
-
-
+			shouldIgnoreEmpty={shouldIgnoreEmpty}
 			component={RangePicker}
 		/>
 	);

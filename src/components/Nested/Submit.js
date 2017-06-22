@@ -2,25 +2,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'antd';
-import { submitify } from 'react-nested-form';
+import { submittify } from 'react-nested-form';
 
 const { Item } = Form;
 
-@submitify
+@submittify({ onSubmit: 'onClick' })
 export default class Submit extends Component {
 	static propTypes = {
 		nest: PropTypes.object.isRequired,
 	};
 
 	render() {
-		const {
-			nest: { onClick },
-			...other,
-		} = this.props;
-
+		const { nest, ...other } = this.props;
 		return (
 			<Item>
-				<Button {...other} onClick={onClick} />
+				<Button {...other} />
 			</Item>
 		);
 	}

@@ -7,11 +7,13 @@ import { Form } from 'antd';
 const { Item } = Form;
 
 export default function createComponent(Comp, options = {}) {
-
 	const {
 		displayName = 'NestElement',
-		mapChange,
+		onChange,
 	} = options;
+
+	const nestifyConfig = {};
+	if (onChange) { nestifyConfig.onChange = onChange; }
 
 	class NestedFormElement extends Component {
 		static propTypes = {
@@ -22,22 +24,18 @@ export default function createComponent(Comp, options = {}) {
 			wrapperCol: PropTypes.object,
 			colon: PropTypes.bool,
 			wrapperStyle: PropTypes.object,
-			defaultValue: PropTypes.any,
 		};
 
 		static displayName = displayName;
 
 		render() {
 			const {
-				nest: {
-					value, errorMessage, isRequired, isPristine, onKeyPress, onChange,
-				},
+				nest: { errorMessage, isPristine },
 				label, labelCol, wrapperCol, colon, required, wrapperStyle,
-
 				...other,
 			} = this.props;
 
-			const isValid = errorMessage || (!isPristine && isRequired);
+			const isInvalid = errorMessage && !isPristine;
 
 			return (
 				<Item
@@ -46,21 +44,15 @@ export default function createComponent(Comp, options = {}) {
 					wrapperCol={wrapperCol}
 					colon={colon}
 					required={required}
-					validateStatus={isValid ? 'error' : 'success'}
-					help={errorMessage}
+					validateStatus={isInvalid ? 'error' : 'success'}
+					help={isInvalid ? errorMessage : ''}
 					style={wrapperStyle}
 				>
-					<Comp
-						onKeyPress={onKeyPress}
-						{...other}
-						onChange={mapChange ? mapChange(onChange) : onChange}
-						defaultValue={value}
-						value={value}
-					/>
+					<Comp {...other} />
 				</Item>
 			);
 		}
-	}
+	};
 
-	return nestify(NestedFormElement);
+	return nestify(nestifyConfig)(NestedFormElement);
 }
