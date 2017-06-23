@@ -7,6 +7,7 @@ import { Upload } from 'components/Nested';
 import withAppConfig from 'utils/withAppConfig';
 import withField from 'utils/withField';
 import ImageTableCell from './ImageTableCell';
+import resizeMode from './resizeMode';
 
 @withField
 @withAppConfig('upload')
@@ -16,6 +17,7 @@ export default class ImageField extends Component {
 		render: PropTypes.func,
 		strategy: PropTypes.string,
 		getValue: PropTypes.func.isRequired,
+		thumbStyle: PropTypes.object,
 	};
 
 	static defaultProps = {
@@ -29,6 +31,8 @@ export default class ImageField extends Component {
 		authStore: PropTypes.object.isRequired,
 		appConfig: PropTypes.object.isRequired,
 	};
+
+	static resizeMode = resizeMode;
 
 	constructor(props, context) {
 		super(props, context);
@@ -89,6 +93,7 @@ export default class ImageField extends Component {
 			props: {
 				max, strategy,
 				getValue,
+				thumbStyle,
 				...other,
 			},
 			state: { previewVisible, previewImage, fileList },
