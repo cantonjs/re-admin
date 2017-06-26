@@ -39,8 +39,6 @@ export default function withField(WrappedComponent) {
 		};
 
 		static defaultProps = {
-			labelCol: { span: 8 },
-			wrapperCol: { span: 16 },
 			shouldHideInForm: false,
 			shouldHideInTable: false,
 			disabled: false,

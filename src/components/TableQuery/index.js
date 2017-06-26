@@ -12,6 +12,9 @@ const styles = {
 		border: '1px solid #eee',
 		margin: '20px 0',
 	},
+	main: {
+		padding: '0 20px',
+	},
 	footer: {
 		textAlign: 'right',
 	},
@@ -67,7 +70,7 @@ export default class TableQuery extends Component {
 				onSubmit={this._handleSearch}
 				layout="inline"
 			>
-				<Row gutter={40}>
+				<Row style={styles.main}>
 					{children}
 				</Row>
 				<Row>
