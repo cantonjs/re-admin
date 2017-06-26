@@ -112,7 +112,7 @@ export default (env = {}) => {
 					minifyJS: true,
 				},
 			}),
-			new webpack.optimize.ModuleConcatenationPlugin(),
+			build && new webpack.optimize.ModuleConcatenationPlugin(),
 		].filter(Boolean),
 		resolve: {
 			modules: [srcDir, testDir, 'node_modules'],
