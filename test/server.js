@@ -58,10 +58,12 @@ router
 		}
 	})
 	.get('/api/test', verify, async (ctx) => {
-		const { page, count } = ctx.request.query;
+		const { page, count, id } = ctx.request.query;
 		const start = (page - 1) * +count;
-		const list = testDB.slice(start, start + +count);
-		ctx.body = { list, total };
+		ctx.body = {
+			list: id ? [testDB[0]] : testDB.slice(start, start + +count),
+			total: id ? 1 : total,
+		};
 	})
 	.post('/api/test', verify, async (ctx) => {
 		const { body } = ctx.request;

@@ -43,6 +43,7 @@ export default class TableBody extends Component {
 			selectedRowKeys: selectedKeys,
 			onChange: this._handleSelectChange,
 		};
+
 		return (
 			<div>
 				<TableComp

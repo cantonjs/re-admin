@@ -25,7 +25,6 @@ export default class DataStore {
 		authStore = auth;
 	}
 
-	@observable total = 0;
 	@observable isFetching = false;
 	@observable search = '?';
 	@observable selectedKeys = [];
@@ -34,11 +33,16 @@ export default class DataStore {
 		return this.collections.get(this.search);
 	}
 
+	@computed get total() {
+		return this.totals.get(this.search) || 0;
+	}
+
 	@computed get dataSource() {
 		return toJS(this.collection);
 	}
 
 	collections = observable.map();
+	totals = observable.map();
 
 	size = appConfig.api.count;
 	_prevQuery = {};
@@ -106,8 +110,8 @@ export default class DataStore {
 			});
 
 			this.search = search;
-			this.total = total;
 			this.collections.set(search, collection);
+			this.totals.set(search, total);
 		}
 		catch (err) {
 			showError('请求失败：', err.message);
@@ -119,6 +123,7 @@ export default class DataStore {
 
 	_sync() {
 		this.collections.clear();
+		this.totals.clear();
 		this.fetch();
 	}
 
