@@ -94,6 +94,12 @@ export default (
 			inputFilter={(value) => /^\$/.test(value) ? value : ('$' + (value / 100).toFixed(2))}
 			outputFilter={(value) => value.slice(1) * 100}
 		/>
+		<Text
+			name="num"
+			label="Number"
+			dataType="integer"
+			shouldShowInQuery
+		/>
 		<Select
 			name="fav"
 			label="爱好"

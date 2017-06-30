@@ -4,8 +4,8 @@ import { returnsArgument } from 'empty-functions';
 
 const tsToDate = (n) => new Date(+padEnd(n, 13, '0')).toISOString();
 
-const toInt = (data) => parseInt(data, 10) || 0;
-const toNumber = (data) => +data || 0;
+const toInt = (data) => console.log('data', data) || isUndefined(data) ? data : (parseInt(data, 10) || 0);
+const toNumber = (data) => isUndefined(data) ? data : (+data || 0);
 const toString = (data) => data ? (data + '') : data;
 const toBoolean = (data) => !!data;
 
