@@ -5,7 +5,6 @@ import { UPDATER, QUERIER } from 'constants/Issuers';
 import router from 'stores/router';
 import { observer } from 'mobx-react';
 import { isUndefined } from 'lodash';
-import { parseDataType, dataTypes } from './dataType';
 
 const styles = {
 	container: {
@@ -28,10 +27,6 @@ export default function withField(WrappedComponent) {
 			shouldHideInTable: PropTypes.bool,
 			shouldShowInQuery: PropTypes.bool,
 			required: PropTypes.bool,
-			dataType: PropTypes.oneOfType([
-				PropTypes.func,
-				PropTypes.oneOf(dataTypes),
-			]),
 			unique: PropTypes.bool,
 			disabled: PropTypes.bool,
 			validations: PropTypes.array,
@@ -42,7 +37,6 @@ export default function withField(WrappedComponent) {
 			shouldHideInForm: false,
 			shouldHideInTable: false,
 			disabled: false,
-			dataType: 'any',
 			...WrappedComponent.defaultProps,
 		};
 
@@ -88,37 +82,29 @@ export default function withField(WrappedComponent) {
 			return true;
 		}
 
-		_getValueBaseOnIssuer() {
+		getValue = () => {
 			const {
 				props: { name, value },
 				context: { store, issuer, getParentValue },
 			} = this;
 
-			if (!isUndefined(value)) { return value; }
-			if (!name) { return ''; }
+			if (!isUndefined(value) || !name) { return value; }
 
 			const { query } = router.location;
 			const selectedKeys = (query._keys || '').split(',');
 
 			if (issuer === QUERIER) {
-				return query[name] || '';
+				return query[name];
 			}
 
 			else if (selectedKeys.length === 1 && issuer === UPDATER) {
 				const item = getParentValue ?
 					getParentValue() : store.findItemByKey(selectedKeys[0])
 				;
-				return item ? item[name] : '';
+				return item ? item[name] : undefined;
 			}
 
 			return '';
-		}
-
-		getValue = () => {
-			return parseDataType(
-				this._getValueBaseOnIssuer(),
-				this.props.dataType,
-			);
 		};
 
 		render() {
@@ -130,7 +116,6 @@ export default function withField(WrappedComponent) {
 					required,
 					value,
 					defaultValue,
-					dataType,
 
 					unique,
 					render,

@@ -25,6 +25,7 @@ export default class TextField extends Component {
 		} = this;
 
 		const value = getValue();
+
 		return (
 			<Comp
 				{...other}

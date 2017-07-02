@@ -40,13 +40,17 @@ const buildInDefaultProps = {
 	},
 };
 
-const shouldIgnoreEmpty = (value, pristineValue) => {
-	if (!pristineValue) { return true; }
-	if (isFunction(pristineValue.every)) {
-		return pristineValue.every((item) => isUndefined(item));
+const isEmpty = (val) => {
+	if (!val) { return true; }
+	if (isFunction(val.every)) {
+		return val.every((item) => isUndefined(item));
 	}
-	return true;
+	return false;
 };
+
+const shouldIgnore = (value, pristineValue) =>
+	isEmpty(value) && isEmpty(pristineValue)
+;
 
 export default function RangePickerField(props) {
 	return (
@@ -54,7 +58,7 @@ export default function RangePickerField(props) {
 			dataType="date"
 			{...buildInDefaultProps}
 			{...props}
-			shouldIgnoreEmpty={shouldIgnoreEmpty}
+			shouldIgnore={shouldIgnore}
 			component={RangePicker}
 		/>
 	);
