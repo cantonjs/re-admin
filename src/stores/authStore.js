@@ -20,10 +20,10 @@ const verifyAndSaveAccessToken = (token, maxAge) => {
 	maxAge && cookie.set(ACCESS_TOKEN, token, { maxAge });
 };
 
-export default class AuthStore {
+class AuthStore {
 	@observable isFetching = false;
 
-	constructor(config) {
+	init(config) {
 		this._apiConfig = config.api;
 		this._config = config.auth;
 		this._ask = getAsk(config).clone(this._config.basePath);
@@ -91,3 +91,5 @@ export default class AuthStore {
 		cookie.remove(ACCESS_TOKEN);
 	}
 }
+
+export default new AuthStore();

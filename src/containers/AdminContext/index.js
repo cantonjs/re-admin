@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import getRoutes from 'utils/getRoutes';
-import AuthStore from 'stores/AuthStore';
+import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
 
 export default class AdminContext extends Component {
@@ -21,15 +21,15 @@ export default class AdminContext extends Component {
 		const { appConfig } = this.props;
 		return {
 			appConfig,
-			authStore: this._authStore,
+			authStore,
 			DataStore,
 		};
 	}
 
 	componentWillMount() {
 		const { appConfig } = this.props;
-		this._authStore = new AuthStore(appConfig);
-		DataStore.setup(appConfig, this._authStore);
+		authStore.init(appConfig);
+		DataStore.setup(appConfig, authStore);
 	}
 
 	render() {
@@ -40,7 +40,7 @@ export default class AdminContext extends Component {
 
 		const handleEnter = async (nextState, replace, next) => {
 			const { pathname, search } = nextState.location;
-			const isOk = await this._authStore.auth();
+			const isOk = await authStore.auth();
 			if (!isOk) {
 				replace({
 					pathname: '/login',
