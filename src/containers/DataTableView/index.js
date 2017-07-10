@@ -105,9 +105,12 @@ export default class DataTableView extends Component {
 
 	_getDataNodes(table) {
 		const { appConfig } = this.context;
-		const { data, title } = appConfig.tables[table];
+		const { data, title, header, footer } = appConfig.tables[table];
+
 		return {
 			title,
+			Header: header,
+			Footer: footer,
 			form: data
 				.filter(({ props }) => !props.shouldHideInForm)
 				.map((child, index) => {
@@ -137,12 +140,17 @@ export default class DataTableView extends Component {
 
 	render() {
 		const {
-			props: { location, route },
+			props: {
+				location,
+				route: { table, routeTitle },
+			},
 			state: {
 				store,
 				title,
 				form,
 				query,
+				Header,
+				Footer,
 			},
 		} = this;
 
@@ -150,7 +158,9 @@ export default class DataTableView extends Component {
 
 		return (
 			<div>
-				<h1>{title || route.title || route.table}</h1>
+				<h1>{title || routeTitle || table}</h1>
+
+				{Header && <Header store={store} />}
 
 				{hasQueryFields && panelsStore.isShowQuery &&
 					<TableQuery onQuery={this.updateQuery}>
@@ -165,6 +175,8 @@ export default class DataTableView extends Component {
 					store={store}
 					onPageChange={this._handlePageChange}
 				/>
+
+				{Footer && <Footer store={store} />}
 
 				<ActionModal
 					location={location}

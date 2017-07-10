@@ -1,6 +1,6 @@
 
 import React, { Children } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 
 export default function TableSchema() {
@@ -12,6 +12,8 @@ TableSchema.propTypes = {
 	title: PropTypes.string,
 	inputFilter: PropTypes.func,
 	outputFilter: PropTypes.func,
+	header: PropTypes.component,
+	footer: PropTypes.component,
 };
 
 TableSchema.defaultProps = {
