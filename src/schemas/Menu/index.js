@@ -10,7 +10,9 @@ MenuSchema.propTypes = {
 	title: PropTypes.string.isRequired,
 	icon: PropTypes.string,
 	path: PropTypes.string,
-	component: PropTypes.component,
 	table: PropTypes.string,
 	children: PropTypes.node,
+	component: PropTypes.component,
+	header: PropTypes.component,
+	footer: PropTypes.component,
 };
