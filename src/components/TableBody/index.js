@@ -5,8 +5,17 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 
 const styles = {
+	footer: {
+		overflow: 'hidden',
+	},
+	total: {
+		marginTop: 28,
+		float: 'left',
+		color: '#888',
+	},
 	pagination: {
 		marginTop: 20,
+		float: 'right',
 		textAlign: 'right',
 	},
 };
@@ -53,13 +62,18 @@ export default class TableBody extends Component {
 					loading={isFetching}
 					pagination={false}
 				/>
-				<Pagination
-					style={styles.pagination}
-					current={current}
-					total={total}
-					onChange={onPageChange}
-					defaultPageSize={size}
-				/>
+
+				<div style={styles.footer}>
+					<p style={styles.total}>找到 {total || 0} 条记录</p>
+
+					<Pagination
+						style={styles.pagination}
+						current={current}
+						total={total}
+						onChange={onPageChange}
+						defaultPageSize={size}
+					/>
+				</div>
 			</div>
 		);
 	}
