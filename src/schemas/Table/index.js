@@ -9,7 +9,6 @@ export default function TableSchema() {
 
 TableSchema.propTypes = {
 	name: PropTypes.string.isRequired,
-	title: PropTypes.string,
 	inputFilter: PropTypes.func,
 	outputFilter: PropTypes.func,
 };

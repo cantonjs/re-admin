@@ -105,10 +105,9 @@ export default class DataTableView extends Component {
 
 	_getDataNodes(table) {
 		const { appConfig } = this.context;
-		const { data, title } = appConfig.tables[table];
+		const { data } = appConfig.tables[table];
 
 		return {
-			title,
 			form: data
 				.filter(({ props }) => !props.shouldHideInForm)
 				.map((child, index) => {
@@ -142,14 +141,14 @@ export default class DataTableView extends Component {
 				location,
 				route: {
 					table,
-					routeTitle,
+					title,
+					pageTitle,
 					header: Header,
 					footer: Footer,
 				},
 			},
 			state: {
 				store,
-				title,
 				form,
 				query,
 			},
@@ -159,7 +158,7 @@ export default class DataTableView extends Component {
 
 		return (
 			<div>
-				<h1>{title || routeTitle || table}</h1>
+				<h1>{pageTitle || title || table}</h1>
 
 				{Header && <Header store={store} />}
 

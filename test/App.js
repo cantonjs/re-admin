@@ -14,7 +14,13 @@ export default class App extends Component {
 
 				<Navigator>
 					<Menu icon="bulb" title="菜单一" path="/" />
-					<Menu icon="bulb" title="菜单二" table="test" path="/test" />
+					<Menu
+						icon="bulb"
+						title="菜单二"
+						table="test"
+						path="/test"
+						pageTitle="测试数据表"
+					/>
 					<Menu icon="bulb" title="菜单三">
 						<Menu title="2.2" table="hello" path="/hello" />
 					</Menu>
@@ -30,7 +36,7 @@ export default class App extends Component {
 				<Auth basePath="auth" loginPath="login" getUserPath="getUser" />
 				<Upload imagePath="/api/upload/image" filePath="upload/file" />
 
-				<Table name="test" title="测试数据表">{test}</Table>
+				<Table name="test">{test}</Table>
 				<Table name="hello">{hello}</Table>
 			</Admin>
 		);
