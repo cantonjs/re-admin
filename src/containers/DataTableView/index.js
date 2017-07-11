@@ -95,8 +95,8 @@ export default class DataTableView extends Component {
 	};
 
 	_fetch() {
-		const { query, search } = this.props.location;
-		this.state.store.fetch(query, search);
+		const { query } = this.props.location;
+		this.state.store.fetch(query);
 	}
 
 	_handlePageChange = (page) => {

@@ -28,6 +28,7 @@ export default class DataStore {
 	@observable isFetching = false;
 	@observable search = '?';
 	@observable selectedKeys = [];
+	@observable data = {};
 
 	@computed get collection() {
 		return this.collections.get(this.search);
@@ -48,11 +49,10 @@ export default class DataStore {
 	_prevQuery = {};
 	_pervSearch = '?';
 
-	constructor(table, schema, { inputFilter, outputFilter }) {
+	constructor(table, schema, tableConfig) {
 		this._table = table;
 		this._schema = schema;
-		this._inputFilter = inputFilter;
-		this._outputFilter = outputFilter;
+		this._tableConfig = tableConfig;
 		this.columns = schema
 			.filter(({ shouldHideInTable }) => !shouldHideInTable)
 			.map(({ render, ...props }) => ({
@@ -67,7 +67,7 @@ export default class DataStore {
 		this._uniqueKey = unique && unique.name;
 
 		this._ask = getAsk(appConfig).clone({
-			url: table,
+			url: tableConfig.apiPath,
 			[appConfig.api.accessTokenLocation]: {
 				[appConfig.api.accessTokenName]({ remove }) {
 					const token = authStore.getAccessToken();
@@ -102,7 +102,10 @@ export default class DataStore {
 
 		try {
 			const res = await this._ask.fork({ query });
-			const { total, list = [] } = this._inputFilter(res);
+			const {
+				total,
+				list = [],
+			} = await this._tableConfig.mapOnFetchResponse(res);
 
 			const collection = list.map((data, index) => {
 				data.key = this._uniqueKey ? data[this._uniqueKey] : index;
@@ -118,6 +121,18 @@ export default class DataStore {
 		}
 
 		this.isFetching = false;
+		return this;
+	}
+
+	async fetchOne(query) {
+		try {
+			const res = await this._ask.fork({ query });
+			const data = await this._tableConfig.mapOnFetchOneResponse(res);
+			this.data = data;
+		}
+		catch (err) {
+			showError('请求失败：', err.message);
+		}
 		return this;
 	}
 
@@ -143,7 +158,7 @@ export default class DataStore {
 		try {
 			await this._ask.fork({
 				method: 'POST',
-				body: this._outputFilter(body, 'create'),
+				body: this._tableConfig.mapOnSave(body, 'create'),
 			});
 			this._sync();
 		}
@@ -157,7 +172,7 @@ export default class DataStore {
 			await this._ask.fork({
 				url: keys,
 				method: 'PUT',
-				body: this._outputFilter(body, 'update'),
+				body: this._tableConfig.mapOnSave(body, 'update'),
 			});
 
 			this._sync();

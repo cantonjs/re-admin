@@ -9,21 +9,26 @@ export default function TableSchema() {
 
 TableSchema.propTypes = {
 	name: PropTypes.string.isRequired,
-	inputFilter: PropTypes.func,
-	outputFilter: PropTypes.func,
+	apiPath: PropTypes.string,
+	mapOnFetchResponse: PropTypes.func,
+	mapOnFetchOneResponse: PropTypes.func,
+	mapOnSave: PropTypes.func,
 };
 
 TableSchema.defaultProps = {
-	inputFilter: returnsArgument,
-	outputFilter: returnsArgument,
+	mapOnFetchResponse: returnsArgument,
+	mapOnFetchOneResponse: returnsArgument,
+	mapOnSave: returnsArgument,
 };
 
-TableSchema.setConfig = ({ name, children, ...other }, tables) => {
+TableSchema.setConfig = ({ name, apiPath, children, ...other }, tables) => {
 	if (Children.count(children) === 1 && children.type === 'noscript') {
 		children = children.props.children;
 	}
+
 	tables[name] = {
 		...other,
+		apiPath: apiPath || name,
 		data: children,
 	};
 };
