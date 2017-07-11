@@ -64,7 +64,7 @@ export default class TableBody extends Component {
 				/>
 
 				<div style={styles.footer}>
-					<p style={styles.total}>找到 {total || 0} 条记录</p>
+					<p style={styles.total}>共 {total || 0} 条记录</p>
 
 					<Pagination
 						style={styles.pagination}
