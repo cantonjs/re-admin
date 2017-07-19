@@ -7,6 +7,7 @@ import withActions from 'utils/withActions';
 export default class RemoveAction extends Component {
 	static propTypes = {
 		recordKey: PropTypes.any.isRequired,
+		record: PropTypes.any,
 		children: PropTypes.node,
 		actions: PropTypes.shape({
 			requestRemove: PropTypes.func.isRequired,
@@ -28,6 +29,7 @@ export default class RemoveAction extends Component {
 			props: {
 				actions,
 				recordKey,
+				record,
 
 				children,
 				...other,

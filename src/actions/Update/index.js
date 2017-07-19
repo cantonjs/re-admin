@@ -7,6 +7,7 @@ import withActions from 'utils/withActions';
 export default class UpdateAction extends Component {
 	static propTypes = {
 		recordKey: PropTypes.any,
+		record: PropTypes.any,
 		names: PropTypes.array,
 		children: PropTypes.node,
 		actions: PropTypes.shape({
@@ -29,6 +30,7 @@ export default class UpdateAction extends Component {
 		const {
 			props: {
 
+				record,
 				recordKey,
 				actions,
 				names,
