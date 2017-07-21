@@ -1,16 +1,14 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
+import routerStore from 'stores/router';
 import { Modal } from 'antd';
 
 const confirm = Modal.confirm;
 
-@withRouter
 export default class Logout extends Component {
 	static propTypes = {
 		style: PropTypes.object,
-		router: PropTypes.object,
 	};
 
 	static contextTypes = {
@@ -23,7 +21,7 @@ export default class Logout extends Component {
 			title: '确定退出登录？',
 			onOk: () => {
 				this.context.authStore.logout();
-				this.props.router.replace('/login');
+				routerStore.history.replace('/login');
 			},
 			okText: '退出登录',
 		});

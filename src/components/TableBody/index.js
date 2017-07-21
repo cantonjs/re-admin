@@ -47,7 +47,9 @@ export default class TableBody extends Component {
 		const {
 			columns, dataSource, isFetching, total, size, selectedKeys
 		} = store;
+
 		const current = +location.query.page || 1;
+
 		const rowSelection = {
 			selectedRowKeys: selectedKeys,
 			onChange: this._handleSelectChange,

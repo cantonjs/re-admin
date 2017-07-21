@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import getRoutes from 'utils/getRoutes';
 import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
+import RouterContext from 'components/RouterContext';
 
 export default class AdminContext extends Component {
 	static propTypes = {
@@ -35,7 +36,15 @@ export default class AdminContext extends Component {
 	render() {
 		const {
 			appConfig,
-			appConfig: { navigator },
+			appConfig: {
+				navigator: {
+					frame: Frame,
+					login: Login,
+					index: Index,
+					notFound: NotFound,
+					routes,
+				},
+			},
 		} = this.props;
 
 		const handleEnter = async (nextState, replace, next) => {
@@ -53,14 +62,22 @@ export default class AdminContext extends Component {
 		};
 
 		return (
-			<Router history={browserHistory}>
-				<Route path="login" component={navigator.login} />
-				<Route path="/" component={navigator.frame} onEnter={handleEnter}>
-					<IndexRoute component={navigator.index}/>
-					{appConfig.navigator.routes}
-					{getRoutes(appConfig)}
-					<Route path="*" component={navigator.notFound}/>
-				</Route>
+			<Router>
+				<RouterContext>
+					<Switch>
+						<Route path="/login" component={Login} />
+						<Route onEnter={handleEnter}>
+							{({ match }) =>
+								<Frame>
+									<Route exact path="/" component={Index} />
+									{routes}
+									{getRoutes(appConfig, match)}
+									<Route component={NotFound} />
+								</Frame>
+							}
+						</Route>
+					</Switch>
+				</RouterContext>
 			</Router>
 		);
 	}

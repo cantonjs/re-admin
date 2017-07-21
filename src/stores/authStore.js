@@ -21,7 +21,7 @@ const verifyAndSaveAccessToken = (token, maxAge) => {
 };
 
 class AuthStore {
-	@observable isFetching = false;
+	@observable isFetching = true;
 
 	init(config) {
 		this._apiConfig = config.api;

@@ -149,7 +149,7 @@ export default (env = {}) => {
 		config.externals = {
 			react: 'React',
 			'react-dom': 'ReactDom',
-			'react-router': 'ReactRouter',
+			'react-router-dom': 'ReactRouterDOM',
 			mobx: 'mobx',
 			'mobx-react': 'mobxReact',
 			antd: 'antd',

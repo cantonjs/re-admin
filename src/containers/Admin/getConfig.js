@@ -7,6 +7,7 @@ import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
 import DataTableView from 'containers/DataTableView';
+import TestView from 'containers/TestView';
 import NotFoundView from 'containers/NotFoundView';
 
 const parseSchemaNodes = (nodes) => {

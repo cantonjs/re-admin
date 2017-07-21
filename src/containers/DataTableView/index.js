@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
+import router from 'stores/router';
 import { omit, isEqual } from 'lodash';
+// import { withRouter } from 'react-router-dom';
 
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
@@ -21,11 +23,21 @@ export default class DataTableView extends Component {
 			pathname: PropTypes.string,
 			search: PropTypes.string,
 		}),
+		match: PropTypes.object,
 		route: PropTypes.shape({
 			table: PropTypes.string.isRequired,
 			title: PropTypes.string,
 		}),
 	};
+
+
+
+	// TODO
+	static defaultProps = {
+		route: { table: 'test' },
+	};
+
+
 
 	static childContextTypes = {
 		store: PropTypes.object,
@@ -46,6 +58,7 @@ export default class DataTableView extends Component {
 	}
 
 	componentWillMount() {
+		console.log('this.props.match', this.props.match);
 		const { table } = this.props.route;
 		const { DataStore } = this.context;
 		this.state = {
@@ -138,7 +151,7 @@ export default class DataTableView extends Component {
 	render() {
 		const {
 			props: {
-				location,
+				// location,
 				route: {
 					table,
 					title,
@@ -171,7 +184,7 @@ export default class DataTableView extends Component {
 				<Toolbar hasQueryFields={hasQueryFields} />
 
 				<TableBody
-					location={location}
+					location={router.location}
 					store={store}
 					onPageChange={this._handlePageChange}
 				/>
@@ -179,7 +192,7 @@ export default class DataTableView extends Component {
 				{Footer && <Footer store={store} />}
 
 				<ActionModal
-					location={location}
+					location={router.location}
 					store={store}
 				>
 					{form}

@@ -1,9 +1,12 @@
 
-import React, { Component, cloneElement } from 'react';
+import React, { Component } from 'react';
+import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Sidebar from 'components/Sidebar';
 import panelsStore from 'stores/panelsStore';
-import router from 'stores/router';
+import authStore from 'stores/authStore';
+import routerStore from 'stores/router';
+import { observer } from 'mobx-react';
 
 const styles = {
 	container: {
@@ -14,37 +17,40 @@ const styles = {
 	},
 };
 
+@observer
 export default class FrameView extends Component {
 	static propTypes = {
 		children: PropTypes.node,
-		location: PropTypes.any.isRequired,
-		params: PropTypes.any.isRequired,
-		router: PropTypes.any.isRequired,
-		routes: PropTypes.any.isRequired,
-		route: PropTypes.any.isRequired,
 	};
 
 	componentDidMount() {
-		router.init(this.props);
+		this._requestAuth();
 	}
 
-	componentWillReceiveProps({ location, routes, route, params }) {
-		const prevProps = this.props;
-		if (prevProps.location !== location) { router.update({ location }); }
-		if (prevProps.routes !== routes) { router.update({ routes }); }
-		if (prevProps.route !== route) { router.update({ route }); }
-		if (prevProps.params !== params) { router.update({ params }); }
+	async _requestAuth() {
+		const { pathname, search } = routerStore.location;
+		const isOk = await authStore.auth();
+		if (!isOk) {
+			routerStore.history.replace({
+				pathname: '/login',
+				search: `ref=${pathname + search}`,
+			});
+		}
 	}
 
 	render() {
-		const { children, location: { pathname } } = this.props;
+		if (authStore.isFetching) { return null; }
+
+		const { children } = this.props;
 		return (
 			<div style={styles.container}>
 				{panelsStore.isShowSidebar &&
 					<Sidebar />
 				}
 				<div style={styles.main}>
-					{cloneElement(children, { key: pathname })}
+					<Switch>
+						{children}
+					</Switch>
 				</div>
 			</div>
 		);

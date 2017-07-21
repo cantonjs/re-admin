@@ -13,7 +13,7 @@ export default class App extends Component {
 				<Title>上帝的看板</Title>
 
 				<Navigator>
-					<Menu icon="bulb" title="菜单一" path="/" />
+					<Menu icon="bulb" title="菜单一" path="/" exact />
 					<Menu
 						icon="bulb"
 						title="菜单二"

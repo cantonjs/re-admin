@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { Form, Input, Submit } from 'components/Nested';
+import routerStore from 'stores/router';
 
 const styles = {
 	container: {
@@ -28,15 +29,6 @@ const styles = {
 };
 
 export default class LoginView extends Component {
-	static propTypes = {
-		location: PropTypes.shape({
-			query: PropTypes.object,
-		}),
-		router: PropTypes.shape({
-			replace: PropTypes.func,
-		}),
-	};
-
 	static contextTypes = {
 		appConfig: PropTypes.object,
 		authStore: PropTypes.object,
@@ -44,7 +36,6 @@ export default class LoginView extends Component {
 
 	async _submit(data) {
 		const {
-			props: { location, router },
 			context: {
 				authStore,
 				appConfig: { auth: { defaultLoginRedirection } },
@@ -54,9 +45,10 @@ export default class LoginView extends Component {
 		const isOk = await authStore.login(data);
 
 		if (isOk) {
-			const { ref } = location.query;
+			console.log('routerStore.location.query', routerStore.location.query);
+			const { ref } = routerStore.location.query;
 			const url = ref || defaultLoginRedirection;
-			router.replace(url);
+			routerStore.history.replace(url);
 		};
 	}
 
