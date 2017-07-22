@@ -12,7 +12,7 @@
     "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel src -d lib",
     "build:umd": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --progress --colors",
     "build:min": "yarn build:umd -- --env.min -p",
-    "build": "yarn build:es && yarn build:cjs && yarn build:umd && yarn build:min",
+    "build": "run-p build:*",
     "preversion": "yarn build"
   },
   "files": [
