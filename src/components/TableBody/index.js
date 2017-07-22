@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 
 const styles = {
 	footer: {

@@ -7,7 +7,7 @@ import { map, omit } from 'lodash';
 import * as Actions from 'constants/Actions';
 import * as Issuers from 'constants/Issuers';
 import { returnsArgument } from 'empty-functions';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 
 const issuersMap = {
 	[Actions.CREATE]: Issuers.CREATER,

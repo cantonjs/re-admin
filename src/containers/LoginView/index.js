@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { Form, Input, Submit } from 'components/Nested';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 
 const styles = {
 	container: {

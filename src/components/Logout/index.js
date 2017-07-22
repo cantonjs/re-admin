@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 import { Modal } from 'antd';
 
 const confirm = Modal.confirm;

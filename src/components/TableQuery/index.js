@@ -3,7 +3,7 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 
 import { QUERIER } from 'constants/Issuers';
 

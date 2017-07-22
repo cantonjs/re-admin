@@ -38,7 +38,7 @@ class RouterLocation {
 	}
 }
 
-class Router {
+class RouterStore {
 	@observable location = { query: {} };
 	@observable match = {};
 
@@ -65,4 +65,4 @@ class Router {
 	}
 }
 
-export default new Router();
+export default new RouterStore();

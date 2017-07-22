@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Sidebar from 'components/Sidebar';
 import panelsStore from 'stores/panelsStore';
 import authStore from 'stores/authStore';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 import { observer } from 'mobx-react';
 
 const styles = {

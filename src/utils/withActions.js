@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { Modal } from 'antd';
 import { isString, isNumber } from 'lodash';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 
 const confirm = Modal.confirm;
 

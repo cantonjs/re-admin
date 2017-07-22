@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
-import routerStore from 'stores/router';
+import routerStore from 'stores/routerStore';
 import { omit, isEqual } from 'lodash';
 import { parse } from 'utils/qs';
 

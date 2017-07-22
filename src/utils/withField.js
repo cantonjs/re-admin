@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { UPDATER, QUERIER } from 'constants/Issuers';
-import router from 'stores/router';
+import routerStore from 'stores/routerStore';
 import { observer } from 'mobx-react';
 import { isUndefined } from 'lodash';
 
@@ -51,7 +51,7 @@ export default function withField(WrappedComponent) {
 		}
 
 		_detectShouldShow() {
-			const { _names } = router.location.query;
+			const { _names } = routerStore.location.query;
 			const {
 				props: {
 					name,
@@ -90,7 +90,7 @@ export default function withField(WrappedComponent) {
 
 			if (!isUndefined(value) || !name) { return value; }
 
-			const { query } = router.location;
+			const { query } = routerStore.location;
 			const selectedKeys = (query._keys || '').split(',');
 
 			if (issuer === QUERIER) {
