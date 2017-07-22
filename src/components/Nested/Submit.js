@@ -10,12 +10,13 @@ const { Item } = Form;
 export default class Submit extends Component {
 	static propTypes = {
 		nest: PropTypes.object.isRequired,
+		wrapperStyle: PropTypes.object,
 	};
 
 	render() {
-		const { nest, ...other } = this.props;
+		const { nest, wrapperStyle, ...other } = this.props;
 		return (
-			<Item>
+			<Item style={wrapperStyle}>
 				<Button {...other} />
 			</Item>
 		);

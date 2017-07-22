@@ -14,7 +14,7 @@ const styles = {
 		height: '100%',
 	},
 	title: {
-		marginTop: -160,
+		margin: 10,
 	},
 	form: {
 		maxWidth: 300,
@@ -22,6 +22,9 @@ const styles = {
 		border: '1px solid #eee',
 		marginTop: 10,
 		width: '100%',
+	},
+	buttonWrapper: {
+		marginBottom: 0,
 	},
 	button: {
 		width: '100%',
@@ -33,6 +36,8 @@ export default class LoginView extends Component {
 		appConfig: PropTypes.object,
 		authStore: PropTypes.object,
 	};
+
+	state = { isValid: false };
 
 	async _submit(data) {
 		const {
@@ -51,6 +56,14 @@ export default class LoginView extends Component {
 		};
 	}
 
+	_handleValid = () => {
+		this.setState({ isValid: true });
+	};
+
+	_handleInvalid = () => {
+		this.setState({ isValid: false });
+	};
+
 	_handleSubmit = (data) => {
 		this._submit(data);
 	};
@@ -58,11 +71,17 @@ export default class LoginView extends Component {
 	render() {
 		const {
 			context: { appConfig: { title } },
+			state: { isValid },
 		} = this;
 		return (
 			<div style={styles.container}>
 				<h1 style={styles.title}>{title}</h1>
-				<Form onSubmit={this._handleSubmit} style={styles.form}>
+				<Form
+					onSubmit={this._handleSubmit}
+					onValid={this._handleValid}
+					onInvalid={this._handleInvalid}
+					style={styles.form}
+				>
 					<Input
 						required
 						name="username"
@@ -70,12 +89,20 @@ export default class LoginView extends Component {
 						placeholder="用户名"
 					/>
 					<Input
+						required
 						name="password"
 						type="password"
 						prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
 						placeholder="密码"
 					/>
-					<Submit type="primary" style={styles.button}>登录</Submit>
+					<Submit
+						type="primary"
+						style={styles.button}
+						wrapperStyle={styles.buttonWrapper}
+						disabled={!isValid}
+					>
+						登录
+					</Submit>
 				</Form>
 
 			</div>
