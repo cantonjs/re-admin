@@ -70,9 +70,9 @@ export default class DataStore {
 			url: tableConfig.apiPath,
 			[appConfig.api.accessTokenLocation]: {
 				[appConfig.api.accessTokenName]({ remove }) {
-					const token = authStore.getAccessToken();
-					if (!token) { remove(); }
-					else { return token; }
+					const { accessToken } = authStore;
+					if (!accessToken) { remove(); }
+					else { return accessToken; }
 				},
 			}
 		});

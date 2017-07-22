@@ -53,7 +53,7 @@ export default class ImageField extends Component {
 
 		// TODO: should suppport `accessToken` in header
 		const search = requireAccessToken ?
-			`?${accessTokenName}=${authStore.getAccessToken()}` : ''
+			`?${accessTokenName}=${authStore.accessToken}` : ''
 		;
 		this._uploadPath = imagePath + search;
 

@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Sidebar from 'components/Sidebar';
 import panelsStore from 'stores/panelsStore';
 import authStore from 'stores/authStore';
 import routerStore from 'stores/routerStore';
 import { observer } from 'mobx-react';
+import Sidebar from 'components/Sidebar';
+import { Spin } from 'antd';
 
 const styles = {
 	container: {
@@ -14,6 +15,11 @@ const styles = {
 	},
 	main: {
 		padding: '40px 60px 40px 300px',
+	},
+	spinContainer: {
+		display: 'block',
+		textAlign: 'center',
+		padding: 80,
 	},
 };
 
@@ -39,7 +45,13 @@ export default class FrameView extends Component {
 	}
 
 	render() {
-		if (authStore.isFetching) { return null; }
+		if (authStore.isFetching || !authStore.accessToken) {
+			return (
+				<div style={styles.spinContainer}>
+					<Spin delay={800} />
+				</div>
+			);
+		}
 
 		const { children } = this.props;
 		return (

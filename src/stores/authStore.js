@@ -5,6 +5,12 @@ import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
 import getAsk from 'utils/getAsk';
 import { isString } from 'lodash';
+import deprecated from 'utils/deprecated';
+
+const deprecatedGetAccessToken = deprecated({
+	outdated: 'getAccessToken()',
+	replacement: 'accessToken',
+});
 
 const verifyAndSaveAccessToken = (token, maxAge) => {
 	if (!isString(token)) {
@@ -22,6 +28,7 @@ const verifyAndSaveAccessToken = (token, maxAge) => {
 
 class AuthStore {
 	@observable isFetching = true;
+	@observable accessToken = cookie.get(ACCESS_TOKEN);
 
 	init(config) {
 		this._apiConfig = config.api;
@@ -29,22 +36,22 @@ class AuthStore {
 		this._ask = getAsk(config).clone(this._config.basePath);
 	}
 
+	// TODO: Deprecated
 	getAccessToken() {
-		return this.accessToken || cookie.get(ACCESS_TOKEN);
+		deprecatedGetAccessToken();
+		return this.accessToken;
 	}
 
 	async auth() {
 		this.isFetching = true;
 		let isOk = false;
 		try {
-			const token = this.getAccessToken();
-
 			const { accessToken, expiresIn } = await this._ask.fork({
 				url: this._config.getUserPath,
 				[this._apiConfig.accessTokenLocation]: {
-					[this._apiConfig.accessTokenName]({ remove }) {
-						if (!token) { remove(); }
-						else { return token; }
+					[this._apiConfig.accessTokenName]: ({ remove }) => {
+						if (!this.accessToken) { remove(); }
+						else { return this.accessToken; }
 					},
 				},
 			});
@@ -76,6 +83,7 @@ class AuthStore {
 			});
 
 			verifyAndSaveAccessToken(accessToken, expiresIn);
+			this.accessToken = accessToken;
 
 			isOk = true;
 			message.success('登录成功');
@@ -88,6 +96,7 @@ class AuthStore {
 	}
 
 	logout() {
+		this.accessToken = null;
 		cookie.remove(ACCESS_TOKEN);
 	}
 }
