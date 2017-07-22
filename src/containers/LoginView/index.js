@@ -45,7 +45,6 @@ export default class LoginView extends Component {
 		const isOk = await authStore.login(data);
 
 		if (isOk) {
-			console.log('routerStore.location.query', routerStore.location.query);
 			const { ref } = routerStore.location.query;
 			const url = ref || defaultLoginRedirection;
 			routerStore.history.replace(url);

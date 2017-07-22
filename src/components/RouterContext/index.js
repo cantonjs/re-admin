@@ -19,15 +19,20 @@ export default class RouterContext extends Component {
 		location: PropTypes.object.isRequired,
 	};
 
+	static childContextTypes = {
+		routerStore: PropTypes.object,
+	};
+
+	getChildContext() {
+		return { routerStore };
+	}
+
 	componentWillMount() {
 		routerStore.init(this.props);
 	}
 
-	componentWillReceiveProps({ location, match, history }) {
-		const prevProps = this.props;
-		if (prevProps.location !== location) { routerStore.update({ location }); }
-		if (prevProps.match !== match) { routerStore.update({ match }); }
-		if (prevProps.history !== history) { routerStore.update({ history }); }
+	componentWillReceiveProps({ match }) {
+		if (this.props.match !== match) { routerStore.__setMatch(match); }
 	}
 
 	render() {

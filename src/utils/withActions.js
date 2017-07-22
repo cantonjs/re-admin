@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { Modal } from 'antd';
 import { isString, isNumber } from 'lodash';
+import routerStore from 'stores/router';
 
 const confirm = Modal.confirm;
 
@@ -14,11 +15,11 @@ export default function withActions(WrappedComponent) {
 	class WithActions extends Component {
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
-			updateLocationQuery: PropTypes.func.isRequired,
 		};
 
 		requestCreate = () => {
-			this.context.updateLocationQuery({ _action: 'create' });
+			const { location } = routerStore;
+			location.query = { ...location.query, _action: 'create' };
 		};
 
 		requestRemove = (keys) => {
@@ -34,7 +35,8 @@ export default function withActions(WrappedComponent) {
 		};
 
 		requestUpdate = (keys, names) => {
-			const { updateLocationQuery, store } = this.context;
+			const { store } = this.context;
+			const { location } = routerStore;
 
 			if (isString(keys) || isNumber(keys)) { keys = [keys]; }
 			if (!Array.isArray(keys)) { keys = store.selectedKeys; }
@@ -48,7 +50,7 @@ export default function withActions(WrappedComponent) {
 				query._names = names.join(',');
 			}
 
-			updateLocationQuery(query);
+			location.query = { ...location.query, ...query };
 		};
 
 		render() {

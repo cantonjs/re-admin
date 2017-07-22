@@ -3,6 +3,7 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
+import routerStore from 'stores/router';
 
 import { QUERIER } from 'constants/Issuers';
 
@@ -26,7 +27,6 @@ const styles = {
 export default class TableQuery extends Component {
 	static propTypes = {
 		children: PropTypes.node,
-		onQuery: PropTypes.func.isRequired,
 	};
 
 	static childContextTypes = {
@@ -37,14 +37,12 @@ export default class TableQuery extends Component {
 		return { issuer: QUERIER };
 	}
 
-	_handleSearch = (data) => {
-		const { onQuery } = this.props;
-		onQuery(data, { shouldReplace: true });
+	_handleSearch = (query) => {
+		routerStore.location.query = query;
 	};
 
 	_handleReset = () => {
-		const { onQuery } = this.props;
-		onQuery({}, { shouldReplace: true });
+		routerStore.location.query = {};
 	};
 
 	toggle = () => {

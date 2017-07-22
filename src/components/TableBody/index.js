@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
+import routerStore from 'stores/router';
 
 const styles = {
 	footer: {
@@ -31,24 +32,24 @@ export default class TableBody extends Component {
 			size: PropTypes.number.isRequired,
 			setSelectedKeys: PropTypes.func.isRequired,
 		}),
-		location: PropTypes.shape({
-			query: PropTypes.object,
-			pathname: PropTypes.string,
-		}),
-		onPageChange: PropTypes.func.isRequired,
 	};
 
 	_handleSelectChange = (selectedRowKeys) => {
 		this.props.store.setSelectedKeys(selectedRowKeys);
 	};
 
+	_handlePageChange = (page) => {
+		const { location } = routerStore;
+		location.query = { ...location.query, page };
+	}
+
 	render() {
-		const { onPageChange, store, location } = this.props;
+		const { store } = this.props;
 		const {
 			columns, dataSource, isFetching, total, size, selectedKeys
 		} = store;
 
-		const current = +location.query.page || 1;
+		const current = +routerStore.location.query.page || 1;
 
 		const rowSelection = {
 			selectedRowKeys: selectedKeys,
@@ -72,7 +73,7 @@ export default class TableBody extends Component {
 						style={styles.pagination}
 						current={current}
 						total={total}
-						onChange={onPageChange}
+						onChange={this._handlePageChange}
 						defaultPageSize={size}
 					/>
 				</div>
