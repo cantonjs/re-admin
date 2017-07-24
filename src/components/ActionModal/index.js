@@ -59,7 +59,7 @@ export default class ActionModal extends Component {
 	_handleSubmit = (data, { isInvalid }) => {
 		if (!isInvalid) {
 			const { store } = this.props;
-			const { _action, _keys } = routerStore.location;
+			const { _action, _keys } = routerStore.location.query;
 			store[_action](data, _keys);
 			this.close();
 		}
