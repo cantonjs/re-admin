@@ -1,11 +1,18 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import getRoutes from 'utils/getRoutes';
+import routerStore from 'stores/routerStore';
 import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
-import RouterContext from 'components/RouterContext';
+import { Router } from 'react-router-mobx';
+
+const styles = {
+	container: {
+		height: '100%',
+	},
+};
 
 export default class AdminContext extends Component {
 	static propTypes = {
@@ -62,8 +69,8 @@ export default class AdminContext extends Component {
 		};
 
 		return (
-			<Router>
-				<RouterContext>
+			<Router component={BrowserRouter} routerStore={routerStore}>
+				<div style={styles.container}>
 					<Switch>
 						<Route path="/login" component={Login} />
 						<Route onEnter={handleEnter}>
@@ -77,7 +84,7 @@ export default class AdminContext extends Component {
 							}
 						</Route>
 					</Switch>
-				</RouterContext>
+				</div>
 			</Router>
 		);
 	}
