@@ -13,6 +13,10 @@ export default function parseAPIPath(apiPath) {
 			apiPath.query = parse(apiPath.query);
 		}
 
+		if (apiPath.query === null) {
+			apiPath.query = {};
+		}
+
 		return {
 			pathname: '/',
 			query: {},

@@ -75,12 +75,10 @@ export default class DataStore {
 			},
 		};
 
-		if (appConfig.api.accessTokenLocation === 'query') {
-			assign(query, accessTokenOptions);
-		}
-		else {
-			assign(headers, accessTokenOptions);
-		}
+		assign(
+			appConfig.api.accessTokenLocation === 'query' ? query : headers,
+			accessTokenOptions,
+		);
 
 		this.size = +(query.count || appConfig.api.count);
 
