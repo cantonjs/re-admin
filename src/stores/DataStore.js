@@ -1,6 +1,6 @@
 
 import { observable, computed, toJS } from 'mobx';
-import { omit, isString, isNumber } from 'lodash';
+import { omit, isString, isNumber, assign } from 'lodash';
 import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
 import jsxToPlainObject from 'utils/jsxToPlainObject';
@@ -45,7 +45,6 @@ export default class DataStore {
 	collections = observable.map();
 	totals = observable.map();
 
-	size = appConfig.api.count;
 	_prevQuery = {};
 	_pervSearch = '?';
 
@@ -66,15 +65,29 @@ export default class DataStore {
 		const unique = schema.find((s) => s.unique);
 		this._uniqueKey = unique && unique.name;
 
+		const { pathname, query, headers } = tableConfig.apiLoc;
+
+		const accessTokenOptions = {
+			[appConfig.api.accessTokenName]({ remove }) {
+				const { accessToken } = authStore;
+				if (!accessToken) { remove(); }
+				else { return accessToken; }
+			},
+		};
+
+		if (appConfig.api.accessTokenLocation === 'query') {
+			assign(query, accessTokenOptions);
+		}
+		else {
+			assign(headers, accessTokenOptions);
+		}
+
+		this.size = +(query.count || appConfig.api.count);
+
 		this._ask = getAsk(appConfig).clone({
-			url: tableConfig.apiPath,
-			[appConfig.api.accessTokenLocation]: {
-				[appConfig.api.accessTokenName]({ remove }) {
-					const { accessToken } = authStore;
-					if (!accessToken) { remove(); }
-					else { return accessToken; }
-				},
-			}
+			url: pathname,
+			query,
+			headers,
 		});
 	}
 

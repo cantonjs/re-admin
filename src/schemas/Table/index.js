@@ -2,6 +2,7 @@
 import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
+import parseAPIPath from 'utils/parseAPIPath';
 
 export default function TableSchema() {
 	return (<noscript />);
@@ -9,7 +10,7 @@ export default function TableSchema() {
 
 TableSchema.propTypes = {
 	name: PropTypes.string.isRequired,
-	apiPath: PropTypes.string,
+	apiPath: PropTypes.stringOrObject,
 	mapOnFetchResponse: PropTypes.func,
 	mapOnFetchOneResponse: PropTypes.func,
 	mapOnSave: PropTypes.func,
@@ -28,7 +29,7 @@ TableSchema.setConfig = ({ name, apiPath, children, ...other }, tables) => {
 
 	tables[name] = {
 		...other,
-		apiPath: apiPath || name,
+		apiLoc: parseAPIPath(apiPath || name),
 		data: children,
 	};
 };

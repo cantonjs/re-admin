@@ -11,4 +11,8 @@ export default {
 		PropTypes.string,
 		PropTypes.number,
 	]),
+	stringOrObject: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.object,
+	]),
 };
