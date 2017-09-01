@@ -7,6 +7,7 @@ import routerStore from 'stores/routerStore';
 import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
 import { Router } from 'react-router-mobx';
+import Title from 'react-title-component';
 
 const styles = {
 	container: {
@@ -44,6 +45,7 @@ export default class AdminContext extends Component {
 		const {
 			appConfig,
 			appConfig: {
+				title,
 				navigator: {
 					frame: Frame,
 					login: Login,
@@ -71,6 +73,7 @@ export default class AdminContext extends Component {
 		return (
 			<Router component={BrowserRouter} routerStore={routerStore}>
 				<div style={styles.container}>
+					<Title render={title} />
 					<Switch>
 						<Route path="/login" component={Login} />
 						<Route onEnter={handleEnter}>

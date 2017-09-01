@@ -38,7 +38,8 @@
     "moment": "^2.18.1",
     "qs": "^6.5.0",
     "react-nested-form": "^0.0.0-13",
-    "react-router-mobx": "^0.0.0"
+    "react-router-mobx": "^0.0.0",
+    "react-title-component": "^1.0.1"
   },
   "peerDependencies": {
     "antd": "^2.10.0",

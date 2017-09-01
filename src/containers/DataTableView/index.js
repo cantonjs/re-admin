@@ -7,6 +7,7 @@ import routerStore from 'stores/routerStore';
 import { omit, isEqual } from 'lodash';
 import { parse } from 'utils/qs';
 
+import Title from 'react-title-component';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import DefaultToolbar from 'components/DefaultToolbar';
@@ -144,9 +145,13 @@ export default class DataTableView extends Component {
 			},
 		} = this;
 
+		const heading = pageTitle || title || table;
+
 		return (
 			<div>
-				<h1>{pageTitle || title || table}</h1>
+				<Title render={(parentTitle) => `${heading} | ${parentTitle}`} />
+
+				<h1>{heading}</h1>
 
 				{Header && <Header store={store} />}
 
