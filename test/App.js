@@ -2,7 +2,10 @@
 import 'antd/dist/antd.less';
 import './reset.scss';
 import React, { Component } from 'react';
-import { Admin, Title, API, Auth, Upload, Navigator, Menu } from '../src';
+import {
+	Admin, Title, API, Auth, Upload, Navigator, Menu,
+	Toolbar, ToolbarCreateButton,
+} from '../src';
 import testTable from './tables/test';
 import helloTable from './tables/hello';
 
@@ -22,7 +25,16 @@ export default class App extends Component {
 						pageTitle="测试数据表"
 					/>
 					<Menu icon="bulb" title="菜单三">
-						<Menu title="2.2" table="hello" path="/hello" />
+						<Menu
+							title="2.2"
+							table="hello"
+							path="/hello"
+							toolbar={() => (
+								<Toolbar
+									left={<ToolbarCreateButton />}
+								/>
+							)}
+						/>
 					</Menu>
 				</Navigator>
 

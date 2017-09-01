@@ -9,8 +9,8 @@ import { parse } from 'utils/qs';
 
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
+import DefaultToolbar from 'components/DefaultToolbar';
 import ActionModal from 'components/ActionModal';
-import Toolbar from 'components/Toolbar';
 
 @observer
 export default class DataTableView extends Component {
@@ -25,10 +25,16 @@ export default class DataTableView extends Component {
 		pageTitle: PropTypes.node,
 		header: PropTypes.func,
 		footer: PropTypes.func,
+		toolbar: PropTypes.func,
+	};
+
+	static defaultProps = {
+		toolbar: DefaultToolbar,
 	};
 
 	static childContextTypes = {
 		store: PropTypes.object,
+		queryNodes: PropTypes.node,
 	};
 
 	static contextTypes = {
@@ -39,6 +45,7 @@ export default class DataTableView extends Component {
 	getChildContext() {
 		return {
 			store: this.state.store,
+			queryNodes: this.state.query,
 		};
 	}
 
@@ -128,6 +135,7 @@ export default class DataTableView extends Component {
 				pageTitle,
 				header: Header,
 				footer: Footer,
+				toolbar: Toolbar,
 			},
 			state: {
 				store,
@@ -136,19 +144,17 @@ export default class DataTableView extends Component {
 			},
 		} = this;
 
-		const hasQueryFields = !!query.length;
-
 		return (
 			<div>
 				<h1>{pageTitle || title || table}</h1>
 
 				{Header && <Header store={store} />}
 
-				{hasQueryFields && panelsStore.isShowQuery &&
+				{panelsStore.isShowQuery &&
 					<TableQuery>{query}</TableQuery>
 				}
 
-				<Toolbar hasQueryFields={hasQueryFields} />
+				<Toolbar />
 
 				<TableBody store={store} />
 

@@ -7,7 +7,7 @@ import withActions from 'utils/withActions';
 
 @withActions
 @observer
-export default class ButtonCreate extends Component {
+export default class ToolbarCreateButton extends Component {
 	static propTypes = {
 		label: PropTypes.node,
 		actions: PropTypes.shape({

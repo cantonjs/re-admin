@@ -6,33 +6,33 @@ import { Button } from 'antd';
 import withActions from 'utils/withActions';
 
 @withActions
-export default class ButtonRemove extends Component {
+export default class ToolbarUpdateButton extends Component {
 	static propTypes = {
 		label: PropTypes.node,
 		multiLabel: PropTypes.node,
 		actions: PropTypes.shape({
-			requestRemove: PropTypes.func.isRequired,
+			requestUpdate: PropTypes.func.isRequired,
 			selectedKeys: MobxPropTypes.observableArray.isRequired,
 		}).isRequired,
 	};
 
 	static defaultProps = {
-		label: '删除',
-		multiLabel: '批量删除',
-		type: 'danger',
+		label: '修改',
+		multiLabel: '批量修改',
+		type: 'primary',
 	};
 
 	render() {
 		const {
 			props: {
-				actions: { selectedKeys: { length }, requestRemove },
+				actions: { selectedKeys: { length }, requestUpdate },
 				label, multiLabel, ...other,
 			},
 		} = this;
 		return (
 			<Button
 				{...other}
-				onClick={requestRemove}
+				onClick={requestUpdate}
 				disabled={!length}
 			>
 				{length > 1 ? multiLabel : label}

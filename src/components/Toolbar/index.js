@@ -2,10 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'antd';
-import ButtonRemove from 'components/ButtonRemove';
-import ButtonUpdate from 'components/ButtonUpdate';
-import ButtonCreate from 'components/ButtonCreate';
-import QuerySwitch from 'components/QuerySwitch';
 
 const { Group } = Button;
 
@@ -20,25 +16,22 @@ const styles = {
 
 export default class Toolbar extends Component {
 	static propTypes = {
-		hasQueryFields: PropTypes.bool,
+		left: PropTypes.node,
+		right: PropTypes.node,
 	};
 
 	render() {
-		const { hasQueryFields } = this.props;
+		const { left, right } = this.props;
 		return (
 			<div style={styles.container}>
 				<Row justify="space-around">
 					<Col span={12}>
 						<Group>
-							<ButtonCreate />
-							<ButtonUpdate />
-							<ButtonRemove />
+							{left}
 						</Group>
 					</Col>
 					<Col span={12} style={styles.right}>
-						{hasQueryFields &&
-							<QuerySwitch />
-						}
+						{right}
 					</Col>
 				</Row>
 			</div>
