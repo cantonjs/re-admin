@@ -1,14 +1,14 @@
 
 import React from 'react';
 import {
-	Fields, Text, Select, Option, Image, Slider, Uploader,
+	Table, Text, Select, Option, Image, Slider, Uploader,
 	RangePicker, DatePicker,
 	ArrayOf, ObjectOf,
 	Actions, Remove, Update,
 } from '../../src';
 
 export default (
-	<Fields>
+	<Table name="test">
 		<Text
 			name="id"
 			label="ID"
@@ -129,5 +129,5 @@ export default (
 			<Remove />
 			<Update names={['name', 'avatar']} />
 		</Actions>
-	</Fields>
+	</Table>
 );

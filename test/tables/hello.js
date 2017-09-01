@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Fields, Text } from '../../src';
+import { Table, Text } from '../../src';
 
 export default (
-	<Fields>
+	<Table name="hello">
 		<Text
 			name="id"
 			label="ID"
@@ -21,5 +21,5 @@ export default (
 			label="生日"
 			dataType="date"
 		/>
-	</Fields>
+	</Table>
 );

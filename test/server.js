@@ -3,7 +3,6 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import kcors from 'kcors';
 import koaBody from 'koa-body';
-import multer from 'multer';
 import ms from 'ms';
 
 const app = new Koa();

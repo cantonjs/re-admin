@@ -2,9 +2,9 @@
 import 'antd/dist/antd.less';
 import './reset.scss';
 import React, { Component } from 'react';
-import { Admin, Title, Table, API, Auth, Upload, Navigator, Menu } from '../src';
-import test from './tables/test';
-import hello from './tables/hello';
+import { Admin, Title, API, Auth, Upload, Navigator, Menu } from '../src';
+import testTable from './tables/test';
+import helloTable from './tables/hello';
 
 export default class App extends Component {
 	render() {
@@ -39,8 +39,9 @@ export default class App extends Component {
 					filePath="/api/upload/file"
 				/>
 
-				<Table name="test">{test}</Table>
-				<Table name="hello">{hello}</Table>
+				{testTable}
+				{helloTable}
+
 			</Admin>
 		);
 	}
