@@ -1,7 +1,8 @@
 
 import React from 'react';
 import {
-	Fields, Text, Select, Option, Image, Slider, RangePicker, DatePicker,
+	Fields, Text, Select, Option, Image, Slider, Uploader,
+	RangePicker, DatePicker,
 	ArrayOf, ObjectOf,
 	Actions, Remove, Update,
 } from '../../src';
@@ -99,6 +100,10 @@ export default (
 			label="Number"
 			dataType="integer"
 			shouldShowInQuery
+		/>
+		<Uploader
+			name="file"
+			label="文件"
 		/>
 		<Select
 			name="fav"

@@ -6,6 +6,7 @@ import { Icon, Modal } from 'antd';
 import { Upload } from 'components/Nested';
 import withAppConfig from 'utils/withAppConfig';
 import withField from 'utils/withField';
+import mapFileList from 'utils/mapFileList';
 import ImageTableCell from './ImageTableCell';
 import resizeMode from './resizeMode';
 
@@ -34,15 +35,19 @@ export default class ImageField extends Component {
 
 	static resizeMode = resizeMode;
 
-	constructor(props, context) {
-		super(props, context);
+	state = {
+		fileList: mapFileList(this.props.getValue()),
+		previewVisible: false,
+		previewImage: '',
+	};
 
-		const { strategy, getValue } = props;
-		const { authStore } = context;
+	componentWillMount() {
+		const { strategy } = this.props;
+		const { authStore, appConfig } = this.context;
 		const strategies = this.getAppConfig('strategies');
 		const imagePath = this.getAppConfig('imagePath');
 		const requireAccessToken = this.getAppConfig('requireAccessToken');
-		const { accessTokenName } = context.appConfig.api;
+		const { accessTokenName } = appConfig.api;
 
 		if (__DEV__ && strategy && !strategies.hasOwnProperty(strategy)) {
 			console.warn(
@@ -56,21 +61,6 @@ export default class ImageField extends Component {
 			`?${accessTokenName}=${authStore.accessToken}` : ''
 		;
 		this._uploadPath = imagePath + search;
-
-		const state = {
-			previewVisible: false,
-			previewImage: '',
-			fileList: [],
-		};
-
-		(getValue() || '')
-			.split(',')
-			.map((url) => url.trim())
-			.filter(Boolean)
-			.forEach((url, index) => state.fileList.push({ uid: -index, url }))
-		;
-
-		this.state = state;
 	}
 
 	_handleCloseModal = () => {

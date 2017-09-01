@@ -3,6 +3,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import kcors from 'kcors';
 import koaBody from 'koa-body';
+import multer from 'multer';
 import ms from 'ms';
 
 const app = new Koa();
@@ -89,6 +90,9 @@ router
 		const keysArr = keys.split(',');
 		testDB = testDB.filter((data) => !keysArr.includes(data.id));
 		ctx.body = { ok: true };
+	})
+	.post('/api/upload/file', async (ctx) => {
+		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };
 	})
 	.post('/api/upload/image', async (ctx) => {
 		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };

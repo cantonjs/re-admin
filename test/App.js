@@ -34,7 +34,10 @@ export default class App extends Component {
 				/>
 
 				<Auth basePath="auth" loginPath="login" getUserPath="getUser" />
-				<Upload imagePath="/api/upload/image" filePath="upload/file" />
+				<Upload
+					imagePath="/api/upload/image"
+					filePath="/api/upload/file"
+				/>
 
 				<Table name="test">{test}</Table>
 				<Table name="hello">{hello}</Table>
