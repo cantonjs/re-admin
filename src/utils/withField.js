@@ -108,7 +108,7 @@ export default function withField(WrappedComponent) {
 		};
 
 		render() {
-			if (!this._shouldShow) { return null; }
+			// if (!this._shouldShow) { return null; }
 
 			const {
 				props: {

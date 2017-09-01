@@ -46,7 +46,7 @@ export default class DataTableView extends Component {
 	getChildContext() {
 		return {
 			store: this.state.store,
-			queryNodes: this.state.query,
+			queryNodes: this.state.queryNodes,
 		};
 	}
 
@@ -98,33 +98,15 @@ export default class DataTableView extends Component {
 
 	_getDataNodes(table) {
 		const { appConfig } = this.context;
-		const { data } = appConfig.tables[table];
+		const { formList, queryList } = appConfig.tables[table];
 
 		return {
-			form: data
-				.filter(({ props }) => !props.shouldHideInForm)
-				.map((child, index) => {
-					const {
-						props: { formComponent: Comp, ...other },
-						key,
-					} = child;
-					return Comp ? (
-						<Comp {...other} key={key || index} />
-					) : child
-					;
-				}),
-			query: data
-				.filter(({ props }) => props.shouldShowInQuery)
-				.map((child, index) => {
-					const {
-						props: { queryComponent: Comp, ...other },
-						key,
-					} = child;
-					return Comp ? (
-						<Comp {...other} key={key || index} />
-					) : child
-					;
-				}),
+			formNodes: formList.map(({ Component, props, key }) =>
+				<Component key={key} {...props} />
+			),
+			queryNodes: queryList.map(({ Component, props, key }) =>
+				<Component key={key} {...props} />
+			),
 		};
 	}
 
@@ -140,8 +122,8 @@ export default class DataTableView extends Component {
 			},
 			state: {
 				store,
-				form,
-				query,
+				formNodes,
+				queryNodes,
 			},
 		} = this;
 
@@ -156,7 +138,7 @@ export default class DataTableView extends Component {
 				{Header && <Header store={store} />}
 
 				{panelsStore.isShowQuery &&
-					<TableQuery>{query}</TableQuery>
+					<TableQuery>{queryNodes}</TableQuery>
 				}
 
 				<Toolbar />
@@ -165,9 +147,7 @@ export default class DataTableView extends Component {
 
 				{Footer && <Footer store={store} />}
 
-				<ActionModal store={store}>
-					{form}
-				</ActionModal>
+				<ActionModal store={store}>{formNodes}</ActionModal>
 			</div>
 		);
 	}

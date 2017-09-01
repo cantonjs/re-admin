@@ -1,4 +1,5 @@
 
+// import React from 'react';
 import { observable, computed, toJS } from 'mobx';
 import { omit, isString, isNumber, assign } from 'lodash';
 import getAsk from 'utils/getAsk';
@@ -52,6 +53,8 @@ export default class DataStore {
 		this._table = table;
 		this._schema = schema;
 		this._tableConfig = tableConfig;
+
+
 		this.columns = schema
 			.filter(({ shouldHideInTable }) => !shouldHideInTable)
 			.map(({ render, ...props }) => ({
@@ -61,6 +64,25 @@ export default class DataStore {
 				render: render ? (...args) => render(...args, props) : undefined,
 			}))
 		;
+
+		// this.columns = tableConfig
+		// 	.tableList
+		// 	.map(({ Component, props }) => ({
+		// 		title: props.label,
+		// 		key: props.name,
+		// 		dataIndex: props.name,
+		// 		render: function RenderComponent(text, record, index) {
+		// 			return (
+		// 				<Component
+		// 					{...props}
+		// 					text={text}
+		// 					record={record}
+		// 					index={index}
+		// 				/>
+		// 			);
+		// 		},
+		// 	}))
+		// ;
 
 		const unique = schema.find((s) => s.unique);
 		this._uniqueKey = unique && unique.name;
