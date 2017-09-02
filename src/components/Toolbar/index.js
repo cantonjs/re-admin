@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'antd';
+import { TOOLBAR } from 'constants/Issuers';
 
 const { Group } = Button;
 
@@ -19,6 +20,14 @@ export default class Toolbar extends Component {
 		left: PropTypes.node,
 		right: PropTypes.node,
 	};
+
+	static childContextTypes = {
+		issuer: PropTypes.string,
+	};
+
+	getChildContext() {
+		return { issuer: TOOLBAR };
+	}
 
 	render() {
 		const { left, right } = this.props;

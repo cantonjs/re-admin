@@ -4,7 +4,7 @@ import './reset.scss';
 import React, { Component } from 'react';
 import {
 	Admin, Title, API, Auth, Upload, Navigator, Menu,
-	Toolbar, ToolbarCreateButton,
+	Toolbar, CreateButton,
 } from '../src';
 import testTable from './tables/test';
 import helloTable from './tables/hello';
@@ -31,7 +31,7 @@ export default class App extends Component {
 							path="/hello"
 							toolbar={() => (
 								<Toolbar
-									left={<ToolbarCreateButton />}
+									left={<CreateButton />}
 								/>
 							)}
 						/>

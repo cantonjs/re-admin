@@ -4,7 +4,7 @@ import {
 	Table, Text, Select, Option, Image, Slider, Uploader,
 	RangePicker, DatePicker,
 	ArrayOf, ObjectOf,
-	Actions, Remove, Update,
+	Actions, RemoveButton, UpdateButton,
 } from '../../src';
 
 export default (
@@ -149,8 +149,8 @@ export default (
 		/>
 
 		<Actions>
-			<Remove />
-			<Update names={['name', 'avatar']} />
+			<RemoveButton />
+			<UpdateButton names={['name', 'avatar']} />
 		</Actions>
 	</Table>
 );

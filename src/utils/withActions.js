@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { Modal } from 'antd';
-import { isString, isNumber } from 'lodash';
 import routerStore from 'stores/routerStore';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
 const { confirm } = Modal;
 
-// Notice that this `Action` is NOT redux action.
+// Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
 
 	@observer
@@ -39,8 +38,7 @@ export default function withActions(WrappedComponent) {
 			const { store } = this.context;
 			const { location } = routerStore;
 
-			if (isString(keys) || isNumber(keys)) { keys = [keys]; }
-			if (!Array.isArray(keys)) { keys = store.selectedKeys; }
+			if (!keys.length) { keys = store.selectedKeys; }
 
 			const query = {
 				_action: 'update',

@@ -9,8 +9,7 @@ const renderChildren = (children, record) => {
 	const length = Children.count(children);
 	Children.forEach(children, (child, index) => {
 		finalChildren.push(cloneElement(child, {
-			recordKey: record.key,
-			record,
+			recordKeys: [record.key],
 			key: `${index}@1`,
 		}));
 
