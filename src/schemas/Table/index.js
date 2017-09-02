@@ -3,7 +3,7 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
-import { isFunction } from 'lodash';
+import { isFunction, isObject, isBoolean } from 'lodash';
 
 export default function TableSchema() {
 	return (<noscript />);
@@ -42,9 +42,24 @@ TableSchema.setConfig = ({ name, apiPath, children, ...other }, tables) => {
 				const component = Component;
 
 				const render = (function () {
+					if (isObject(issuer)) {
+						return function render(props) {
+							return (<Component {...props} {...issuer} />);
+						};
+					}
+
 					if (isFunction(issuer)) { return issuer; }
+
+					if (!isBoolean(issuer)) {
+						return function render() {
+							return (<span>{issuer}</span>);
+						};
+					}
+
 					if (isFunction(Component[renderKey])) { return Component[renderKey]; }
+
 					if (defaultRender) { return defaultRender; }
+
 					return function render(props) { return (<Component {...props} />); };
 				}());
 

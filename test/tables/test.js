@@ -112,7 +112,8 @@ export default (
 			name="num"
 			label="Number"
 			dataType="integer"
-			inQuery
+			value={32}
+			inQuery={{ value: 33 }}
 			inTable
 			inForm
 		/>
