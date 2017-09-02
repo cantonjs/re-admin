@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { UPDATER, QUERIER } from 'constants/Issuers';
 import routerStore from 'stores/routerStore';
+import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { isUndefined } from 'lodash';
 import hoistNonReactStatics from 'hoist-non-react-statics';
@@ -12,6 +13,52 @@ const styles = {
 		marginBottom: 12,
 	},
 };
+
+class State {
+	@computed get shouldShow() {
+		const { _names } = routerStore.location.query;
+		const { name } = this._props;
+
+		if (this._isUpdater && _names) {
+			const names = _names.split(',');
+			if (names.length && names.indexOf(name) < 0) { return false; }
+		}
+
+		return true;
+	}
+
+	@computed get value() {
+		const {
+			_props: { name, value },
+			_context: { store, getParentValue },
+			_isUpdater,
+			_isQuerier,
+		} = this;
+
+		if (!isUndefined(value) || !name) { return value; }
+
+		const { query } = routerStore.location;
+		const selectedKeys = (query._keys || '').split(',');
+
+		if (_isQuerier) { return query[name]; }
+
+		else if (selectedKeys.length === 1 && _isUpdater) {
+			const item = getParentValue ?
+				getParentValue() : store.findItemByKey(selectedKeys[0])
+			;
+			return item ? item[name] : undefined;
+		}
+
+		return '';
+	}
+
+	constructor(props, context) {
+		this._props = props;
+		this._context = context;
+		this._isUpdater = context.issuer === UPDATER;
+		this._isQuerier = context.issuer === QUERIER;
+	}
+}
 
 export default function withField(WrappedComponent) {
 
@@ -41,32 +88,17 @@ export default function withField(WrappedComponent) {
 			getParentValue: PropTypes.func,
 		};
 
+		componentWillMount() {
+			this._state = new State(this.props, this.context);
+		}
+
 		getValue = () => {
-			const {
-				props: { name, value },
-				context: { store, issuer, getParentValue },
-			} = this;
-
-			if (!isUndefined(value) || !name) { return value; }
-
-			const { query } = routerStore.location;
-			const selectedKeys = (query._keys || '').split(',');
-
-			if (issuer === QUERIER) {
-				return query[name];
-			}
-
-			else if (selectedKeys.length === 1 && issuer === UPDATER) {
-				const item = getParentValue ?
-					getParentValue() : store.findItemByKey(selectedKeys[0])
-				;
-				return item ? item[name] : undefined;
-			}
-
-			return '';
+			return this._state.value;
 		};
 
 		render() {
+			if (!this._state.shouldShow) { return null; }
+
 			const {
 				props: {
 					disabled,
