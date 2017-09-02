@@ -42,13 +42,13 @@ TableSchema.setConfig = ({ name, apiPath, children, ...other }, tables) => {
 				const component = Component;
 
 				const render = (function () {
+					if (isFunction(issuer)) { return issuer; }
+
 					if (isObject(issuer)) {
 						return function render(props) {
 							return (<Component {...props} {...issuer} />);
 						};
 					}
-
-					if (isFunction(issuer)) { return issuer; }
 
 					if (!isBoolean(issuer)) {
 						return function render() {
