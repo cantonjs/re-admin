@@ -68,7 +68,7 @@ export default class DataStore {
 		const unique = tableRenderers.find(({ props }) => props.unique);
 		this._uniqueKey = unique && unique.props.name;
 
-		const { pathname, query, headers } = tableConfig.apiLoc;
+		const { pathname, query, headers } = tableConfig.api;
 
 		const accessTokenOptions = {
 			[appConfig.api.accessTokenName]({ remove }) {

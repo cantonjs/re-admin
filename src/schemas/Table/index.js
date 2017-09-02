@@ -11,7 +11,7 @@ export default function TableSchema() {
 
 TableSchema.propTypes = {
 	name: PropTypes.string.isRequired,
-	apiPath: PropTypes.stringOrObject,
+	api: PropTypes.stringOrObject,
 	mapOnFetchResponse: PropTypes.func,
 	mapOnFetchOneResponse: PropTypes.func,
 	mapOnSave: PropTypes.func,
@@ -23,7 +23,7 @@ TableSchema.defaultProps = {
 	mapOnSave: returnsArgument,
 };
 
-TableSchema.setConfig = ({ name, apiPath, children, ...other }, tables) => {
+TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
 	children = Children.toArray(children);
 	const firstChild = children[0];
 	if (firstChild && children.length === 1 && firstChild.type === 'noscript') {
@@ -89,7 +89,7 @@ TableSchema.setConfig = ({ name, apiPath, children, ...other }, tables) => {
 
 	tables[name] = {
 		...other,
-		apiLoc: parseAPIPath(apiPath || name),
+		api: parseAPIPath(api || name),
 		formRenderers,
 		queryRenderers,
 		tableRenderers,
