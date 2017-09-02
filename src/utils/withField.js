@@ -5,6 +5,7 @@ import { UPDATER, QUERIER } from 'constants/Issuers';
 import routerStore from 'stores/routerStore';
 import { observer } from 'mobx-react';
 import { isUndefined } from 'lodash';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 
 const styles = {
 	container: {
@@ -23,19 +24,13 @@ export default function withField(WrappedComponent) {
 			label: PropTypes.string,
 			labelCol: PropTypes.object,
 			wrapperCol: PropTypes.object,
-			shouldHideInForm: PropTypes.bool,
-			shouldHideInTable: PropTypes.bool,
-			shouldShowInQuery: PropTypes.bool,
 			required: PropTypes.bool,
 			unique: PropTypes.bool,
 			disabled: PropTypes.bool,
 			validations: PropTypes.array,
-			render: PropTypes.func,
 		};
 
 		static defaultProps = {
-			shouldHideInForm: false,
-			shouldHideInTable: false,
 			disabled: false,
 			...WrappedComponent.defaultProps,
 		};
@@ -45,42 +40,6 @@ export default function withField(WrappedComponent) {
 			issuer: PropTypes.string,
 			getParentValue: PropTypes.func,
 		};
-
-		componentWillMount() {
-			this._shouldShow = this._detectShouldShow();
-		}
-
-		_detectShouldShow() {
-			const { _names } = routerStore.location.query;
-			const {
-				props: {
-					name,
-					shouldShowInQuery,
-					shouldHideInForm,
-				},
-				context: {
-					issuer,
-				},
-			} = this;
-
-			const isInQuery = issuer === QUERIER;
-
-			if (
-				(!isInQuery && shouldHideInForm) ||
-				(isInQuery && !shouldShowInQuery)
-			) {
-				return null;
-			}
-
-			const isUpdater = issuer === UPDATER;
-
-			if (isUpdater && _names) {
-				const names = _names.split(',');
-				if (names.length && names.indexOf(name) < 0) { return null; }
-			}
-
-			return true;
-		}
 
 		getValue = () => {
 			const {
@@ -108,20 +67,14 @@ export default function withField(WrappedComponent) {
 		};
 
 		render() {
-			// if (!this._shouldShow) { return null; }
-
 			const {
 				props: {
 					disabled,
 					required,
+
 					value,
 					defaultValue,
-
 					unique,
-					render,
-					shouldHideInForm,
-					shouldShowInQuery,
-					shouldHideInTable,
 
 					...other,
 				},
@@ -144,5 +97,5 @@ export default function withField(WrappedComponent) {
 		}
 	}
 
-	return WithField;
+	return hoistNonReactStatics(WithField, WrappedComponent);
 }

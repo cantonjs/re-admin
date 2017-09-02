@@ -5,8 +5,9 @@ import { observer } from 'mobx-react';
 import { Modal } from 'antd';
 import { isString, isNumber } from 'lodash';
 import routerStore from 'stores/routerStore';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 
-const confirm = Modal.confirm;
+const { confirm } = Modal;
 
 // Notice that this `Action` is NOT redux action.
 export default function withActions(WrappedComponent) {
@@ -69,5 +70,5 @@ export default function withActions(WrappedComponent) {
 		}
 	}
 
-	return WithActions;
+	return hoistNonReactStatics(WithActions, WrappedComponent);
 }

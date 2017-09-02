@@ -23,9 +23,6 @@ export default class ImageField extends Component {
 
 	static defaultProps = {
 		max: 1,
-		render: (src, records, index, props) =>
-			<ImageTableCell {...props} url={src} />
-		,
 	};
 
 	static contextTypes = {
@@ -34,6 +31,10 @@ export default class ImageField extends Component {
 	};
 
 	static resizeMode = resizeMode;
+
+	static renderTable(props, { text }) {
+		return (<ImageTableCell {...props} url={text} />);
+	}
 
 	state = {
 		fileList: mapFileList(this.props.getValue()),

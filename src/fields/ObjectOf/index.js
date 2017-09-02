@@ -26,13 +26,13 @@ export default class ObjectOf extends Component {
 		wrapperStyle: PropTypes.object,
 	};
 
-	static defaultProps = {
-		render: (value = {}) => JSON.stringify(value),
-	};
-
 	static childContextTypes = {
 		getParentValue: PropTypes.func,
 	};
+
+	static renderTable(props, { text = {} }) {
+		return JSON.stringify(text);
+	}
 
 	getChildContext() {
 		return {

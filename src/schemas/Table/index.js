@@ -1,9 +1,9 @@
 
-import React, { Children } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
-import { isObject } from 'lodash';
+import { isFunction } from 'lodash';
 
 export default function TableSchema() {
 	return (<noscript />);
@@ -30,40 +30,54 @@ TableSchema.setConfig = ({ name, apiPath, children, ...other }, tables) => {
 		children = Children.toArray(firstChild.props.children);
 	}
 
-	const formList = [];
-	const queryList = [];
-	const tableList = [];
+	const formRenderers = [];
+	const queryRenderers = [];
+	const tableRenderers = [];
 
-	function createPusher(child, props, index) {
-		const push = (nodes, issuer, preferComponent) => {
+	const createPusher = (child, props, index) => {
+		return (nodes, issuer, renderKey, defaultRender) => {
 			if (issuer) {
-				const options = isObject(issuer) ? issuer : {};
-				const { component, ...other } = options;
-				nodes.push({
-					Component: component || child.type[preferComponent] || child.type,
-					props: { ...props, ...other },
-					key: child.key || index,
-				});
+				const key = child.key || index;
+				const Component = child.type;
+				const component = Component;
+
+				const render = (function () {
+					if (isFunction(issuer)) { return issuer; }
+					if (isFunction(Component[renderKey])) { return Component[renderKey]; }
+					if (defaultRender) { return defaultRender; }
+					return function render(props) { return (<Component {...props} />); };
+				}());
+
+				const options = {
+					key,
+					component,
+					Component,
+				};
+
+				const renderNode = () => {
+					const node = render(props, options);
+					return node.key ? node : cloneElement(node, { key });
+				};
+
+				nodes.push({ render, renderNode, props, options });
 			}
 		};
-		return push;
-	}
+	};
 
 	children.forEach((child, index) => {
 		const { inForm, inQuery, inTable, ...props } = child.props;
 		const push = createPusher(child, props, index);
-		push(formList, inForm, 'Form');
-		push(queryList, inQuery, 'Query');
-		push(tableList, inTable, 'Table');
+		push(formRenderers, inForm, 'renderForm');
+		push(queryRenderers, inQuery, 'renderQuery');
+		push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
 	});
 
 	tables[name] = {
 		...other,
 		apiLoc: parseAPIPath(apiPath || name),
-		data: children,
-		formList,
-		queryList,
-		tableList,
+		formRenderers,
+		queryRenderers,
+		tableRenderers,
 	};
 };
 TableSchema.schemaName = 'tables';

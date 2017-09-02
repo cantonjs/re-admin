@@ -98,15 +98,11 @@ export default class DataTableView extends Component {
 
 	_getDataNodes(table) {
 		const { appConfig } = this.context;
-		const { formList, queryList } = appConfig.tables[table];
+		const { formRenderers, queryRenderers } = appConfig.tables[table];
 
 		return {
-			formNodes: formList.map(({ Component, props, key }) =>
-				<Component key={key} {...props} />
-			),
-			queryNodes: queryList.map(({ Component, props, key }) =>
-				<Component key={key} {...props} />
-			),
+			formNodes: formRenderers.map(({ renderNode }) => renderNode()),
+			queryNodes: queryRenderers.map(({ renderNode }) => renderNode()),
 		};
 	}
 

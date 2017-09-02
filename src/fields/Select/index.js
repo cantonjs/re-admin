@@ -9,13 +9,11 @@ export default class SelectField extends Component {
 		children: PropTypes.node,
 	};
 
-	static defaultProps = {
-		render: (value, records, index, { children }) => {
-			const options = Children.toArray(children);
-			const option = options.find(({ props }) => props.value === value);
-			return option ? <span>{option.props.children}</span> : null;
-		},
-	};
+	static renderTable({ children }, { text }) {
+		const options = Children.toArray(children);
+		const option = options.find(({ props }) => props.value === text);
+		return option ? <span>{option.props.children}</span> : null;
+	}
 
 	static defaultChildComponent = Select.Option;
 

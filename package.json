@@ -33,6 +33,7 @@
   "dependencies": {
     "cookie": "^0.3.1",
     "empty-functions": "^1.0.2",
+    "hoist-non-react-statics": "^2.3.1",
     "http-ask": "^0.0.0-rc6",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",

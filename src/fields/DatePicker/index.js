@@ -28,3 +28,5 @@ export default function DatePickerField(props) {
 		/>
 	);
 }
+
+DatePickerField.renderTable = Text.renderTable;

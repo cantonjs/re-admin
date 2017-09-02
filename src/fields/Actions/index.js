@@ -28,18 +28,14 @@ export default class Actions extends Component {
 	};
 
 	static defaultProps = {
-		name: '__actions__',
 		label: '自定义操作',
 		component: Input,
-		shouldHideInForm: true,
-		render: (value, record, index, { children }) => {
-			return (
-				<div>
-					{renderChildren(children, record)}
-				</div>
-			);
-		},
+		inTable: true,
 	};
+
+	static renderTable(props, { record }) {
+		return (<div>{renderChildren(props.children, record)}</div>);
+	}
 
 	render() {
 		return (<noscript />);

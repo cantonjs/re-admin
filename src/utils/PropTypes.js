@@ -17,9 +17,9 @@ export default {
 		PropTypes.string,
 		PropTypes.object,
 	]),
-	boolOrObject: PropTypes.oneOfType([
+	render: PropTypes.oneOfType([
 		PropTypes.bool,
-		PropTypes.object,
+		PropTypes.func,
 	]),
 	deprecated: function deprecatedProp(propType, explanation) {
 		return function validate(props, propName, componentName, ...rest) {

@@ -25,8 +25,11 @@ export default class ArrayOf extends Component {
 	static defaultProps = {
 		defaultItemValue: '',
 		addButtonLabel: '增加项',
-		render: (value = []) => value.join(','),
 	};
+
+	static renderTable(props, { text = [] }) {
+		return text.join(',');
+	}
 
 	_uuid = 0;
 

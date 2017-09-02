@@ -4,7 +4,6 @@ import { observable, computed, toJS } from 'mobx';
 import { omit, isString, isNumber, assign } from 'lodash';
 import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
-import jsxToPlainObject from 'utils/jsxToPlainObject';
 
 const caches = {};
 let appConfig = {};
@@ -15,8 +14,7 @@ export default class DataStore {
 		const tableConfig = appConfig.tables[table];
 		if (caches.hasOwnProperty(table)) { return caches[table]; }
 
-		const schema = jsxToPlainObject(tableConfig.data);
-		const store = new DataStore(table, schema, tableConfig);
+		const store = new DataStore(table, tableConfig);
 		caches[table] = store;
 		return store;
 	}
@@ -49,43 +47,26 @@ export default class DataStore {
 	_prevQuery = {};
 	_pervSearch = '?';
 
-	constructor(table, schema, tableConfig) {
+	constructor(table, tableConfig) {
 		this._table = table;
-		this._schema = schema;
 		this._tableConfig = tableConfig;
+		const { tableRenderers } = tableConfig;
+		this.columns = tableRenderers.map(({ render, props, options }) => ({
+			title: props.label,
+			key: props.name,
+			dataIndex: props.name,
+			render: function renderTable(text, record, index) {
+				return render(props, {
+					...options,
+					text,
+					record,
+					index,
+				});
+			},
+		}));
 
-
-		this.columns = schema
-			.filter(({ shouldHideInTable }) => !shouldHideInTable)
-			.map(({ render, ...props }) => ({
-				title: props.label,
-				key: props.name,
-				dataIndex: props.name,
-				render: render ? (...args) => render(...args, props) : undefined,
-			}))
-		;
-
-		// this.columns = tableConfig
-		// 	.tableList
-		// 	.map(({ Component, props }) => ({
-		// 		title: props.label,
-		// 		key: props.name,
-		// 		dataIndex: props.name,
-		// 		render: function RenderComponent(text, record, index) {
-		// 			return (
-		// 				<Component
-		// 					{...props}
-		// 					text={text}
-		// 					record={record}
-		// 					index={index}
-		// 				/>
-		// 			);
-		// 		},
-		// 	}))
-		// ;
-
-		const unique = schema.find((s) => s.unique);
-		this._uniqueKey = unique && unique.name;
+		const unique = tableRenderers.find(({ props }) => props.unique);
+		this._uniqueKey = unique && unique.props.name;
 
 		const { pathname, query, headers } = tableConfig.apiLoc;
 
