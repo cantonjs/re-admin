@@ -38,6 +38,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "qs": "^6.5.0",
+    "react-document-title": "^2.0.3",
     "react-nested-form": "^0.0.0-13",
     "react-router-mobx": "^0.0.0",
     "react-title-component": "^1.0.1"
@@ -52,7 +53,7 @@
     "react-router-dom": "^4.0.0"
   },
   "devDependencies": {
-    "antd": "^2.10.0",
+    "antd": "^2.12.8",
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",

@@ -7,7 +7,7 @@ import routerStore from 'stores/routerStore';
 import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
 import { Router } from 'react-router-mobx';
-import Title from 'react-title-component';
+import DocumentTitle from 'react-document-title';
 
 const styles = {
 	container: {
@@ -71,24 +71,25 @@ export default class AdminContext extends Component {
 		};
 
 		return (
-			<Router component={BrowserRouter} routerStore={routerStore}>
-				<div style={styles.container}>
-					<Title render={title} />
-					<Switch>
-						<Route path="/login" component={Login} />
-						<Route onEnter={handleEnter}>
-							{({ match }) =>
-								<Frame>
-									<Route exact path="/" component={Index} />
-									{routes}
-									{getRoutes(appConfig, match)}
-									<Route component={NotFound} />
-								</Frame>
-							}
-						</Route>
-					</Switch>
-				</div>
-			</Router>
+			<DocumentTitle title={title}>
+				<Router component={BrowserRouter} routerStore={routerStore}>
+					<div style={styles.container}>
+						<Switch>
+							<Route path="/login" component={Login} />
+							<Route onEnter={handleEnter}>
+								{({ match }) =>
+									<Frame>
+										<Route exact path="/" component={Index} />
+										{routes}
+										{getRoutes(appConfig, match)}
+										<Route component={NotFound} />
+									</Frame>
+								}
+							</Route>
+						</Switch>
+					</div>
+				</Router>
+			</DocumentTitle>
 		);
 	}
 }

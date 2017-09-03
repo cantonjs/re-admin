@@ -7,7 +7,7 @@ import routerStore from 'stores/routerStore';
 import { omit, isEqual } from 'lodash';
 import { parse } from 'utils/qs';
 
-import Title from 'react-title-component';
+import DocumentTitle from 'react-document-title';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import DefaultToolbar from 'components/DefaultToolbar';
@@ -121,30 +121,27 @@ export default class DataTableView extends Component {
 				formNodes,
 				queryNodes,
 			},
+			context: {
+				appConfig,
+			},
 		} = this;
 
 		const heading = pageTitle || title || table;
 
 		return (
-			<div>
-				<Title render={(parentTitle) => `${heading} | ${parentTitle}`} />
-
-				<h1>{heading}</h1>
-
-				{Header && <Header store={store} />}
-
-				{panelsStore.isShowQuery &&
-					<TableQuery>{queryNodes}</TableQuery>
-				}
-
-				<Toolbar />
-
-				<TableBody store={store} />
-
-				{Footer && <Footer store={store} />}
-
-				<ActionModal store={store}>{formNodes}</ActionModal>
-			</div>
+			<DocumentTitle title={`${heading} | ${appConfig.title}`}>
+				<div>
+					<h1>{heading}</h1>
+					{Header && <Header store={store} />}
+					{panelsStore.isShowQuery &&
+						<TableQuery>{queryNodes}</TableQuery>
+					}
+					<Toolbar />
+					<TableBody store={store} />
+					{Footer && <Footer store={store} />}
+					<ActionModal store={store}>{formNodes}</ActionModal>
+				</div>
+			</DocumentTitle>
 		);
 	}
 }
