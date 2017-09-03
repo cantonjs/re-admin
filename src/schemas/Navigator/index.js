@@ -1,5 +1,5 @@
 
-import React, { isValidElement } from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
 import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
@@ -28,22 +28,23 @@ NavigatorSchema.defaultProps = {
 };
 
 NavigatorSchema.setConfig = ({ children }, navigator) => {
-	const getChildren = (children) => {
-		if (Array.isArray(children)) {
-			return children.map(getChildren);
+	const getChildren = (menu, keyPaths = []) => {
+		const { children, ...other } = menu.props;
+		const result = {
+			...other,
+			menuKey: other.path || `@${keyPaths.join('-')}`,
+		};
+
+		if (children) {
+			result.children = Children.map(children, (child, index) =>
+				getChildren(child, keyPaths.concat(index))
+			);
 		}
-		else if (isValidElement(children)) {
-			const { children: sub, ...props } = children.props;
-			return sub ? {
-				children: [].concat(getChildren(sub)),
-				...props,
-			} : props;
-		}
-		return children;
+
+		return result;
 	};
 
-	navigator.menus = navigator.menus || [];
-	navigator.menus.push(...[].concat(getChildren(children)).filter(Boolean));
+	navigator.menus = getChildren({ props: { children } }).children;
 };
 NavigatorSchema.schemaName = 'navigator';
 NavigatorSchema.DataType = Object;

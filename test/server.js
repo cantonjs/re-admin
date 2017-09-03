@@ -11,8 +11,8 @@ const router = new Router();
 const port = process.env.BACKEND_SERVER_PORT || 3001;
 
 const validAccessToken = 'paiBei4uChua8Aipooc9joeS';
-// const expiresIn = 86400;
-const expiresIn = 600;
+const expiresIn = 86400;
+// const expiresIn = 600;
 
 let total = 450;
 let testDB = new Array(total).fill().map((_, index) => ({

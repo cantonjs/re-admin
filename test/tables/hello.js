@@ -3,7 +3,7 @@ import React from 'react';
 import { Table, Text, Image } from '../../src';
 
 export default (
-	<Table name="hello" apiPath="test?count=1">
+	<Table name="hello" api={{ pathname: 'test', query: { count: 1 } }}>
 		<Text
 			name="id"
 			label="ID"

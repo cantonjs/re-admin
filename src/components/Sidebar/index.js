@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import Logout from 'components/Logout';
+import routerStore from 'stores/routerStore';
 
 const { SubMenu, Item: MenuItem } = Menu;
 
@@ -34,6 +35,9 @@ const styles = {
 		overflowY: 'scroll',
 		borderRightWidth: 0,
 	},
+	link: {
+		display: 'inline',
+	},
 	footer: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -55,68 +59,76 @@ export default class Sidebar extends Component {
 		openKeys: [],
 	};
 
+	componentWillMount() {
+		this._defaultSelectedKeys = [routerStore.location.pathname];
+		this._defaultOpenKeys = this._findDefaultOpenKeys();
+	}
+
+	_findDefaultOpenKeys() {
+		const { menus } = this.context.appConfig.navigator;
+		const { pathname } = routerStore.location;
+
+		const findMenuTree = (menus, paths = []) => {
+			if (!menus) { return; }
+			if (Array.isArray(menus)) {
+				for (const menu of menus) {
+					const matched = findMenuTree(
+						menu.children,
+						paths.concat(menu.menuKey),
+					);
+					if (matched) { return matched; }
+					if (menu.path === pathname) { return paths; }
+				}
+			}
+		};
+
+		return findMenuTree(menus);
+	}
+
+	_renderMenu(menus) {
+		if (!menus) { return; }
+
+		return menus.map((menu) =>
+			menu.children && menu.children.length ?
+				<SubMenu
+					key={menu.menuKey}
+					title={
+						<span>
+							{menu.icon && <Icon type={menu.icon} />}
+							{menu.title}
+						</span>
+					}
+				>
+					{this._renderMenu(menu.children)}
+				</SubMenu> :
+				<MenuItem key={menu.menuKey}>
+					{menu.icon &&
+						<Icon type={menu.icon} />
+					}
+					<Link to={menu.path} style={styles.link}>
+						{menu.title}
+					</Link>
+				</MenuItem>
+		);
+	}
+
 	render() {
 		const {
 			context: { appConfig: { navigator, title } },
+			_defaultSelectedKeys,
+			_defaultOpenKeys,
 		} = this;
+
 		return (
 			<div style={styles.container}>
 				<div style={styles.title}>{title}</div>
 				<Menu
 					style={styles.menu}
 					mode="inline"
+					defaultSelectedKeys={_defaultSelectedKeys}
+					defaultOpenKeys={_defaultOpenKeys}
 				>
-					{navigator.menus.map((item, index) => {
-						return item.children && item.children.length ?
-							<SubMenu
-								key={index}
-								title={
-									<span>
-										{item.icon && <Icon type={item.icon} />}
-										{item.title}
-									</span>
-								}
-							>
-							{item.children.map((childItem, childIndex) =>
-								childItem.children && childItem.children.length ?
-									<SubMenu
-										key={index + '-' + childIndex}
-										title={
-											<span>
-												{childItem.icon && <Icon type={childItem.icon} />}
-												{childItem.title}
-											</span>
-										}
-									>
-										{childItem.children.map((leafItem, leafIndex) =>
-											<MenuItem
-												key={index + '-' + childIndex + '-' + leafIndex}
-											>
-												{leafItem.icon && <Icon type={leafItem.icon} />}
-												<Link
-													to={leafItem.path}
-													style={{ display: 'inline' }}
-												>{leafItem.title}</Link>
-											</MenuItem>
-										)}
-									</SubMenu> :
-									<MenuItem key={index + '-' + childIndex}>
-										{childItem.icon && <Icon type={childItem.icon} />}
-										<Link
-											to={childItem.path}
-											style={{ display: 'inline' }}
-										>{childItem.title}</Link>
-									</MenuItem>
-							)}
-							</SubMenu> :
-							<MenuItem key={index}>
-								{item.icon && <Icon type={item.icon} />}
-								<Link
-									to={item.path}
-									style={{ display: 'inline' }}
-								>{item.title}</Link>
-							</MenuItem>;
-					})}
+					{this._renderMenu(navigator.menus)}
 				</Menu>
 				<Logout style={styles.footer} />
 			</div>

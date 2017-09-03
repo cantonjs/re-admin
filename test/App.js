@@ -24,7 +24,8 @@ export default class App extends Component {
 						path="/test"
 						pageTitle="测试数据表"
 					/>
-					<Menu icon="bulb" title="菜单三">
+					{/*<Menu icon="bulb" title="菜单三">
+						<Menu icon="bulb" title="2.1" path="/fork" exact />
 						<Menu
 							title="2.2"
 							table="hello"
@@ -35,7 +36,27 @@ export default class App extends Component {
 								/>
 							)}
 						/>
+					</Menu>*/}
+
+					<Menu icon="bulb" title="菜单三">
+						<Menu icon="bulb" title="2.1" path="/fork" exact />
+						<Menu icon="bulb" title="2.2">
+							<Menu icon="bulb" title="3.1">
+								<Menu
+									icon="bulb"
+									title="4.1"
+									table="hello"
+									path="/hello"
+									toolbar={() => (
+										<Toolbar
+											left={<CreateButton />}
+										/>
+									)}
+								/>
+							</Menu>
+						</Menu>
 					</Menu>
+
 				</Navigator>
 
 				<API
