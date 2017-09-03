@@ -12,6 +12,10 @@ APISchema.propTypes = {
 	count: PropTypes.number,
 	accessTokenName: PropTypes.string,
 	accessTokenLocation: PropTypes.oneOf(['header', 'query']),
+	sortKey: PropTypes.string,
+	orderKey: PropTypes.string,
+	descValue: PropTypes.string,
+	ascValue: PropTypes.string,
 };
 
 APISchema.defaultProps = {
@@ -19,6 +23,10 @@ APISchema.defaultProps = {
 	count: 20,
 	accessTokenName: 'X-ACCESS-TOKEN',
 	accessTokenLocation: 'header',
+	sortKey: 'sort',
+	orderKey: 'order',
+	descValue: 'desc',
+	ascValue: 'asc',
 };
 
 APISchema.setConfig = (props, api) => {

@@ -24,20 +24,6 @@ export default class App extends Component {
 						path="/test"
 						pageTitle="测试数据表"
 					/>
-					{/*<Menu icon="bulb" title="菜单三">
-						<Menu icon="bulb" title="2.1" path="/fork" exact />
-						<Menu
-							title="2.2"
-							table="hello"
-							path="/hello"
-							toolbar={() => (
-								<Toolbar
-									left={<CreateButton />}
-								/>
-							)}
-						/>
-					</Menu>*/}
-
 					<Menu icon="bulb" title="菜单三">
 						<Menu icon="bulb" title="2.1" path="/fork" exact />
 						<Menu icon="bulb" title="2.2">
@@ -64,6 +50,10 @@ export default class App extends Component {
 					count={5}
 					accessTokenName="accessToken"
 					accessTokenLocation="query"
+					sortKey="s"
+					orderKey="o"
+					descValue="-1"
+					ascValue="1"
 				/>
 
 				<Auth basePath="auth" loginPath="login" getUserPath="getUser" />

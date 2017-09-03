@@ -4,6 +4,7 @@ import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
+import { isEmpty, omit } from 'lodash';
 
 const styles = {
 	footer: {
@@ -34,6 +35,10 @@ export default class TableBody extends Component {
 		}),
 	};
 
+	static contextTypes = {
+		appConfig: PropTypes.object.isRequired,
+	};
+
 	_handleSelectChange = (selectedRowKeys) => {
 		this.props.store.setSelectedKeys(selectedRowKeys);
 	};
@@ -41,6 +46,24 @@ export default class TableBody extends Component {
 	_handlePageChange = (page) => {
 		const { location } = routerStore;
 		location.query = { ...location.query, page };
+	}
+
+	_handleChange = (pagination, filters, sorter) => {
+		const {
+			context: {
+				appConfig: { api: { sortKey, orderKey, descValue, ascValue } },
+			},
+		} = this;
+		const { location } = routerStore;
+		if (isEmpty(sorter)) {
+			location.query = omit(location.query, [sortKey, orderKey]);
+			return;
+		}
+		location.query = {
+			...location.query,
+			[sortKey]: sorter.columnKey,
+			[orderKey]: sorter.order === 'descend' ? descValue : ascValue,
+		};
 	}
 
 	render() {
@@ -64,6 +87,7 @@ export default class TableBody extends Component {
 					dataSource={dataSource}
 					loading={isFetching}
 					pagination={false}
+					onChange={this._handleChange}
 				/>
 
 				<div style={styles.footer}>

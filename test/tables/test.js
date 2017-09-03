@@ -113,6 +113,7 @@ export default (
 			label="Number"
 			dataType="integer"
 			value={32}
+			sortable
 			inQuery={{ value: 33 }}
 			inTable
 			inForm

@@ -75,10 +75,12 @@ export default function withField(WrappedComponent) {
 			unique: PropTypes.bool,
 			disabled: PropTypes.bool,
 			validations: PropTypes.array,
+			sortable: PropTypes.bool,
 		};
 
 		static defaultProps = {
 			disabled: false,
+			sortable: false,
 			...WrappedComponent.defaultProps,
 		};
 
@@ -107,6 +109,7 @@ export default function withField(WrappedComponent) {
 					value,
 					defaultValue,
 					unique,
+					sortable,
 
 					...other,
 				},

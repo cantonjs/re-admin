@@ -1,9 +1,9 @@
 
-// import React from 'react';
 import { observable, computed, toJS } from 'mobx';
 import { omit, isString, isNumber, assign } from 'lodash';
 import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
+import routerStore from 'stores/routerStore';
 
 const caches = {};
 let appConfig = {};
@@ -41,6 +41,45 @@ export default class DataStore {
 		return toJS(this.collection);
 	}
 
+	@computed get columns() {
+		const { orderKey, sortKey, ascValue } = appConfig.api;
+		const { tableRenderers } = this._tableConfig;
+		const { query } = routerStore.location;
+
+		return tableRenderers.map(({ render, props, options }) => {
+			const column = {
+				title: props.label,
+				key: props.name,
+				dataIndex: props.name,
+				render: function renderTable(text, record, index) {
+					return render(props, {
+						...options,
+						text,
+						record,
+						index,
+					});
+				},
+			};
+
+			if (props.sortable) {
+				const columnKey = query[sortKey];
+				if (props.name === columnKey) {
+
+					/* eslint-disable eqeqeq */
+					const order = query[orderKey] == ascValue ? 'ascend' : 'descend';
+
+					column.sortOrder = order;
+				}
+				else {
+					column.sortOrder = false;
+				}
+				column.sorter = true;
+			}
+
+			return column;
+		});
+	}
+
 	collections = observable.map();
 	totals = observable.map();
 
@@ -50,22 +89,8 @@ export default class DataStore {
 	constructor(table, tableConfig) {
 		this._table = table;
 		this._tableConfig = tableConfig;
-		const { tableRenderers } = tableConfig;
-		this.columns = tableRenderers.map(({ render, props, options }) => ({
-			title: props.label,
-			key: props.name,
-			dataIndex: props.name,
-			render: function renderTable(text, record, index) {
-				return render(props, {
-					...options,
-					text,
-					record,
-					index,
-				});
-			},
-		}));
 
-		const unique = tableRenderers.find(({ props }) => props.unique);
+		const unique = tableConfig.tableRenderers.find(({ props }) => props.unique);
 		this._uniqueKey = unique && unique.props.name;
 
 		const { pathname, query, headers } = tableConfig.api;
