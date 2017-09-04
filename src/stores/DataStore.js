@@ -41,43 +41,49 @@ export default class DataStore {
 		return toJS(this.collection);
 	}
 
-	@computed get columns() {
-		const { orderKey, sortKey, ascValue } = appConfig.api;
-		const { tableRenderers } = this._tableConfig;
+	@computed get sortedKey() {
+		return routerStore.location.query[appConfig.api.sortKey];
+	}
+
+	@computed get sortedOrder() {
+		const { orderKey, ascValue } = appConfig.api;
 		const { query } = routerStore.location;
+		let order = query[orderKey];
 
-		return tableRenderers.map(({ render, props, options }) => {
-			const column = {
-				title: props.label,
-				key: props.name,
-				dataIndex: props.name,
-				render: function renderTable(text, record, index) {
-					return render(props, {
-						...options,
-						text,
-						record,
-						index,
-					});
-				},
-			};
+		if (!this.sortedKey) { return order; }
 
-			if (props.sortable) {
-				const columnKey = query[sortKey];
-				if (props.name === columnKey) {
+		/* eslint-disable eqeqeq */
+		return order == ascValue ? 'ascend' : 'descend';
+	}
 
-					/* eslint-disable eqeqeq */
-					const order = query[orderKey] == ascValue ? 'ascend' : 'descend';
+	@computed get columns() {
+		return this
+			._tableConfig
+			.tableRenderers
+			.map(({ render, props, options }) => {
+				const column = {
+					title: props.label,
+					key: props.name,
+					dataIndex: props.name,
+					render: function renderTable(text, record, index) {
+						return render(props, {
+							...options,
+							text,
+							record,
+							index,
+						});
+					},
+				};
 
-					column.sortOrder = order;
+				if (props.sortable) {
+					const { sortedKey, sortedOrder } = this;
+					column.sortOrder = props.name === sortedKey ? sortedOrder : false;
+					column.sorter = true;
 				}
-				else {
-					column.sortOrder = false;
-				}
-				column.sorter = true;
-			}
 
-			return column;
-		});
+				return column;
+			})
+		;
 	}
 
 	collections = observable.map();
@@ -90,8 +96,13 @@ export default class DataStore {
 		this._table = table;
 		this._tableConfig = tableConfig;
 
-		const unique = tableConfig.tableRenderers.find(({ props }) => props.unique);
-		this._uniqueKey = unique && unique.props.name;
+		const { tableRenderers, queryRenderers } = tableConfig;
+		const uniqueField = tableRenderers.find(({ props }) => props.unique);
+		const sortableField = tableRenderers.find(({ props }) => props.sortable);
+
+		this.uniqueKey = uniqueField && uniqueField.props.name;
+		this.hasSortableField = !!sortableField;
+		this.hasQueryField = !!queryRenderers.length;
 
 		const { pathname, query, headers } = tableConfig.api;
 
@@ -147,7 +158,7 @@ export default class DataStore {
 			} = await this._tableConfig.mapOnFetchResponse(res);
 
 			const collection = list.map((data, index) => {
-				data.key = this._uniqueKey ? data[this._uniqueKey] : index;
+				data.key = this.uniqueKey ? data[this.uniqueKey] : index;
 				return data;
 			});
 
@@ -186,10 +197,10 @@ export default class DataStore {
 	}
 
 	findItemByKey(key) {
-		const { collection, _uniqueKey } = this;
+		const { collection, uniqueKey } = this;
 		if (!collection) { return []; }
 		return collection.find((item, index) =>
-			key === (_uniqueKey ? item[_uniqueKey] : index)
+			key === (uniqueKey ? item[uniqueKey] : index)
 		);
 	}
 

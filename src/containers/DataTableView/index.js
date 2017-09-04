@@ -35,7 +35,6 @@ export default class DataTableView extends Component {
 
 	static childContextTypes = {
 		store: PropTypes.object,
-		queryNodes: PropTypes.node,
 	};
 
 	static contextTypes = {
@@ -46,7 +45,6 @@ export default class DataTableView extends Component {
 	getChildContext() {
 		return {
 			store: this.state.store,
-			queryNodes: this.state.queryNodes,
 		};
 	}
 
@@ -134,7 +132,7 @@ export default class DataTableView extends Component {
 					<h1>{heading}</h1>
 					{Header && <Header store={store} />}
 					{panelsStore.isShowQuery &&
-						<TableQuery>{queryNodes}</TableQuery>
+						<TableQuery store={store}>{queryNodes}</TableQuery>
 					}
 					<Toolbar />
 					<TableBody store={store} />

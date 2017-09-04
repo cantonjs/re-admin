@@ -122,14 +122,12 @@ export default (
 		<Uploader
 			name="file"
 			label="文件"
-			inTable
 			inForm
 		/>
 
 		<Select
 			name="fav"
 			label="爱好"
-			inTable
 			inForm
 		>
 			<Option value="1">吃饭</Option>

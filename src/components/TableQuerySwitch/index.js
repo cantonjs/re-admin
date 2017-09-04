@@ -16,7 +16,7 @@ export default class ToolbarQuerySwitch extends Component {
 	};
 
 	static contextTypes = {
-		queryNodes: PropTypes.node.isRequired,
+		store: PropTypes.object.isRequired,
 	};
 
 	_handleToggle = (ev) => {
@@ -24,9 +24,9 @@ export default class ToolbarQuerySwitch extends Component {
 	};
 
 	render() {
-		if (!this.context.queryNodes.length) {
-			return null;
-		}
+		const { hasSortableField, hasQueryField } = this.context.store;
+
+		if (!hasSortableField && !hasQueryField) { return null; }
 
 		const { children } = this.props;
 		return (

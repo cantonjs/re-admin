@@ -4,7 +4,8 @@ import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
-import { isEmpty, omit } from 'lodash';
+import { isEmpty } from 'lodash';
+import clearSortedInfo from 'utils/clearSortedInfo';
 
 const styles = {
 	footer: {
@@ -51,13 +52,13 @@ export default class TableBody extends Component {
 	_handleChange = (pagination, filters, sorter) => {
 		const {
 			context: {
+				appConfig,
 				appConfig: { api: { sortKey, orderKey, descValue, ascValue } },
 			},
 		} = this;
 		const { location } = routerStore;
 		if (isEmpty(sorter)) {
-			location.query = omit(location.query, [sortKey, orderKey]);
-			return;
+			return clearSortedInfo(appConfig);
 		}
 		location.query = {
 			...location.query,

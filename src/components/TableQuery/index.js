@@ -3,6 +3,7 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
+import ClearSortButton from 'components/ClearSortButton';
 import routerStore from 'stores/routerStore';
 
 import { QUERIER } from 'constants/Issuers';
@@ -19,14 +20,12 @@ const styles = {
 	footer: {
 		textAlign: 'right',
 	},
-	clearButton: {
-		marginLeft: 8,
-	},
 };
 
 export default class TableQuery extends Component {
 	static propTypes = {
 		children: PropTypes.node,
+		store: PropTypes.object,
 	};
 
 	static childContextTypes = {
@@ -45,21 +44,16 @@ export default class TableQuery extends Component {
 		routerStore.location.query = {};
 	};
 
-	toggle = () => {
-		const { expand } = this.state;
-		this.setState({ expand: !expand });
-	};
-
 	_saveForm = (form) => {
 		if (form) { this._form = form; }
 	};
 
 	render() {
 		const {
-			props: { children },
+			props: { children, store: { hasSortableField, hasQueryField } },
 		} = this;
 
-		if (!Children.count(children)) { return null; }
+		if (!hasSortableField && !hasQueryField) { return null; }
 
 		return (
 			<Form
@@ -68,15 +62,14 @@ export default class TableQuery extends Component {
 				onSubmit={this._handleSearch}
 				layout="inline"
 			>
-				<Row style={styles.main}>
-					{children}
-				</Row>
+				{Children.count(children) > 0 &&
+					<Row style={styles.main}>{children}</Row>
+				}
 				<Row>
 					<Col span={24} style={styles.footer}>
-						<Submit type="primary">查询</Submit>
-						<Reset style={styles.clearButton} onClick={this._handleReset}>
-							清空
-						</Reset>
+						{hasQueryField && <Submit type="primary">查询</Submit>}
+						{hasQueryField && <Reset onClick={this._handleReset}>重置</Reset>}
+						<ClearSortButton />
 					</Col>
 				</Row>
 			</Form>
