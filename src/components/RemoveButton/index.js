@@ -24,7 +24,6 @@ export default class RemoveButton extends Component {
 	static defaultProps = {
 		label: '删除',
 		multiLabel: '批量删除',
-		type: 'primary',
 		recordKeys: [],
 		component: LinkButton,
 	};
@@ -53,10 +52,13 @@ export default class RemoveButton extends Component {
 		const selectedLength = recordKeys.length || selectedKeys.length;
 		const isInToolbar = issuer === TOOLBAR;
 		const Comp = isInToolbar ? Button : component;
+		const styleTypes = {};
+		if (Comp.name === 'Button') { styleTypes.type = 'danger'; }
 
 		return (
 			<Comp
 				onClick={this._handleClick}
+				{...styleTypes}
 				{...other}
 				disabled={!selectedLength}
 			>
