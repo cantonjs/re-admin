@@ -2927,6 +2927,10 @@ hoist-non-react-statics@^2.3.1:
   version "2.3.1"
   resolved "http://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
+hoist-react-instance-methods@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/hoist-react-instance-methods/download/hoist-react-instance-methods-2.0.0.tgz#bec721eeebbbed1bf61f00b36023e45e630b821c"
+
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/home-or-tmp/download/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -5380,13 +5384,14 @@ react-lazy-load@^3.0.10:
     lodash.throttle "^4.0.0"
     prop-types "^15.5.8"
 
-react-nested-form@^0.0.0-13:
-  version "0.0.0-13"
-  resolved "http://registry.npm.taobao.org/react-nested-form/download/react-nested-form-0.0.0-13.tgz#e7bdc0cbb40e85c3130163a36007d34fd095a3d7"
+react-nested-form@^0.0.0-14:
+  version "0.0.0-14"
+  resolved "http://registry.npm.taobao.org/react-nested-form/download/react-nested-form-0.0.0-14.tgz#f9f2376d0d0885d85caca713ad03319459d36782"
   dependencies:
     array-find "^1.0.0"
     empty-functions "^1.0.2"
     hoist-non-react-statics "^1.2.0"
+    hoist-react-instance-methods "^2.0.0"
     prop-types "^15.5.7"
     warning "^3.0.0"
 

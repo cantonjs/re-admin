@@ -1,14 +1,30 @@
 
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import withField from 'utils/withField';
 import { Form, Button, Icon } from 'antd';
-import ArrayItem from './ArrayItem';
-import { remove } from 'lodash';
+import { ArrayOf as NestArrayOf } from 'react-nested-form';
 
 const { Item } = Form;
+
+const styles = {
+	item: {
+		padding: 12,
+		margin: '12px 0',
+		position: 'relative',
+		border: '1px dashed #dedede',
+		backgroundColor: '#f4f4f4',
+	},
+	icon: {
+		position: 'absolute',
+		right: 12,
+		top: 16,
+	},
+	button: {
+		width: '60%',
+	},
+};
 
 @withField
 @observer
@@ -31,27 +47,13 @@ export default class ArrayOf extends Component {
 		return text.join(',');
 	}
 
-	_uuid = 0;
-
-	componentWillMount() {
-		const values = this.props.getValue() || [];
-		this._state = observable(values.map((value) => ({
-			value,
-			key: this._getKey(),
-		})));
-	}
-
-	_getKey() {
-		return ++this._uuid;
-	}
-
 	_handleAdd = () => {
-		const { defaultItemValue } = this.props;
-		this._state.push({ value: defaultItemValue, key: this._getKey() });
+		this._node.push(this.props.defaultItemValue);
 	};
 
-	_handleRemove = (key) => {
-		remove(this._state, (item) => item.key === key);
+	_handleRemove = (ev, key) => {
+		ev.preventDefault();
+		this._node.dropByKey(key);
 	};
 
 	render() {
@@ -63,28 +65,36 @@ export default class ArrayOf extends Component {
 		const child = Children.only(children);
 
 		return (
-			<Item
-				// validateStatus={isValid ? 'error' : 'success'}
-				// help={errorMessage}
-				{...other}
-				style={wrapperStyle}
-			>
-				{this._state.map(({ value, key }) =>
-					<ArrayItem
-						key={key}
-						id={key}
-						onRequestRemove={this._handleRemove}
+			<NestArrayOf
+				name={name}
+				value={this.props.getValue() || []}
+				ref={(c) => (this._node = c)}
+				render={(items) =>
+					<Item
+						{...other}
+						style={wrapperStyle}
 					>
-						{cloneElement(child, {
-							name: `${name}[]`,
-							value,
-						})}
-					</ArrayItem>
-				)}
-				<Button type="dashed" onClick={this._handleAdd} style={{ width: '60%' }}>
-					<Icon type="plus" /> {addButtonLabel}
-				</Button>
-			</Item>
+						{items.map(({ value, name, key }) =>
+							<div style={styles.item} key={key}>
+								{cloneElement(child, { name, value, key })}
+								<a href="#" onClick={(ev) => this._handleRemove(ev, key)}>
+									<Icon
+										style={styles.icon}
+										type="minus-circle-o"
+									/>
+								</a>
+							</div>
+						)}
+						<Button
+							type="dashed"
+							onClick={this._handleAdd}
+							style={styles.button}
+						>
+							<Icon type="plus" /> {addButtonLabel}
+						</Button>
+					</Item>
+				}
+			/>
 		);
 	}
 }
