@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { nestify } from 'react-nested-form';
 import { Form } from 'antd';
+import { isFunction } from 'lodash';
 
 const { Item } = Form;
 
@@ -10,10 +11,12 @@ export default function createComponent(Comp, options = {}) {
 	const {
 		displayName = 'NestElement',
 		onChange,
+		nestifyConfig = {},
 	} = options;
 
-	const nestifyConfig = {};
-	if (onChange) { nestifyConfig.onChange = onChange; }
+	if (!isFunction(nestifyConfig) && onChange) {
+		nestifyConfig.onChange = onChange;
+	}
 
 	class NestedFormElement extends Component {
 		static propTypes = {

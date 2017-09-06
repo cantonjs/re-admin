@@ -13,6 +13,7 @@ UploadSchema.propTypes = {
 	fileSizeLimit: PropTypes.number,
 	strategies: PropTypes.object,
 	requireAccessToken: PropTypes.bool,
+	mapFileList: PropTypes.func,
 };
 
 UploadSchema.defaultProps = {
@@ -22,6 +23,13 @@ UploadSchema.defaultProps = {
 	fileSizeLimit: 10240,
 	strategies: {},
 	requireAccessToken: false,
+	mapFileList: (fileList) => {
+		return fileList
+			.filter(({ status }) => status === 'done')
+			.map(({ thumbUrl, response }) => response.url || thumbUrl)
+			.join(',')
+		;
+	},
 };
 
 UploadSchema.setConfig = (props, upload) => {

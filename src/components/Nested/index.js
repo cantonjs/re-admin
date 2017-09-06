@@ -43,12 +43,11 @@ export const RangePicker = createComponent(AntdRangePicker, {
 
 export const Upload = createComponent(AntdUpload, {
 	displayName: 'NestUpload',
-	onChange(ev) {
-		return ev
-			.fileList
-			.filter(({ status }) => status === 'done')
-			.map(({ thumbUrl, response }) => response.url || thumbUrl)
-			.join(',')
-		;
+	nestifyConfig({ props }) {
+		return {
+			onChange({ fileList }) {
+				return props.mapFileList ? props.mapFileList(fileList) : fileList;
+			},
+		};
 	},
 });

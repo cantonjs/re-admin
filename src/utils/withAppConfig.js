@@ -1,18 +1,43 @@
 
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import hoistStatics from 'hoist-non-react-statics';
+import hoistReactInstanceMethods from 'hoist-react-instance-methods';
 
-export default function withAppConfig(key) {
-	return (TargetComponent) => {
-		TargetComponent.contextTypes = Object.assign(
-			(TargetComponent.contextTypes || {}),
-			{ appConfig: PropTypes.object.isRequired },
-		);
+export default function withAppConfig(mapConfig, options = {}) {
+	const {
+		withRef = false,
+		hoistMethods = [],
+	} = options;
 
-		TargetComponent.prototype.getAppConfig = function getAppConfig(childKey) {
-			return this.props[childKey] || this.context.appConfig[key][childKey];
-		};
+	return function createWithAppConfigComponent(WrappedComponent) {
+		@hoistReactInstanceMethods(
+			(instance) => instance.getWrappedInstance(),
+			hoistMethods,
+		)
+		class WithAppConfig extends Component {
+			static contextTypes = {
+				appConfig: PropTypes.object.isRequired,
+			};
 
-		return TargetComponent;
+			_withRef = withRef ? { ref: (c) => (this.wrappedInstance = c) } : {};
+
+			getWrappedInstance() {
+				return this.wrappedInstance;
+			}
+
+			render() {
+				const { props, context: { appConfig } } = this;
+				return (
+					<WrappedComponent
+						{...mapConfig(appConfig, props)}
+						{...props}
+						{...this._withRef}
+					/>
+				);
+			}
+		}
+
+		return hoistStatics(WithAppConfig, WrappedComponent);
 	};
-
 };

@@ -1,7 +1,7 @@
 
 import { isString, isArray, trim } from 'lodash';
 
-export default function mapFileList(fileList = []) {
+export default function ensureFileList(fileList = []) {
 	if (isString(fileList)) {
 		fileList = fileList.split(',');
 	}

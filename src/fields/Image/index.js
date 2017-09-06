@@ -1,24 +1,33 @@
 
 import styles from './styles';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'utils/PropTypes';
 import { Icon, Modal } from 'antd';
 import { Upload } from 'components/Nested';
 import withAppConfig from 'utils/withAppConfig';
 import withField from 'utils/withField';
-import mapFileList from 'utils/mapFileList';
+import ensureFileList from 'utils/ensureFileList';
 import ImageTableCell from './ImageTableCell';
 import resizeMode from './resizeMode';
+import { isObject } from 'lodash';
 
 @withField
-@withAppConfig('upload')
+@withAppConfig(({ upload }) => ({
+	requireAccessToken: upload.requireAccessToken,
+	mapFileList: upload.mapFileList,
+	imagePath: upload.imagePath,
+}))
 export default class ImageField extends Component {
 	static propTypes = {
 		max: PropTypes.number,
 		render: PropTypes.func,
-		strategy: PropTypes.string,
+		strategy: PropTypes.stringOrObject,
 		getValue: PropTypes.func.isRequired,
 		thumbStyle: PropTypes.object,
+		strategies: PropTypes.any,
+		imagePath: PropTypes.string,
+		requireAccessToken: PropTypes.bool,
+		mapFileList: PropTypes.func, // required by `Upload` component
 	};
 
 	static defaultProps = {
@@ -36,26 +45,30 @@ export default class ImageField extends Component {
 		return (<ImageTableCell {...props} url={text} />);
 	}
 
+	_strategy = this.props
+
 	state = {
-		fileList: mapFileList(this.props.getValue()),
+		fileList: ensureFileList(this.props.getValue()),
 		previewVisible: false,
 		previewImage: '',
 	};
 
 	componentWillMount() {
-		const { strategy } = this.props;
+		const { strategy, imagePath, requireAccessToken } = this.props;
 		const { authStore, appConfig } = this.context;
-		const strategies = this.getAppConfig('strategies');
-		const imagePath = this.getAppConfig('imagePath');
-		const requireAccessToken = this.getAppConfig('requireAccessToken');
 		const { accessTokenName } = appConfig.api;
 
-		if (__DEV__ && strategy && !strategies.hasOwnProperty(strategy)) {
-			console.warn(
-				`Strategy "${strategy}" is NOT defined in config file`
-			);
+		if (isObject(strategy)) { this._customRequest = strategy; }
+		else if (strategy) {
+			const { strategies } = appConfig.upload;
+			if (__DEV__ && !strategies.hasOwnProperty(strategy)) {
+				console.warn(
+					`Strategy "${strategy}" is NOT defined in config file`
+				);
+			}
+			this._customRequest = strategies[strategy];
 		}
-		this._customRequest = strategies[strategy];
+
 
 		// TODO: should suppport `accessToken` in header
 		const search = requireAccessToken ?

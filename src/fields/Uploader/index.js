@@ -3,30 +3,41 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withAppConfig from 'utils/withAppConfig';
 import withField from 'utils/withField';
-import mapFileList from 'utils/mapFileList';
+import ensureFileList from 'utils/ensureFileList';
 import { Button, Icon } from 'antd';
 import { Upload } from 'components/Nested';
 
 @withField
-@withAppConfig('upload')
+@withAppConfig(({ upload }) => ({
+	requireAccessToken: upload.requireAccessToken,
+	mapFileList: upload.mapFileList,
+	filePath: upload.filePath,
+}))
 export default class Uploader extends Component {
 	static propTypes = {
 		max: PropTypes.number,
 		getValue: PropTypes.func.isRequired,
+		requireAccessToken: PropTypes.bool,
+		filePath: PropTypes.string,
+		mapFileList: PropTypes.func, // required by `Upload` component
 	};
 
 	static defaultProps = {
 		max: 1,
 	};
 
+	static contextTypes = {
+		authStore: PropTypes.object.isRequired,
+		appConfig: PropTypes.object.isRequired,
+	};
+
 	state = {
-		fileList: mapFileList(this.props.getValue()),
+		fileList: ensureFileList(this.props.getValue()),
 	};
 
 	componentWillMount() {
 		const { authStore, appConfig } = this.context;
-		const filePath = this.getAppConfig('filePath');
-		const requireAccessToken = this.getAppConfig('requireAccessToken');
+		const { filePath, requireAccessToken } = this.props;
 		const { accessTokenName } = appConfig.api;
 
 		// TODO: should suppport `accessToken` in header
@@ -42,7 +53,12 @@ export default class Uploader extends Component {
 
 	render() {
 		const {
-			props: { max, getValue, ...other },
+			props: {
+
+				requireAccessToken, filePath,
+
+				max, getValue, ...other,
+			},
 			state: { fileList },
 			_uploadPath,
 		} = this;
