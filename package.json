@@ -11,8 +11,8 @@
     "prebuild": "rimraf dist lib es && mkdirp dist lib es",
     "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel src -d es",
     "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel src -d lib",
-    "build:umd": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --progress --colors",
-    "build:min": "yarn build:umd -- --env.min -p",
+    "_build:umd": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --progress --colors",
+    "_build:min": "yarn build:umd -- --env.min -p",
     "build": "run-p build:*",
     "preversion": "yarn build"
   },
@@ -41,7 +41,7 @@
     "moment": "^2.18.1",
     "qs": "^6.5.0",
     "react-document-title": "^2.0.3",
-    "react-nested-form": "^0.0.0-15",
+    "react-nested-form": "^0.0.0-17",
     "react-router-mobx": "^0.0.0",
     "react-title-component": "^1.0.1"
   },

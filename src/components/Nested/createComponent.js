@@ -11,11 +11,12 @@ export default function createComponent(Comp, options = {}) {
 	const {
 		displayName = 'NestElement',
 		onChange,
-		nestifyConfig = {},
+		mapProps = {},
+		...otherOptions,
 	} = options;
 
-	if (!isFunction(nestifyConfig) && onChange) {
-		nestifyConfig.onChange = onChange;
+	if (!isFunction(mapProps) && onChange) {
+		mapProps.onChange = onChange;
 	}
 
 	class NestedFormElement extends Component {
@@ -27,6 +28,11 @@ export default function createComponent(Comp, options = {}) {
 			wrapperCol: PropTypes.object,
 			colon: PropTypes.bool,
 			wrapperStyle: PropTypes.object,
+
+			name: PropTypes.string, // injected by nestify
+
+			// To prevent overide Upload component's `name` key
+			uploadName: PropTypes.string,
 		};
 
 		static displayName = displayName;
@@ -35,6 +41,7 @@ export default function createComponent(Comp, options = {}) {
 			const {
 				nest: { errorMessage, isPristine },
 				label, labelCol, wrapperCol, colon, required, wrapperStyle,
+				name, uploadName,
 				...other,
 			} = this.props;
 
@@ -51,11 +58,11 @@ export default function createComponent(Comp, options = {}) {
 					help={isInvalid ? errorMessage : ''}
 					style={wrapperStyle}
 				>
-					<Comp {...other} />
+					<Comp {...other} name={uploadName || name} />
 				</Item>
 			);
 		}
 	};
 
-	return nestify(nestifyConfig)(NestedFormElement);
+	return nestify(mapProps, otherOptions)(NestedFormElement);
 }

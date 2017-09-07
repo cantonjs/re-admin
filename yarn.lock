@@ -5496,9 +5496,9 @@ react-lazy-load@^3.0.10:
     lodash.throttle "^4.0.0"
     prop-types "^15.5.8"
 
-react-nested-form@^0.0.0-15:
-  version "0.0.0-15"
-  resolved "http://registry.npm.taobao.org/react-nested-form/download/react-nested-form-0.0.0-15.tgz#915b480aee1c369f6feaf5e0f81032a28b711e7d"
+react-nested-form@^0.0.0-17:
+  version "0.0.0-17"
+  resolved "http://registry.npm.taobao.org/react-nested-form/download/react-nested-form-0.0.0-17.tgz#11f3bc92813755d1fc11a47d77443e25bb688d17"
   dependencies:
     array-find "^1.0.0"
     empty-functions "^1.0.2"
@@ -5855,13 +5855,13 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@~2.5.1, rimraf@~2.5.4:
+rimraf@2, rimraf@^2.5.4, rimraf@~2.5.1, rimraf@~2.5.4:
   version "2.5.4"
   resolved "http://registry.npm.taobao.org/rimraf/download/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
   dependencies:
     glob "^7.0.5"
 
-rimraf@^2.6.1:
+rimraf@^2.2.8, rimraf@^2.6.1:
   version "2.6.1"
   resolved "http://registry.npm.taobao.org/rimraf/download/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
   dependencies:
