@@ -4,7 +4,8 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-const backendServerPort = process.env.BACKEND_SERVER_PORT || 3001;
+const port = process.env.PORT || 3000;
+const testServerPort = process.env.TEST_SERVER_PORT || 3001;
 const isDev = process.env.NODE_ENV !== 'production';
 const PROJECT_PATH = __dirname;
 const inProject = (...args) => resolve(PROJECT_PATH, ...args);
@@ -122,6 +123,7 @@ export default (env = {}) => {
 			moduleExtensions: ['-loader'],
 		},
 		devServer: {
+			port,
 			contentBase: 'test',
 			hot: true,
 			stats: {
@@ -132,7 +134,7 @@ export default (env = {}) => {
 				disableDotRule: true,
 			},
 			proxy: {
-				'/api': `http://127.0.0.1:${backendServerPort}`,
+				'/api': `http://127.0.0.1:${testServerPort}`,
 			}
 		},
 	};
