@@ -24,11 +24,12 @@ export default function withActions(WrappedComponent) {
 
 		requestRemove = (keys) => {
 			const { store } = this.context;
+			const keysToRemove = keys.length ? keys : store.selectedKeys;
 			confirm({
 				title: '确定删除？',
 				content: '该操作将不能撤销',
 				onOk: () => {
-					store.remove(keys || store.selectedKeys);
+					store.remove(keysToRemove);
 				},
 				okText: '删除',
 			});
