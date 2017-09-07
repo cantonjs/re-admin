@@ -1,12 +1,13 @@
 
 import { isString, isArray, trim } from 'lodash';
+import { isObservableArray } from 'mobx';
 
 export default function ensureFileList(fileList = []) {
 	if (isString(fileList)) {
 		fileList = fileList.split(',');
 	}
 
-	if (!isArray(fileList)) {
+	if (!isArray(fileList) && !isObservableArray(fileList)) {
 		throw new Error('`fileList` must be a string or array');
 	}
 
