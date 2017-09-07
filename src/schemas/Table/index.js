@@ -15,6 +15,7 @@ TableSchema.propTypes = {
 	mapOnFetchResponse: PropTypes.func,
 	mapOnFetchOneResponse: PropTypes.func,
 	mapOnSave: PropTypes.func,
+	uniqueKey: PropTypes.string,
 };
 
 TableSchema.defaultProps = {
@@ -79,21 +80,31 @@ TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
 		};
 	};
 
+	let uniqueKey;
+
 	children.forEach((child, index) => {
-		const { inForm, inQuery, inTable, ...props } = child.props;
+		const { inForm, inQuery, inTable, unique, ...props } = child.props;
 		const push = createPusher(child, props, index);
+		if (!uniqueKey && unique) { uniqueKey = props.name; }
 		push(formRenderers, inForm, 'renderForm');
 		push(queryRenderers, inQuery, 'renderQuery');
 		push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
 	});
 
-	tables[name] = {
+	const table = {
+		uniqueKey,
 		...other,
 		api: parseAPIPath(api || name),
 		formRenderers,
 		queryRenderers,
 		tableRenderers,
 	};
+
+	tables[name] = table;
+
+	if (tableRenderers.length && !table.uniqueKey) {
+		console.error(`Table "${name}" is missing uniqueKey!`);
+	}
 };
 TableSchema.schemaName = 'tables';
 TableSchema.DataType = Object;

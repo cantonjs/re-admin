@@ -14,7 +14,7 @@ export default class DataStore {
 		const tableConfig = appConfig.tables[table];
 		if (caches.hasOwnProperty(table)) { return caches[table]; }
 
-		const store = new DataStore(table, tableConfig);
+		const store = new DataStore(tableConfig);
 		caches[table] = store;
 		return store;
 	}
@@ -92,15 +92,13 @@ export default class DataStore {
 	_prevQuery = {};
 	_pervSearch = '?';
 
-	constructor(table, tableConfig) {
-		this._table = table;
+	constructor(tableConfig) {
 		this._tableConfig = tableConfig;
 
 		const { tableRenderers, queryRenderers } = tableConfig;
-		const uniqueField = tableRenderers.find(({ props }) => props.unique);
 		const sortableField = tableRenderers.find(({ props }) => props.sortable);
 
-		this.uniqueKey = uniqueField && uniqueField.props.name;
+		this.uniqueKey = tableConfig.uniqueKey;
 		this.hasSortableField = !!sortableField;
 		this.hasQueryField = !!queryRenderers.length;
 

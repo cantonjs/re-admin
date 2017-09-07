@@ -15,7 +15,6 @@ export default (
 			disabled
 			unique
 			inQuery
-			inTable
 		/>
 
 		<Text
