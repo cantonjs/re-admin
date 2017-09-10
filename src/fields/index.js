@@ -7,6 +7,7 @@ export Slider from './Slider';
 export DatePicker from './DatePicker';
 export RangePicker from './RangePicker';
 export Uploader from './Uploader';
+export Ref from './Ref';
 export ArrayOf from './ArrayOf';
 export ObjectOf from './ObjectOf';
 export Actions from './Actions';

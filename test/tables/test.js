@@ -2,7 +2,7 @@
 import React from 'react';
 import {
 	Table, Text, Select, Option, Image, Slider, Uploader,
-	RangePicker, DatePicker,
+	RangePicker, DatePicker, Ref,
 	ArrayOf, ObjectOf,
 	Actions, RemoveButton, UpdateButton,
 } from '../../src';
@@ -25,6 +25,13 @@ export default (
 			required
 			inQuery
 			inTable
+			inForm
+		/>
+
+		<Ref
+			name="ref"
+			table="hello"
+			label="引用"
 			inForm
 		/>
 
