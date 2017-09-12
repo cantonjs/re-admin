@@ -33,6 +33,7 @@ export default (
 			table="hello"
 			label="引用"
 			inForm
+			inTable
 		/>
 
 		<DatePicker
