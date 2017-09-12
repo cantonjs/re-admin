@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { noop } from 'empty-functions';
 import { State, HiddenRouterStore } from './Stores';
 import createComponent from 'components/Nested/createComponent';
-import { Button, Modal } from 'antd';
+import { Input, Icon, Modal } from 'antd';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
@@ -13,7 +13,7 @@ const styles = {
 	button: {
 		width: '100%',
 		textAlign: 'left',
-		padding: '0 7px',
+		cursor: 'pointer',
 	},
 };
 
@@ -23,6 +23,7 @@ class RefSelector extends Component {
 		table: PropTypes.string.isRequired,
 		onChange: PropTypes.func,
 		value: PropTypes.any,
+		placeholder: PropTypes.string,
 		style: PropTypes.object,
 		modalStyle: PropTypes.object,
 		modalWidth: PropTypes.stringOrNumber,
@@ -31,6 +32,7 @@ class RefSelector extends Component {
 	static defaultProps = {
 		onChange: noop,
 		modalWidth: '70%',
+		placeholder: '',
 	};
 
 	static contextTypes = {
@@ -48,9 +50,14 @@ class RefSelector extends Component {
 		this._hiddenRouterStore = new HiddenRouterStore(this._store);
 	}
 
-	_handleClick = () => {
-		this._store.fetch({}, 'fork');
+	_handleClick = (ev) => {
+		ev.preventDefault();
+		this._store.fetch({}, Math.random());
 		this._state.visible = true;
+	};
+
+	_handleFocus = (ev) => {
+		ev.currentTarget.blur();
 	};
 
 	_handleCancel = () => {
@@ -69,18 +76,22 @@ class RefSelector extends Component {
 			_hiddenRouterStore,
 			_store,
 			_queryNodes,
-			props: { value, style, modalWidth, modalStyle },
+			props: { value, placeholder, style, modalWidth, modalStyle },
 		} = this;
 
 		return (
 			<div>
-				<Button
+				<Input
 					style={{ ...styles.button, ...style }}
+					placeholder={placeholder}
+					value={value}
 					size="large"
-					onClick={this._handleClick}
-				>
-					{value}
-				</Button>
+					addonAfter={
+						<a href="#" onClick={this._handleClick}>
+							<Icon type="bars" />
+						</a>
+					}
+				/>
 				<Modal
 					title="Ref"
 					style={{ ...modalStyle, minWidth: modalWidth }}

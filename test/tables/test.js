@@ -31,9 +31,11 @@ export default (
 		<Ref
 			name="ref"
 			table="hello"
+			placeholder="请输入引用"
 			label="引用"
 			inForm
 			inTable
+			inQuery
 		/>
 
 		<DatePicker
