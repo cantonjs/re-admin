@@ -96,7 +96,7 @@ export default class DataTableView extends Component {
 
 	_getDataNodes(table) {
 		const { appConfig } = this.context;
-		const { formRenderers, queryRenderers } = appConfig.tables[table];
+		const { formRenderers, queryRenderers, noMulti } = appConfig.tables[table];
 
 		return {
 			formNodes: formRenderers.map(({ renderNode }) => renderNode()),
@@ -118,6 +118,7 @@ export default class DataTableView extends Component {
 				store,
 				formNodes,
 				queryNodes,
+				noMulti,
 			},
 			context: {
 				appConfig,
@@ -135,7 +136,7 @@ export default class DataTableView extends Component {
 						<TableQuery store={store}>{queryNodes}</TableQuery>
 					}
 					<Toolbar />
-					<TableBody store={store} />
+					<TableBody store={store} noMulti={noMulti} />
 					{Footer && <Footer store={store} />}
 					<ActionModal store={store}>{formNodes}</ActionModal>
 				</div>

@@ -16,12 +16,14 @@ TableSchema.propTypes = {
 	mapOnFetchOneResponse: PropTypes.func,
 	mapOnSave: PropTypes.func,
 	uniqueKey: PropTypes.string,
+	noMulti: PropTypes.bool,
 };
 
 TableSchema.defaultProps = {
 	mapOnFetchResponse: returnsArgument,
 	mapOnFetchOneResponse: returnsArgument,
 	mapOnSave: returnsArgument,
+	noMulti: false,
 };
 
 TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {

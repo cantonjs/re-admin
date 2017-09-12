@@ -11,10 +11,8 @@ let authStore = {};
 
 export default class DataStore {
 	static get(table) {
-		const tableConfig = appConfig.tables[table];
 		if (caches.hasOwnProperty(table)) { return caches[table]; }
-
-		const store = new DataStore(tableConfig);
+		const store = new DataStore(table);
 		caches[table] = store;
 		return store;
 	}
@@ -92,7 +90,8 @@ export default class DataStore {
 	_prevQuery = {};
 	_pervSearch = '?';
 
-	constructor(tableConfig) {
+	constructor(table) {
+		const tableConfig = appConfig.tables[table];
 		this._tableConfig = tableConfig;
 
 		const { tableRenderers, queryRenderers } = tableConfig;

@@ -1,12 +1,13 @@
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { noop } from 'empty-functions';
 import createComponent from 'components/Nested/createComponent';
 import { Button, Modal } from 'antd';
 import TableBody from 'components/TableBody';
+import TableQuery from 'components/TableQuery';
 
 const styles = {
 	modal: {
@@ -16,6 +17,32 @@ const styles = {
 
 class State {
 	@observable visible = false;
+}
+
+class LocStore {
+	@observable _query = { page: 1 };
+
+	@computed get query() {
+		return this._query;
+	}
+
+	set query(query) {
+		this._query = query;
+		this._dataStore.fetch(query, Math.random());
+		return query;
+	}
+
+	constructor(dataStore) {
+		this._dataStore = dataStore;
+	}
+}
+
+class HiddenRouterStore {
+	location = new LocStore();
+
+	constructor(dataStore) {
+		this.location = new LocStore(dataStore);
+	}
 }
 
 @observer
@@ -31,12 +58,17 @@ class RefSelector extends Component {
 
 	static contextTypes = {
 		DataStore: PropTypes.func.isRequired,
+		appConfig: PropTypes.object.isRequired,
 	};
 
 	componentWillMount() {
 		const { table } = this.props;
+		const { appConfig } = this.context;
+		const { queryRenderers } = appConfig.tables[table];
 		this._state = new State();
-		this._store = this.context.DataStore.get(table);
+		this._queryNodes = queryRenderers.map(({ renderNode }) => renderNode());
+		this._store = new this.context.DataStore(table);
+		this._hiddenRouterStore = new HiddenRouterStore(this._store);
 	}
 
 	_handleClick = () => {
@@ -51,11 +83,17 @@ class RefSelector extends Component {
 	_handleOk = () => {
 		const { onChange } = this.props;
 		this._state.visible = false;
-		onChange('shit');
+		onChange(this._store.selectedKeys[0]);
 	};
 
 	render() {
-		const { visible } = this._state;
+		const {
+			_state: { visible },
+			_hiddenRouterStore,
+			_store,
+			_queryNodes,
+		} = this;
+
 		return (
 			<div>
 				<Button onClick={this._handleClick}>Ref</Button>
@@ -68,7 +106,17 @@ class RefSelector extends Component {
 					onCancel={this._handleCancel}
 					onOk={this._handleOk}
 				>
-					<TableBody store={this._store} />
+					<TableQuery
+						store={_store}
+						routerStore={_hiddenRouterStore}
+					>
+						{_queryNodes}
+					</TableQuery>
+					<TableBody
+						store={_store}
+						routerStore={_hiddenRouterStore}
+						noMulti
+					/>
 				</Modal>
 			</div>
 		);

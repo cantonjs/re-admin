@@ -26,6 +26,11 @@ export default class TableQuery extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 		store: PropTypes.object,
+		routerStore: PropTypes.object,
+	};
+
+	static defaultProps = {
+		routerStore,
 	};
 
 	static childContextTypes = {
@@ -37,11 +42,11 @@ export default class TableQuery extends Component {
 	}
 
 	_handleSearch = (query) => {
-		routerStore.location.query = query;
+		this.props.routerStore.location.query = query;
 	};
 
 	_handleReset = () => {
-		routerStore.location.query = {};
+		this.props.routerStore.location.query = {};
 	};
 
 	_saveForm = (form) => {

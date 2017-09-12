@@ -34,6 +34,13 @@ export default class TableBody extends Component {
 			size: PropTypes.number.isRequired,
 			setSelectedKeys: PropTypes.func.isRequired,
 		}),
+		routerStore: PropTypes.object,
+		noMulti: PropTypes.bool,
+	};
+
+	static defaultProps = {
+		routerStore,
+		noMulti: false,
 	};
 
 	static contextTypes = {
@@ -45,7 +52,7 @@ export default class TableBody extends Component {
 	};
 
 	_handlePageChange = (page) => {
-		const { location } = routerStore;
+		const { location } = this.props.routerStore;
 		location.query = { ...location.query, page };
 	}
 
@@ -55,6 +62,7 @@ export default class TableBody extends Component {
 				appConfig,
 				appConfig: { api: { sortKey, orderKey, descValue, ascValue } },
 			},
+			props: { routerStore },
 		} = this;
 		const { location } = routerStore;
 		if (isEmpty(sorter)) {
@@ -68,7 +76,7 @@ export default class TableBody extends Component {
 	}
 
 	render() {
-		const { store } = this.props;
+		const { store, routerStore, noMulti } = this.props;
 		const {
 			columns, dataSource, isFetching, total, size, selectedKeys
 		} = store;
@@ -76,6 +84,7 @@ export default class TableBody extends Component {
 		const current = +routerStore.location.query.page || 1;
 
 		const rowSelection = {
+			type: noMulti ? 'radio' : 'checkbox',
 			selectedRowKeys: selectedKeys,
 			onChange: this._handleSelectChange,
 		};
