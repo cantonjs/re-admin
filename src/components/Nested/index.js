@@ -1,5 +1,6 @@
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import createComponent from './createComponent';
 import {
 	Input as AntdInput,
@@ -44,10 +45,12 @@ export const RangePicker = createComponent(AntdRangePicker, {
 
 export const Upload = createComponent(AntdUpload, {
 	displayName: 'NestUpload',
+	propTypes: {
+		uploadName: PropTypes.string,
+	},
 	mapProps({ props }) {
 		return {
 			onChange({ fileList }) {
-				console.log('onchange', props.mapFileList(fileList));
 				return props.mapFileList ? props.mapFileList(fileList) : fileList;
 			},
 		};

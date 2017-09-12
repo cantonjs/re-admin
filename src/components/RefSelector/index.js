@@ -25,8 +25,10 @@ class RefSelector extends Component {
 		value: PropTypes.any,
 		placeholder: PropTypes.string,
 		style: PropTypes.object,
+		label: PropTypes.node,
 		modalStyle: PropTypes.object,
 		modalWidth: PropTypes.stringOrNumber,
+		modalTitle: PropTypes.node,
 	};
 
 	static defaultProps = {
@@ -76,7 +78,9 @@ class RefSelector extends Component {
 			_hiddenRouterStore,
 			_store,
 			_queryNodes,
-			props: { value, placeholder, style, modalWidth, modalStyle },
+			props: {
+				value, placeholder, style, modalWidth, modalStyle, modalTitle, label,
+			},
 		} = this;
 
 		return (
@@ -93,10 +97,9 @@ class RefSelector extends Component {
 					}
 				/>
 				<Modal
-					title="Ref"
+					title={modalTitle || label || '引用'}
 					style={{ ...modalStyle, minWidth: modalWidth }}
 					maskClosable={false}
-					key="ref"
 					visible={visible}
 					onCancel={this._handleCancel}
 					onOk={this._handleOk}
@@ -120,5 +123,13 @@ class RefSelector extends Component {
 
 export default createComponent(RefSelector, {
 	displayName: 'NestInput',
-	onChange(val) { return val; }
+	onChange(val) { return val; },
+	render(props, originalProps, Component) {
+		return (
+			<Component
+				{...props}
+				label={originalProps.label}
+			/>
+		);
+	},
 });

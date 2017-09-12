@@ -12,6 +12,12 @@ export default function createComponent(Comp, options = {}) {
 		displayName = 'NestElement',
 		onChange,
 		mapProps = {},
+		propTypes = {},
+		render = function render(props, originalProps, Comp) {
+			return (
+				<Comp {...props} />
+			);
+		},
 		...otherOptions,
 	} = options;
 
@@ -28,11 +34,9 @@ export default function createComponent(Comp, options = {}) {
 			wrapperCol: PropTypes.object,
 			colon: PropTypes.bool,
 			wrapperStyle: PropTypes.object,
-
 			name: PropTypes.string, // injected by nestify
 
-			// To prevent overide Upload component's `name` key
-			uploadName: PropTypes.string,
+			...propTypes,
 		};
 
 		static displayName = displayName;
@@ -41,7 +45,7 @@ export default function createComponent(Comp, options = {}) {
 			const {
 				nest: { errorMessage, isPristine },
 				label, labelCol, wrapperCol, colon, required, wrapperStyle,
-				name, uploadName,
+				name,
 				...other,
 			} = this.props;
 
@@ -58,7 +62,7 @@ export default function createComponent(Comp, options = {}) {
 					help={isInvalid ? errorMessage : ''}
 					style={wrapperStyle}
 				>
-					<Comp {...other} name={uploadName || name} />
+					{render(other, this.props, Comp)}
 				</Item>
 			);
 		}

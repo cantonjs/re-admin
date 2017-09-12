@@ -31,8 +31,8 @@ export default (
 		<Ref
 			name="ref"
 			table="hello"
-			placeholder="请输入引用"
-			label="引用"
+			placeholder="请输入超链表"
+			label="超链表"
 			inForm
 			inTable
 			inQuery
