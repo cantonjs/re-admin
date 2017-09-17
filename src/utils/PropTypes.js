@@ -1,5 +1,6 @@
 
 import PropTypes from 'prop-types';
+import { propTypes as MobxPropTypes } from 'mobx-react';
 
 const warned = {};
 
@@ -8,6 +9,10 @@ export default {
 	component: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.func,
+	]),
+	array: PropTypes.oneOfType([
+		PropTypes.array,
+		MobxPropTypes.observableArray,
 	]),
 	stringOrNumber: PropTypes.oneOfType([
 		PropTypes.string,

@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { propTypes as MobxPropTypes } from 'mobx-react';
 import withActions from 'utils/withActions';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
@@ -12,15 +11,12 @@ export default class UpdateButton extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 		recordKeys: PropTypes.array,
-		names: PropTypes.oneOfType([
-			PropTypes.array,
-			MobxPropTypes.observableArray,
-		]),
+		names: PropTypes.array,
 		label: PropTypes.node,
 		multiLabel: PropTypes.node,
 		actions: PropTypes.shape({
 			requestUpdate: PropTypes.func.isRequired,
-			selectedKeys: MobxPropTypes.observableArray.isRequired,
+			selectedKeys: PropTypes.array.isRequired,
 		}).isRequired,
 		component: PropTypes.component,
 	};
