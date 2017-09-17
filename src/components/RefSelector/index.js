@@ -41,11 +41,21 @@ class RefSelector extends Component {
 		DataStore: PropTypes.func.isRequired,
 	};
 
+	state = {
+		value: this.props.value,
+	};
+
 	componentWillMount() {
 		const { props: { table }, context: { DataStore } } = this;
 		this._state = new State();
 		this._store = new DataStore(table);
 		this._hiddenRouterStore = new HiddenRouterStore(this._store);
+	}
+
+	componentWillReceiveProps({ value }) {
+		if (this.props.value !== value) {
+			this.setState({ value });
+		}
 	}
 
 	_handleClick = (ev) => {
@@ -68,14 +78,19 @@ class RefSelector extends Component {
 		onChange(this._store.selectedKeys[0]);
 	};
 
+	_handleChange = (ev) => {
+		this.setState({ value: ev.currentTarget.value });
+	};
+
 	render() {
 		const {
 			_state: { visible },
 			_hiddenRouterStore,
 			_store,
 			props: {
-				value, placeholder, style, modalWidth, modalStyle, modalTitle, label,
+				placeholder, style, modalWidth, modalStyle, modalTitle, label,
 			},
+			state: { value },
 		} = this;
 
 		return (
@@ -85,6 +100,7 @@ class RefSelector extends Component {
 					placeholder={placeholder}
 					value={value}
 					size="large"
+					onChange={this._handleChange}
 					addonAfter={
 						<a href="#" onClick={this._handleClick}>
 							<Icon type="bars" />
