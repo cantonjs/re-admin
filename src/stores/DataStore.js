@@ -100,11 +100,10 @@ export default class DataStore {
 		;
 	}
 
-	@computed get formNodes() {
+	@computed get formRenderers() {
 		return this
 			.tableConfig
 			.formRenderers
-			.map(({ renderNode }) => renderNode())
 		;
 	}
 

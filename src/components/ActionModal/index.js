@@ -72,7 +72,7 @@ export default class ActionModal extends Component {
 	};
 
 	render() {
-		const { props: { store: { formNodes } } } = this;
+		const { props: { store: { formRenderers } } } = this;
 		const { query: { _action }, search } = routerStore.location;
 
 		const title = actionLabelsMap[_action];
@@ -87,9 +87,8 @@ export default class ActionModal extends Component {
 				onSubmit={this._handleSubmit}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
-			>
-				{formNodes}
-			</ActionModalInternal>
+				formRenderers={formRenderers}
+			/>
 		);
 	}
 }

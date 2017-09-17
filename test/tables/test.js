@@ -64,7 +64,6 @@ export default (
 			inForm
 		/>
 
-
 		<ObjectOf
 			name="pet"
 			label="宠物"
@@ -147,7 +146,9 @@ export default (
 			name="gpa"
 			label="GPA"
 			dataType="integer"
-			inForm
+			inForm={(props, { Component, getFormData }) =>
+				getFormData().fav < 2 ? null : (<Component {...props} />)
+			}
 		/>
 		<Text
 			name="birthday"
