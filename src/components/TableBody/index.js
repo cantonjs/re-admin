@@ -35,12 +35,12 @@ export default class TableBody extends Component {
 			setSelectedKeys: PropTypes.func.isRequired,
 		}),
 		routerStore: PropTypes.object,
-		noMulti: PropTypes.bool,
+		selectionType: PropTypes.oneOf(['checkbox', 'radio']),
 	};
 
 	static defaultProps = {
 		routerStore,
-		noMulti: false,
+		selectionType: 'checkbox',
 	};
 
 	static contextTypes = {
@@ -76,18 +76,25 @@ export default class TableBody extends Component {
 	}
 
 	render() {
-		const { store, routerStore, noMulti } = this.props;
+		const { store, routerStore, selectionType } = this.props;
 		const {
-			columns, dataSource, isFetching, total, size, selectedKeys
+			columns, dataSource, isFetching, total, size, selectedKeys, uniqueKey,
+			maxSelections,
 		} = store;
 
 		const current = +routerStore.location.query.page || 1;
 
-		const rowSelection = {
-			type: noMulti ? 'radio' : 'checkbox',
+		const rowSelection = maxSelections ? {
+			type: selectionType,
 			selectedRowKeys: selectedKeys,
 			onChange: this._handleSelectChange,
-		};
+			getCheckboxProps: (record) => ({
+				disabled: selectionType === 'checkbox' &&
+					maxSelections > 0 &&
+					selectedKeys.length >= maxSelections &&
+					selectedKeys.indexOf(record[uniqueKey]) < 0,
+			}),
+		} : undefined;
 
 		return (
 			<div>

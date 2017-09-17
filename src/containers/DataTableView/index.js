@@ -119,7 +119,7 @@ export default class DataTableView extends Component {
 						<TableQuery store={store} />
 					}
 					<Toolbar />
-					<TableBody store={store} noMulti={store.noMulti} />
+					<TableBody store={store} />
 					{Footer && <Footer store={store} />}
 					<ActionModal store={store} />
 				</div>

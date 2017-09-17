@@ -106,7 +106,7 @@ class RefSelector extends Component {
 					<TableBody
 						store={_store}
 						routerStore={_hiddenRouterStore}
-						noMulti
+						selectionType="radio"
 					/>
 				</Modal>
 			</div>

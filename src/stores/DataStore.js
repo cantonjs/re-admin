@@ -88,8 +88,8 @@ export default class DataStore {
 		;
 	}
 
-	@computed get noMulti() {
-		return this.tableConfig.noMulti;
+	@computed get maxSelections() {
+		return this.tableConfig.maxSelections;
 	}
 
 	@computed get queryNodes() {
