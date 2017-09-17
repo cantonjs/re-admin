@@ -1,19 +1,14 @@
 
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
+import { observable, computed } from 'mobx';
 import { Modal } from 'antd';
 import { Form } from 'components/Nested';
+import FormItemWrapper from 'components/FormItemWrapper';
 
-const formItemLayout = {
-	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 6 },
-	},
-	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 18 },
-	},
-};
+class FormState {
+	@observable data = {};
+}
 
 export default class ActionModalInternal extends Component {
 	static propTypes = {
@@ -28,8 +23,12 @@ export default class ActionModalInternal extends Component {
 		formState: PropTypes.object,
 	};
 
+	getChildContext() {
+		return { formState: this._formState };
+	}
+
 	componentWillMount() {
-		this._formData = {};
+		this._formState = new FormState();
 	}
 
 	componentDidUpdate() {
@@ -41,13 +40,8 @@ export default class ActionModalInternal extends Component {
 		if (form) { this.form = form; }
 	};
 
-	_getFormData = () => {
-		return this._formData;
-	};
-
 	_handleChange = (data) => {
-		this._formData = data;
-		this.forceUpdate();
+		this._formState.data = data;
 	};
 
 	submit() {
@@ -65,10 +59,6 @@ export default class ActionModalInternal extends Component {
 			},
 		} = this;
 
-		const children = formRenderers.map(({ render, props, options }) =>
-			render(props, { ...options, getFormData: this._getFormData })
-		);
-
 		return (
 			<Modal
 				title={title || this._prevTitle}
@@ -81,9 +71,8 @@ export default class ActionModalInternal extends Component {
 					onSubmit={onSubmit}
 					onChange={this._handleChange}
 				>
-					{Children.map(
-						children,
-						(child) => child && cloneElement(child, formItemLayout),
+					{formRenderers.map((renderOptions, index) =>
+						<FormItemWrapper renderOptions={renderOptions} key={index} />
 					)}
 				</Form>
 			</Modal>

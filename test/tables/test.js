@@ -146,8 +146,8 @@ export default (
 			name="gpa"
 			label="GPA"
 			dataType="integer"
-			inForm={(props, { Component, getFormData }) =>
-				getFormData().fav < 2 ? null : (<Component {...props} />)
+			inForm={(props, { Component, getData }) =>
+				getData().fav > 1 ? (<Component {...props} />) : null
 			}
 		/>
 		<Text
