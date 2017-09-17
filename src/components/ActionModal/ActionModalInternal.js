@@ -1,7 +1,7 @@
 
-import React, { Component, Children, cloneElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { observable, computed } from 'mobx';
+import { observable } from 'mobx';
 import { Modal } from 'antd';
 import { Form } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
@@ -72,7 +72,11 @@ export default class ActionModalInternal extends Component {
 					onChange={this._handleChange}
 				>
 					{formRenderers.map((renderOptions, index) =>
-						<FormItemWrapper renderOptions={renderOptions} key={index} />
+						<FormItemWrapper
+							renderOptions={renderOptions}
+							withLayout
+							key={index}
+						/>
 					)}
 				</Form>
 			</Modal>

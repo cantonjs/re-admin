@@ -1,12 +1,17 @@
 
-import React, { Component, Children } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observable } from 'mobx';
+import routerStore from 'stores/routerStore';
+import { QUERIER } from 'constants/Issuers';
 import { Row, Col } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import ClearSortButton from 'components/ClearSortButton';
-import routerStore from 'stores/routerStore';
+import FormItemWrapper from 'components/FormItemWrapper';
 
-import { QUERIER } from 'constants/Issuers';
+class FormState {
+	@observable data = {};
+}
 
 const styles = {
 	container: {
@@ -34,10 +39,18 @@ export default class TableQuery extends Component {
 
 	static childContextTypes = {
 		issuer: PropTypes.string,
+		formState: PropTypes.object,
 	};
 
 	getChildContext() {
-		return { issuer: QUERIER };
+		return {
+			issuer: QUERIER,
+			formState: this._formState,
+		};
+	}
+
+	componentWillMount() {
+		this._formState = new FormState();
 	}
 
 	_handleSearch = (query) => {
@@ -52,9 +65,13 @@ export default class TableQuery extends Component {
 		if (form) { this._form = form; }
 	};
 
+	_handleChange = (data) => {
+		this._formState.data = data;
+	};
+
 	render() {
 		const {
-			store: { hasSortableField, hasQueryField, queryNodes },
+			store: { hasSortableField, hasQueryField, queryRenderers },
 		} = this.props;
 
 		if (!hasSortableField && !hasQueryField) { return null; }
@@ -64,10 +81,15 @@ export default class TableQuery extends Component {
 				ref={this._saveForm}
 				style={styles.container}
 				onSubmit={this._handleSearch}
+				onChange={this._handleChange}
 				layout="inline"
 			>
-				{Children.count(queryNodes) > 0 &&
-					<Row style={styles.main}>{queryNodes}</Row>
+				{queryRenderers.length > 0 &&
+					<Row style={styles.main}>
+						{queryRenderers.map((renderOptions, index) =>
+							<FormItemWrapper renderOptions={renderOptions} key={index} />
+						)}
+					</Row>
 				}
 				<Row>
 					<Col span={24} style={styles.footer}>

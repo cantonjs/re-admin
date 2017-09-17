@@ -92,11 +92,10 @@ export default class DataStore {
 		return this.tableConfig.maxSelections;
 	}
 
-	@computed get queryNodes() {
+	@computed get queryRenderers() {
 		return this
 			.tableConfig
 			.queryRenderers
-			.map(({ renderNode }) => renderNode())
 		;
 	}
 

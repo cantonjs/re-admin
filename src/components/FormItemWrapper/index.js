@@ -18,6 +18,11 @@ const formItemLayout = {
 export default class FormItemWrapper extends Component {
 	static propTypes = {
 		renderOptions: PropTypes.object,
+		withLayout: PropTypes.bool,
+	};
+
+	static defaultProps = {
+		withLayout: false,
 	};
 
 	static contextTypes = {
@@ -25,7 +30,10 @@ export default class FormItemWrapper extends Component {
 	};
 
 	render() {
-		const { render, props, options } = this.props.renderOptions;
+		const {
+			withLayout,
+			renderOptions: { render, props, options },
+		} = this.props;
 		const children = render(props, {
 			...options,
 			getData: () => {
@@ -33,6 +41,9 @@ export default class FormItemWrapper extends Component {
 				return formState ? formState.data : {};
 			},
 		});
-		return children ? cloneElement(children, formItemLayout) : null;
+		if (withLayout) {
+			return children ? cloneElement(children, formItemLayout) : null;
+		}
+		return children;
 	}
 }
