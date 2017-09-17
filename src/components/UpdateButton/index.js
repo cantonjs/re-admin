@@ -12,7 +12,10 @@ export default class UpdateButton extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 		recordKeys: PropTypes.array,
-		names: PropTypes.array,
+		names: PropTypes.oneOfType([
+			PropTypes.array,
+			MobxPropTypes.observableArray,
+		]),
 		label: PropTypes.node,
 		multiLabel: PropTypes.node,
 		actions: PropTypes.shape({

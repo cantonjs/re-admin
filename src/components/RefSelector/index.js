@@ -39,16 +39,12 @@ class RefSelector extends Component {
 
 	static contextTypes = {
 		DataStore: PropTypes.func.isRequired,
-		appConfig: PropTypes.object.isRequired,
 	};
 
 	componentWillMount() {
-		const { table } = this.props;
-		const { appConfig } = this.context;
-		const { queryRenderers } = appConfig.tables[table];
+		const { props: { table }, context: { DataStore } } = this;
 		this._state = new State();
-		this._queryNodes = queryRenderers.map(({ renderNode }) => renderNode());
-		this._store = new this.context.DataStore(table);
+		this._store = new DataStore(table);
 		this._hiddenRouterStore = new HiddenRouterStore(this._store);
 	}
 
@@ -77,7 +73,6 @@ class RefSelector extends Component {
 			_state: { visible },
 			_hiddenRouterStore,
 			_store,
-			_queryNodes,
 			props: {
 				value, placeholder, style, modalWidth, modalStyle, modalTitle, label,
 			},
@@ -107,9 +102,7 @@ class RefSelector extends Component {
 					<TableQuery
 						store={_store}
 						routerStore={_hiddenRouterStore}
-					>
-						{_queryNodes}
-					</TableQuery>
+					/>
 					<TableBody
 						store={_store}
 						routerStore={_hiddenRouterStore}

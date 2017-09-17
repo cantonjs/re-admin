@@ -24,7 +24,6 @@ const styles = {
 
 export default class TableQuery extends Component {
 	static propTypes = {
-		children: PropTypes.node,
 		store: PropTypes.object,
 		routerStore: PropTypes.object,
 	};
@@ -55,8 +54,8 @@ export default class TableQuery extends Component {
 
 	render() {
 		const {
-			props: { children, store: { hasSortableField, hasQueryField } },
-		} = this;
+			store: { hasSortableField, hasQueryField, queryNodes },
+		} = this.props;
 
 		if (!hasSortableField && !hasQueryField) { return null; }
 
@@ -67,8 +66,8 @@ export default class TableQuery extends Component {
 				onSubmit={this._handleSearch}
 				layout="inline"
 			>
-				{Children.count(children) > 0 &&
-					<Row style={styles.main}>{children}</Row>
+				{Children.count(queryNodes) > 0 &&
+					<Row style={styles.main}>{queryNodes}</Row>
 				}
 				<Row>
 					<Col span={24} style={styles.footer}>

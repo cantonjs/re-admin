@@ -5,15 +5,15 @@ import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
 import routerStore from 'stores/routerStore';
 
-const caches = {};
+const caches = observable.map();
 let appConfig = {};
 let authStore = {};
 
 export default class DataStore {
 	static get(table) {
-		if (caches.hasOwnProperty(table)) { return caches[table]; }
+		if (caches.has(table)) { return caches.get(table); }
 		const store = new DataStore(table);
-		caches[table] = store;
+		caches.set(table, store);
 		return store;
 	}
 
@@ -26,6 +26,10 @@ export default class DataStore {
 	@observable search = '?';
 	@observable selectedKeys = [];
 	@observable data = {};
+
+	@computed get tableConfig() {
+		return appConfig.tables[this._tableName];
+	}
 
 	@computed get collection() {
 		return this.collections.get(this.search);
@@ -56,7 +60,7 @@ export default class DataStore {
 
 	@computed get columns() {
 		return this
-			._tableConfig
+			.tableConfig
 			.tableRenderers
 			.map(({ render, props, options }) => {
 				const column = {
@@ -84,6 +88,26 @@ export default class DataStore {
 		;
 	}
 
+	@computed get noMulti() {
+		return this.tableConfig.noMulti;
+	}
+
+	@computed get queryNodes() {
+		return this
+			.tableConfig
+			.queryRenderers
+			.map(({ renderNode }) => renderNode())
+		;
+	}
+
+	@computed get formNodes() {
+		return this
+			.tableConfig
+			.formRenderers
+			.map(({ renderNode }) => renderNode())
+		;
+	}
+
 	collections = observable.map();
 	totals = observable.map();
 
@@ -91,17 +115,16 @@ export default class DataStore {
 	_pervSearch = '?';
 
 	constructor(table) {
-		const tableConfig = appConfig.tables[table];
-		this._tableConfig = tableConfig;
+		this._tableName = table;
 
-		const { tableRenderers, queryRenderers } = tableConfig;
+		const { tableRenderers, queryRenderers } = this.tableConfig;
 		const sortableField = tableRenderers.find(({ props }) => props.sortable);
 
-		this.uniqueKey = tableConfig.uniqueKey;
+		this.uniqueKey = this.tableConfig.uniqueKey;
 		this.hasSortableField = !!sortableField;
 		this.hasQueryField = !!queryRenderers.length;
 
-		const { pathname, query, headers } = tableConfig.api;
+		const { pathname, query, headers } = this.tableConfig.api;
 
 		const accessTokenOptions = {
 			[appConfig.api.accessTokenName]({ remove }) {
@@ -152,7 +175,7 @@ export default class DataStore {
 			const {
 				total,
 				list = [],
-			} = await this._tableConfig.mapOnFetchResponse(res);
+			} = await this.tableConfig.mapOnFetchResponse(res);
 
 			const collection = list.map((data, index) => {
 				data.key = this.uniqueKey ? data[this.uniqueKey] : index;
@@ -174,7 +197,7 @@ export default class DataStore {
 	async fetchOne(query) {
 		try {
 			const res = await this._ask.fork({ query });
-			const data = await this._tableConfig.mapOnFetchOneResponse(res);
+			const data = await this.tableConfig.mapOnFetchOneResponse(res);
 			this.data = data;
 		}
 		catch (err) {
@@ -205,7 +228,7 @@ export default class DataStore {
 		try {
 			await this._ask.fork({
 				method: 'POST',
-				body: this._tableConfig.mapOnSave(body, 'create'),
+				body: this.tableConfig.mapOnSave(body, 'create'),
 			});
 			this._sync();
 		}
@@ -219,7 +242,7 @@ export default class DataStore {
 			await this._ask.fork({
 				url: keys,
 				method: 'PUT',
-				body: this._tableConfig.mapOnSave(body, 'update'),
+				body: this.tableConfig.mapOnSave(body, 'update'),
 			});
 
 			this._sync();

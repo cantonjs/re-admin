@@ -29,6 +29,12 @@ export default class Admin extends Component {
 		this._config = getConfig(children || config);
 	}
 
+	componentWillReceiveProps({ children, config }) {
+		// console.log(children || config);
+		this._config = getConfig(children || config);
+		this.forceUpdate();
+	}
+
 	render() {
 		return (
 			<AdminContext appConfig={this._config} />

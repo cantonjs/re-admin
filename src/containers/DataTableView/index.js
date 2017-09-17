@@ -52,7 +52,6 @@ export default class DataTableView extends Component {
 		const { table } = this.props;
 		const { DataStore } = this.context;
 		this.state = {
-			...this._getDataNodes(table),
 			store: DataStore.get(table),
 		};
 	}
@@ -61,7 +60,6 @@ export default class DataTableView extends Component {
 		const { DataStore } = this.context;
 		if (this.props.table !== table) {
 			this.setState({
-				...this._getDataNodes(table),
 				store: DataStore.get(table),
 			});
 		}
@@ -94,16 +92,6 @@ export default class DataTableView extends Component {
 		this.state.store.fetch(query, search);
 	}
 
-	_getDataNodes(table) {
-		const { appConfig } = this.context;
-		const { formRenderers, queryRenderers, noMulti } = appConfig.tables[table];
-
-		return {
-			formNodes: formRenderers.map(({ renderNode }) => renderNode()),
-			queryNodes: queryRenderers.map(({ renderNode }) => renderNode()),
-		};
-	}
-
 	render() {
 		const {
 			props: {
@@ -114,12 +102,7 @@ export default class DataTableView extends Component {
 				footer: Footer,
 				toolbar: Toolbar,
 			},
-			state: {
-				store,
-				formNodes,
-				queryNodes,
-				noMulti,
-			},
+			state: { store },
 			context: {
 				appConfig,
 			},
@@ -133,12 +116,12 @@ export default class DataTableView extends Component {
 					<h1>{heading}</h1>
 					{Header && <Header store={store} />}
 					{panelsStore.isShowQuery &&
-						<TableQuery store={store}>{queryNodes}</TableQuery>
+						<TableQuery store={store} />
 					}
 					<Toolbar />
-					<TableBody store={store} noMulti={noMulti} />
+					<TableBody store={store} noMulti={store.noMulti} />
 					{Footer && <Footer store={store} />}
-					<ActionModal store={store}>{formNodes}</ActionModal>
+					<ActionModal store={store} />
 				</div>
 			</DocumentTitle>
 		);

@@ -22,7 +22,6 @@ const actionLabelsMap = {
 @observer
 export default class ActionModal extends Component {
 	static propTypes = {
-		children: PropTypes.node,
 		store: PropTypes.object.isRequired,
 	};
 
@@ -73,7 +72,7 @@ export default class ActionModal extends Component {
 	};
 
 	render() {
-		const { props: { children } } = this;
+		const { props: { store: { formNodes } } } = this;
 		const { query: { _action }, search } = routerStore.location;
 
 		const title = actionLabelsMap[_action];
@@ -89,7 +88,7 @@ export default class ActionModal extends Component {
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
 			>
-				{children}
+				{formNodes}
 			</ActionModalInternal>
 		);
 	}

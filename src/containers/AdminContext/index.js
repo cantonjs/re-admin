@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 import getRoutes from 'utils/getRoutes';
 import routerStore from 'stores/routerStore';
 import authStore from 'stores/authStore';
@@ -15,6 +17,7 @@ const styles = {
 	},
 };
 
+@observer
 export default class AdminContext extends Component {
 	static propTypes = {
 		appConfig: PropTypes.object,
@@ -27,34 +30,42 @@ export default class AdminContext extends Component {
 	};
 
 	getChildContext() {
-		const { appConfig } = this.props;
 		return {
-			appConfig,
+			appConfig: this._appConfig,
 			authStore,
 			DataStore,
 		};
 	}
 
 	componentWillMount() {
-		const { appConfig } = this.props;
-		authStore.init(appConfig);
-		DataStore.setup(appConfig, authStore);
+		this._appConfig = observable(this.props.appConfig);
+		authStore.init(this._appConfig);
+		DataStore.setup(this._appConfig, authStore);
+	}
+
+	componentWillReceiveProps({ appConfig }) {
+		// this._appConfig = appConfig;
+		Object.assign(this._appConfig, appConfig);
+		authStore.init(this._appConfig);
+		// DataStore.hotUpdate(appConfig);
 	}
 
 	render() {
 		const {
-			appConfig,
-			appConfig: {
-				title,
-				navigator: {
-					frame: Frame,
-					login: Login,
-					index: Index,
-					notFound: NotFound,
-					routes,
+			props: {
+				appConfig: {
+					title,
+					navigator: {
+						frame: Frame,
+						login: Login,
+						index: Index,
+						notFound: NotFound,
+						routes,
+					},
 				},
 			},
-		} = this.props;
+			_appConfig,
+		} = this;
 
 		const handleEnter = async (nextState, replace, next) => {
 			const { pathname, search } = nextState.location;
@@ -81,7 +92,7 @@ export default class AdminContext extends Component {
 									<Frame>
 										<Route exact path="/" component={Index} />
 										{routes}
-										{getRoutes(appConfig, match)}
+										{getRoutes(_appConfig, match)}
 										<Route component={NotFound} />
 									</Frame>
 								}
