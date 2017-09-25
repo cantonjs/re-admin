@@ -137,6 +137,7 @@ export default (
 			name="fav"
 			label="爱好"
 			inForm
+			value="2"
 		>
 			<Option value="1">吃饭</Option>
 			<Option value="2">睡觉</Option>
