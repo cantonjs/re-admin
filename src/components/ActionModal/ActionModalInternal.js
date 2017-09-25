@@ -2,14 +2,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { observable } from 'mobx';
-import { Modal } from 'antd';
+import { observer } from 'mobx-react';
+import { Modal, Spin } from 'antd';
 import { Form } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
+
+const styles = {
+	spinContainer: {
+		textAlign: 'center',
+		padding: 40,
+	},
+};
 
 class FormState {
 	@observable data = {};
 }
 
+@observer
 export default class ActionModalInternal extends Component {
 	static propTypes = {
 		form: PropTypes.object,
@@ -17,6 +26,10 @@ export default class ActionModalInternal extends Component {
 		title: PropTypes.string,
 		search: PropTypes.string,
 		onSubmit: PropTypes.func.isRequired,
+	};
+
+	static contextTypes = {
+		store: PropTypes.object,
 	};
 
 	static childContextTypes = {
@@ -57,6 +70,7 @@ export default class ActionModalInternal extends Component {
 				search,
 				...other,
 			},
+			context: { store: { isFetching } },
 		} = this;
 
 		return (
@@ -71,7 +85,12 @@ export default class ActionModalInternal extends Component {
 					onSubmit={onSubmit}
 					onChange={this._handleChange}
 				>
-					{formRenderers.map((renderOptions, index) =>
+					{isFetching &&
+						<div style={styles.spinContainer}>
+							<Spin />
+						</div>
+					}
+					{!isFetching && formRenderers.map((renderOptions, index) =>
 						<FormItemWrapper
 							renderOptions={renderOptions}
 							withLayout
