@@ -2,7 +2,6 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { noop } from 'empty-functions';
 import { State, HiddenRouterStore } from './Stores';
 import createComponent from 'components/Nested/createComponent';
 import { Input, Icon, Modal } from 'antd';
@@ -22,6 +21,7 @@ class RefSelector extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
 		onChange: PropTypes.func,
+		onKeyPress: PropTypes.func,
 		value: PropTypes.any,
 		placeholder: PropTypes.string,
 		style: PropTypes.object,
@@ -32,7 +32,6 @@ class RefSelector extends Component {
 	};
 
 	static defaultProps = {
-		onChange: noop,
 		modalWidth: '70%',
 		placeholder: '',
 	};
@@ -79,7 +78,9 @@ class RefSelector extends Component {
 	};
 
 	_handleChange = (ev) => {
-		this.setState({ value: ev.currentTarget.value });
+		const { value } = ev.currentTarget;
+		this.setState({ value });
+		this.props.onChange(value);
 	};
 
 	render() {
@@ -89,6 +90,7 @@ class RefSelector extends Component {
 			_store,
 			props: {
 				placeholder, style, modalWidth, modalStyle, modalTitle, label,
+				onKeyPress,
 			},
 			state: { value },
 		} = this;
@@ -101,6 +103,7 @@ class RefSelector extends Component {
 					value={value}
 					size="large"
 					onChange={this._handleChange}
+					onKeyPress={onKeyPress}
 					addonAfter={
 						<a href="#" onClick={this._handleClick}>
 							<Icon type="bars" />
