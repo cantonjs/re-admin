@@ -5522,12 +5522,12 @@ react-router-dom@^4.1.2:
     prop-types "^15.5.4"
     react-router "^4.1.1"
 
-react-router-mobx@^0.0.0:
-  version "0.0.0"
-  resolved "http://registry.npm.taobao.org/react-router-mobx/download/react-router-mobx-0.0.0.tgz#92e51d09f5774674ddd1bcf4ec743a48a40d6434"
+react-router-mobx@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/react-router-mobx/download/react-router-mobx-1.0.0.tgz#c01a67de40bfbe17bbf9330b0bc69a8040979d4e"
   dependencies:
     prop-types "^15.5.7"
-    qs "^6.5.0"
+    tiny-querystring "^0.0.0"
 
 react-router@^4.1.1:
   version "4.1.2"
@@ -6404,6 +6404,10 @@ timers-browserify@^2.0.2:
   resolved "http://registry.npm.taobao.org/timers-browserify/download/timers-browserify-2.0.2.tgz#ab4883cf597dcd50af211349a00fbca56ac86b86"
   dependencies:
     setimmediate "^1.0.4"
+
+tiny-querystring@^0.0.0:
+  version "0.0.0"
+  resolved "http://registry.npm.taobao.org/tiny-querystring/download/tiny-querystring-0.0.0.tgz#e05d146ca69b474e4af3afaa08e7bf22bc9ded3a"
 
 to-arraybuffer@^1.0.0:
   version "1.0.1"

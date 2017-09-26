@@ -1,7 +1,7 @@
 
 import { isString, isObject } from 'lodash';
 import url from 'url';
-import { parse } from 'utils/qs';
+import { parse } from 'tiny-querystring';
 
 export default function parseAPIPath(apiPath) {
 	if (isString(apiPath)) {
