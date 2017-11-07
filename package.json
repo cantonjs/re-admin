@@ -40,7 +40,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react-document-title": "^2.0.3",
-    "react-nested-form": "^0.0.0-18",
+    "react-nested-form": "^0.0.0-19",
     "react-router-mobx": "^1.0.0",
     "react-title-component": "^1.0.1",
     "tiny-querystring": "^0.0.0"
