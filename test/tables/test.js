@@ -4,7 +4,7 @@ import {
 	Table, Text, Select, Option, Image, Slider, Uploader,
 	RangePicker, DatePicker, Ref,
 	ArrayOf, ObjectOf,
-	Actions, RemoveButton, UpdateButton,
+	Actions, RemoveButton, UpdateButton, RefButton,
 } from '../../src';
 
 export default (
@@ -162,6 +162,11 @@ export default (
 		<Actions>
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
+			<RefButton
+				table="hello"
+				noModalQuery
+				onTransformBody={(id, record) => ({ relatedId: id, id: record.id })}
+			/>
 		</Actions>
 	</Table>
 );

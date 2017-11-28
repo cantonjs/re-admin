@@ -19,6 +19,7 @@ export default class RemoveButton extends Component {
 			selectedKeys: MobxPropTypes.observableArray.isRequired,
 		}).isRequired,
 		component: PropTypes.component,
+		record: PropTypes.object, // Maybe provided by <Action />
 	};
 
 	static defaultProps = {
@@ -44,7 +45,9 @@ export default class RemoveButton extends Component {
 		const {
 			props: {
 				actions: { selectedKeys },
-				component, recordKeys, children, label, multiLabel, ...other,
+				component, recordKeys, children, label, multiLabel,
+				record, // ignores
+				...other,
 			},
 			context: { issuer },
 		} = this;

@@ -29,7 +29,7 @@ export default function withActions(WrappedComponent) {
 				title: '确定删除？',
 				content: '该操作将不能撤销',
 				onOk: () => {
-					store.remove(keysToRemove);
+					store.remove({ keys: keysToRemove });
 				},
 				okText: '删除',
 			});

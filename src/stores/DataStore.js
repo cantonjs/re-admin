@@ -1,6 +1,6 @@
 
 import { observable, computed, toJS } from 'mobx';
-import { omit, isString, isNumber, assign } from 'lodash';
+import { omit, isString, isArray, isNumber, assign } from 'lodash';
 import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
 import routerStore from 'stores/routerStore';
@@ -10,10 +10,10 @@ let appConfig = {};
 let authStore = {};
 
 export default class DataStore {
-	static get(table) {
-		if (caches.has(table)) { return caches.get(table); }
-		const store = new DataStore(table);
-		caches.set(table, store);
+	static get(tableName, customConfig) {
+		if (caches.has(tableName)) { return caches.get(tableName); }
+		const store = new DataStore(tableName, customConfig);
+		caches.set(tableName, store);
 		return store;
 	}
 
@@ -28,7 +28,10 @@ export default class DataStore {
 	@observable data = {};
 
 	@computed get tableConfig() {
-		return appConfig.tables[this._tableName];
+		return {
+			...appConfig.tables[this._tableName],
+			...this._customConfig,
+		};
 	}
 
 	@computed get collection() {
@@ -112,8 +115,9 @@ export default class DataStore {
 	_prevQuery = {};
 	_pervSearch = '?';
 
-	constructor(table) {
-		this._tableName = table;
+	constructor(tableName, customConfig = {}) {
+		this._tableName = tableName;
+		this._customConfig = customConfig;
 
 		const { tableRenderers, queryRenderers } = this.tableConfig;
 		const sortableField = tableRenderers.find(({ props }) => props.sortable);
@@ -204,7 +208,7 @@ export default class DataStore {
 		return this;
 	}
 
-	_sync() {
+	_refresh() {
 		this.collections.clear();
 		this.totals.clear();
 		this.fetch();
@@ -222,45 +226,58 @@ export default class DataStore {
 		);
 	}
 
-	async create(body) {
+	async create(body, options = {}) {
+		const {
+			method = 'POST',
+		} = options;
 		try {
 			await this._ask.fork({
-				method: 'POST',
+				method,
 				body: this.tableConfig.mapOnSave(body, 'create'),
 			});
-			this._sync();
+			this._refresh();
 		}
 		catch (err) {
 			showError('创建失败：', err.message);
 		}
 	}
 
-	async update(body, keys) {
+	async update(body, options = {}) {
 		try {
+			if (isString(options) || isArray(options)) {
+				options = { keys: options };
+			}
+			const {
+				keys = '',
+				method = 'PUT',
+				urlPrefix = '',
+			} = options;
+
 			await this._ask.fork({
-				url: keys,
-				method: 'PUT',
+				url: urlPrefix + ([].concat(keys).join(',')),
+				method,
 				body: this.tableConfig.mapOnSave(body, 'update'),
 			});
 
-			this._sync();
+			this._refresh();
 		}
 		catch (err) {
 			showError('修改失败：', err.message);
 		}
 	}
 
-	async remove(keys) {
+	async remove(options = {}) {
 		try {
+			let { keys } = options;
 			if (isNumber(keys) || isString(keys)) { keys = [keys]; }
 			if (!Array.isArray(keys)) { keys = this.selectedKeys; }
 			if (!keys.length) { return; }
 
 			await this._ask.fork({
 				url: keys.join(','),
-				method: 'DELETE',
+				method: options.method,
 			});
-			this._sync();
+			this._refresh();
 			this.selectedKeys = [];
 		}
 		catch (err) {

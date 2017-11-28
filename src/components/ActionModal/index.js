@@ -59,7 +59,7 @@ export default class ActionModal extends Component {
 		if (!isInvalid) {
 			const { store } = this.props;
 			const { _action, _keys } = routerStore.location.query;
-			store[_action](data, _keys);
+			store[_action](data, { keys: _keys });
 			this.close();
 		}
 		else if (__DEV__) {

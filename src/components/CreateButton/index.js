@@ -15,6 +15,7 @@ export default class CreateButton extends Component {
 			requestCreate: PropTypes.func.isRequired,
 		}).isRequired,
 		component: PropTypes.component,
+		record: PropTypes.object, // Maybe provided by <Action />
 	};
 
 	static defaultProps = {
@@ -36,7 +37,11 @@ export default class CreateButton extends Component {
 
 	render() {
 		const {
-			props: { component, children, label, actions, ...other },
+			props: {
+				component, children, label, actions,
+				record, // ignores
+				...other,
+			},
 			context: { issuer },
 		} = this;
 

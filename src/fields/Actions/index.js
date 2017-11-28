@@ -11,6 +11,7 @@ const renderChildren = (children, record) => {
 		finalChildren.push(cloneElement(child, {
 			recordKeys: [record.key],
 			key: `${index}@1`,
+			record,
 		}));
 
 		if (index < length - 1) {

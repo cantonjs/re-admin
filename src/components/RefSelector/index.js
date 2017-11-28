@@ -1,20 +1,11 @@
 
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
+import styles from './styles';
 import { observer } from 'mobx-react';
-import { State, HiddenRouterStore } from './Stores';
 import createComponent from 'components/Nested/createComponent';
-import { Input, Icon, Modal } from 'antd';
-import TableBody from 'components/TableBody';
-import TableQuery from 'components/TableQuery';
-
-const styles = {
-	button: {
-		width: '100%',
-		textAlign: 'left',
-		cursor: 'pointer',
-	},
-};
+import { Input, Icon } from 'antd';
+import RefModal from 'components/RefModal';
 
 @observer
 class RefSelector extends Component {
@@ -26,32 +17,16 @@ class RefSelector extends Component {
 		placeholder: PropTypes.string,
 		style: PropTypes.object,
 		label: PropTypes.node,
-		modalStyle: PropTypes.object,
-		modalWidth: PropTypes.stringOrNumber,
-		modalTitle: PropTypes.node,
-		noModalQuery: PropTypes.bool,
 	};
 
 	static defaultProps = {
-		modalWidth: '70%',
 		placeholder: '',
-		noModalQuery: false,
-	};
-
-	static contextTypes = {
-		DataStore: PropTypes.func.isRequired,
 	};
 
 	state = {
 		value: this.props.value,
+		visible: false,
 	};
-
-	componentWillMount() {
-		const { props: { table }, context: { DataStore } } = this;
-		this._state = new State();
-		this._store = new DataStore(table);
-		this._hiddenRouterStore = new HiddenRouterStore(this._store);
-	}
 
 	componentWillReceiveProps({ value }) {
 		if (this.props.value !== value) {
@@ -61,22 +36,11 @@ class RefSelector extends Component {
 
 	_handleClick = (ev) => {
 		ev.preventDefault();
-		this._store.fetch({}, Math.random());
-		this._state.visible = true;
+		this.setState({ visible: true });
 	};
 
-	_handleFocus = (ev) => {
-		ev.currentTarget.blur();
-	};
-
-	_handleCancel = () => {
-		this._state.visible = false;
-	};
-
-	_handleOk = () => {
-		const { onChange } = this.props;
-		this._state.visible = false;
-		onChange(this._store.selectedKeys[0]);
+	_handleRequestHide = () => {
+		this.setState({ visible: false });
 	};
 
 	_handleChange = (ev) => {
@@ -87,15 +51,11 @@ class RefSelector extends Component {
 
 	render() {
 		const {
-			_state: { visible },
-			_hiddenRouterStore,
-			_store,
 			props: {
-				placeholder, style, label,
-				modalWidth, modalStyle, modalTitle, noModalQuery,
-				onKeyPress,
+				placeholder, style, label, onKeyPress,
+				...other,
 			},
-			state: { value },
+			state: { value, visible },
 		} = this;
 
 		return (
@@ -113,33 +73,18 @@ class RefSelector extends Component {
 						</a>
 					}
 				/>
-				<Modal
-					title={modalTitle || label || '引用'}
-					style={{ ...modalStyle, minWidth: modalWidth }}
-					maskClosable={false}
+				<RefModal
+					{...other}
 					visible={visible}
-					onCancel={this._handleCancel}
-					onOk={this._handleOk}
-				>
-					{!noModalQuery &&
-						<TableQuery
-							store={_store}
-							routerStore={_hiddenRouterStore}
-						/>
-					}
-					<TableBody
-						store={_store}
-						routerStore={_hiddenRouterStore}
-						selectionType="radio"
-					/>
-				</Modal>
+					onRequestHide={this._handleRequestHide}
+				/>
 			</div>
 		);
 	}
 }
 
 export default createComponent(RefSelector, {
-	displayName: 'NestInput',
+	displayName: 'NestRefSelector',
 	onChange(val) { return val; },
 	render(props, originalProps, Component) {
 		return (

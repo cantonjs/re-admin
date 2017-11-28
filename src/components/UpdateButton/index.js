@@ -19,6 +19,7 @@ export default class UpdateButton extends Component {
 			selectedKeys: PropTypes.array.isRequired,
 		}).isRequired,
 		component: PropTypes.component,
+		record: PropTypes.object, // Maybe provided by <Action />
 	};
 
 	static defaultProps = {
@@ -46,7 +47,9 @@ export default class UpdateButton extends Component {
 		const {
 			props: {
 				actions: { selectedKeys },
-				component, recordKeys, names, children, label, multiLabel, ...other,
+				component, recordKeys, names, children, label, multiLabel,
+				record, // ignores
+				...other,
 			},
 			context: { issuer },
 		} = this;

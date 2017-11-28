@@ -11,4 +11,5 @@ export Toolbar from 'components/Toolbar';
 export CreateButton from 'components/CreateButton';
 export UpdateButton from 'components/UpdateButton';
 export RemoveButton from 'components/RemoveButton';
+export RefButton from 'components/RefButton';
 export TableQuerySwitch from 'components/TableQuerySwitch';
