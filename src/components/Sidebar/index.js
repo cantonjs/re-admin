@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import Logout from 'components/Logout';
 import routerStore from 'stores/routerStore';
+import { isObservableArray } from 'mobx';
 
 const { SubMenu, Item: MenuItem } = Menu;
 
@@ -55,10 +56,6 @@ export default class Sidebar extends Component {
 
 	static isPrivate = true;
 
-	state = {
-		openKeys: [],
-	};
-
 	componentWillMount() {
 		this._defaultSelectedKeys = [routerStore.location.pathname];
 		this._defaultOpenKeys = this._findDefaultOpenKeys();
@@ -67,10 +64,9 @@ export default class Sidebar extends Component {
 	_findDefaultOpenKeys() {
 		const { menus } = this.context.appConfig.navigator;
 		const { pathname } = routerStore.location;
-
 		const findMenuTree = (menus, paths = []) => {
 			if (!menus) { return; }
-			if (Array.isArray(menus)) {
+			if (Array.isArray(menus) || isObservableArray(menus)) {
 				for (const menu of menus) {
 					const matched = findMenuTree(
 						menu.children,
