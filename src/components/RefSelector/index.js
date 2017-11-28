@@ -29,11 +29,13 @@ class RefSelector extends Component {
 		modalStyle: PropTypes.object,
 		modalWidth: PropTypes.stringOrNumber,
 		modalTitle: PropTypes.node,
+		noModalQuery: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		modalWidth: '70%',
 		placeholder: '',
+		noModalQuery: false,
 	};
 
 	static contextTypes = {
@@ -89,7 +91,8 @@ class RefSelector extends Component {
 			_hiddenRouterStore,
 			_store,
 			props: {
-				placeholder, style, modalWidth, modalStyle, modalTitle, label,
+				placeholder, style, label,
+				modalWidth, modalStyle, modalTitle, noModalQuery,
 				onKeyPress,
 			},
 			state: { value },
@@ -118,10 +121,12 @@ class RefSelector extends Component {
 					onCancel={this._handleCancel}
 					onOk={this._handleOk}
 				>
-					<TableQuery
-						store={_store}
-						routerStore={_hiddenRouterStore}
-					/>
+					{!noModalQuery &&
+						<TableQuery
+							store={_store}
+							routerStore={_hiddenRouterStore}
+						/>
+					}
 					<TableBody
 						store={_store}
 						routerStore={_hiddenRouterStore}

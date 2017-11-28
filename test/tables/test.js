@@ -33,6 +33,7 @@ export default (
 			table="hello"
 			placeholder="请输入超链表"
 			label="超链表"
+			// noModalQuery
 			inForm
 			inTable
 			inQuery
