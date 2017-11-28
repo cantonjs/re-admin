@@ -55,7 +55,7 @@
     "react-router-dom": "^4.0.0"
   },
   "devDependencies": {
-    "antd": "^2.12.8",
+    "antd": "^2.13.10",
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
