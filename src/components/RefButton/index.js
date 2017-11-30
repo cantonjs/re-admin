@@ -3,23 +3,24 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import LinkButton from 'components/LinkButton';
 import RefModal from 'components/RefModal';
+import joinKeys from 'utils/joinKeys';
 
 export default class RefButton extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 		label: PropTypes.node,
-		httpRequestMethod: PropTypes.oneOf([
-			'POST', 'GET', 'PUT', 'PATCH', 'DELETE',
+		requestMethod: PropTypes.oneOf([
+			'POST', 'GET', 'DELETE', 'PUT', 'PATCH',
 		]),
-		httpRequestUrlPrefix: PropTypes.string,
-		onTransformBody: PropTypes.func.isRequired,
+		onTransformRequest: PropTypes.func,
+		onTransformBody: PropTypes.func,
+		onTransformUrl: PropTypes.func,
 		record: PropTypes.object, // Maybe provided by <Action />
 	};
 
 	static defaultProps = {
 		label: '关联',
-		httpRequestMethod: 'POST',
-		httpRequestUrlPrefix: '',
+		requestMethod: 'POST',
 	};
 
 	static contextTypes = {
@@ -37,17 +38,24 @@ export default class RefButton extends Component {
 		this.setState({ visible: false });
 	};
 
-	_handleChange = (id, store, routerStore) => {
+	_handleChange = (id, routerStore) => {
 		const {
-			httpRequestMethod, httpRequestUrlPrefix, onTransformBody, record,
-		} = this.props;
-		const body = onTransformBody(id, record);
+			props: {
+				requestMethod, record,
+				onTransformBody, onTransformRequest, onTransformUrl,
+			},
+			context: { store },
+		} = this;
+		const body = { id };
 		const { _keys } = routerStore.location.query;
-		this.context.store.update(body, {
-			keys: _keys,
-			method: httpRequestMethod,
-			urlPrefix: httpRequestUrlPrefix,
-		});
+		const keys = _keys || store.selectedKeys;
+		const url = joinKeys(keys);
+		const updater = {
+			url: onTransformUrl ? onTransformUrl(url) : url,
+			body: onTransformBody ? onTransformBody(body, record) : body,
+			method: requestMethod,
+		};
+		store.update(onTransformRequest ? onTransformRequest(updater) : updater);
 	};
 
 	render() {
@@ -57,7 +65,8 @@ export default class RefButton extends Component {
 				children, label,
 
 				// ignores
-				record, httpRequestMethod, httpRequestUrlPrefix, onTransformBody,
+				record, requestMethod,
+				onTransformUrl, onTransformBody, onTransformRequest,
 
 				...other,
 			},

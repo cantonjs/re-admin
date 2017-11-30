@@ -1,6 +1,6 @@
 
 import { observable, computed, toJS } from 'mobx';
-import { omit, isString, isArray, isNumber, assign } from 'lodash';
+import { omit, assign } from 'lodash';
 import getAsk from 'utils/getAsk';
 import showError from 'utils/showError';
 import routerStore from 'stores/routerStore';
@@ -173,7 +173,7 @@ export default class DataStore {
 		this.isFetching = true;
 
 		try {
-			const res = await this._ask.fork({ query });
+			const res = await this.request({ query });
 			const {
 				total,
 				list = [],
@@ -198,7 +198,7 @@ export default class DataStore {
 
 	async fetchOne(query) {
 		try {
-			const res = await this._ask.fork({ query });
+			const res = await this.request({ query });
 			const data = await this.tableConfig.mapOnFetchOneResponse(res);
 			this.data = data;
 		}
@@ -212,6 +212,7 @@ export default class DataStore {
 		this.collections.clear();
 		this.totals.clear();
 		this.fetch();
+		this.selectedKeys = [];
 	}
 
 	setSelectedKeys(selectedKeys) {
@@ -226,14 +227,12 @@ export default class DataStore {
 		);
 	}
 
-	async create(body, options = {}) {
-		const {
-			method = 'POST',
-		} = options;
+	async create(options = {}) {
 		try {
-			await this._ask.fork({
-				method,
-				body: this.tableConfig.mapOnSave(body, 'create'),
+			await this.request({
+				method: 'POST',
+				...options,
+				body: this.tableConfig.mapOnSave(options.body, 'create'),
 			});
 			this._refresh();
 		}
@@ -242,23 +241,13 @@ export default class DataStore {
 		}
 	}
 
-	async update(body, options = {}) {
+	async update(options = {}) {
 		try {
-			if (isString(options) || isArray(options)) {
-				options = { keys: options };
-			}
-			const {
-				keys = '',
-				method = 'PUT',
-				urlPrefix = '',
-			} = options;
-
-			await this._ask.fork({
-				url: urlPrefix + ([].concat(keys).join(',')),
-				method,
-				body: this.tableConfig.mapOnSave(body, 'update'),
+			await this.request({
+				method: 'PUT',
+				...options,
+				body: this.tableConfig.mapOnSave(options.body, 'update'),
 			});
-
 			this._refresh();
 		}
 		catch (err) {
@@ -268,20 +257,18 @@ export default class DataStore {
 
 	async remove(options = {}) {
 		try {
-			let { keys } = options;
-			if (isNumber(keys) || isString(keys)) { keys = [keys]; }
-			if (!Array.isArray(keys)) { keys = this.selectedKeys; }
-			if (!keys.length) { return; }
-
-			await this._ask.fork({
-				url: keys.join(','),
-				method: options.method,
+			await this.request({
+				method: 'DELETE',
+				...options,
 			});
 			this._refresh();
-			this.selectedKeys = [];
 		}
 		catch (err) {
 			showError('删除失败：', err.message);
 		}
+	}
+
+	async request(options) {
+		return this._ask.fork(options);
 	}
 }

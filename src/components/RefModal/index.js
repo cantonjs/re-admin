@@ -50,7 +50,7 @@ export default class RefModal extends Component {
 
 	_handleOk = () => {
 		const { onChange, onRequestHide } = this.props;
-		onChange(this._store.selectedKeys[0], this._store, this._hiddenRouterStore);
+		onChange(this._store.selectedKeys[0], this._hiddenRouterStore);
 		onRequestHide();
 	};
 
