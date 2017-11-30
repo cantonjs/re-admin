@@ -165,7 +165,7 @@ export default (
 			<RefButton
 				table="hello"
 				noModalQuery
-				onTransformBody={(id, record) => ({ relatedId: id, id: record.id })}
+				onTransformUrl={(url) => `/ref/${url}`}
 			/>
 		</Actions>
 	</Table>

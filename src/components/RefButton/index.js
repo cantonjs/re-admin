@@ -4,6 +4,8 @@ import PropTypes from 'utils/PropTypes';
 import LinkButton from 'components/LinkButton';
 import RefModal from 'components/RefModal';
 import joinKeys from 'utils/joinKeys';
+import routerStore from 'stores/routerStore';
+import { omit } from 'lodash';
 
 export default class RefButton extends Component {
 	static propTypes = {
@@ -31,14 +33,19 @@ export default class RefButton extends Component {
 
 	_handleClick = (ev) => {
 		ev.preventDefault();
+		const { props: { record } } = this;
+		const { location } = routerStore;
+		location.query = { ...location.query, _keys: record.id };
 		this.setState({ visible: true });
 	};
 
 	_handleRequestHide = () => {
 		this.setState({ visible: false });
+		const { location } = routerStore;
+		location.query = { ...omit(location.query, ['_keys']) };
 	};
 
-	_handleChange = (id, routerStore) => {
+	_handleChange = (id) => {
 		const {
 			props: {
 				requestMethod, record,
@@ -46,9 +53,9 @@ export default class RefButton extends Component {
 			},
 			context: { store },
 		} = this;
+		const { location } = routerStore;
 		const body = { id };
-		const { _keys } = routerStore.location.query;
-		const keys = _keys || store.selectedKeys;
+		const keys = location.query._keys;
 		const url = joinKeys(keys);
 		const updater = {
 			url: onTransformUrl ? onTransformUrl(url) : url,

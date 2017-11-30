@@ -72,6 +72,11 @@ router
 		testDB.unshift(body);
 		ctx.body = body;
 	})
+	.post('/api/test/ref/:keys', verify, async (ctx) => {
+		const { request: { body }, params: { keys } } = ctx;
+		console.log('keys', keys);
+		ctx.body = body;
+	})
 	.put('/api/test/:keys', verify, async (ctx) => {
 		const { request: { body }, params: { keys } } = ctx;
 		const keysArr = keys.split(',');
