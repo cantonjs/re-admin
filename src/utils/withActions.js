@@ -33,7 +33,7 @@ export default function withActions(WrappedComponent) {
 
 		requestCreate = () => {
 			const { location } = routerStore;
-			location.query = { ...location.query, _action: 'create' };
+			location.query = { ...location.query, opt_action: 'create' };
 		};
 
 		requestRemove = () => {
@@ -52,8 +52,8 @@ export default function withActions(WrappedComponent) {
 			const { location } = routerStore;
 
 			const query = {
-				_action: 'update',
-				_keys: joinKeys(this.getSelectedKeys()),
+				opt_action: 'update',
+				opt_keys: joinKeys(this.getSelectedKeys()),
 			};
 
 			if (names && names.length) {

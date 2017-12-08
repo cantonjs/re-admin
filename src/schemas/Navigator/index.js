@@ -17,6 +17,7 @@ NavigatorSchema.propTypes = {
 	frame: PropTypes.component,
 	dataTable: PropTypes.component,
 	notFound: PropTypes.component,
+	routerActionKeyPrefix: PropTypes.string,
 };
 
 NavigatorSchema.defaultProps = {
@@ -25,6 +26,7 @@ NavigatorSchema.defaultProps = {
 	frame: FrameView,
 	dataTable: DataTableView,
 	notFound: NotFoundView,
+	routerActionKeyPrefix: 'opt_',
 };
 
 NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
