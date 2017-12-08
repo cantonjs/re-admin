@@ -1,37 +1,37 @@
 
-import React, { Component, cloneElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { map, omit, isFunction } from 'lodash';
+import { omitBy } from 'lodash';
 import * as Actions from 'constants/Actions';
-import * as Issuers from 'constants/Issuers';
-import { returnsArgument } from 'empty-functions';
 import routerStore from 'stores/routerStore';
-import joinKeys from 'utils/joinKeys';
 import { Modal } from 'antd';
-import Form from 'modals/Form';
+import { UpdaterModal, CreaterModal } from 'modals/Form';
 
 const modals = new Map();
+const Name = 'name';
+const Keys = 'keys';
+const Params = 'params';
+let keyPrefix = '';
 
-const registerModal = function registerModal(name, title, renderChildren) {
-	modals.set(name, { title, renderChildren });
+const registerModal = function registerModal(name, title, component) {
+	modals.set(name, { title, component });
 };
 
 let registered = false;
 const registerBuiltInModalsOnce = function registerBuiltInModalsOnce() {
 	if (registered) { return; }
-	registerModal('create', '创建', Form.createRenderer('create'));
-	registerModal('update', '更新', Form.createRenderer('update'));
+	registerModal(Actions.CREATE, '创建', CreaterModal);
+	registerModal(Actions.UPDATE, '更新', UpdaterModal);
 	registered = true;
-};
-
-// TODO
-const getOmitPaths = function getOmitPaths() {
-	return ['opt_action', 'opt_keys'];
 };
 
 @observer
 export default class NavigatarModal extends Component {
+	static childContextTypes = {
+		actionModal: PropTypes.object,
+	};
+
 	static contextTypes = {
 		store: PropTypes.object.isRequired,
 		appConfig: PropTypes.object.isRequired,
@@ -39,93 +39,89 @@ export default class NavigatarModal extends Component {
 
 	static registerModal = registerModal;
 
-	static getOmitPaths = getOmitPaths;
+	static makeGetOmitPaths() {
+		return function getOmitPaths(val, key) {
+			return key.startsWith(keyPrefix);
+		};
+	}
+
+	static open(name, keys, params) {
+		const { location } = routerStore;
+		const query = { [`${keyPrefix}${Name}`]: name };
+		if (keys) { query[`${keyPrefix}${Keys}`] = keys; }
+		if (params) { query[`${keyPrefix}${Params}`] = params; }
+		location.query = { ...location.query, ...query };
+	}
+
+	getChildContext() {
+		return {
+			actionModal: {
+				getKeys: () => {
+					const { query } = routerStore.location;
+					const key = `${keyPrefix}${Keys}`;
+					return query[key];
+				},
+				getParams: () => {
+					const { query } = routerStore.location;
+					const key = `${keyPrefix}${Params}`;
+					return query[key];
+				},
+			},
+		};
+	}
 
 	componentWillMount() {
+		const { routerActionKeyPrefix } = this.context.appConfig.navigator;
+		keyPrefix = routerActionKeyPrefix;
 		registerBuiltInModalsOnce();
 	}
 
-	// close() {
-	// 	const { store } = this.context;
-	// 	const { location } = routerStore;
-	// 	location.query = { ...omit(location.query, ActionModal.omitPaths) };
-	// 	store.setSelectedKeys([]);
-	// }
+	_close() {
+		const { store } = this.context;
+		const { location } = routerStore;
+		const getOmitPaths = NavigatarModal.makeGetOmitPaths();
+		location.query = { ...omitBy(location.query, getOmitPaths) };
+		store.setSelectedKeys([]);
+	}
 
 	_handleOk = () => {
 		if (this._ref && this._ref.handleOk) {
 			this._ref.handleOk();
 		}
+		this._close();
 	};
 
 	_handleCancel = () => {
 		if (this._ref && this._ref.handleCancel) {
 			this._ref.handleCancel();
 		}
+		this._close();
 	};
 
-	// _handleSubmit = (body, { isInvalid }) => {
-	// 	if (!isInvalid) {
-	// 		const { store } = this.props;
-	// 		const { _action, _keys } = routerStore.location.query;
-	// 		const isValidRequest = isFunction(store[_action]);
-
-	// 		if (isValidRequest) {
-	// 			const keys = _keys || store.selectedKeys;
-	// 			const url = joinKeys(keys);
-	// 			store[_action]({ url, body });
-	// 		}
-
-	// 		this.close();
-	// 	}
-	// 	else if (__DEV__) {
-	// 		console.warn('INVALID');
-	// 	}
-	// };
-
-	// _saveForm = (form) => {
-	// 	if (form) { this._form = form; }
-	// };
-
 	render() {
-		const { props, context } = this;
-		const {
-			appConfig: { navigator: { routerActionKeyPrefix } },
-		} = context;
+		const { props } = this;
 		const { query } = routerStore.location;
 
-		const name = query[`${routerActionKeyPrefix}action`];
+		const name = query[`${keyPrefix}${Name}`];
 		const visible = name && modals.has(name);
-
-		const getModel = modals.get(name);
-		const children = visible && getModel.renderChildren({ ...props }, context);
+		const modal = modals.get(name);
+		const Comp = modal && modal.component;
 
 		return (
 			<Modal
 				maskClosable={false}
 				visible={visible}
-				title={visible ? getModel.title : ''}
+				title={visible ? modal.title : ''}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
 			>
-				{children && cloneElement(children, {
-					ref: (c) => (this._ref = c),
-				})}
+				{visible && (
+					<Comp
+						{...props}
+						ref={(c) => (this._ref = c)}
+					/>
+				)}
 			</Modal>
 		);
-
-		// return (
-		// 	<ActionModalInternal
-		// 		ref={this._saveForm}
-		// 		search={search}
-		// 		visible={visible}
-		// 		title={title}
-		// 		onSubmit={this._handleSubmit}
-		// 		onOk={this._handleOk}
-		// 		onCancel={this._handleCancel}
-		// 		formRenderers={formRenderers}
-		// 	/>
-		// );
 	}
 }
-

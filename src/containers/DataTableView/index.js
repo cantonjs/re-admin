@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
 import routerStore from 'stores/routerStore';
-import { omit, isEqual } from 'lodash';
+import { omitBy, isEqual } from 'lodash';
 import { parse } from 'tiny-querystring';
 
 import DocumentTitle from 'react-document-title';
@@ -78,9 +78,10 @@ export default class DataTableView extends Component {
 			this._fetch();
 		}
 		else if (prevLocation.search !== search) {
-			const blackList = NavigatorModal.getOmitPaths();
-			const prevQuery = omit(parse(prevLocation.search.slice(1)), blackList);
-			const nextQuery = omit(routerStore.location.query, blackList);
+			const getBlackList = NavigatorModal.makeGetOmitPaths();
+			const originalPrevQuery = parse(prevLocation.search.slice(1));
+			const prevQuery = omitBy(originalPrevQuery, getBlackList);
+			const nextQuery = omitBy(routerStore.location.query, getBlackList);
 			if (!isEqual(prevQuery, nextQuery)) {
 				this._fetch();
 			}

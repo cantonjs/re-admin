@@ -161,7 +161,10 @@ export default class DataStore {
 
 		query = {
 			count: this.size,
+
+			// TODO: action?
 			...omit(query, ['action']),
+
 			page,
 		};
 

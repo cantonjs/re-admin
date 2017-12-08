@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { Modal } from 'antd';
-import routerStore from 'stores/routerStore';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import joinKeys from 'utils/joinKeys';
+import NavigatorModal from 'components/NavigatorModal';
+import * as Actions from 'constants/Actions';
 
 const { confirm } = Modal;
 
@@ -32,8 +33,7 @@ export default function withActions(WrappedComponent) {
 		}
 
 		requestCreate = () => {
-			const { location } = routerStore;
-			location.query = { ...location.query, opt_action: 'create' };
+			NavigatorModal.open(Actions.CREATE);
 		};
 
 		requestRemove = () => {
@@ -48,19 +48,12 @@ export default function withActions(WrappedComponent) {
 			});
 		};
 
-		requestUpdate = (names) => {
-			const { location } = routerStore;
-
-			const query = {
-				opt_action: 'update',
-				opt_keys: joinKeys(this.getSelectedKeys()),
-			};
-
-			if (names && names.length) {
-				query._names = names.join(',');
-			}
-
-			location.query = { ...location.query, ...query };
+		requestUpdate = (names = []) => {
+			NavigatorModal.open(
+				Actions.UPDATE,
+				joinKeys(this.getSelectedKeys()),
+				names.join(','),
+			);
 		};
 
 		render() {

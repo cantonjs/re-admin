@@ -16,21 +16,23 @@ const styles = {
 
 class State {
 	@computed get shouldShow() {
-		const { _names } = routerStore.location.query;
-		const { name } = this._props;
-
-		if (this._isUpdater && _names) {
-			const names = _names.split(',');
-			if (names.length && names.indexOf(name) < 0) { return false; }
+		const {
+			_props: { name },
+			_context: { actionModal },
+			_isUpdater,
+		} = this;
+		if (_isUpdater) {
+			const params = actionModal.getParams();
+			if (!params) { return true; }
+			else if (params.split(',').indexOf(name) < 0) { return false; }
 		}
-
 		return true;
 	}
 
 	@computed get value() {
 		const {
 			_props: { name, value },
-			_context: { store, getParentValue },
+			_context: { store, getParentValue, actionModal },
 			_isUpdater,
 			_isQuerier,
 		} = this;
@@ -38,11 +40,12 @@ class State {
 		if (!isUndefined(value) || !name) { return value; }
 
 		const { query } = routerStore.location;
-		const selectedKeys = (query._keys || '').split(',');
 
 		if (_isQuerier) { return query[name]; }
-
-		else if (selectedKeys.length === 1 && _isUpdater) {
+		else if (_isUpdater) {
+			const keys = actionModal.getKeys();
+			const selectedKeys = (keys || '').split(',');
+			if (!selectedKeys.length) { return ''; }
 			const item = getParentValue ?
 				getParentValue() : store.findItemByKey(selectedKeys[0])
 			;
@@ -86,6 +89,7 @@ export default function withField(WrappedComponent) {
 
 		static contextTypes = {
 			store: PropTypes.object,
+			actionModal: PropTypes.object,
 			issuer: PropTypes.string,
 			getParentValue: PropTypes.func,
 		};
