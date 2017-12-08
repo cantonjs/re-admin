@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import LinkButton from 'components/LinkButton';
 import RefModal from 'components/RefModal';
 import joinKeys from 'utils/joinKeys';
 import routerStore from 'stores/routerStore';
 import { omit } from 'lodash';
+import ContextButton from 'components/ContextButton';
 
 export default class RefButton extends Component {
 	static propTypes = {
@@ -17,7 +17,6 @@ export default class RefButton extends Component {
 		onTransformRequest: PropTypes.func,
 		onTransformBody: PropTypes.func,
 		onTransformUrl: PropTypes.func,
-		record: PropTypes.object, // Maybe provided by <Action />
 	};
 
 	static defaultProps = {
@@ -33,9 +32,12 @@ export default class RefButton extends Component {
 
 	_handleClick = (ev) => {
 		ev.preventDefault();
-		const { props: { record } } = this;
+		const { _contextButton } = this;
 		const { location } = routerStore;
-		location.query = { ...location.query, _keys: record.id };
+		location.query = {
+			...location.query,
+			_keys: joinKeys(_contextButton.getSelectedKeys()),
+		};
 		this.setState({ visible: true });
 	};
 
@@ -45,21 +47,22 @@ export default class RefButton extends Component {
 		location.query = { ...omit(location.query, ['_keys']) };
 	};
 
-	_handleChange = (id) => {
+	_handleChange = (refId) => {
 		const {
 			props: {
-				requestMethod, record,
+				requestMethod,
 				onTransformBody, onTransformRequest, onTransformUrl,
 			},
 			context: { store },
+			_contextButton,
 		} = this;
 		const { location } = routerStore;
-		const body = { id };
+		const body = { refId, keys: _contextButton.getSelectedKeys() };
 		const keys = location.query._keys;
 		const url = joinKeys(keys);
 		const updater = {
 			url: onTransformUrl ? onTransformUrl(url) : url,
-			body: onTransformBody ? onTransformBody(body, record) : body,
+			body: onTransformBody ? onTransformBody(body) : body,
 			method: requestMethod,
 		};
 		store.update(onTransformRequest ? onTransformRequest(updater) : updater);
@@ -71,16 +74,17 @@ export default class RefButton extends Component {
 			props: {
 				children, label,
 
-				// ignores
-				record, requestMethod,
-				onTransformUrl, onTransformBody, onTransformRequest,
+				requestMethod, onTransformUrl, onTransformBody, onTransformRequest,
 
 				...other,
 			},
 		} = this;
 
 		return (
-			<LinkButton onClick={this._handleClick}>
+			<ContextButton
+				ref={(contextButton) => (this._contextButton = contextButton)}
+				onClick={this._handleClick}
+			>
 				{label || children}
 
 				<RefModal
@@ -89,7 +93,7 @@ export default class RefButton extends Component {
 					onRequestHide={this._handleRequestHide}
 					onChange={this._handleChange}
 				/>
-			</LinkButton>
+			</ContextButton>
 		);
 	}
 }

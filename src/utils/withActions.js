@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import { Modal } from 'antd';
 import routerStore from 'stores/routerStore';
 import hoistNonReactStatics from 'hoist-non-react-statics';
+import joinKeys from 'utils/joinKeys';
 
 const { confirm } = Modal;
 
@@ -15,35 +16,44 @@ export default function withActions(WrappedComponent) {
 	class WithActions extends Component {
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
+			tableRowKey: PropTypes.string,
 		};
+
+		componentWillMount() {
+			const { tableRowKey } = this.context;
+			if (tableRowKey) {
+				this._selectedKeys = [tableRowKey];
+			}
+		}
+
+		getSelectedKeys() {
+			const { tableRowKey, store } = this.context;
+			return tableRowKey ? [tableRowKey] : store.selectedKeys;
+		}
 
 		requestCreate = () => {
 			const { location } = routerStore;
 			location.query = { ...location.query, _action: 'create' };
 		};
 
-		requestRemove = (keys) => {
+		requestRemove = () => {
 			const { store } = this.context;
-			const keysToRemove = keys.length ? keys : store.selectedKeys;
 			confirm({
 				title: '确定删除？',
 				content: '该操作将不能撤销',
 				onOk: () => {
-					store.remove({ keys: keysToRemove });
+					store.remove({ url: joinKeys(this.getSelectedKeys()) });
 				},
 				okText: '删除',
 			});
 		};
 
-		requestUpdate = (keys, names) => {
-			const { store } = this.context;
+		requestUpdate = (names) => {
 			const { location } = routerStore;
-
-			if (!keys.length) { keys = store.selectedKeys; }
 
 			const query = {
 				_action: 'update',
-				_keys: keys.join(','),
+				_keys: joinKeys(this.getSelectedKeys()),
 			};
 
 			if (names && names.length) {
@@ -54,7 +64,6 @@ export default function withActions(WrappedComponent) {
 		};
 
 		render() {
-			const { selectedKeys } = this.context.store;
 			return (
 				<WrappedComponent
 					{...this.props}
@@ -62,7 +71,7 @@ export default function withActions(WrappedComponent) {
 						requestCreate: this.requestCreate,
 						requestUpdate: this.requestUpdate,
 						requestRemove: this.requestRemove,
-						selectedKeys,
+						selectedKeys: this._selectedKeys || this.context.store.selectedKeys,
 					}}
 				/>
 			);
