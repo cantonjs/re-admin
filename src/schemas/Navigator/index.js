@@ -27,12 +27,12 @@ NavigatorSchema.defaultProps = {
 	notFound: NotFoundView,
 };
 
-NavigatorSchema.setConfig = ({ children }, navigator) => {
+NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 	const getChildren = (menu, keyPaths = []) => {
-		const { children, ...other } = menu.props;
+		const { children, ...otherMenuProps } = menu.props;
 		const result = {
-			...other,
-			menuKey: other.path || `@${keyPaths.join('-')}`,
+			...otherMenuProps,
+			menuKey: otherMenuProps.path || `@${keyPaths.join('-')}`,
 		};
 
 		if (children) {
@@ -44,7 +44,9 @@ NavigatorSchema.setConfig = ({ children }, navigator) => {
 		return result;
 	};
 
-	navigator.menus = getChildren({ props: { children } }).children;
+	Object.assign(navigator, other, {
+		menus: getChildren({ props: { children } }).children,
+	});
 };
 NavigatorSchema.schemaName = 'navigator';
 NavigatorSchema.DataType = Object;
