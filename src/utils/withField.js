@@ -18,13 +18,13 @@ class State {
 	@computed get shouldShow() {
 		const {
 			_props: { name },
-			_context: { actionModal },
+			_context: { modalStore },
 			_isUpdater,
 		} = this;
 		if (_isUpdater) {
-			const params = actionModal.getParams();
-			if (!params) { return true; }
-			else if (params.split(',').indexOf(name) < 0) { return false; }
+			const { select } = modalStore.state;
+			if (!select) { return true; }
+			else if (select.split(',').indexOf(name) < 0) { return false; }
 		}
 		return true;
 	}
@@ -32,7 +32,7 @@ class State {
 	@computed get value() {
 		const {
 			_props: { name, value },
-			_context: { store, getParentValue, actionModal },
+			_context: { store, getParentValue, modalStore },
 			_isUpdater,
 			_isQuerier,
 		} = this;
@@ -43,7 +43,7 @@ class State {
 
 		if (_isQuerier) { return query[name]; }
 		else if (_isUpdater) {
-			const keys = actionModal.getKeys();
+			const { keys } = modalStore.state;
 			const selectedKeys = (keys || '').split(',');
 			if (!selectedKeys.length) { return ''; }
 			const item = getParentValue ?
@@ -89,7 +89,7 @@ export default function withField(WrappedComponent) {
 
 		static contextTypes = {
 			store: PropTypes.object,
-			actionModal: PropTypes.object,
+			modalStore: PropTypes.object,
 			issuer: PropTypes.string,
 			getParentValue: PropTypes.func,
 		};

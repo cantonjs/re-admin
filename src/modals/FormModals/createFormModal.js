@@ -26,7 +26,7 @@ export default function createFormModal(issuer, displayName) {
 
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
-			actionModal: PropTypes.object.isRequired,
+			modalStore: PropTypes.object.isRequired,
 		};
 
 		static childContextTypes = {
@@ -42,24 +42,28 @@ export default function createFormModal(issuer, displayName) {
 		}
 
 		componentWillMount() {
+			this.context.modalStore.onOk(() => {
+				if (this._form) { this._form.submit(); }
+			});
 			this._formState = new FormState();
+		}
+
+		componentWillUnmount() {
+			this.context.modalStore.offOk();
 		}
 
 		_handleChange = (data) => {
 			this._formState.data = data;
 		};
 
-		handleOk = () => {
-			if (this._form) { this._form.submit(); }
-		};
-
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
-				const { store, actionModal } = this.context;
-				const keys = actionModal.getKeys();
+				const { store, modalStore } = this.context;
+				const { keys } = modalStore.state;
 				const url = joinKeys(keys);
 				const method = issuer === Issuers.CREATER ? 'create' : 'update';
 				store[method]({ url, body });
+				modalStore.close();
 			}
 			else if (__DEV__) {
 				console.warn('INVALID');

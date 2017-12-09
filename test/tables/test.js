@@ -162,11 +162,7 @@ export default (
 		<Actions>
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
-			<RefButton
-				table="hello"
-				noModalQuery
-				onTransformUrl={(url) => `/ref/${url}`}
-			/>
+			<RefButton table="hello" noQuery />
 		</Actions>
 	</Table>
 );

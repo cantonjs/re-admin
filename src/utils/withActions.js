@@ -33,7 +33,10 @@ export default function withActions(WrappedComponent) {
 		}
 
 		requestCreate = () => {
-			NavigatorModal.open(Actions.CREATE);
+			NavigatorModal.open({
+				name: Actions.CREATE,
+				title: '创建',
+			});
 		};
 
 		requestRemove = () => {
@@ -48,12 +51,30 @@ export default function withActions(WrappedComponent) {
 			});
 		};
 
-		requestUpdate = (names = []) => {
-			NavigatorModal.open(
-				Actions.UPDATE,
-				joinKeys(this.getSelectedKeys()),
-				names.join(','),
-			);
+		requestUpdate = (select) => {
+			const config = {
+				name: Actions.UPDATE,
+				title: '更新',
+				keys: joinKeys(this.getSelectedKeys()),
+			};
+			if (select && select.length) {
+				config.select = select.join(',');
+			}
+			NavigatorModal.open(config);
+		};
+
+		requestRef = (options = {}) => {
+			const { table, title, fetch, save, noQuery } = options;
+			const config = {
+				name: Actions.REF,
+				keys: joinKeys(this.getSelectedKeys()),
+				table,
+				title,
+				fetch,
+				save,
+			};
+			if (noQuery) { config.noQuery = '✓'; }
+			NavigatorModal.open(config);
 		};
 
 		render() {
@@ -64,6 +85,7 @@ export default function withActions(WrappedComponent) {
 						requestCreate: this.requestCreate,
 						requestUpdate: this.requestUpdate,
 						requestRemove: this.requestRemove,
+						requestRef: this.requestRef,
 						selectedKeys: this._selectedKeys || this.context.store.selectedKeys,
 					}}
 				/>

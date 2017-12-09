@@ -3,7 +3,7 @@ import 'antd/dist/antd.less';
 import './reset.scss';
 import React, { Component } from 'react';
 import {
-	Admin, Title, API, Auth, Upload, Navigator, Menu,
+	Admin, Title, API, Auth, Upload, Navigator, Menu, ActionModal,
 	Toolbar, CreateButton,
 } from '../src';
 import testTable from './tables/test';
@@ -42,7 +42,6 @@ export default class App extends Component {
 							</Menu>
 						</Menu>
 					</Menu>
-
 				</Navigator>
 
 				<API
