@@ -47,6 +47,7 @@ export default function getAppConfig(appConfig = {}) {
 		auth: {},
 		upload: {},
 		tables: {},
+		modals: new Map(),
 	}, jsxToPlainObject(appConfig));
 
 	config.navigator = (function () {

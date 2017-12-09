@@ -3,8 +3,8 @@ import 'antd/dist/antd.less';
 import './reset.scss';
 import React, { Component } from 'react';
 import {
-	Admin, Title, API, Auth, Upload, Navigator, Menu, ActionModal,
-	Toolbar, CreateButton,
+	Admin, Title, API, Auth, Upload, Navigator, Menu, Modal,
+	Toolbar, CreateButton, ContextButton,
 } from '../src';
 import testTable from './tables/test';
 import helloTable from './tables/hello';
@@ -36,6 +36,18 @@ export default class App extends Component {
 									toolbar={() => (
 										<Toolbar
 											left={<CreateButton />}
+											right={
+												<ContextButton
+													onClick={(ev, { request }) => {
+														ev.preventDefault();
+														request({
+															name: 'custom',
+															title: 'My Custom Modal',
+														});
+													}}
+													label="自定义弹框"
+												/>
+											}
 										/>
 									)}
 								/>
@@ -56,10 +68,13 @@ export default class App extends Component {
 				/>
 
 				<Auth basePath="auth" loginPath="login" getUserPath="getUser" />
+
 				<Upload
 					imagePath="/api/upload/image"
 					filePath="/api/upload/file"
 				/>
+
+				<Modal name="custom" component={() => (<span>custom modal</span>)} />
 
 				{testTable}
 				{helloTable}

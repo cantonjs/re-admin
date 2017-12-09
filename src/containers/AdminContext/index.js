@@ -10,6 +10,7 @@ import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
 import { Router } from 'react-router-mobx';
 import DocumentTitle from 'react-document-title';
+import ActionModal from 'components/ActionModal';
 
 const styles = {
 	container: {
@@ -41,6 +42,7 @@ export default class AdminContext extends Component {
 		this._appConfig = observable(this.props.appConfig);
 		authStore.init(this._appConfig);
 		DataStore.setup(this._appConfig, authStore);
+		ActionModal.init(this._appConfig.modals);
 	}
 
 	componentWillReceiveProps({ appConfig }) {

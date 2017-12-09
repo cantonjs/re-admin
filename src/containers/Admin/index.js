@@ -20,6 +20,7 @@ export default class Admin extends Component {
 			upload: PropTypes.object,
 			router: PropTypes.any,
 			views: PropTypes.object,
+			modals: PropTypes.object,
 		}),
 		children: PropTypes.node,
 	};

@@ -77,11 +77,16 @@ export default function withActions(WrappedComponent) {
 			ActionModal.open(config);
 		};
 
+		request = (config) => {
+			ActionModal.open(config);
+		};
+
 		render() {
 			return (
 				<WrappedComponent
 					{...this.props}
 					actions={{
+						request: this.request,
 						requestCreate: this.requestCreate,
 						requestUpdate: this.requestUpdate,
 						requestRemove: this.requestRemove,

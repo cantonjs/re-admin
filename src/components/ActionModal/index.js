@@ -2,26 +2,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import * as Actions from 'constants/Actions';
 import modalStore from 'stores/modalStore';
+import * as Actions from 'constants/Actions';
 import { Modal } from 'antd';
 import { UpdaterModal, CreaterModal } from 'modals/FormModals';
 import RefModal from 'modals/RefModal';
-
-const modals = new Map();
-
-const registerModal = function registerModal(name, component) {
-	modals.set(name, component);
-};
-
-let registered = false;
-const registerBuiltInModalsOnce = function registerBuiltInModalsOnce() {
-	if (registered) { return; }
-	registerModal(Actions.CREATE, CreaterModal);
-	registerModal(Actions.UPDATE, UpdaterModal);
-	registerModal(Actions.REF, RefModal);
-	registered = true;
-};
 
 @observer
 export default class ActionModal extends Component {
@@ -31,9 +16,14 @@ export default class ActionModal extends Component {
 
 	static contextTypes = {
 		store: PropTypes.object.isRequired,
+		appConfig: PropTypes.object.isRequired,
 	};
 
-	static registerModal = registerModal;
+	static init(modals) {
+		modals.set(Actions.CREATE, CreaterModal);
+		modals.set(Actions.UPDATE, UpdaterModal);
+		modals.set(Actions.REF, RefModal);
+	}
 
 	static open(modalState) {
 		modalStore.state = modalState;
@@ -41,10 +31,6 @@ export default class ActionModal extends Component {
 
 	getChildContext() {
 		return { modalStore };
-	}
-
-	componentWillMount() {
-		registerBuiltInModalsOnce();
 	}
 
 	_close() {
@@ -63,7 +49,7 @@ export default class ActionModal extends Component {
 	};
 
 	render() {
-		const { props } = this;
+		const { props, context: { appConfig: { modals } } } = this;
 		const { name, title } = modalStore.state;
 		const visible = name && modals.has(name);
 		const Comp = modals.get(name);
@@ -72,7 +58,7 @@ export default class ActionModal extends Component {
 			<Modal
 				maskClosable={false}
 				visible={visible}
-				title={visible ? title : ''}
+				title={visible ? (title || name) : ''}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
 			>
