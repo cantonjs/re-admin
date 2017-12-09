@@ -1,105 +1,85 @@
 
-// TODO: deprecated
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import ActionModalInternal from './ActionModalInternal';
-import { map, omit, isFunction } from 'lodash';
 import * as Actions from 'constants/Actions';
-import * as Issuers from 'constants/Issuers';
-import { returnsArgument } from 'empty-functions';
-import routerStore from 'stores/routerStore';
-import joinKeys from 'utils/joinKeys';
+import modalStore from 'stores/modalStore';
+import { Modal } from 'antd';
+import { UpdaterModal, CreaterModal } from 'modals/FormModals';
+import RefModal from 'modals/RefModal';
 
-const issuersMap = {
-	[Actions.CREATE]: Issuers.CREATER,
-	[Actions.UPDATE]: Issuers.UPDATER,
+const modals = new Map();
+
+const registerModal = function registerModal(name, component) {
+	modals.set(name, component);
 };
-const actionNames = map(Actions, returnsArgument);
-const actionLabelsMap = {
-	[Actions.CREATE]: '创建',
-	[Actions.UPDATE]: '更新',
+
+let registered = false;
+const registerBuiltInModalsOnce = function registerBuiltInModalsOnce() {
+	if (registered) { return; }
+	registerModal(Actions.CREATE, CreaterModal);
+	registerModal(Actions.UPDATE, UpdaterModal);
+	registerModal(Actions.REF, RefModal);
+	registered = true;
 };
 
 @observer
 export default class ActionModal extends Component {
-	static propTypes = {
-		store: PropTypes.object.isRequired,
+	static childContextTypes = {
+		modalStore: PropTypes.object,
 	};
 
 	static contextTypes = {
 		store: PropTypes.object.isRequired,
 	};
 
-	static omitPaths = ['_action', '_keys', '_names'];
+	static registerModal = registerModal;
 
-	static childContextTypes = {
-		issuer: PropTypes.string,
-	};
-
-	getChildContext() {
-		return { issuer: issuersMap[routerStore.location.query._action] };
+	static open(modalState) {
+		modalStore.state = modalState;
 	}
 
-	close() {
+	getChildContext() {
+		return { modalStore };
+	}
+
+	componentWillMount() {
+		registerBuiltInModalsOnce();
+	}
+
+	_close() {
 		const { store } = this.context;
-		const { location } = routerStore;
-		location.query = { ...omit(location.query, ActionModal.omitPaths) };
+		modalStore.close();
 		store.setSelectedKeys([]);
 	}
 
 	_handleOk = () => {
-		if (this._form) { this._form.submit(); }
-		else { this.close(); }
+		modalStore.emitOk();
+		this._close();
 	};
 
 	_handleCancel = () => {
-		this.close();
-	};
-
-	_handleSubmit = (body, { isInvalid }) => {
-		if (!isInvalid) {
-			const { store } = this.props;
-			const { _action, _keys } = routerStore.location.query;
-			const isValidRequest = isFunction(store[_action]);
-
-			if (isValidRequest) {
-				const keys = _keys || store.selectedKeys;
-				const url = joinKeys(keys);
-				store[_action]({ url, body });
-			}
-
-			this.close();
-		}
-		else if (__DEV__) {
-			console.warn('INVALID');
-		}
-	};
-
-	_saveForm = (form) => {
-		if (form) { this._form = form; }
+		this._close();
 	};
 
 	render() {
-		const { props: { store: { formRenderers } } } = this;
-		const { query: { _action }, search } = routerStore.location;
-
-		const title = actionLabelsMap[_action];
-		const isVisible = actionNames.includes(_action);
+		const { props } = this;
+		const { name, title } = modalStore.state;
+		const visible = name && modals.has(name);
+		const Comp = modals.get(name);
 
 		return (
-			<ActionModalInternal
-				ref={this._saveForm}
-				search={search}
-				visible={isVisible}
-				title={title}
-				onSubmit={this._handleSubmit}
+			<Modal
+				maskClosable={false}
+				visible={visible}
+				title={visible ? title : ''}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
-				formRenderers={formRenderers}
-			/>
+			>
+				{visible && (
+					<Comp {...props} />
+				)}
+			</Modal>
 		);
 	}
 }
-

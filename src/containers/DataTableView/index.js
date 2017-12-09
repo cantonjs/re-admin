@@ -12,7 +12,7 @@ import DocumentTitle from 'react-document-title';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import DefaultToolbar from 'components/DefaultToolbar';
-import NavigatorModal from 'components/NavigatorModal';
+import ActionModal from 'components/ActionModal';
 
 @observer
 export default class DataTableView extends Component {
@@ -123,7 +123,7 @@ export default class DataTableView extends Component {
 					<Toolbar />
 					<TableBody store={store} />
 					{Footer && <Footer store={store} />}
-					<NavigatorModal />
+					<ActionModal />
 				</div>
 			</DocumentTitle>
 		);

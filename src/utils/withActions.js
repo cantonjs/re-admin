@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { Modal } from 'antd';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import joinKeys from 'utils/joinKeys';
-import NavigatorModal from 'components/NavigatorModal';
+import ActionModal from 'components/ActionModal';
 import * as Actions from 'constants/Actions';
 
 const { confirm } = Modal;
@@ -33,7 +33,7 @@ export default function withActions(WrappedComponent) {
 		}
 
 		requestCreate = () => {
-			NavigatorModal.open({
+			ActionModal.open({
 				name: Actions.CREATE,
 				title: '创建',
 			});
@@ -60,7 +60,7 @@ export default function withActions(WrappedComponent) {
 			if (select && select.length) {
 				config.select = select.join(',');
 			}
-			NavigatorModal.open(config);
+			ActionModal.open(config);
 		};
 
 		requestRef = (options = {}) => {
@@ -74,7 +74,7 @@ export default function withActions(WrappedComponent) {
 				save,
 			};
 			if (noQuery) { config.noQuery = '✓'; }
-			NavigatorModal.open(config);
+			ActionModal.open(config);
 		};
 
 		render() {
