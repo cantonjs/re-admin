@@ -45,7 +45,7 @@ class State {
 		else if (_isUpdater) {
 			const { keys } = modalStore.state;
 			const selectedKeys = (keys || '').split(',');
-			if (!selectedKeys.length) { return ''; }
+			if (selectedKeys.length !== 1) { return ''; }
 			const item = getParentValue ?
 				getParentValue() : store.findItemByKey(selectedKeys[0])
 			;
