@@ -40,7 +40,9 @@ export default class ActionModal extends Component {
 	}
 
 	_handleOk = () => {
-		modalStore.emitOk();
+		if (this._child && this._child.handleOk) {
+			this._child.handleOk();
+		}
 		this._close();
 	};
 
@@ -63,7 +65,7 @@ export default class ActionModal extends Component {
 				onCancel={this._handleCancel}
 			>
 				{visible && (
-					<Comp {...props} />
+					<Comp {...props} ref={(c) => (this._child = c)} />
 				)}
 			</Modal>
 		);

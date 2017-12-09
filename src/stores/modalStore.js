@@ -1,11 +1,9 @@
 
 import { computed } from 'mobx';
 import routerStore from 'stores/routerStore';
-import { omitBy, reduce, noop } from 'lodash';
+import { omitBy, reduce } from 'lodash';
 
 class ModalStore {
-	_okHandler = noop;
-
 	prefix = '__';
 
 	@computed get state() {
@@ -41,19 +39,6 @@ class ModalStore {
 				(val, key) => key.startsWith(this.prefix),
 			),
 		};
-	}
-
-	onOk = (handler) => {
-		this._okHandler = handler;
-		return this.offOk;
-	};
-
-	offOk = () => {
-		this._okHandler = noop;
-	};
-
-	emitOk() {
-		this._okHandler();
 	}
 
 	getOmitPaths = (val, key) => {

@@ -42,14 +42,11 @@ export default function createFormModal(issuer, displayName) {
 		}
 
 		componentWillMount() {
-			this.context.modalStore.onOk(() => {
-				if (this._form) { this._form.submit(); }
-			});
 			this._formState = new FormState();
 		}
 
-		componentWillUnmount() {
-			this.context.modalStore.offOk();
+		handleOk() {
+			if (this._form) { this._form.submit(); }
 		}
 
 		_handleChange = (data) => {

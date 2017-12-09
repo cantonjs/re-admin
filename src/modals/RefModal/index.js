@@ -17,13 +17,7 @@ export default class RefModal extends Component {
 	};
 
 	componentWillMount() {
-		const {
-			modalStore: {
-				state: { keys, table, fetch = 'fetch', save = 'update' },
-				onOk,
-			},
-			store: dataStore,
-		} = this.context;
+		const { table, fetch = 'fetch' } = this.context.modalStore.state;
 		this._store = new DataStore(table);
 		this._hiddenRouterStore = new HiddenRouterStore(this._store);
 
@@ -32,22 +26,26 @@ export default class RefModal extends Component {
 		}
 		else {
 			this._store[fetch]({}, Math.random());
-			if (!save || !isFunction(dataStore[save])) {
-				console.error(`could not save ref with "${save}"`);
-			}
-			else {
-				onOk(() => {
-					dataStore[save]({
-						body: { refs: this._store.selectedKeys },
-						url: joinKeys(keys),
-					});
-				});
-			}
 		}
 	}
 
-	componentWillUnmount() {
-		this.context.modalStore.offOk();
+	handleOk() {
+		const {
+			modalStore: {
+				state: { keys, save = 'update' },
+			},
+			store,
+		} = this.context;
+
+		if (!save || !isFunction(store[save])) {
+			console.error(`could not save ref with "${save}"`);
+			return;
+		}
+
+		store[save]({
+			body: { refs: this._store.selectedKeys },
+			url: joinKeys(keys),
+		});
 	}
 
 	render() {
