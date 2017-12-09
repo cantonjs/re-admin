@@ -8,6 +8,7 @@ export DataStore from 'stores/DataStore';
 
 export Admin from 'containers/Admin';
 export Toolbar from 'components/Toolbar';
+export ContextButton from 'components/ContextButton';
 export CreateButton from 'components/CreateButton';
 export UpdateButton from 'components/UpdateButton';
 export RemoveButton from 'components/RemoveButton';
