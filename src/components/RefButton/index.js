@@ -25,9 +25,9 @@ export default class RefButton extends Component {
 		store: PropTypes.object,
 	};
 
-	_handleClick = (ev, { requestRef }) => {
+	_handleClick = (ev, { openRefModal }) => {
 		ev.preventDefault();
-		requestRef(this.props);
+		openRefModal(this.props);
 	};
 
 	render() {

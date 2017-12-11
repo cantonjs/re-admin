@@ -1,7 +1,7 @@
 
 import { observable, computed, toJS } from 'mobx';
 import { omit, assign } from 'lodash';
-import getAsk from 'utils/getAsk';
+import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
 import routerStore from 'stores/routerStore';
 
@@ -119,7 +119,7 @@ export default class DataStore {
 		this._tableName = tableName;
 		this._customConfig = customConfig;
 
-		const { tableRenderers, queryRenderers } = this.tableConfig;
+		const { tableRenderers, queryRenderers, extend } = this.tableConfig;
 		const sortableField = tableRenderers.find(({ props }) => props.sortable);
 
 		this.uniqueKey = this.tableConfig.uniqueKey;
@@ -128,25 +128,26 @@ export default class DataStore {
 
 		const { pathname, query, headers } = this.tableConfig.api;
 
-		const accessTokenOptions = {
-			[appConfig.api.accessTokenName]({ remove }) {
-				const { accessToken } = authStore;
-				if (!accessToken) { remove(); }
-				else { return accessToken; }
-			},
-		};
-
-		assign(
-			appConfig.api.accessTokenLocation === 'query' ? query : headers,
-			accessTokenOptions,
-		);
+		assign(this, extend);
 
 		this.size = +(query.count || appConfig.api.count);
 
-		this._ask = getAsk(appConfig).clone({
+		this._request = getRequest(appConfig).clone({
 			url: pathname,
-			query,
 			headers,
+			queryTransformer: (reqQuery) => assign({}, query, reqQuery),
+		});
+
+		const { accessTokenLocation } = appConfig.api;
+		const fetchAuthTransformerName = accessTokenLocation === 'query' ?
+			'addQueryTransformer' : 'addHeadersTransformer';
+
+		this._request[fetchAuthTransformerName]((queryOrHeaders) => {
+			const { accessToken } = authStore;
+			if (accessToken) {
+				queryOrHeaders[appConfig.api.accessTokenName] = accessToken;
+			}
+			return queryOrHeaders;
 		});
 	}
 
@@ -192,7 +193,7 @@ export default class DataStore {
 			this.totals.set(search, total);
 		}
 		catch (err) {
-			showError('请求失败：', err.message);
+			showError('请求失败：', err.reason || err.message);
 		}
 
 		this.isFetching = false;
@@ -272,6 +273,6 @@ export default class DataStore {
 	}
 
 	async request(options) {
-		return this._ask.fork(options);
+		return this._request.fetch(options);
 	}
 }

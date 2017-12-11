@@ -16,9 +16,9 @@ export default class UpdateButton extends Component {
 		names: [],
 	};
 
-	_handleClick = (ev, { requestUpdate }) => {
+	_handleClick = (ev, { openUpdaterModal }) => {
 		ev.preventDefault();
-		requestUpdate(this.props.names);
+		openUpdaterModal({ select: this.props.names });
 	};
 
 	render() {

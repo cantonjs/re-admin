@@ -3,7 +3,7 @@ import { observable } from 'mobx';
 import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
-import getAsk from 'utils/getAsk';
+import getRequest from 'utils/getRequest';
 import { isString } from 'lodash';
 import deprecated from 'utils/deprecated';
 
@@ -33,7 +33,7 @@ class AuthStore {
 	init(config) {
 		this._apiConfig = config.api;
 		this._config = config.auth;
-		this._ask = getAsk(config).clone(this._config.basePath);
+		this._request = getRequest(config).clone(this._config.basePath);
 	}
 
 	// TODO: Deprecated
@@ -46,13 +46,10 @@ class AuthStore {
 		this.isFetching = true;
 		let isOk = false;
 		try {
-			const { accessToken, expiresIn } = await this._ask.fork({
+			const { accessToken, expiresIn } = await this._request.fetch({
 				url: this._config.getUserPath,
 				[this._apiConfig.accessTokenLocation]: {
-					[this._apiConfig.accessTokenName]: ({ remove }) => {
-						if (!this.accessToken) { remove(); }
-						else { return this.accessToken; }
-					},
+					[this._apiConfig.accessTokenName]: this.accessToken,
 				},
 			});
 
@@ -60,8 +57,6 @@ class AuthStore {
 
 			this.accessToken = accessToken;
 			isOk = true;
-
-			__DEV__ && console.log('Auth success');
 		}
 		catch (err) {
 			__DEV__ && console.error(err);
@@ -76,7 +71,7 @@ class AuthStore {
 		let isOk = false;
 
 		try {
-			const { accessToken, expiresIn } = await this._ask.fork({
+			const { accessToken, expiresIn } = await this._request.fetch({
 				url: this._config.loginPath,
 				method: 'POST',
 				body,
@@ -89,7 +84,7 @@ class AuthStore {
 			message.success('登录成功');
 		}
 		catch (err) {
-			message.error(`登录失败：${err.message}`);
+			message.error(`登录失败：${err.reason || err.message}`);
 		}
 		this.isFetching = false;
 		return isOk;

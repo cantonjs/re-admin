@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import withActions from 'utils/withActions';
+import joinKeys from 'utils/joinKeys';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
 import { TOOLBAR } from 'constants/Issuers';
@@ -13,7 +14,6 @@ export default class ContextButton extends Component {
 		label: PropTypes.node,
 		multiLabel: PropTypes.node,
 		actions: PropTypes.shape({
-			requestUpdate: PropTypes.func.isRequired,
 			selectedKeys: PropTypes.array.isRequired,
 		}).isRequired,
 		component: PropTypes.component,
@@ -36,7 +36,12 @@ export default class ContextButton extends Component {
 
 	_handleClick = (ev) => {
 		const { onClick, actions } = this.props;
-		if (onClick) { onClick(ev, actions); }
+		if (onClick) {
+			onClick(ev, {
+				...actions,
+				joinedSelectedKeys: joinKeys(actions.selectedKeys),
+			});
+		}
 	};
 
 	render() {

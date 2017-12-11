@@ -2,7 +2,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
+import { Modal } from 'antd';
 import { TOOLBAR } from 'constants/Issuers';
+
+const { confirm } = Modal;
 
 export default class RemoveButton extends Component {
 	static propTypes = {
@@ -17,11 +20,20 @@ export default class RemoveButton extends Component {
 
 	static contextTypes = {
 		issuer: PropTypes.string,
+		store: PropTypes.object.isRequired,
 	};
 
-	_handleClick = (ev, { requestRemove }) => {
+	_handleClick = (ev, { joinedSelectedKeys }) => {
 		ev.preventDefault();
-		requestRemove();
+		const { store } = this.context;
+		confirm({
+			title: '确定删除？',
+			content: '该操作将不能撤销',
+			onOk: () => {
+				store.remove({ url: joinedSelectedKeys });
+			},
+			okText: '删除',
+		});
 	};
 
 	render() {

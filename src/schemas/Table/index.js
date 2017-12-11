@@ -17,6 +17,7 @@ TableSchema.propTypes = {
 	mapOnSave: PropTypes.func,
 	uniqueKey: PropTypes.string,
 	maxSelections: PropTypes.number,
+	extend: PropTypes.object,
 };
 
 TableSchema.defaultProps = {
@@ -24,6 +25,7 @@ TableSchema.defaultProps = {
 	mapOnFetchOneResponse: returnsArgument,
 	mapOnSave: returnsArgument,
 	maxSelections: -1,
+	extend: {},
 };
 
 TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {

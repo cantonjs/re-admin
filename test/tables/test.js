@@ -8,7 +8,14 @@ import {
 } from '../../src';
 
 export default (
-	<Table name="test">
+	<Table
+		name="test"
+		extend={{
+			customMethod(requestOptions) {
+				console.log(requestOptions);
+			},
+		}}
+	>
 		<Text
 			name="id"
 			label="ID"
@@ -162,7 +169,7 @@ export default (
 		<Actions>
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
-			<RefButton table="hello" noQuery />
+			<RefButton table="hello" noQuery save="customMethod" />
 		</Actions>
 	</Table>
 );

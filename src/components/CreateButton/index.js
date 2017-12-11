@@ -12,9 +12,9 @@ export default class CreateButton extends Component {
 		label: '新建',
 	};
 
-	_handleClick = (ev, { requestCreate }) => {
+	_handleClick = (ev, { openCreaterModal }) => {
 		ev.preventDefault();
-		requestCreate();
+		openCreaterModal();
 	};
 
 	render() {

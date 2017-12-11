@@ -2586,6 +2586,13 @@ fbjs@^0.8.7, fbjs@^0.8.9:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
+fetch-extra@^0.0.0-3:
+  version "0.0.0-3"
+  resolved "http://registry.npm.taobao.org/fetch-extra/download/fetch-extra-0.0.0-3.tgz#3d307810bba575a6a372843c397bd5d89731f018"
+  dependencies:
+    node-fetch "^1.7.3"
+    tiny-querystring "^0.0.1"
+
 figures@^1.3.5:
   version "1.7.0"
   resolved "http://registry.npm.taobao.org/figures/download/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -3069,14 +3076,6 @@ htmlparser2@~3.3.0:
     domutils "1.1"
     readable-stream "1.0"
 
-http-ask@^0.0.0-rc6:
-  version "0.0.0-rc6"
-  resolved "http://registry.npm.taobao.org/http-ask/download/http-ask-0.0.0-rc6.tgz#7fbd9f8fef96dd464fe6d24c9f274c25b4a053ab"
-  dependencies:
-    isomorphic-fetch "^2.2.1"
-    object-assign "^4.1.0"
-    url-join "^1.1.0"
-
 http-assert@^1.1.0:
   version "1.3.0"
   resolved "http://registry.npm.taobao.org/http-assert/download/http-assert-1.3.0.tgz#a31a5cf88c873ecbb5796907d4d6f132e8c01e4a"
@@ -3490,7 +3489,7 @@ isobject@^2.0.0:
   dependencies:
     isarray "1.0.0"
 
-isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
+isomorphic-fetch@^2.1.1:
   version "2.2.1"
   resolved "http://registry.npm.taobao.org/isomorphic-fetch/download/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   dependencies:
@@ -4183,6 +4182,13 @@ no-case@^2.2.0:
 node-fetch@^1.0.1:
   version "1.6.3"
   resolved "http://registry.npm.taobao.org/node-fetch/download/node-fetch-1.6.3.tgz#dc234edd6489982d58e8f0db4f695029abcd8c04"
+  dependencies:
+    encoding "^0.1.11"
+    is-stream "^1.0.1"
+
+node-fetch@^1.7.3:
+  version "1.7.3"
+  resolved "http://registry.npm.taobao.org/node-fetch/download/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
@@ -6464,6 +6470,10 @@ tiny-querystring@^0.0.0:
   version "0.0.0"
   resolved "http://registry.npm.taobao.org/tiny-querystring/download/tiny-querystring-0.0.0.tgz#e05d146ca69b474e4af3afaa08e7bf22bc9ded3a"
 
+tiny-querystring@^0.0.1:
+  version "0.0.1"
+  resolved "http://registry.npm.taobao.org/tiny-querystring/download/tiny-querystring-0.0.1.tgz#dd04c62b25eb90d1786fbe2174235954e682b780"
+
 to-arraybuffer@^1.0.0:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/to-arraybuffer/download/to-arraybuffer-1.0.1.tgz#7d229b1fcc637e466ca081180836a7aabff83f43"
@@ -6599,10 +6609,6 @@ update-notifier@0.5.0:
 upper-case@^1.1.1:
   version "1.1.3"
   resolved "http://registry.npm.taobao.org/upper-case/download/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
-
-url-join@^1.1.0:
-  version "1.1.0"
-  resolved "http://registry.npm.taobao.org/url-join/download/url-join-1.1.0.tgz#741c6c2f4596c4830d6718460920d0c92202dc78"
 
 url-parse@1.0.x:
   version "1.0.5"

@@ -53,7 +53,7 @@ router
 		else {
 			ctx.status = 400;
 			ctx.body = {
-				error: 'Login failed',
+				reason: '用户名或密码错误',
 			};
 		}
 	})
