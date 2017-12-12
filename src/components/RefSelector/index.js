@@ -11,6 +11,7 @@ import RefModal from 'components/RefModal';
 class RefSelector extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
+		fetch: PropTypes.string,
 		onChange: PropTypes.func,
 		onKeyPress: PropTypes.func,
 		value: PropTypes.any,
@@ -21,6 +22,7 @@ class RefSelector extends Component {
 
 	static defaultProps = {
 		placeholder: '',
+		fetch: 'fetch',
 	};
 
 	state = {

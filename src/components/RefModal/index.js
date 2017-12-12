@@ -19,6 +19,7 @@ export default class RefModal extends Component {
 		modalWidth: PropTypes.stringOrNumber,
 		modalTitle: PropTypes.node,
 		noModalQuery: PropTypes.bool,
+		fetch: PropTypes.string,
 	};
 
 	static defaultProps = {
@@ -26,6 +27,7 @@ export default class RefModal extends Component {
 		modalWidth: '70%',
 		placeholder: '',
 		noModalQuery: false,
+		fetch: 'fetch',
 	};
 
 	static contextTypes = {
@@ -33,14 +35,14 @@ export default class RefModal extends Component {
 	};
 
 	componentWillMount() {
-		const { props: { table }, context: { DataStore } } = this;
+		const { props: { table, fetch }, context: { DataStore } } = this;
 		this._store = new DataStore(table);
-		this._hiddenRouterStore = new HiddenRouterStore(this._store);
+		this._hiddenRouterStore = new HiddenRouterStore(this._store, { fetch });
 	}
 
-	componentWillReceiveProps({ visible }) {
+	componentWillReceiveProps({ visible, fetch }) {
 		if (this.props.visible !== visible && visible) {
-			this._store.fetch();
+			this._store[fetch]();
 		}
 	}
 
