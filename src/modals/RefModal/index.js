@@ -17,15 +17,18 @@ export default class RefModal extends Component {
 	};
 
 	componentWillMount() {
-		const { table, fetch = 'fetch' } = this.context.modalStore.state;
+		const {
+			state,
+			state: { table, fetch = 'fetch' },
+		} = this.context.modalStore;
 		this._refStore = new DataStore(table);
-		this._hiddenRouterStore = new HiddenRouterStore(this._refStore);
+		this._hiddenRouterStore = new HiddenRouterStore(this._refStore, state);
 
 		if (!isFunction(this._refStore[fetch])) {
 			console.error(`fetch "${fetch}" in table "${table}" not found`);
 		}
 		else {
-			this._refStore[fetch]({}, Math.random());
+			this._refStore[fetch]({ state });
 		}
 	}
 
