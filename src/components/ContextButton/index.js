@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import withActions from 'utils/withActions';
-import joinKeys from 'utils/joinKeys';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
 import { TOOLBAR } from 'constants/Issuers';
@@ -37,10 +36,7 @@ export default class ContextButton extends Component {
 	_handleClick = (ev) => {
 		const { onClick, actions } = this.props;
 		if (onClick) {
-			onClick(ev, {
-				...actions,
-				joinedSelectedKeys: joinKeys(actions.selectedKeys),
-			});
+			onClick(ev, actions);
 		}
 	};
 

@@ -72,11 +72,6 @@ router
 		testDB.unshift(body);
 		ctx.body = body;
 	})
-	.post('/api/test/ref/:keys', verify, async (ctx) => {
-		const { request: { body }, params: { keys } } = ctx;
-		console.log('keys', keys);
-		ctx.body = body;
-	})
 	.put('/api/test/:keys', verify, async (ctx) => {
 		const { request: { body }, params: { keys } } = ctx;
 		const keysArr = keys.split(',');
@@ -94,6 +89,26 @@ router
 		const keysArr = keys.split(',');
 		testDB = testDB.filter((data) => !keysArr.includes(data.id));
 		ctx.body = { ok: true };
+	})
+	.get('/api/foo', verify, async (ctx) => {
+		const { page, count, id } = ctx.request.query;
+		const start = (page - 1) * +count;
+		ctx.body = {
+			list: id ? [testDB[0]] : testDB.slice(start, start + +count),
+			total: id ? 1 : total,
+		};
+	})
+	.post('/api/foo', verify, async (ctx) => {
+		const { body } = ctx.request;
+		body.id = `id_${total}`;
+		total++;
+		testDB.unshift(body);
+		ctx.body = body;
+	})
+	.post('/api/test/:keys/foo', verify, async (ctx) => {
+		const { request: { body }, params: { keys } } = ctx;
+		console.log('keys', keys);
+		ctx.body = body;
 	})
 	.post('/api/upload/file', async (ctx) => {
 		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };

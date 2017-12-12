@@ -7,7 +7,7 @@ import {
 	Toolbar, CreateButton, ContextButton,
 } from '../src';
 import testTable from './tables/test';
-import helloTable from './tables/hello';
+import fooTable from './tables/foo';
 
 export default class App extends Component {
 	render() {
@@ -31,8 +31,8 @@ export default class App extends Component {
 								<Menu
 									icon="bulb"
 									title="4.1"
-									table="hello"
-									path="/hello"
+									table="foo"
+									path="/foo"
 									toolbar={() => (
 										<Toolbar
 											left={<CreateButton />}
@@ -77,7 +77,7 @@ export default class App extends Component {
 				<Modal name="custom" component={() => (<span>custom modal</span>)} />
 
 				{testTable}
-				{helloTable}
+				{fooTable}
 
 			</Admin>
 		);

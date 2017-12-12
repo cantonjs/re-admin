@@ -32,6 +32,7 @@ export default class RefModal extends Component {
 	handleOk() {
 		const {
 			modalStore: {
+				state,
 				state: { keys, save = 'update' },
 			},
 			store,
@@ -45,6 +46,7 @@ export default class RefModal extends Component {
 		store[save]({
 			body: { refs: this._store.selectedKeys },
 			url: joinKeys(keys),
+			state,
 		});
 	}
 

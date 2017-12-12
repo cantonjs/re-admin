@@ -122,11 +122,12 @@ export default class DataStore {
 		const { tableRenderers, queryRenderers, extend } = this.tableConfig;
 		const sortableField = tableRenderers.find(({ props }) => props.sortable);
 
+		const { pathname, query, headers } = this.tableConfig.api;
+
 		this.uniqueKey = this.tableConfig.uniqueKey;
 		this.hasSortableField = !!sortableField;
 		this.hasQueryField = !!queryRenderers.length;
-
-		const { pathname, query, headers } = this.tableConfig.api;
+		this.pathname = pathname;
 
 		assign(this, extend);
 

@@ -7,7 +7,8 @@ import { Spin } from 'antd';
 import { Form } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
 import joinKeys from 'utils/joinKeys';
-import * as Issuers from 'constants/Issuers';
+import { CREATER } from 'constants/Issuers';
+import DataStore from 'stores/DataStore';
 
 const styles = {
 	spinContainer: {
@@ -56,10 +57,11 @@ export default function createFormModal(issuer, displayName) {
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
 				const { store, modalStore } = this.context;
-				const { keys } = modalStore.state;
-				const url = joinKeys(keys);
-				const method = issuer === Issuers.CREATER ? 'create' : 'update';
-				store[method]({ url, body });
+				const { state, state: { keys, table, save } } = modalStore;
+				const path = table ? `/${DataStore.get(table).pathname}` : '';
+				const url = joinKeys(keys) + path;
+				const saveMethod = save || (issuer === CREATER ? 'create' : 'update');
+				store[saveMethod]({ url, body, state });
 				modalStore.close();
 			}
 			else if (__DEV__) {
@@ -70,9 +72,13 @@ export default function createFormModal(issuer, displayName) {
 		render() {
 			const {
 				context: {
-					store: { isFetching, formRenderers },
+					store,
+					modalStore: { state: { table } },
 				},
 			} = this;
+
+			const dataStore = table ? DataStore.get(table) : store;
+			const { isFetching, formRenderers } = dataStore;
 
 			return (
 				<Form

@@ -4,7 +4,7 @@ import {
 	Table, Text, Select, Option, Image, Slider, Uploader,
 	RangePicker, DatePicker, Ref,
 	ArrayOf, ObjectOf,
-	Actions, RemoveButton, UpdateButton, RefButton,
+	Actions, CreateButton, RemoveButton, UpdateButton, RefButton,
 } from '../../src';
 
 export default (
@@ -37,12 +37,11 @@ export default (
 
 		<Ref
 			name="ref"
-			table="hello"
+			table="foo"
 			placeholder="请输入超链表"
 			label="超链表"
 			// noModalQuery
 			inForm
-			inTable
 			inQuery
 		/>
 
@@ -167,9 +166,10 @@ export default (
 		/>
 
 		<Actions>
+			<CreateButton table="foo" label="新建foo" />
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
-			<RefButton table="hello" noQuery save="customMethod" />
+			<RefButton table="foo" noQuery save="customMethod" />
 		</Actions>
 	</Table>
 );

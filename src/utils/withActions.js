@@ -29,6 +29,10 @@ export default function withActions(WrappedComponent) {
 			return tableRowKey ? [tableRowKey] : store.selectedKeys;
 		}
 
+		getSelectedKeysString = () => {
+			return joinKeys(this.getSelectedKeys());
+		};
+
 		open = (name, config) => {
 			ActionModal.open({
 				keys: joinKeys(this.getSelectedKeys()),
@@ -84,6 +88,7 @@ export default function withActions(WrappedComponent) {
 						openUpdaterModal: this.openUpdaterModal,
 						openRefModal: this.openRefModal,
 						selectedKeys: this._selectedKeys || this.context.store.selectedKeys,
+						getSelectedKeysString: this.getSelectedKeysString,
 					}}
 				/>
 			);

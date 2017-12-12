@@ -23,14 +23,14 @@ export default class RemoveButton extends Component {
 		store: PropTypes.object.isRequired,
 	};
 
-	_handleClick = (ev, { joinedSelectedKeys }) => {
+	_handleClick = (ev, { getSelectedKeysString }) => {
 		ev.preventDefault();
 		const { store } = this.context;
 		confirm({
 			title: '确定删除？',
 			content: '该操作将不能撤销',
 			onOk: () => {
-				store.remove({ url: joinedSelectedKeys });
+				store.remove({ url: getSelectedKeysString() });
 			},
 			okText: '删除',
 		});
