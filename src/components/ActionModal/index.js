@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import modalStore from 'stores/modalStore';
+import ActionModalStore from 'stores/ActionModalStore';
+import routerStore from 'stores/routerStore';
 import * as Actions from 'constants/Actions';
 import { Modal } from 'antd';
 import { UpdaterModal, CreaterModal } from 'modals/FormModals';
@@ -19,23 +20,26 @@ export default class ActionModal extends Component {
 		appConfig: PropTypes.object.isRequired,
 	};
 
+	static store = {};
+
 	static init(modals) {
+		ActionModal.store = new ActionModalStore(routerStore);
 		modals.set(Actions.CREATE, CreaterModal);
 		modals.set(Actions.UPDATE, UpdaterModal);
 		modals.set(Actions.REF, RefModal);
 	}
 
 	static open(modalState) {
-		modalStore.state = modalState;
+		ActionModal.store.state = modalState;
 	}
 
 	getChildContext() {
-		return { modalStore };
+		return { modalStore: ActionModal.store };
 	}
 
 	_close() {
 		const { store } = this.context;
-		modalStore.close();
+		ActionModal.store.close();
 		store.setSelectedKeys([]);
 	}
 
@@ -52,7 +56,7 @@ export default class ActionModal extends Component {
 
 	render() {
 		const { props, context: { appConfig: { modals } } } = this;
-		const { name, title } = modalStore.state;
+		const { name, title } = ActionModal.store.state;
 		const visible = name && modals.has(name);
 		const Comp = modals.get(name);
 

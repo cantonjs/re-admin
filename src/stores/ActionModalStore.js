@@ -1,16 +1,19 @@
 
 import { computed } from 'mobx';
-import routerStore from 'stores/routerStore';
 import { omitBy, reduce } from 'lodash';
 
-class ModalStore {
-	prefix = '__';
+export default class ModalStore {
+	static prefix = '__';
+
+	static getOmitPaths = (val, key) => {
+		return key.startsWith(ModalStore.prefix);
+	};
 
 	@computed get state() {
-		const prefixLength = this.prefix.length;
+		const prefixLength = ModalStore.prefix.length;
 		const { query } = this.routerStore.location;
 		return reduce(query, (state, val, key) => {
-			if (key.startsWith(this.prefix)) {
+			if (key.startsWith(ModalStore.prefix)) {
 				const stateKey = key.substr(prefixLength);
 				state[stateKey] = val;
 			}
@@ -20,7 +23,7 @@ class ModalStore {
 
 	set state(state) {
 		const stateQuery = reduce(state, (query, val, key) => {
-			query[`${this.prefix}${key}`] = val;
+			query[`${ModalStore.prefix}${key}`] = val;
 			return query;
 		}, {});
 		const { location } = this.routerStore;
@@ -36,14 +39,8 @@ class ModalStore {
 		location.query = {
 			...omitBy(
 				location.query,
-				(val, key) => key.startsWith(this.prefix),
+				(val, key) => key.startsWith(ModalStore.prefix),
 			),
 		};
 	}
-
-	getOmitPaths = (val, key) => {
-		return key.startsWith(this.prefix);
-	};
 }
-
-export default new ModalStore(routerStore);
