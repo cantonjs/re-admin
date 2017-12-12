@@ -178,7 +178,7 @@ export default class DataStore {
 		this.isFetching = true;
 
 		try {
-			const res = await this.request({ query });
+			const res = await this._request.fetch({ query });
 			const {
 				total,
 				list = [],
@@ -194,7 +194,7 @@ export default class DataStore {
 			this.totals.set(search, total);
 		}
 		catch (err) {
-			showError('请求失败：', err.reason || err.message);
+			showError('请求失败', err);
 		}
 
 		this.isFetching = false;
@@ -203,12 +203,12 @@ export default class DataStore {
 
 	async fetchOne(query) {
 		try {
-			const res = await this.request({ query });
+			const res = await this._request.fetch({ query });
 			const data = await this.tableConfig.mapOnFetchOneResponse(res);
 			this.data = data;
 		}
 		catch (err) {
-			showError('请求失败：', err.message);
+			showError('请求失败', err);
 		}
 		return this;
 	}
@@ -233,47 +233,46 @@ export default class DataStore {
 	}
 
 	async create(options = {}) {
-		try {
-			await this.request({
-				method: 'POST',
-				...options,
-				body: this.tableConfig.mapOnSave(options.body, 'create'),
-			});
-			this._refresh();
-		}
-		catch (err) {
-			showError('创建失败：', err.message);
-		}
+		await this.request({
+			method: 'POST',
+			...options,
+			body: this.tableConfig.mapOnSave(options.body, 'create'),
+			errorTitle: '创建失败',
+			refreshOnComplete: true,
+		});
 	}
 
 	async update(options = {}) {
-		try {
-			await this.request({
-				method: 'PUT',
-				...options,
-				body: this.tableConfig.mapOnSave(options.body, 'update'),
-			});
-			this._refresh();
-		}
-		catch (err) {
-			showError('修改失败：', err.message);
-		}
+		await this.request({
+			method: 'PUT',
+			...options,
+			body: this.tableConfig.mapOnSave(options.body, 'update'),
+			errorTitle: '修改失败',
+			refreshOnComplete: true,
+		});
 	}
 
 	async remove(options = {}) {
-		try {
-			await this.request({
-				method: 'DELETE',
-				...options,
-			});
-			this._refresh();
-		}
-		catch (err) {
-			showError('删除失败：', err.message);
-		}
+		await this.request({
+			method: 'DELETE',
+			...options,
+			errorTitle: '删除失败',
+			refreshOnComplete: true,
+		});
 	}
 
-	async request(options) {
-		return this._request.fetch(options);
+	async request(options = {}) {
+		const {
+			errorTitle = '操作失败',
+			refreshOnComplete = false,
+			...other,
+		} = options;
+		try {
+			await this._request.fetch(other);
+			refreshOnComplete && this._refresh();
+		}
+		catch (err) {
+			showError(errorTitle, err);
+		};
 	}
 }

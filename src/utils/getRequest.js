@@ -1,7 +1,21 @@
 
 import { RequestExtra } from 'fetch-extra';
+import { isFunction } from 'lodash';
 
 let request;
+
+const reasonMap = {
+	400: async (response) => {
+		try {
+			const { reason, error, message } = await response.json();
+			return reason || error || message;
+		}
+		catch (err) {}
+	},
+	401: '请重新登录',
+	403: '没有权限访问',
+	404: '找不到对象',
+};
 
 export default function getRequest(config) {
 	if (request) { return request; }
@@ -14,20 +28,16 @@ export default function getRequest(config) {
 		simple: true,
 		async errorTransformer(err) {
 			if (!err || !err.response) { return err; }
-			const { response } = err;
+			const { status } = err.response;
+			const reason = reasonMap[status];
 
-			let errorBody = {};
-			switch (response.status) {
-				case 400:
-					errorBody = await response.json();
-					break;
-				case 404:
-					errorBody = { reason: '找不到数据' };
-					break;
-				default:
-					errorBody = { reason: '出现未知错误' };
+			if (!reason) { return err; }
+			if (isFunction(reason)) {
+				err.reason = await reason(err.response);
 			}
-			Object.assign(err, errorBody);
+			else {
+				err.reason = reason;
+			}
 			return err;
 		},
 	}));

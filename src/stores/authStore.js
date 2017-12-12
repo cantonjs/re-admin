@@ -6,6 +6,7 @@ import { message } from 'antd';
 import getRequest from 'utils/getRequest';
 import { isString } from 'lodash';
 import deprecated from 'utils/deprecated';
+import showError from 'utils/showError';
 
 const deprecatedGetAccessToken = deprecated({
 	outdated: 'getAccessToken()',
@@ -46,21 +47,21 @@ class AuthStore {
 		this.isFetching = true;
 		let isOk = false;
 		try {
-			const { accessToken, expiresIn } = await this._request.fetch({
-				url: this._config.getUserPath,
-				[this._apiConfig.accessTokenLocation]: {
+			const options = { url: this._config.getUserPath };
+			if (this.accessToken) {
+				const { accessTokenLocation } = this._apiConfig;
+				options[accessTokenLocation] = {
 					[this._apiConfig.accessTokenName]: this.accessToken,
-				},
-			});
+				};
+			}
 
+			const { accessToken, expiresIn } = await this._request.fetch(options);
 			verifyAndSaveAccessToken(accessToken, expiresIn);
-
 			this.accessToken = accessToken;
 			isOk = true;
 		}
 		catch (err) {
-			__DEV__ && console.error(err);
-			message.error('登录凭证已失效，请重新登录');
+			showError('登录失效', err);
 		}
 		this.isFetching = false;
 		return isOk;
@@ -84,7 +85,7 @@ class AuthStore {
 			message.success('登录成功');
 		}
 		catch (err) {
-			message.error(`登录失败：${err.reason || err.message}`);
+			showError('登录失效', err);
 		}
 		this.isFetching = false;
 		return isOk;

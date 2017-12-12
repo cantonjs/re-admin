@@ -109,7 +109,7 @@ router
 		const { request: { body }, params: { keys } } = ctx;
 		ctx.body = { ...body, keys };
 	})
-	.post('/api/test/:keys/foo/:fooKeys', verify, async (ctx) => {
+	.post('/api2/test/:keys/foo/:fooKeys', verify, async (ctx) => {
 		const { params: { keys, fooKeys } } = ctx;
 		ctx.body = { keys, fooKeys };
 	})
