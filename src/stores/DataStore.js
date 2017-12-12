@@ -1,9 +1,10 @@
 
 import { observable, computed, toJS } from 'mobx';
-import { omit, assign } from 'lodash';
+import { omitBy, assign } from 'lodash';
 import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
 import routerStore from 'stores/routerStore';
+import ActionModalStore from 'stores/ActionModalStore';
 
 const caches = observable.map();
 let appConfig = {};
@@ -22,8 +23,8 @@ export default class DataStore {
 		authStore = auth;
 	}
 
+	@observable _prevFetchKey = '?';
 	@observable isFetching = false;
-	@observable search = '?';
 	@observable selectedKeys = [];
 	@observable data = {};
 
@@ -35,11 +36,11 @@ export default class DataStore {
 	}
 
 	@computed get collection() {
-		return this.collections.get(this.search);
+		return this.collections.get(this._prevFetchKey);
 	}
 
 	@computed get total() {
-		return this.totals.get(this.search) || 0;
+		return this.totals.get(this._prevFetchKey) || 0;
 	}
 
 	@computed get dataSource() {
@@ -112,9 +113,6 @@ export default class DataStore {
 	collections = observable.map();
 	totals = observable.map();
 
-	_prevQuery = {};
-	_pervSearch = '?';
-
 	constructor(tableName, customConfig = {}) {
 		this._tableName = tableName;
 		this._customConfig = customConfig;
@@ -152,33 +150,29 @@ export default class DataStore {
 		});
 	}
 
-	async fetch(query = this._prevQuery, search = this._prevSearch) {
-		this._prevQuery = query;
-		this._prevSearch = search;
+	async fetch(options = {}) {
+		const { query = {}, state = {}, ...other } = options;
+		const { cacheKey } = state;
 
-		const page = (function () {
-			const p = query.page || 1;
-			return p < 1 ? 1 : p;
-		}());
-
-		query = {
-			count: this.size,
-
-			// TODO: action?
-			...omit(query, ['action']),
-
-			page,
-		};
-
-		if (this.collections.has(search)) {
-			this.search = search;
+		if (cacheKey && this.collections.has(cacheKey)) {
+			this._prevFetchKey = cacheKey;
 			return this;
 		}
 
 		this.isFetching = true;
 
 		try {
-			const res = await this._request.fetch({ query });
+			const res = await this._request.fetch({
+				...other,
+				query: {
+					count: this.size,
+					...omitBy(query, ActionModalStore.getOmitPaths),
+					page: (function () {
+						const p = query.page || 1;
+						return p < 1 ? 1 : p;
+					}()),
+				},
+			});
 			const {
 				total,
 				list = [],
@@ -189,9 +183,9 @@ export default class DataStore {
 				return data;
 			});
 
-			this.search = search;
-			this.collections.set(search, collection);
-			this.totals.set(search, total);
+			this._prevFetchKey = cacheKey || '@@last';
+			this.collections.set(this._prevFetchKey, collection);
+			this.totals.set(this._prevFetchKey, total);
 		}
 		catch (err) {
 			showError('请求失败', err);
@@ -204,8 +198,7 @@ export default class DataStore {
 	async fetchOne(query) {
 		try {
 			const res = await this._request.fetch({ query });
-			const data = await this.tableConfig.mapOnFetchOneResponse(res);
-			this.data = data;
+			this.data = await this.tableConfig.mapOnFetchOneResponse(res);
 		}
 		catch (err) {
 			showError('请求失败', err);
@@ -216,7 +209,7 @@ export default class DataStore {
 	_refresh() {
 		this.collections.clear();
 		this.totals.clear();
-		this.fetch();
+		this.fetch({ state: { cacheKey: '?' } });
 		this.selectedKeys = [];
 	}
 

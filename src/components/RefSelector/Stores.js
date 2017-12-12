@@ -10,7 +10,7 @@ class LocStore {
 
 	set query(query) {
 		this._query = query;
-		this._dataStore.fetch(query, Math.random());
+		this._dataStore.fetch({ query });
 		return query;
 	}
 

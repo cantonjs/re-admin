@@ -40,7 +40,7 @@ export default class RefModal extends Component {
 
 	componentWillReceiveProps({ visible }) {
 		if (this.props.visible !== visible && visible) {
-			this._store.fetch({}, Math.random());
+			this._store.fetch();
 		}
 	}
 

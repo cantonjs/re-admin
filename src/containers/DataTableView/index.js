@@ -91,7 +91,7 @@ export default class DataTableView extends Component {
 
 	_fetch() {
 		const { query, search } = routerStore.location;
-		this.state.store.fetch(query, search);
+		this.state.store.fetch({ query, state: { cacheKey: search } });
 	}
 
 	render() {
