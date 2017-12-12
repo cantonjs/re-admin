@@ -1,42 +1,57 @@
 
 import { RequestExtra } from 'fetch-extra';
-import { isFunction } from 'lodash';
 
 let request;
 
-const reasonMap = {
-	400: async (response) => {
-		try {
-			const { reason, error, message } = await response.json();
-			return reason || error || message;
-		}
-		catch (err) {}
-	},
-	401: '请重新登录',
-	403: '没有权限访问',
-	404: '找不到对象',
-};
-
 export default function getRequest(config) {
 	if (request) { return request; }
-	const { baseURL, timeout } = config.api;
+
+	const {
+		api: {
+			baseURL, timeout,
+		},
+		errorMessages: {
+			defaults = 'Request failed',
+			statusMap = {},
+			validResponse = (response) => response.ok,
+			validResponseData,
+			getMessage = (err) => err.reason,
+		},
+	} = config;
+
 	return (request = new RequestExtra({
 		timeout,
 		url: baseURL,
 		type: 'json',
 		responseType: 'json',
-		simple: true,
-		async errorTransformer(err) {
-			if (!err || !err.response) { return err; }
-			const { status } = err.response;
-			const reason = reasonMap[status];
-
-			if (!reason) { return err; }
-			if (isFunction(reason)) {
-				err.reason = await reason(err.response);
+		async responseTransformer(response) {
+			const valid = await validResponse(response);
+			if (!valid) {
+				const error = new Error(response.statusText);
+				error.response = response;
+				throw error;
 			}
-			else {
-				err.reason = reason;
+			return response;
+		},
+		async responseDataTransformer(data) {
+			if (validResponseData) {
+				const valid = await validResponseData(data);
+				if (!valid) {
+					const error = new Error(defaults);
+					Object.assign(error, data);
+					throw error;
+				}
+			}
+			return data;
+		},
+		async errorTransformer(err) {
+			err.reason = (await getMessage(err, err.response));
+			if (!err.reason && err.response && err.response.status) {
+				const reason = statusMap[err.response.status];
+				err.reason = reason || err.message;
+			}
+			if (!err.reason) {
+				err.reason = defaults;
 			}
 			return err;
 		},

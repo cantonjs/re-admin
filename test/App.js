@@ -3,7 +3,7 @@ import 'antd/dist/antd.less';
 import './reset.scss';
 import React, { Component } from 'react';
 import {
-	Admin, Title, API, Auth, Upload, Navigator, Menu, Modal,
+	Admin, Title, API, Auth, Upload, Navigator, Menu, Modal, ErrorMessages,
 	Toolbar, CreateButton, ContextButton,
 } from '../src';
 import testTable from './tables/test';
@@ -55,6 +55,22 @@ export default class App extends Component {
 						</Menu>
 					</Menu>
 				</Navigator>
+
+				<ErrorMessages
+					defaulst="操作失败"
+					statusMap={{
+						401: '请重新登录',
+						403: '权限不足',
+						404: '找不到对象',
+						500: '系统错误',
+					}}
+					getMessage={async (_, response) => {
+						if (response.status === 400) {
+							const error = await response.json();
+							return error.reason;
+						}
+					}}
+				/>
 
 				<API
 					baseURL="/api"

@@ -47,6 +47,7 @@ export default function getAppConfig(appConfig = {}) {
 		auth: {},
 		upload: {},
 		tables: {},
+		errorMessages: {},
 		modals: new Map(),
 	}, jsxToPlainObject(appConfig));
 

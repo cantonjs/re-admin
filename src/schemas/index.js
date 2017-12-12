@@ -8,3 +8,4 @@ export Table from './Table';
 export Title from './Title';
 export Upload from './Upload';
 export Modal from './Modal';
+export ErrorMessages from './ErrorMessages';
