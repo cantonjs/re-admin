@@ -11,7 +11,7 @@ APISchema.propTypes = {
 	timeout: PropTypes.number,
 	count: PropTypes.number,
 	accessTokenName: PropTypes.string,
-	accessTokenLocation: PropTypes.oneOf(['header', 'query']),
+	accessTokenLocation: PropTypes.oneOf(['headers', 'header', 'query']),
 	sortKey: PropTypes.string,
 	orderKey: PropTypes.string,
 	descValue: PropTypes.string,
@@ -29,8 +29,10 @@ APISchema.defaultProps = {
 	ascValue: 'asc',
 };
 
-APISchema.setConfig = (props, api) => {
-	Object.assign(api, props);
+APISchema.setConfig = ({ accessTokenLocation, ...props }, api) => {
+	Object.assign(api, props, {
+		accessTokenLocation: accessTokenLocation !== 'query' ? 'headers' : 'query',
+	});
 };
 
 APISchema.schemaName = 'api';
