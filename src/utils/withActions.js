@@ -59,7 +59,11 @@ export default function withActions(WrappedComponent) {
 		};
 
 		openRefModal = (options = {}) => {
-			const { table, title, fetch, save, noQuery } = options;
+			const {
+				table, title, noQuery,
+				fetch = 'fetch',
+				save = 'request',
+			} = options;
 			const config = {
 				table,
 				title,

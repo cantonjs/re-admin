@@ -18,34 +18,40 @@ export default class RefModal extends Component {
 
 	componentWillMount() {
 		const { table, fetch = 'fetch' } = this.context.modalStore.state;
-		this._store = new DataStore(table);
-		this._hiddenRouterStore = new HiddenRouterStore(this._store);
+		this._refStore = new DataStore(table);
+		this._hiddenRouterStore = new HiddenRouterStore(this._refStore);
 
-		if (!isFunction(this._store[fetch])) {
+		if (!isFunction(this._refStore[fetch])) {
 			console.error(`fetch "${fetch}" in table "${table}" not found`);
 		}
 		else {
-			this._store[fetch]({}, Math.random());
+			this._refStore[fetch]({}, Math.random());
 		}
 	}
 
 	handleOk() {
 		const {
-			modalStore: {
-				state,
-				state: { keys, save = 'update' },
+			context: {
+				modalStore: {
+					state,
+					state: { keys, save = 'request' },
+				},
+				store,
 			},
-			store,
-		} = this.context;
+			_refStore,
+		} = this;
 
 		if (!save || !isFunction(store[save])) {
 			console.error(`could not save ref with "${save}"`);
 			return;
 		}
 
+		const { pathname } = _refStore;
+		const refKeys = _refStore.selectedKeys;
+
 		store[save]({
-			body: { refs: this._store.selectedKeys },
-			url: joinKeys(keys),
+			method: 'POST',
+			url: joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys),
 			state,
 		});
 	}
@@ -53,7 +59,7 @@ export default class RefModal extends Component {
 	render() {
 		const {
 			_hiddenRouterStore,
-			_store,
+			_refStore,
 			context: { modalStore: { state } },
 		} = this;
 
@@ -61,12 +67,12 @@ export default class RefModal extends Component {
 			<div>
 				{!state.noQuery &&
 					<TableQuery
-						store={_store}
+						store={_refStore}
 						routerStore={_hiddenRouterStore}
 					/>
 				}
 				<TableBody
-					store={_store}
+					store={_refStore}
 					routerStore={_hiddenRouterStore}
 					selectionType="radio"
 				/>

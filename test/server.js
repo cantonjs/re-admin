@@ -107,8 +107,11 @@ router
 	})
 	.post('/api/test/:keys/foo', verify, async (ctx) => {
 		const { request: { body }, params: { keys } } = ctx;
-		console.log('keys', keys);
-		ctx.body = body;
+		ctx.body = { ...body, keys };
+	})
+	.post('/api/test/:keys/foo/:fooKeys', verify, async (ctx) => {
+		const { params: { keys, fooKeys } } = ctx;
+		ctx.body = { keys, fooKeys };
 	})
 	.post('/api/upload/file', async (ctx) => {
 		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };

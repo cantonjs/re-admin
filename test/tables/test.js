@@ -169,7 +169,7 @@ export default (
 			<CreateButton table="foo" label="新建foo" />
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
-			<RefButton table="foo" noQuery save="customMethod" />
+			<RefButton table="foo" noQuery />
 		</Actions>
 	</Table>
 );

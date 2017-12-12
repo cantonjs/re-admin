@@ -16,8 +16,6 @@ export default class RefButton extends Component {
 	static defaultProps = {
 		label: '关联',
 		title: '关联',
-		fetch: 'fetch',
-		save: 'update',
 		noQuery: false,
 	};
 
