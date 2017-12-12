@@ -37,7 +37,8 @@ export default function withActions(WrappedComponent) {
 			});
 		};
 
-		openCreaterModal = (options) => {
+		openCreaterModal = (options = {}) => {
+			options.keys = options.keys || '';
 			this.open(Actions.CREATE, { title: '创建', ...options });
 		};
 
@@ -53,7 +54,7 @@ export default function withActions(WrappedComponent) {
 			this.open(Actions.UPDATE, config);
 		};
 
-		onpenRefModal = (options = {}) => {
+		openRefModal = (options = {}) => {
 			const { table, title, fetch, save, noQuery } = options;
 			const config = {
 				table,
