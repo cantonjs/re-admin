@@ -29,7 +29,6 @@ export default class ContextButton extends Component {
 	};
 
 	static contextTypes = {
-		store: PropTypes.object.isRequired,
 		issuer: PropTypes.string,
 	};
 

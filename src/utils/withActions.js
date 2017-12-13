@@ -83,10 +83,12 @@ export default function withActions(WrappedComponent) {
 		};
 
 		render() {
+			const { props, context: { store } } = this;
 			return (
 				<WrappedComponent
-					{...this.props}
+					{...props}
 					actions={{
+						store,
 						open: this.open,
 						openCreaterModal: this.openCreaterModal,
 						openUpdaterModal: this.openUpdaterModal,
