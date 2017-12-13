@@ -42,7 +42,7 @@ export default class RefModal extends Component {
 
 	componentWillReceiveProps({ visible, fetch }) {
 		if (this.props.visible !== visible && visible) {
-			this._store[fetch]();
+			this._store.call(fetch);
 		}
 	}
 

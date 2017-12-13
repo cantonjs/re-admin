@@ -10,8 +10,9 @@ class LocStore {
 
 	set query(query) {
 		const state = this._modalState;
+		const method = state.fetch || 'fetch';
 		this._query = query;
-		this._dataStore[state.fetch || 'fetch']({ query, state });
+		this._dataStore.call(method, { query, state });
 		return query;
 	}
 

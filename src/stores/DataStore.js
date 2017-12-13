@@ -1,6 +1,6 @@
 
 import { observable, computed, toJS } from 'mobx';
-import { omitBy, assign } from 'lodash';
+import { omitBy, assign, isFunction, reduce } from 'lodash';
 import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
 import routerStore from 'stores/routerStore';
@@ -126,10 +126,8 @@ export default class DataStore {
 		this.hasSortableField = !!sortableField;
 		this.hasQueryField = !!queryRenderers.length;
 		this.pathname = pathname;
-
-		assign(this, extend);
-
 		this.size = +(query.count || appConfig.api.count);
+		this.extend(extend);
 
 		this._request = getRequest(appConfig).clone({
 			url: pathname,
@@ -148,6 +146,28 @@ export default class DataStore {
 			}
 			return queryOrHeaders;
 		});
+	}
+
+	extend(extensions) {
+		this.extends = reduce(extensions, (ext, fn, key) => {
+			ext[key] = fn.bind(this);
+			return ext;
+		}, this.extends || {});
+		return this;
+	}
+
+	call(method, ...args) {
+		if (isFunction(this.extends[method])) {
+			return this.extends[method].apply(this, args);
+		}
+		else if (isFunction(this[method])) {
+			return this[method].apply(this, args);
+		}
+		else {
+			throw new Error(
+				`Method "${method}" not found in table store "${this._tableName}"`,
+			);
+		}
 	}
 
 	async fetch(options = {}) {

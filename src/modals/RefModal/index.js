@@ -44,15 +44,10 @@ export default class RefModal extends Component {
 			_refStore,
 		} = this;
 
-		if (!save || !isFunction(store[save])) {
-			console.error(`could not save ref with "${save}"`);
-			return;
-		}
-
 		const { pathname } = _refStore;
 		const refKeys = _refStore.selectedKeys;
 
-		store[save]({
+		store.call(save, {
 			method: 'POST',
 			url: joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys),
 			state: { ...state, keys, refKeys },

@@ -60,8 +60,8 @@ export default function createFormModal(issuer, displayName) {
 				const { state, state: { keys, table, save } } = modalStore;
 				const path = table ? `/${DataStore.get(table).pathname}` : '';
 				const url = joinKeys(keys) + path;
-				const saveMethod = save || (issuer === CREATER ? 'create' : 'update');
-				store[saveMethod]({ url, body, state });
+				const method = save || (issuer === CREATER ? 'create' : 'update');
+				store.call(method, { url, body, state });
 				modalStore.close();
 			}
 			else if (__DEV__) {
