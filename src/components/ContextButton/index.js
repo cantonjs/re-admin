@@ -19,6 +19,7 @@ export default class ContextButton extends Component {
 		minSelected: PropTypes.number,
 		maxSelected: PropTypes.number,
 		onClick: PropTypes.func,
+		method: PropTypes.string,
 	};
 
 	static defaultProps = {
@@ -33,9 +34,14 @@ export default class ContextButton extends Component {
 	};
 
 	_handleClick = (ev) => {
-		const { onClick, actions } = this.props;
-		if (onClick) {
-			onClick(ev, actions);
+		const { onClick, method, actions } = this.props;
+		if (onClick) { onClick(ev, actions); }
+		if (method) {
+			ev.preventDefault();
+			actions.store.call(method, {
+				method: 'POST',
+				keys: actions.selectedKeys,
+			});
 		}
 	};
 

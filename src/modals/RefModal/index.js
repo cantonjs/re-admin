@@ -3,7 +3,6 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import HiddenRouterStore from './HiddenRouterStore';
-import { isFunction } from 'lodash';
 import joinKeys from 'utils/joinKeys';
 import DataStore from 'stores/DataStore';
 import TableBody from 'components/TableBody';
@@ -23,13 +22,7 @@ export default class RefModal extends Component {
 		} = this.context.modalStore;
 		this._refStore = new DataStore(table);
 		this._hiddenRouterStore = new HiddenRouterStore(this._refStore, state);
-
-		if (!isFunction(this._refStore[fetch])) {
-			console.error(`fetch "${fetch}" in table "${table}" not found`);
-		}
-		else {
-			this._refStore[fetch]({ state });
-		}
+		this._refStore.call(fetch, state);
 	}
 
 	handleOk() {
@@ -46,12 +39,8 @@ export default class RefModal extends Component {
 
 		const { pathname } = _refStore;
 		const refKeys = _refStore.selectedKeys;
-
-		store.call(save, {
-			method: 'POST',
-			url: joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys),
-			state: { ...state, keys, refKeys },
-		});
+		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
+		store.call(save, { method: 'POST', url, ...state, keys, refKeys });
 	}
 
 	render() {

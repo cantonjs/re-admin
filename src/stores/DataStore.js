@@ -251,7 +251,7 @@ export default class DataStore {
 			...options,
 			body: this.tableConfig.mapOnSave(options.body, 'create'),
 			errorTitle: '创建失败',
-			refreshOnComplete: true,
+			refresh: true,
 		});
 	}
 
@@ -261,7 +261,7 @@ export default class DataStore {
 			...options,
 			body: this.tableConfig.mapOnSave(options.body, 'update'),
 			errorTitle: '修改失败',
-			refreshOnComplete: true,
+			refresh: true,
 		});
 	}
 
@@ -270,19 +270,21 @@ export default class DataStore {
 			method: 'DELETE',
 			...options,
 			errorTitle: '删除失败',
-			refreshOnComplete: true,
+			refresh: true,
 		});
 	}
 
 	async request(options = {}) {
 		const {
 			errorTitle = '操作失败',
-			refreshOnComplete = false,
-			...other,
+			refresh = false,
+			...requestOptions,
 		} = options;
 		try {
-			await this._request.fetch(other);
-			refreshOnComplete && this._refresh();
+			await this._request.fetch(requestOptions);
+			if (refresh && refresh !== 'no') {
+				this._refresh();
+			}
 		}
 		catch (err) {
 			showError(errorTitle, err);
