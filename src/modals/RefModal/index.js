@@ -55,7 +55,7 @@ export default class RefModal extends Component {
 		store[save]({
 			method: 'POST',
 			url: joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys),
-			state,
+			state: { ...state, keys, refKeys },
 		});
 	}
 
