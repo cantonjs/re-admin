@@ -38,10 +38,9 @@ export default class App extends Component {
 											left={<CreateButton />}
 											right={
 												<ContextButton
-													onClick={(ev, { request }) => {
+													onClick={(ev, { open }) => {
 														ev.preventDefault();
-														request({
-															name: 'custom',
+														open('custom', {
 															title: 'My Custom Modal',
 														});
 													}}
