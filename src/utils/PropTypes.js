@@ -22,6 +22,10 @@ export default {
 		PropTypes.string,
 		PropTypes.object,
 	]),
+	stringOrFunc: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.func,
+	]),
 	render: PropTypes.oneOfType([
 		PropTypes.bool,
 		PropTypes.func,

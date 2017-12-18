@@ -239,7 +239,7 @@ export default class DataStore {
 
 	findItemByKey(key) {
 		const { collection, uniqueKey } = this;
-		if (!collection) { return []; }
+		if (!collection) { return null; }
 		return collection.find((item, index) =>
 			key === (uniqueKey ? item[uniqueKey] : index)
 		);

@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
+import { isFunction } from 'lodash';
 
 export default class RefButton extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
-		title: PropTypes.string,
+		title: PropTypes.stringOrFunc,
 		fetch: PropTypes.string,
 		save: PropTypes.string,
 		noQuery: PropTypes.bool,
@@ -15,7 +16,6 @@ export default class RefButton extends Component {
 
 	static defaultProps = {
 		label: '关联',
-		title: '关联',
 		noQuery: false,
 	};
 
@@ -23,9 +23,21 @@ export default class RefButton extends Component {
 		store: PropTypes.object,
 	};
 
-	_handleClick = (ev, { openRefModal }) => {
+	_handleClick = (ev, { openRefModal, selectedKeys }) => {
+		const {
+			props: { title, label, ...other },
+			context: { store },
+		} = this;
+		let modalTitle = title || label;
+		if (isFunction(modalTitle)) {
+			const selectedKey = selectedKeys[0];
+			modalTitle = modalTitle(store.findItemByKey(selectedKey));
+		}
 		ev.preventDefault();
-		openRefModal(this.props);
+		openRefModal({
+			...other,
+			title: modalTitle,
+		});
 	};
 
 	render() {
