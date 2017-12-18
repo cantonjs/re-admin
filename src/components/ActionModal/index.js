@@ -56,10 +56,9 @@ export default class ActionModal extends Component {
 
 	render() {
 		const { props, context: { appConfig: { modals } } } = this;
-		const { action, title } = ActionModal.store.state;
+		const { action, title, width } = ActionModal.store.state;
 		const visible = action && modals.has(action);
 		const Comp = modals.get(action);
-
 		return (
 			<Modal
 				maskClosable={false}
@@ -67,6 +66,7 @@ export default class ActionModal extends Component {
 				title={visible ? (title || action) : ''}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
+				width={+width || 880}
 			>
 				{visible && (
 					<Comp {...props} ref={(c) => (this._child = c)} />

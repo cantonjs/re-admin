@@ -63,12 +63,14 @@ export default function withActions(WrappedComponent) {
 				table, title, noQuery,
 				fetch = 'fetch',
 				save = 'request',
+				width = 880,
 			} = options;
 			const config = {
 				table,
 				title,
 				fetch,
 				save,
+				width,
 			};
 			if (noQuery) { config.noQuery = '✓'; }
 			this.open(Actions.REF, config);
