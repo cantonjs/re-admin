@@ -33,11 +33,11 @@ export default function withActions(WrappedComponent) {
 			return joinKeys(this.getSelectedKeys());
 		};
 
-		open = (name, config) => {
+		open = (action, config) => {
 			ActionModal.open({
 				keys: joinKeys(this.getSelectedKeys()),
 				...config,
-				name,
+				action,
 			});
 		};
 
@@ -77,7 +77,7 @@ export default function withActions(WrappedComponent) {
 
 		requestCreate = () => {
 			ActionModal.open({
-				name: Actions.CREATE,
+				action: Actions.CREATE,
 				title: '创建',
 			});
 		};
