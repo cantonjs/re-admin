@@ -35,6 +35,11 @@ export default class Toolbar extends Component {
 		return { issuer };
 	}
 
+	componentWillUnmount() {
+		const { issuer } = this.context;
+		if (issuer) { issuer.delete(TOOLBAR); }
+	}
+
 	render() {
 		const { left, right } = this.props;
 		return (

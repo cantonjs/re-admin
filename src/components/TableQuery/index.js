@@ -59,6 +59,11 @@ export default class TableQuery extends Component {
 		this._formState = new FormState();
 	}
 
+	componentWillUnmount() {
+		const { issuer } = this.context;
+		if (issuer) { issuer.delete(QUERIER); }
+	}
+
 	_handleSearch = (query) => {
 		this.props.routerStore.location.query = query;
 	};

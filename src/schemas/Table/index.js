@@ -76,6 +76,7 @@ TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
 
 				const renderNode = () => {
 					const node = render(props, options);
+					if (!node) { return null; }
 					return node.key ? node : cloneElement(node, { key });
 				};
 

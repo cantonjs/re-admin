@@ -49,6 +49,11 @@ export default function createFormModal(issuerText, displayName) {
 			this._formState = new FormState();
 		}
 
+		componentWillUnmount() {
+			const { issuer } = this.context;
+			if (issuer) { issuer.delete(issuerText); }
+		}
+
 		handleOk() {
 			if (this._form) { this._form.submit(); }
 		}
