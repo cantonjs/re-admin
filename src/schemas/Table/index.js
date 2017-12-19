@@ -40,24 +40,24 @@ TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
 	const tableRenderers = [];
 
 	const createPusher = (child, props, index) => {
-		return (nodes, issuer, renderKey, defaultRender) => {
-			if (issuer) {
+		return (nodes, inIssuer, renderKey, defaultRender) => {
+			if (inIssuer) {
 				const key = child.key || index;
 				const Component = child.type;
 				const component = Component;
 
 				const render = (function () {
-					if (isFunction(issuer)) { return issuer; }
+					if (isFunction(inIssuer)) { return inIssuer; }
 
-					if (isObject(issuer)) {
+					if (isObject(inIssuer)) {
 						return function render(props) {
-							return (<Component {...props} {...issuer} />);
+							return (<Component {...props} {...inIssuer} />);
 						};
 					}
 
-					if (!isBoolean(issuer)) {
+					if (!isBoolean(inIssuer)) {
 						return function render() {
-							return (<span>{issuer}</span>);
+							return (<span>{inIssuer}</span>);
 						};
 					}
 

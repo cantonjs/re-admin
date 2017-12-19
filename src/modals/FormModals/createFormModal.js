@@ -21,21 +21,24 @@ class FormState {
 	@observable data = {};
 }
 
-export default function createFormModal(issuer, displayName) {
+export default function createFormModal(issuerText, displayName) {
 	class FormModalView extends Component {
 		static displayName = displayName;
 
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
 			modalStore: PropTypes.object.isRequired,
+			issuer: PropTypes.instanceOf(Set),
 		};
 
 		static childContextTypes = {
 			formState: PropTypes.object,
-			issuer: PropTypes.string,
+			issuer: PropTypes.instanceOf(Set),
 		};
 
 		getChildContext() {
+			const issuer = this.context.issuer || new Set();
+			issuer.add(issuerText);
 			return {
 				formState: this._formState,
 				issuer,
@@ -60,7 +63,7 @@ export default function createFormModal(issuer, displayName) {
 				const { state, state: { keys, table, save } } = modalStore;
 				const path = table ? `/${DataStore.get(table).pathname}` : '';
 				const url = joinKeys(keys) + path;
-				const method = save || (issuer === CREATER ? 'create' : 'update');
+				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...state, url, body });
 				modalStore.close();
 			}

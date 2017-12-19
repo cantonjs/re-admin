@@ -21,12 +21,18 @@ export default class Toolbar extends Component {
 		right: PropTypes.node,
 	};
 
+	static contextTypes = {
+		issuer: PropTypes.instanceOf(Set),
+	};
+
 	static childContextTypes = {
-		issuer: PropTypes.string,
+		issuer: PropTypes.instanceOf(Set),
 	};
 
 	getChildContext() {
-		return { issuer: TOOLBAR };
+		const issuer = this.context.issuer || new Set();
+		issuer.add(TOOLBAR);
+		return { issuer };
 	}
 
 	render() {

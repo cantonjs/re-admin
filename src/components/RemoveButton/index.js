@@ -19,7 +19,7 @@ export default class RemoveButton extends Component {
 	};
 
 	static contextTypes = {
-		issuer: PropTypes.string,
+		issuer: PropTypes.instanceOf(Set),
 		store: PropTypes.object.isRequired,
 	};
 
@@ -37,7 +37,8 @@ export default class RemoveButton extends Component {
 	};
 
 	render() {
-		const isInToolbar = this.context.issuer === TOOLBAR;
+		const { issuer } = this.context;
+		const isInToolbar = issuer && issuer.has(TOOLBAR);
 		const styleTypes = {};
 		if (isInToolbar) { styleTypes.type = 'danger'; }
 		return (

@@ -30,7 +30,7 @@ export default class ContextButton extends Component {
 	};
 
 	static contextTypes = {
-		issuer: PropTypes.string,
+		issuer: PropTypes.instanceOf(Set),
 	};
 
 	_handleClick = (ev) => {
@@ -58,7 +58,7 @@ export default class ContextButton extends Component {
 
 		const selected = selectedKeys.length;
 		const disabled = (minSelected > selected) || (maxSelected < selected);
-		const isInToolbar = issuer === TOOLBAR;
+		const isInToolbar = issuer && issuer.has(TOOLBAR);
 		const Comp = isInToolbar ? Button : component;
 
 		return (

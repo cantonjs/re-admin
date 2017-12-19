@@ -37,14 +37,20 @@ export default class TableQuery extends Component {
 		routerStore,
 	};
 
+	static contextTypes = {
+		issuer: PropTypes.instanceOf(Set),
+	};
+
 	static childContextTypes = {
-		issuer: PropTypes.string,
+		issuer: PropTypes.instanceOf(Set),
 		formState: PropTypes.object,
 	};
 
 	getChildContext() {
+		const issuer = this.context.issuer || new Set();
+		issuer.add(QUERIER);
 		return {
-			issuer: QUERIER,
+			issuer,
 			formState: this._formState,
 		};
 	}

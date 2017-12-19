@@ -58,8 +58,8 @@ class State {
 	constructor(props, context) {
 		this._props = props;
 		this._context = context;
-		this._isUpdater = context.issuer === UPDATER;
-		this._isQuerier = context.issuer === QUERIER;
+		this._isUpdater = context.issuer.has(UPDATER);
+		this._isQuerier = context.issuer.has(QUERIER);
 	}
 }
 
@@ -90,7 +90,7 @@ export default function withField(WrappedComponent) {
 		static contextTypes = {
 			store: PropTypes.object,
 			modalStore: PropTypes.object,
-			issuer: PropTypes.string,
+			issuer: PropTypes.instanceOf(Set),
 			getParentValue: PropTypes.func,
 		};
 
@@ -122,7 +122,7 @@ export default function withField(WrappedComponent) {
 				},
 			} = this;
 
-			const isInQuery = issuer === QUERIER;
+			const isInQuery = issuer.has(QUERIER);
 
 			return (
 				<WrappedComponent
