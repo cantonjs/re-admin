@@ -1,6 +1,7 @@
 
 import { resolve } from 'path';
 import webpack from 'webpack';
+import { name } from './package.json';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -104,6 +105,7 @@ export default (env = {}) => {
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 				__DEV__: isDev,
+				'__LIB_NAME__': JSON.stringify(name),
 			}),
 			!build && new HtmlWebpackPlugin({
 				filename: 'index.html',

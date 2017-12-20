@@ -8,11 +8,6 @@ import { isString } from 'lodash';
 import deprecated from 'utils/deprecated';
 import showError from 'utils/showError';
 
-const deprecatedGetAccessToken = deprecated({
-	outdated: 'getAccessToken()',
-	replacement: 'accessToken',
-});
-
 const verifyAndSaveAccessToken = (token, maxAge) => {
 	if (!isString(token)) {
 		throw new Error(`"accessToken" is INVALID, received "${token}"`);
@@ -39,7 +34,7 @@ class AuthStore {
 
 	// TODO: Deprecated
 	getAccessToken() {
-		deprecatedGetAccessToken();
+		deprecated('getAccessToken()', 'accessToken');
 		return this.accessToken;
 	}
 

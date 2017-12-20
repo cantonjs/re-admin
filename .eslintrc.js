@@ -65,6 +65,7 @@ module.exports = {
 	},
 	'globals': {
 		'__DEV__': true,
+		'__LIB_NAME__': true,
 	},
 	'settings': {
 		'import/resolver': {
