@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
 import { Modal } from 'antd';
+import { isFunction } from 'lodash';
 
 export default class ConfirmButton extends Component {
 	static propTypes = {
-		title: PropTypes.string.isRequired,
+		title: PropTypes.stringOrFunc.isRequired,
 		content: PropTypes.string,
 		onOk: PropTypes.func,
 		okText: PropTypes.string,
@@ -21,7 +22,7 @@ export default class ConfirmButton extends Component {
 		const { title, content, onOk, okText, method } = this.props;
 		ev.preventDefault();
 		Modal.confirm({
-			title,
+			title: isFunction(title) ? title(actions.getData()) : title,
 			content,
 			okText,
 			onOk: () => {
