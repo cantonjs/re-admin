@@ -1,21 +1,22 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import ContextButton from 'components/ContextButton';
-import { Modal } from 'antd';
+import ConfirmButton from 'components/ConfirmButton';
 import { TOOLBAR } from 'constants/Issuers';
-
-const { confirm } = Modal;
 
 export default class RemoveButton extends Component {
 	static propTypes = {
 		label: PropTypes.node,
 		multiLabel: PropTypes.node,
+		title: PropTypes.string,
+		content: PropTypes.string,
 	};
 
 	static defaultProps = {
 		label: '删除',
 		multiLabel: '批量删除',
+		title: '确定删除？',
+		content: '该操作将不能撤销',
 	};
 
 	static contextTypes = {
@@ -23,17 +24,8 @@ export default class RemoveButton extends Component {
 		store: PropTypes.object.isRequired,
 	};
 
-	_handleClick = (ev, { getSelectedKeysString }) => {
-		ev.preventDefault();
-		const { store } = this.context;
-		confirm({
-			title: '确定删除？',
-			content: '该操作将不能撤销',
-			onOk: () => {
-				store.remove({ url: getSelectedKeysString() });
-			},
-			okText: '删除',
-		});
+	_handleOk = ({ getSelectedKeysString }) => {
+		this.context.store.remove({ url: getSelectedKeysString() });
 	};
 
 	render() {
@@ -42,8 +34,8 @@ export default class RemoveButton extends Component {
 		const styleTypes = {};
 		if (isInToolbar) { styleTypes.type = 'danger'; }
 		return (
-			<ContextButton
-				onClick={this._handleClick}
+			<ConfirmButton
+				onOk={this._handleOk}
 				{...styleTypes}
 				{...this.props}
 				minSelected={1}
