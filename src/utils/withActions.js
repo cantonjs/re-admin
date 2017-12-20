@@ -76,6 +76,10 @@ export default function withActions(WrappedComponent) {
 			this.open(Actions.REF, config);
 		};
 
+		_getData = () => {
+			const selectedKeys = this.getSelectedKeys();
+			return this.context.store.getData(selectedKeys[0]);
+		};
 
 		requestCreate = () => {
 			ActionModal.open({
@@ -97,6 +101,7 @@ export default function withActions(WrappedComponent) {
 						openRefModal: this.openRefModal,
 						selectedKeys: this._selectedKeys || this.context.store.selectedKeys,
 						getSelectedKeysString: this.getSelectedKeysString,
+						getData: this._getData,
 					}}
 				/>
 			);

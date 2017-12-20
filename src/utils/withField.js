@@ -47,7 +47,7 @@ class State {
 			const selectedKeys = (keys || '').split(',');
 			if (selectedKeys.length !== 1) { return ''; }
 			const item = getParentValue ?
-				getParentValue() : store.findItemByKey(selectedKeys[0])
+				getParentValue() : store.getData(selectedKeys[0])
 			;
 			return item ? item[name] : undefined;
 		}

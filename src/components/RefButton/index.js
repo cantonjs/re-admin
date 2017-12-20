@@ -23,15 +23,11 @@ export default class RefButton extends Component {
 		store: PropTypes.object,
 	};
 
-	_handleClick = (ev, { openRefModal, selectedKeys }) => {
-		const {
-			props: { title, label, ...other },
-			context: { store },
-		} = this;
+	_handleClick = (ev, { openRefModal, getData }) => {
+		const { props: { title, label, ...other } } = this;
 		let modalTitle = title || label;
 		if (isFunction(modalTitle)) {
-			const selectedKey = selectedKeys[0];
-			modalTitle = modalTitle(store.findItemByKey(selectedKey));
+			modalTitle = modalTitle(getData());
 		}
 		ev.preventDefault();
 		openRefModal({

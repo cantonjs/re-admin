@@ -1,8 +1,9 @@
 
 import { observable, computed, toJS } from 'mobx';
-import { omitBy, assign, isFunction, reduce } from 'lodash';
+import { omitBy, assign, isFunction, isUndefined, reduce } from 'lodash';
 import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
+import deprecated from 'utils/deprecated';
 import routerStore from 'stores/routerStore';
 import ActionModalStore from 'stores/ActionModalStore';
 
@@ -238,10 +239,16 @@ export default class DataStore {
 	}
 
 	findItemByKey(key) {
-		const { collection, uniqueKey } = this;
-		if (!collection) { return null; }
-		return collection.find((item, index) =>
-			key === (uniqueKey ? item[uniqueKey] : index)
+		deprecated('store.findItemByKey()', 'store.getData()');
+		return this.getData(key);
+	}
+
+	getData(key) {
+		const { collection, uniqueKey, selectedKeys } = this;
+		if (isUndefined(key)) { key = selectedKeys[0]; }
+		if (isUndefined(key) || !collection) { return null; }
+		return collection.find((dataItem, index) =>
+			key === (uniqueKey ? dataItem[uniqueKey] : index)
 		);
 	}
 
