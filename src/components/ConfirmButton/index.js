@@ -14,7 +14,7 @@ export default class ConfirmButton extends Component {
 	};
 
 	static defaultProps = {
-		okText: '删除',
+		okText: 'OK',
 	};
 
 	_handleClick = (ev, actions) => {
