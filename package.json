@@ -41,7 +41,7 @@
     "moment": "^2.18.1",
     "react-document-title": "^2.0.3",
     "react-nested-form": "^0.0.0-20",
-    "react-router-mobx": "^1.0.1",
+    "react-router-mobx": "^1.0.2",
     "react-title-component": "^1.0.1",
     "tiny-querystring": "^0.0.2"
   },
@@ -55,7 +55,7 @@
     "react-router-dom": "^4.0.0"
   },
   "devDependencies": {
-    "antd": "^2.13.10",
+    "antd": "^3.0.3",
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
@@ -100,10 +100,10 @@
     "output-host": "^3.1.0",
     "postcss-loader": "^1.3.3",
     "prop-types": "^15.5.8",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-hot-loader": "3.0.0-beta.6",
-    "react-router-dom": "^4.1.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-hot-loader": "^3.1.3",
+    "react-router-dom": "^4.2.2",
     "rimraf": "^2.5.4",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.17.0",

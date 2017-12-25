@@ -49,9 +49,10 @@ export default class DataTableView extends Component {
 		};
 	}
 
-	componentWillMount() {
-		const { table } = this.props;
-		const { DataStore } = this.context;
+	constructor(props, context) {
+		super(props, context);
+		const { table } = props;
+		const { DataStore } = context;
 		this.state = {
 			store: DataStore.get(table),
 		};
