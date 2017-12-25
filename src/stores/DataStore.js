@@ -76,6 +76,7 @@ export default class DataStore {
 						return render(props, {
 							...options,
 							text,
+							value: text,
 							record,
 							index,
 						});
