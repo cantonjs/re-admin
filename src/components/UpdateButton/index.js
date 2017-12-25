@@ -6,8 +6,8 @@ import ContextButton from 'components/ContextButton';
 export default class UpdateButton extends Component {
 	static propTypes = {
 		names: PropTypes.array,
-		label: PropTypes.node,
-		multiLabel: PropTypes.node,
+		label: PropTypes.stringOrFunc,
+		multiLabel: PropTypes.stringOrFunc,
 	};
 
 	static defaultProps = {

@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
+import { isFunction } from 'lodash';
 
 export default class CreateButton extends Component {
 	static propTypes = {
-		label: PropTypes.node,
 		table: PropTypes.string,
-		title: PropTypes.string,
+		label: PropTypes.stringOrFunc,
+		title: PropTypes.stringOrFunc,
 		save: PropTypes.string,
 	};
 
@@ -16,9 +17,14 @@ export default class CreateButton extends Component {
 		save: 'create',
 	};
 
-	_handleClick = (ev, { openCreaterModal, getSelectedKeysString }) => {
+	_handleClick = (ev, refs) => {
+		const { openCreaterModal, getSelectedKeysString, getData } = refs;
 		const { label, title, table, save } = this.props;
-		const options = { title: title || label, save };
+		const getTitle = title || label;
+		const options = {
+			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
+			save,
+		};
 		if (table) {
 			options.keys = getSelectedKeysString();
 			options.table = table;

@@ -11,7 +11,7 @@ export default class RefButton extends Component {
 		fetch: PropTypes.string,
 		save: PropTypes.string,
 		noQuery: PropTypes.bool,
-		label: PropTypes.node,
+		label: PropTypes.stringOrFunc,
 	};
 
 	static defaultProps = {
@@ -25,14 +25,11 @@ export default class RefButton extends Component {
 
 	_handleClick = (ev, { openRefModal, getData }) => {
 		const { props: { title, label, ...other } } = this;
-		let modalTitle = title || label;
-		if (isFunction(modalTitle)) {
-			modalTitle = modalTitle(getData());
-		}
+		const getTitle = title || label;
 		ev.preventDefault();
 		openRefModal({
 			...other,
-			title: modalTitle,
+			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
 		});
 	};
 

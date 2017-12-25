@@ -6,10 +6,10 @@ import { TOOLBAR } from 'constants/Issuers';
 
 export default class RemoveButton extends Component {
 	static propTypes = {
-		label: PropTypes.node,
-		multiLabel: PropTypes.node,
-		title: PropTypes.string,
-		content: PropTypes.string,
+		label: PropTypes.stringOrFunc,
+		multiLabel: PropTypes.stringOrFunc,
+		title: PropTypes.stringOrFunc,
+		content: PropTypes.stringOrFunc,
 	};
 
 	static defaultProps = {

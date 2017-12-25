@@ -8,7 +8,7 @@ import { isFunction } from 'lodash';
 export default class ConfirmButton extends Component {
 	static propTypes = {
 		title: PropTypes.stringOrFunc.isRequired,
-		content: PropTypes.string,
+		content: PropTypes.stringOrFunc,
 		onOk: PropTypes.func,
 		okText: PropTypes.string,
 		method: PropTypes.string,
@@ -23,7 +23,7 @@ export default class ConfirmButton extends Component {
 		ev.preventDefault();
 		Modal.confirm({
 			title: isFunction(title) ? title(actions.getData()) : title,
-			content,
+			content: isFunction(content) ? content(actions.getData()) : content,
 			okText,
 			onOk: () => {
 				if (onOk) { onOk(actions); }
