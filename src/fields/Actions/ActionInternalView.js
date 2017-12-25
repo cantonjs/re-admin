@@ -1,11 +1,16 @@
 
 import React, { Component, Children, cloneElement } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'utils/PropTypes';
+import { isFunction } from 'lodash';
 
 export default class ActionInternalView extends Component {
 	static propTypes = {
-		children: PropTypes.node,
+		children: PropTypes.nodeOrFunc.isRequired,
 		tableRowKey: PropTypes.string,
+	};
+
+	static contextTypes = {
+		store: PropTypes.object.isRequired,
 	};
 
 	static childContextTypes = {
@@ -19,16 +24,18 @@ export default class ActionInternalView extends Component {
 	}
 
 	_renderChildren() {
-		const { children } = this.props;
-		const finalChildren = [];
-		const length = Children.count(children);
-		Children.forEach(children, (child, index) => {
-			finalChildren.push(cloneElement(child, { key: `${index}@1` }));
+		const { props: { children, tableRowKey }, context: { store } } = this;
+		const list = isFunction(children) ?
+			children(store.getData(tableRowKey)) : children;
+		const childrenArr = [];
+		const length = Children.count(list);
+		Children.forEach(list, (child, index) => {
+			childrenArr.push(cloneElement(child, { key: `${index}@1` }));
 			if (index < length - 1) {
-				finalChildren.push(<span className="ant-divider" key={`${index}@2`} />);
+				childrenArr.push(<span className="ant-divider" key={`${index}@2`} />);
 			}
 		});
-		return finalChildren;
+		return childrenArr;
 	}
 
 	render() {
