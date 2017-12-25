@@ -41,9 +41,9 @@
     "moment": "^2.18.1",
     "react-document-title": "^2.0.3",
     "react-nested-form": "^0.0.0-20",
-    "react-router-mobx": "^1.0.0",
+    "react-router-mobx": "^1.0.1",
     "react-title-component": "^1.0.1",
-    "tiny-querystring": "^0.0.0"
+    "tiny-querystring": "^0.0.2"
   },
   "peerDependencies": {
     "antd": "^2.10.0",
@@ -89,7 +89,7 @@
     "koa-error": "^3.0.0",
     "koa-router": "^7.1.1",
     "less": "^2.7.2",
-    "less-loader": "^4.0.4",
+    "less-loader": "^4.0.5",
     "mkdirp": "^0.5.1",
     "mobx": "^3.1.9",
     "mobx-react": "^4.1.8",
@@ -107,7 +107,7 @@
     "rimraf": "^2.5.4",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.17.0",
-    "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.5.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7"
   }
 }
