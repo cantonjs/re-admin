@@ -2700,9 +2700,9 @@ fbjs@^0.8.7, fbjs@^0.8.9:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
-fetch-extra@^0.0.0-5:
-  version "0.0.0-5"
-  resolved "https://registry.npmjs.org/fetch-extra/-/fetch-extra-0.0.0-5.tgz#6a3dbde401f744abc58c0fd0c3a7b8836d75d026"
+fetch-extra@^0.0.0:
+  version "0.0.0"
+  resolved "http://registry.npm.taobao.org/fetch-extra/download/fetch-extra-0.0.0.tgz#a60f68947b4f56187bde76d3e6bcdcdfef90aa8f"
   dependencies:
     node-fetch "^1.7.3"
     tiny-querystring "^0.0.2"
