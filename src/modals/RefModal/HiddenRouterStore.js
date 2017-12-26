@@ -9,21 +9,21 @@ class LocStore {
 	}
 
 	set query(query) {
-		const state = this._modalState;
-		const method = state.fetch || 'fetch';
+		const props = this._props;
+		const method = props.fetch || 'fetch';
 		this._query = query;
-		this._dataStore.call(method, { ...state, query });
+		this._dataStore.call(method, { ...props, query });
 		return query;
 	}
 
-	constructor(dataStore, modalState) {
+	constructor(dataStore, props) {
 		this._dataStore = dataStore;
-		this._modalState = modalState;
+		this._props = props;
 	}
 }
 
 export default class HiddenRouterStore {
-	constructor(dataStore, modalState) {
-		this.location = new LocStore(dataStore, modalState);
+	constructor(dataStore, props) {
+		this.location = new LocStore(dataStore, props);
 	}
 }

@@ -8,6 +8,7 @@ import {
 } from '../src';
 import testTable from './tables/test';
 import fooTable from './tables/foo';
+import FooModal from './modals/Foo';
 
 export default class App extends Component {
 	render() {
@@ -89,7 +90,7 @@ export default class App extends Component {
 					filePath="/api/upload/file"
 				/>
 
-				<Modal name="custom" component={() => (<span>custom modal</span>)} />
+				<Modal name="custom" component={FooModal} />
 
 				{testTable}
 				{fooTable}

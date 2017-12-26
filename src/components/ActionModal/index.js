@@ -43,19 +43,22 @@ export default class ActionModal extends Component {
 		store.setSelectedKeys([]);
 	}
 
-	_handleOk = () => {
+	_handleOk = (ev) => {
 		if (this._child && this._child.handleOk) {
-			this._child.handleOk();
+			this._child.handleOk(ev);
 		}
-		this._close();
+		ev.isDefaultPrevented() || this._close();
 	};
 
-	_handleCancel = () => {
-		this._close();
+	_handleCancel = (ev) => {
+		if (this._child && this._child.handleCancel) {
+			this._child.handleCancel(ev);
+		}
+		ev.isDefaultPrevented() || this._close();
 	};
 
 	render() {
-		const { props, context: { appConfig: { modals } } } = this;
+		const { context: { appConfig: { modals } } } = this;
 		const { action, title, width } = ActionModal.store.state;
 		const visible = action && modals.has(action);
 		const Comp = modals.get(action);
@@ -69,7 +72,11 @@ export default class ActionModal extends Component {
 				width={+width || 880}
 			>
 				{visible && (
-					<Comp {...props} ref={(c) => (this._child = c)} />
+					<Comp
+						ref={(c) => (this._child = c)}
+						{...ActionModal.store.state}
+						close={ActionModal.store.close}
+					/>
 				)}
 			</Modal>
 		);

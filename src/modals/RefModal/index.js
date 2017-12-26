@@ -10,6 +10,20 @@ import TableQuery from 'components/TableQuery';
 
 @observer
 export default class RefModal extends Component {
+	static propTypes = {
+		table: PropTypes.string.isRequired,
+		fetch: PropTypes.string,
+		keys: PropTypes.string,
+		save: PropTypes.string,
+		noQuery: PropTypes.any,
+	};
+
+	static defaultProps = {
+		fetch: 'fetch',
+		save: 'request',
+		noQuery: false,
+	};
+
 	static contextTypes = {
 		modalStore: PropTypes.object.isRequired,
 		store: PropTypes.object.isRequired,
@@ -17,42 +31,38 @@ export default class RefModal extends Component {
 
 	componentWillMount() {
 		const {
-			state,
-			state: { table, fetch = 'fetch' },
-		} = this.context.modalStore;
+			props: { table, fetch },
+			props,
+		} = this;
 		this._refStore = new DataStore(table);
-		this._hiddenRouterStore = new HiddenRouterStore(this._refStore, state);
-		this._refStore.call(fetch, state);
+		this._hiddenRouterStore = new HiddenRouterStore(this._refStore, props);
+		this._refStore.call(fetch, props);
 	}
 
 	handleOk() {
 		const {
-			context: {
-				modalStore: {
-					state,
-					state: { keys, save = 'request' },
-				},
-				store,
-			},
+			context: { store },
+			props,
+			props: { keys, save },
 			_refStore,
 		} = this;
 
 		const { pathname } = _refStore;
 		const refKeys = _refStore.selectedKeys;
 		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
-		store.call(save, { method: 'POST', url, ...state, keys, refKeys });
+		store.call(save, { method: 'POST', url, ...props, keys, refKeys });
 	}
 
 	render() {
 		const {
 			_hiddenRouterStore,
 			_refStore,
-			context: { modalStore: { state } },
+			props: { noQuery },
 		} = this;
 
 		return (
 			<div>
-				{!state.noQuery &&
+				{!noQuery &&
 					<TableQuery
 						store={_refStore}
 						routerStore={_hiddenRouterStore}

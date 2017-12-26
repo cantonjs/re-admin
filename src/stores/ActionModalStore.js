@@ -34,7 +34,7 @@ export default class ModalStore {
 		this.routerStore = routerStore;
 	}
 
-	close() {
+	close = () => {
 		const { location } = this.routerStore;
 		location.query = {
 			...omitBy(
@@ -42,5 +42,5 @@ export default class ModalStore {
 				(val, key) => key.startsWith(ModalStore.prefix),
 			),
 		};
-	}
+	};
 }

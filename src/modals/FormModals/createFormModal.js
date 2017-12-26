@@ -25,9 +25,15 @@ export default function createFormModal(issuerText, displayName) {
 	class FormModalView extends Component {
 		static displayName = displayName;
 
+		static propTypes = {
+			table: PropTypes.string,
+			close: PropTypes.func.isRequired,
+			keys: PropTypes.string,
+			save: PropTypes.string,
+		};
+
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
-			modalStore: PropTypes.object.isRequired,
 			issuer: PropTypes.instanceOf(Set),
 		};
 
@@ -54,8 +60,11 @@ export default function createFormModal(issuerText, displayName) {
 			if (issuer) { issuer.delete(issuerText); }
 		}
 
-		handleOk() {
-			if (this._form) { this._form.submit(); }
+		handleOk(ev) {
+			if (this._form) {
+				ev.preventDefault();
+				this._form.submit();
+			}
 		}
 
 		_handleChange = (data) => {
@@ -64,13 +73,13 @@ export default function createFormModal(issuerText, displayName) {
 
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
-				const { store, modalStore } = this.context;
-				const { state, state: { keys, table, save } } = modalStore;
+				const { context: { store }, props } = this;
+				const { keys, table, save, close } = props;
 				const path = table ? `/${DataStore.get(table).pathname}` : '';
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
-				store.call(method, { ...state, url, body });
-				modalStore.close();
+				store.call(method, { ...props, url, body });
+				close();
 			}
 			else if (__DEV__) {
 				console.warn('INVALID');
@@ -79,10 +88,8 @@ export default function createFormModal(issuerText, displayName) {
 
 		render() {
 			const {
-				context: {
-					store,
-					modalStore: { state: { table } },
-				},
+				context: { store },
+				props: { table },
 			} = this;
 
 			const dataStore = table ? DataStore.get(table) : store;
