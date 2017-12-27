@@ -1,11 +1,12 @@
 
 import { isString, isObject } from 'lodash';
-import url from 'url';
 import { parse } from 'tiny-querystring';
+import { parsePath } from 'history';
 
 export default function parseAPIPath(apiPath) {
 	if (isString(apiPath)) {
-		apiPath = url.parse(apiPath);
+		apiPath = parsePath(apiPath);
+		apiPath.query = apiPath.search.slice(1);
 	}
 
 	if (isObject(apiPath)) {

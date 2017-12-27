@@ -1,4 +1,3 @@
-
 import { resolve } from 'path';
 import webpack from 'webpack';
 import { name } from './package.json';
@@ -52,19 +51,16 @@ export default (env = {}) => {
 								sourceMap: isDev,
 								module: true,
 								localIdentName: isDev ?
-									'[path]-[name]-[local]-[hash:base64:3]' : '[hash:base64:7]'
-								,
+									'[path]-[name]-[local]-[hash:base64:3]' :
+									'[hash:base64:7]',
 							},
-						}
+						},
 					],
 				},
 				{
 					test: /\.css$/,
 					include: /node_modules/,
-					use: [
-						'style-loader',
-						'css-loader',
-					],
+					use: ['style-loader', 'css-loader'],
 				},
 				{
 					test: /\.scss$/,
@@ -77,8 +73,8 @@ export default (env = {}) => {
 								sourceMap: isDev,
 								module: true,
 								localIdentName: isDev ?
-									'[path]-[name]-[local]-[hash:base64:3]' : '[hash:base64:7]'
-								,
+									'[path]-[name]-[local]-[hash:base64:3]' :
+									'[hash:base64:7]',
 							},
 						},
 						{
@@ -92,11 +88,7 @@ export default (env = {}) => {
 				{
 					test: /\.less$/,
 					include: /node_modules/,
-					use: [
-						'style-loader',
-						'css-loader',
-						'less-loader',
-					],
+					use: ['style-loader', 'css-loader', 'less-loader'],
 				},
 			],
 		},
@@ -105,17 +97,19 @@ export default (env = {}) => {
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 				__DEV__: isDev,
-				'__LIB_NAME__': JSON.stringify(name),
+				__LIB_NAME__: JSON.stringify(name),
 			}),
-			!build && new HtmlWebpackPlugin({
-				filename: 'index.html',
-				template: './test/index.html',
-				minify: {
-					collapseWhitespace: true,
-					minifyJS: true,
-				},
-			}),
+			!build &&
+				new HtmlWebpackPlugin({
+					filename: 'index.html',
+					template: './test/index.html',
+					minify: {
+						collapseWhitespace: true,
+						minifyJS: true,
+					},
+				}),
 			build && new webpack.optimize.ModuleConcatenationPlugin(),
+			new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 		].filter(Boolean),
 		resolve: {
 			modules: [srcDir, testDir, 'node_modules'],
@@ -137,7 +131,7 @@ export default (env = {}) => {
 			},
 			proxy: {
 				'/api': `http://127.0.0.1:${testServerPort}`,
-			}
+			},
 		},
 	};
 
