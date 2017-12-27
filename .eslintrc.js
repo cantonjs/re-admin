@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
 	'parser': 'babel-eslint',
 	'extends': [
+		'prettier',
 		'standard',
 		'plugin:react/recommended',
 		'plugin:promise/recommended',
@@ -32,14 +33,15 @@ module.exports = {
 
 		'semi': [1, 'always'],
 		'no-tabs': 0,
-		'comma-dangle': 0,
+		'comma-dangle': [1, 'always-multiline'],
 		'indent': [2, 'tab', {
 			'SwitchCase': 1
 		}],
 		'padded-blocks': 0,
+		'quotes': [1, 'single'],
 		'space-before-function-paren': [1, {
 			'anonymous': 'always',
-			'named': 'never'
+			'named': 'never',
 		}],
 		'max-len': [1, {
 			'code': 80,
