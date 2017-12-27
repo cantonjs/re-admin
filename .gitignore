@@ -7,6 +7,7 @@ ehthumbs.db
 Thumbs.db
 .log
 *.log
+.stats.json
 logs
 node_modules
 dist
