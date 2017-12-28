@@ -64,6 +64,7 @@ module.exports = {
 			'ignoreRestSiblings': true,
 		}],
 		'spaced-comment': 0,
+		'arrow-parens': [1, 'always'],
 	},
 	'globals': {
 		'__DEV__': true,
