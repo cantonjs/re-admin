@@ -14,10 +14,7 @@ export default class RefField extends Component {
 
 	render() {
 		const {
-			props: {
-				getValue,
-				...other,
-			},
+			props: { getValue, ...other },
 		} = this;
 
 		const value = getValue();

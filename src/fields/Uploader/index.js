@@ -57,7 +57,8 @@ export default class Uploader extends Component {
 
 				requireAccessToken, filePath,
 
-				max, getValue, ...other,
+				max, getValue,
+				...other
 			},
 			state: { fileList },
 			_uploadPath,

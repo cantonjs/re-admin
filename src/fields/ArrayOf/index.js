@@ -59,7 +59,7 @@ export default class ArrayOf extends Component {
 	render() {
 		const {
 			getValue, children, name, addButtonLabel, wrapperStyle,
-			...other,
+			...other
 		} = this.props;
 
 		const child = Children.only(children);

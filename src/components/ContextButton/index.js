@@ -52,7 +52,7 @@ export default class ContextButton extends Component {
 				actions: { selectedKeys, getData },
 				component, children, label, multiLabel,
 				minSelected, maxSelected,
-				...other,
+				...other
 			},
 			context: { issuer },
 		} = this;

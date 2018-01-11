@@ -286,7 +286,7 @@ export default class DataStore {
 		const {
 			errorTitle = '操作失败',
 			refresh = false,
-			...requestOptions,
+			...requestOptions
 		} = options;
 		try {
 			await this._request.fetch(requestOptions);

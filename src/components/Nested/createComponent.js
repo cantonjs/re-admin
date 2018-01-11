@@ -18,7 +18,7 @@ export default function createComponent(Comp, options = {}) {
 				<Comp {...props} />
 			);
 		},
-		...otherOptions,
+		...otherOptions
 	} = options;
 
 	if (!isFunction(mapProps) && onChange) {
@@ -46,7 +46,7 @@ export default function createComponent(Comp, options = {}) {
 				nest: { errorMessage, isPristine },
 				label, labelCol, wrapperCol, colon, required, wrapperStyle,
 				name,
-				...other,
+				...other
 			} = this.props;
 
 			const isInvalid = errorMessage && !isPristine;

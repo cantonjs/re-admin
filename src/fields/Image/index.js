@@ -98,7 +98,7 @@ export default class ImageField extends Component {
 				max, strategy,
 				getValue,
 				thumbStyle,
-				...other,
+				...other
 			},
 			state: { previewVisible, previewImage, fileList },
 			_customRequest,

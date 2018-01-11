@@ -20,7 +20,7 @@ export default class TextField extends Component {
 			props: {
 				getValue,
 				component: Comp,
-				...other,
+				...other
 			},
 		} = this;
 

@@ -61,7 +61,7 @@ export default class NForm extends Component {
 			// eslint-disable-next-line
 			labelCol, wrapperCol, render, wrapperStyle, colon,
 
-			...other,
+			...other
 		} = this.props;
 		const customClassName = className ? ` ${className}` : '';
 		return (

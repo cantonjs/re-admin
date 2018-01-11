@@ -45,7 +45,7 @@ export default class ObjectOf extends Component {
 			getValue, children,
 			label, labelCol, wrapperCol, colon, required, wrapperStyle,
 
-			...other,
+			...other
 		} = this.props;
 
 		return (

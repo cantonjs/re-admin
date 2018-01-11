@@ -40,7 +40,7 @@ export default class ConfirmButton extends Component {
 	render() {
 		const {
 			title, content, onOk, okText, method,
-			...other,
+			...other
 		} = this.props;
 		return (
 			<ContextButton

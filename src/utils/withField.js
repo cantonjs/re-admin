@@ -115,7 +115,7 @@ export default function withField(WrappedComponent) {
 					unique,
 					sortable,
 
-					...other,
+					...other
 				},
 				context: {
 					issuer,
