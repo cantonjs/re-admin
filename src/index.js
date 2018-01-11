@@ -15,6 +15,7 @@ export UpdateButton from 'components/UpdateButton';
 export RemoveButton from 'components/RemoveButton';
 export RefButton from 'components/RefButton';
 export TableQuerySwitch from 'components/TableQuerySwitch';
+export { Form, Submit, Reset } from 'components/Nested';
 
 export withField from 'utils/withField';
 export withActions from 'utils/withActions';
