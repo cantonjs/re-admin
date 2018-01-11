@@ -58,8 +58,9 @@ class State {
 	constructor(props, context) {
 		this._props = props;
 		this._context = context;
-		this._isUpdater = context.issuer.has(UPDATER);
-		this._isQuerier = context.issuer.has(QUERIER);
+		const { issuer } = context;
+		this._isUpdater = issuer && issuer.has(UPDATER);
+		this._isQuerier = issuer && issuer.has(QUERIER);
 	}
 }
 
@@ -122,7 +123,7 @@ export default function withField(WrappedComponent) {
 				},
 			} = this;
 
-			const isInQuery = issuer.has(QUERIER);
+			const isInQuery = issuer && issuer.has(QUERIER);
 
 			return (
 				<WrappedComponent
