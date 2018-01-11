@@ -289,10 +289,9 @@ export default class DataStore {
 			...requestOptions
 		} = options;
 		try {
-			await this._request.fetch(requestOptions);
-			if (refresh && refresh !== 'no') {
-				this._refresh();
-			}
+			const res = await this._request.fetch(requestOptions);
+			if (refresh && refresh !== 'no') { this._refresh(); }
+			return res;
 		}
 		catch (err) {
 			showError(errorTitle, err);
