@@ -75,7 +75,6 @@ export default class ActionModal extends Component {
 					<Comp
 						ref={(c) => (this._child = c)}
 						{...ActionModal.store.state}
-						close={ActionModal.store.close}
 					/>
 				)}
 			</Modal>

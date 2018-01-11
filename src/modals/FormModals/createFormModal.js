@@ -27,13 +27,13 @@ export default function createFormModal(issuerText, displayName) {
 
 		static propTypes = {
 			table: PropTypes.string,
-			close: PropTypes.func.isRequired,
 			keys: PropTypes.string,
 			save: PropTypes.string,
 		};
 
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
+			modalStore: PropTypes.object.isRequired,
 			issuer: PropTypes.instanceOf(Set),
 		};
 
@@ -73,13 +73,13 @@ export default function createFormModal(issuerText, displayName) {
 
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
-				const { context: { store }, props } = this;
-				const { keys, table, save, close } = props;
+				const { context: { store, modalStore }, props } = this;
+				const { keys, table, save } = props;
 				const path = table ? `/${DataStore.get(table).pathname}` : '';
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
-				close();
+				modalStore.close();
 			}
 			else if (__DEV__) {
 				console.warn('INVALID');
