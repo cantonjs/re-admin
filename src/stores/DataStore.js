@@ -290,6 +290,7 @@ export default class DataStore {
 		const {
 			errorTitle = '操作失败',
 			refresh = false,
+			throwError = false,
 			...requestOptions
 		} = options;
 		try {
@@ -298,6 +299,7 @@ export default class DataStore {
 			return res;
 		}
 		catch (err) {
+			if (throwError) { throw err; }
 			showError(errorTitle, err);
 		};
 	}
