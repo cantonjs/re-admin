@@ -62,7 +62,7 @@ export default class ContextButton extends Component {
 		const isInToolbar = issuer && issuer.has(TOOLBAR);
 		const Comp = isInToolbar ? Button : component;
 		const renderChild = children ||
-			(minSelected && (selected > 1) ? multiLabel : label);
+			(minSelected && (selected > 1) && multiLabel ? multiLabel : label);
 
 		return (
 			<Comp
