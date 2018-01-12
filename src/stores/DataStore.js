@@ -235,8 +235,12 @@ export default class DataStore {
 		this.selectedKeys = [];
 	}
 
-	setSelectedKeys(selectedKeys) {
+	setSelectedKeys(selectedKeys = []) {
 		this.selectedKeys = selectedKeys;
+	}
+
+	clearSelectedKeys() {
+		this.selectedKeys = [];
 	}
 
 	findItemByKey(key) {
