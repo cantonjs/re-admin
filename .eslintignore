@@ -1,0 +1,4 @@
+.eslintrc.js
+lib/*
+dist/*
+es/*
