@@ -7,16 +7,20 @@ import { isString } from 'lodash';
 import deprecated from 'utils/deprecated';
 import showError from 'utils/showError';
 
-const verifyAndSaveAccessToken = (token, maxAge) => {
-	if (!isString(token)) {
-		throw new Error(`"accessToken" is INVALID, received "${token}"`);
+const verifyAndSaveAccessToken = (authRes = {}) => {
+	const { accessToken, expiresIn, expiresInMilliseconds } = authRes;
+
+	if (!isString(accessToken)) {
+		throw new Error(`"accessToken" is INVALID, received "${accessToken}"`);
 	}
+
+	const maxAge = expiresInMilliseconds || (expiresIn && expiresIn * 1000) || 0;
 
 	if (!+maxAge) {
 		__DEV__ && console.warn('Missing `expiresIn` attribute.');
 	}
 
-	maxAge && cookie.set(ACCESS_TOKEN, token, { maxAge });
+	maxAge && cookie.set(ACCESS_TOKEN, accessToken, { maxAge });
 };
 
 class AuthStore {
@@ -48,9 +52,9 @@ class AuthStore {
 			}
 
 			const res = await this._request.fetch(options);
-			const { accessToken, expiresIn } = this._config.mapOnGetUserResponse(res);
-			verifyAndSaveAccessToken(accessToken, expiresIn);
-			this.accessToken = accessToken;
+			const authRes = this._config.mapOnGetUserResponse(res);
+			verifyAndSaveAccessToken(authRes);
+			this.accessToken = authRes.accessToken;
 			isOk = true;
 		} catch (err) {
 			showError('登录失效', err);
@@ -69,9 +73,10 @@ class AuthStore {
 				method: 'POST',
 				body,
 			});
-			const { accessToken, expiresIn } = this._config.mapOnLoginResponse(res);
-			verifyAndSaveAccessToken(accessToken, expiresIn);
-			this.accessToken = accessToken;
+
+			const authRes = this._config.mapOnLoginResponse(res);
+			verifyAndSaveAccessToken(authRes);
+			this.accessToken = authRes.accessToken;
 
 			isOk = true;
 			message.success('登录成功');
