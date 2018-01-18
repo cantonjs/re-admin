@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { nestify } from 'react-nested-form';
@@ -14,9 +13,7 @@ export default function createComponent(Comp, options = {}) {
 		mapProps = {},
 		propTypes = {},
 		render = function render(props, originalProps, Comp) {
-			return (
-				<Comp {...props} />
-			);
+			return <Comp {...props} />;
 		},
 		...otherOptions
 	} = options;
@@ -44,7 +41,12 @@ export default function createComponent(Comp, options = {}) {
 		render() {
 			const {
 				nest: { errorMessage, isPristine },
-				label, labelCol, wrapperCol, colon, required, wrapperStyle,
+				label,
+				labelCol,
+				wrapperCol,
+				colon,
+				required,
+				wrapperStyle,
 				name,
 				...other
 			} = this.props;
@@ -66,7 +68,7 @@ export default function createComponent(Comp, options = {}) {
 				</Item>
 			);
 		}
-	};
+	}
 
 	return nestify(mapProps, otherOptions)(NestedFormElement);
 }

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NestedForm from 'react-nested-form';
@@ -50,16 +49,29 @@ export default class NForm extends Component {
 		this.form.reset(...args);
 	}
 
+	requestChange(...args) {
+		this.form._requestChange(...args);
+	}
+
 	_saveForm = (form) => {
-		if (form) { this.form = form; }
+		if (form) {
+			this.form = form;
+		}
 	};
 
 	render() {
 		const {
-			layout, prefixCls, className,
+			layout,
+			prefixCls,
+			className,
 
-			// eslint-disable-next-line
-			labelCol, wrapperCol, render, wrapperStyle, colon,
+			/* eslint-disable */
+			labelCol,
+			wrapperCol,
+			render,
+			wrapperStyle,
+			colon,
+			/* eslint-enable */
 
 			...other
 		} = this.props;
