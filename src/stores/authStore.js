@@ -1,4 +1,3 @@
-
 import { observable } from 'mobx';
 import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
@@ -14,9 +13,7 @@ const verifyAndSaveAccessToken = (token, maxAge) => {
 	}
 
 	if (!+maxAge) {
-		__DEV__ && console.warn(
-			'Missing `expiresIn` attribute.'
-		);
+		__DEV__ && console.warn('Missing `expiresIn` attribute.');
 	}
 
 	maxAge && cookie.set(ACCESS_TOKEN, token, { maxAge });
@@ -50,12 +47,12 @@ class AuthStore {
 				};
 			}
 
-			const { accessToken, expiresIn } = await this._request.fetch(options);
+			const res = await this._request.fetch(options);
+			const { accessToken, expiresIn } = this._config.mapOnGetUserResponse(res);
 			verifyAndSaveAccessToken(accessToken, expiresIn);
 			this.accessToken = accessToken;
 			isOk = true;
-		}
-		catch (err) {
+		} catch (err) {
 			showError('登录失效', err);
 		}
 		this.isFetching = false;
@@ -67,19 +64,18 @@ class AuthStore {
 		let isOk = false;
 
 		try {
-			const { accessToken, expiresIn } = await this._request.fetch({
+			const res = await this._request.fetch({
 				url: this._config.loginPath,
 				method: 'POST',
 				body,
 			});
-
+			const { accessToken, expiresIn } = this._config.mapOnLoginResponse(res);
 			verifyAndSaveAccessToken(accessToken, expiresIn);
 			this.accessToken = accessToken;
 
 			isOk = true;
 			message.success('登录成功');
-		}
-		catch (err) {
+		} catch (err) {
 			showError('登录失效', err);
 		}
 		this.isFetching = false;
