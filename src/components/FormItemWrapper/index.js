@@ -1,4 +1,3 @@
-
 import PropTypes from 'prop-types';
 import { Component, cloneElement } from 'react';
 import { observer } from 'mobx-react';

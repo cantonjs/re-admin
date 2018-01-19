@@ -1,4 +1,3 @@
-
 import Koa from 'koa';
 import Router from 'koa-router';
 import kcors from 'kcors';
@@ -15,30 +14,38 @@ const expiresIn = 86400;
 // const expiresIn = 600;
 
 let total = 450;
-let testDB = new Array(total).fill().map((_, index) => ({
-	id: `id_${index}`,
-	name: `User ${index}`,
-	fee: 200000,
-	desc: `I am User no. ${index}`,
-	tags: ['hello', 'world'],
-	avatar: `https://unsplash.it/100/100/?random=${index}`,
-	pet: {
-		name: 'Bobby',
-		type: 'dog',
-		languages: [
-			{ name: 'Javascript', score: 70 },
-			{ name: 'HTML', score: 90 },
-			{ name: 'CSS', score: 32 },
-		],
-	},
-	createdAt: new Date(Date.now() - ms(`${total - index}d`)).toISOString(),
-})).reverse();
+let testDB = new Array(total)
+	.fill()
+	.map((_, index) => ({
+		id: `id_${index}`,
+		name: `User ${index}`,
+		fee: 200000,
+		desc: `I am User no. ${index}`,
+		tags: ['hello', 'world'],
+		avatar: `https://unsplash.it/100/100/?random=${index}`,
+		pet: {
+			name: 'Bobby',
+			type: 'dog',
+			languages: [
+				{ name: 'Javascript', score: 70 },
+				{ name: 'HTML', score: 90 },
+				{ name: 'CSS', score: 32 },
+			],
+		},
+		check: Math.random() > 0.5,
+		createdAt: new Date(Date.now() - ms(`${total - index}d`)).toISOString(),
+	}))
+	.reverse();
 
 const verify = async (ctx, next) => {
 	const { accessToken } = ctx.query || {};
-	if (!accessToken) { ctx.status = 401; }
-	else if (accessToken !== validAccessToken) { ctx.status = 403; }
-	else { await next(); }
+	if (!accessToken) {
+		ctx.status = 401;
+	} else if (accessToken !== validAccessToken) {
+		ctx.status = 403;
+	} else {
+		await next();
+	}
 };
 
 router
@@ -49,8 +56,7 @@ router
 		const { username, password } = ctx.request.body;
 		if (username === 'admin' && password === '000000') {
 			ctx.body = { accessToken: validAccessToken, expiresIn };
-		}
-		else {
+		} else {
 			ctx.status = 400;
 			ctx.body = {
 				reason: '用户名或密码错误',
@@ -118,8 +124,7 @@ router
 	})
 	.post('/api/upload/image', async (ctx) => {
 		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };
-	})
-;
+	});
 
 app
 	.use(kcors())
@@ -127,5 +132,4 @@ app
 	.use(router.middleware())
 	.listen(port, () => {
 		console.log(`test server started at: http://localhost:${port}`);
-	})
-;
+	});

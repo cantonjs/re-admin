@@ -1,10 +1,23 @@
-
 import React from 'react';
 import {
-	Table, Text, Select, Option, Image, Slider, Uploader,
-	RangePicker, DatePicker, Ref,
-	ArrayOf, ObjectOf,
-	Actions, CreateButton, RemoveButton, UpdateButton, RefButton,
+	Table,
+	Text,
+	Select,
+	Option,
+	Image,
+	Slider,
+	Uploader,
+	Checkbox,
+	RangePicker,
+	DatePicker,
+	Ref,
+	ArrayOf,
+	ObjectOf,
+	Actions,
+	CreateButton,
+	RemoveButton,
+	UpdateButton,
+	RefButton,
 } from '../../src';
 
 export default (
@@ -16,13 +29,7 @@ export default (
 			},
 		}}
 	>
-		<Text
-			name="id"
-			label="ID"
-			disabled
-			unique
-			inQuery
-		/>
+		<Text name="id" label="ID" disabled unique inQuery />
 
 		<Text
 			name="name"
@@ -55,69 +62,32 @@ export default (
 			inForm
 		/>
 
-		<Image
-			name="avatar"
-			label="头像"
-			width={60}
-			inTable
-			inForm
-		/>
+		<Image name="avatar" label="头像" width={60} inTable inForm />
 
-		<Text
-			name="desc"
-			label="描述"
-			placeholder="请输入描述"
-			inTable
-			inForm
-		/>
+		<Text name="desc" label="描述" placeholder="请输入描述" inTable inForm />
 
-		<ObjectOf
-			name="pet"
-			label="宠物"
-			inForm
-		>
-			<Text
-				name="name"
-				label="宠物名字"
-				placeholder="请输入宠物名字"
-			/>
-			<Text
-				name="type"
-				label="宠物物种"
-				placeholder="请输入宠物物种"
-			/>
+		<ObjectOf name="pet" label="宠物" inForm>
+			<Text name="name" label="宠物名字" placeholder="请输入宠物名字" />
+			<Text name="type" label="宠物物种" placeholder="请输入宠物物种" />
 			<ArrayOf name="languages" label="语言">
 				<ObjectOf>
-					<Text
-						name="name"
-						label="语言名称"
-						placeholder="请输入语言名称"
-					/>
-					<Text
-						name="score"
-						label="语言成绩"
-						placeholder="请输入语言成绩"
-					/>
+					<Text name="name" label="语言名称" placeholder="请输入语言名称" />
+					<Text name="score" label="语言成绩" placeholder="请输入语言成绩" />
 				</ObjectOf>
 			</ArrayOf>
 		</ObjectOf>
 
-		<ArrayOf
-			name="tags"
-			label="标签"
-			inTable
-			inForm
-		>
-			<Text
-				placeholder="请输入标签"
-			/>
+		<ArrayOf name="tags" label="标签" inTable inForm>
+			<Text placeholder="请输入标签" />
 		</ArrayOf>
 
 		<Text
 			name="fee"
 			label="薪酬"
 			required
-			inputFilter={(value) => /^\$/.test(value) ? value : ('$' + (value / 100).toFixed(2))}
+			inputFilter={(value) =>
+				/^\$/.test(value) ? value : '$' + (value / 100).toFixed(2)
+			}
 			outputFilter={(value) => value.slice(1) * 100}
 			inTable
 			inForm
@@ -134,18 +104,9 @@ export default (
 			inForm
 		/>
 
-		<Uploader
-			name="file"
-			label="文件"
-			inForm
-		/>
+		<Uploader name="file" label="文件" inForm />
 
-		<Select
-			name="fav"
-			label="爱好"
-			inForm
-			value="2"
-		>
+		<Select name="fav" label="爱好" inForm value="2">
 			<Option value="1">吃饭</Option>
 			<Option value="2">睡觉</Option>
 		</Select>
@@ -155,15 +116,12 @@ export default (
 			label="GPA"
 			dataType="integer"
 			inForm={(props, { Component, getData }) =>
-				getData().fav > 1 ? (<Component {...props} />) : null
+				getData().fav > 1 ? <Component {...props} /> : null
 			}
 		/>
-		<Text
-			name="birthday"
-			label="生日"
-			dataType="date"
-			inForm
-		/>
+		<Text name="birthday" label="生日" dataType="date" inForm />
+
+		<Checkbox name="check" label="勾选" inQuery inTable inForm />
 
 		<Actions>
 			<CreateButton table="foo" label="新建foo" />

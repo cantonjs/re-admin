@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { UPDATER, QUERIER } from 'constants/Issuers';
@@ -15,21 +14,22 @@ const styles = {
 };
 
 class State {
-	@computed get shouldShow() {
-		const {
-			_props: { name },
-			_context: { modalStore },
-			_isUpdater,
-		} = this;
+	@computed
+	get shouldShow() {
+		const { _props: { name }, _context: { modalStore }, _isUpdater } = this;
 		if (_isUpdater) {
 			const { select } = modalStore.state;
-			if (!select) { return true; }
-			else if (select.split(',').indexOf(name) < 0) { return false; }
+			if (!select) {
+				return true;
+			} else if (select.split(',').indexOf(name) < 0) {
+				return false;
+			}
 		}
 		return true;
 	}
 
-	@computed get value() {
+	@computed
+	get value() {
 		const {
 			_props: { name, value },
 			_context: { store, getParentValue, modalStore },
@@ -37,18 +37,23 @@ class State {
 			_isQuerier,
 		} = this;
 
-		if (!isUndefined(value) || !name) { return value; }
+		if (!isUndefined(value) || !name) {
+			return value;
+		}
 
 		const { query } = routerStore.location;
 
-		if (_isQuerier) { return query[name]; }
-		else if (_isUpdater) {
+		if (_isQuerier) {
+			return query[name];
+		} else if (_isUpdater) {
 			const { keys } = modalStore.state;
 			const selectedKeys = (keys || '').split(',');
-			if (selectedKeys.length !== 1) { return ''; }
+			if (selectedKeys.length !== 1) {
+				return '';
+			}
 			const item = getParentValue ?
-				getParentValue() : store.getData(selectedKeys[0])
-			;
+				getParentValue() :
+				store.getData(selectedKeys[0]);
 			return item ? item[name] : undefined;
 		}
 
@@ -65,7 +70,6 @@ class State {
 }
 
 export default function withField(WrappedComponent) {
-
 	@observer
 	class WithField extends Component {
 		static propTypes = {
@@ -104,7 +108,9 @@ export default function withField(WrappedComponent) {
 		};
 
 		render() {
-			if (!this._state.shouldShow) { return null; }
+			if (!this._state.shouldShow) {
+				return null;
+			}
 
 			const {
 				props: {
@@ -118,9 +124,7 @@ export default function withField(WrappedComponent) {
 
 					...other
 				},
-				context: {
-					issuer,
-				},
+				context: { issuer },
 			} = this;
 
 			const isInQuery = issuer && issuer.has(QUERIER);

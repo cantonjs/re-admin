@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { observable } from 'mobx';
@@ -57,7 +56,9 @@ export default function createFormModal(issuerText, displayName) {
 
 		componentWillUnmount() {
 			const { issuer } = this.context;
-			if (issuer) { issuer.delete(issuerText); }
+			if (issuer) {
+				issuer.delete(issuerText);
+			}
 		}
 
 		handleOk(ev) {
@@ -80,17 +81,13 @@ export default function createFormModal(issuerText, displayName) {
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
 				modalStore.close();
-			}
-			else if (__DEV__) {
+			} else if (__DEV__) {
 				console.warn('INVALID');
 			}
 		};
 
 		render() {
-			const {
-				context: { store },
-				props: { table },
-			} = this;
+			const { context: { store }, props: { table } } = this;
 
 			const dataStore = table ? DataStore.get(table) : store;
 			const { isFetching, formRenderers } = dataStore;
@@ -101,18 +98,19 @@ export default function createFormModal(issuerText, displayName) {
 					onSubmit={this._handleSubmit}
 					onChange={this._handleChange}
 				>
-					{isFetching &&
+					{isFetching && (
 						<div style={styles.spinContainer}>
 							<Spin />
 						</div>
-					}
-					{!isFetching && formRenderers.map((renderOptions, index) =>
-						<FormItemWrapper
-							renderOptions={renderOptions}
-							withLayout
-							key={index}
-						/>
 					)}
+					{!isFetching &&
+						formRenderers.map((renderOptions, index) => (
+							<FormItemWrapper
+								renderOptions={renderOptions}
+								withLayout
+								key={index}
+							/>
+						))}
 				</Form>
 			);
 		}
