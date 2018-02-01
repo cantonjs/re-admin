@@ -1,9 +1,7 @@
-
 import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
-import routerStore from 'stores/routerStore';
+import { observer, propTypes as MobxPropTypes } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
 
@@ -34,12 +32,11 @@ export default class TableBody extends Component {
 			size: PropTypes.number.isRequired,
 			setSelectedKeys: PropTypes.func.isRequired,
 		}),
-		routerStore: PropTypes.object,
+		location: MobxPropTypes.observableObject.isRequired,
 		selectionType: PropTypes.oneOf(['checkbox', 'radio']),
 	};
 
 	static defaultProps = {
-		routerStore,
 		selectionType: 'checkbox',
 	};
 
@@ -52,9 +49,9 @@ export default class TableBody extends Component {
 	};
 
 	_handlePageChange = (page) => {
-		const { location } = this.props.routerStore;
+		const { location } = this.props;
 		location.query = { ...location.query, page };
-	}
+	};
 
 	_handleChange = (pagination, filters, sorter) => {
 		const {
@@ -62,9 +59,8 @@ export default class TableBody extends Component {
 				appConfig,
 				appConfig: { api: { sortKey, orderKey, descValue, ascValue } },
 			},
-			props: { routerStore },
+			props: { location },
 		} = this;
-		const { location } = routerStore;
 		if (isEmpty(sorter)) {
 			return clearSortedInfo(appConfig);
 		}
@@ -73,28 +69,37 @@ export default class TableBody extends Component {
 			[sortKey]: sorter.columnKey,
 			[orderKey]: sorter.order === 'descend' ? descValue : ascValue,
 		};
-	}
+	};
 
 	render() {
-		const { store, routerStore, selectionType } = this.props;
+		const { store, location, selectionType } = this.props;
 		const {
-			columns, dataSource, isFetching, total, size, selectedKeys, uniqueKey,
+			columns,
+			dataSource,
+			isFetching,
+			total,
+			size,
+			selectedKeys,
+			uniqueKey,
 			maxSelections,
 		} = store;
 
-		const current = +routerStore.location.query.page || 1;
+		const current = +location.query.page || 1;
 
-		const rowSelection = maxSelections ? {
-			type: selectionType,
-			selectedRowKeys: selectedKeys,
-			onChange: this._handleSelectChange,
-			getCheckboxProps: (record) => ({
-				disabled: selectionType === 'checkbox' &&
-					maxSelections > 0 &&
-					selectedKeys.length >= maxSelections &&
-					selectedKeys.indexOf(record[uniqueKey]) < 0,
-			}),
-		} : undefined;
+		const rowSelection = maxSelections ?
+			{
+				type: selectionType,
+				selectedRowKeys: selectedKeys,
+				onChange: this._handleSelectChange,
+				getCheckboxProps: (record) => ({
+					disabled:
+							selectionType === 'checkbox' &&
+							maxSelections > 0 &&
+							selectedKeys.length >= maxSelections &&
+							selectedKeys.indexOf(record[uniqueKey]) < 0,
+				}),
+			} :
+			undefined;
 
 		return (
 			<div>
@@ -122,4 +127,3 @@ export default class TableBody extends Component {
 		);
 	}
 }
-

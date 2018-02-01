@@ -30,8 +30,7 @@ FooterContainer.propTypes = {
 export default class TableQuery extends Component {
 	static propTypes = {
 		store: PropTypes.object,
-		location: MobxPropTypes.observableObject,
-		onChange: PropTypes.func,
+		location: MobxPropTypes.observableObject.isRequired,
 		children: PropTypes.node,
 		footer: PropTypes.node,
 	};
@@ -71,25 +70,18 @@ export default class TableQuery extends Component {
 	}
 
 	_handleSearch = (query) => {
-		const { location, onChange } = this.props;
-		location && (location.query = query);
-		onChange && onChange(query, 'search');
+		this.props.location.query = query;
 	};
 
 	_handleReset = () => {
-		const { location, onChange } = this.props;
-		location && (location.query = {});
-		onChange && onChange({}, 'reset');
+		this.props.location.query = {};
 	};
 
 	_handleResetSort = () => {
 		const { sortKey, orderKey } = this.context.appConfig.api;
-		const { location, onChange } = this.props;
-		if (location) {
-			const query = omit(location.query, [sortKey, orderKey]);
-			location && (location.query = query);
-		}
-		onChange && onChange({}, 'resetSort');
+		const { location } = this.props;
+		const query = omit(location.query, [sortKey, orderKey]);
+		location.query = query;
 	};
 
 	_handleChange = (data) => {

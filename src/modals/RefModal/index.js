@@ -1,4 +1,3 @@
-
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
@@ -30,10 +29,7 @@ export default class RefModal extends Component {
 	};
 
 	componentWillMount() {
-		const {
-			props: { table, fetch },
-			props,
-		} = this;
+		const { props: { table, fetch }, props } = this;
 		this._refStore = new DataStore(table);
 		this._hiddenRouterStore = new HiddenRouterStore(this._refStore, props);
 		this._refStore.call(fetch, props);
@@ -55,22 +51,17 @@ export default class RefModal extends Component {
 
 	render() {
 		const {
-			_hiddenRouterStore,
+			_hiddenRouterStore: { location },
 			_refStore,
 			props: { noQuery },
 		} = this;
 
 		return (
 			<div>
-				{!noQuery &&
-					<TableQuery
-						store={_refStore}
-						routerStore={_hiddenRouterStore}
-					/>
-				}
+				{!noQuery && <TableQuery store={_refStore} location={location} />}
 				<TableBody
 					store={_refStore}
-					routerStore={_hiddenRouterStore}
+					location={location}
 					selectionType="radio"
 				/>
 			</div>

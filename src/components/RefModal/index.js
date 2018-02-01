@@ -1,4 +1,3 @@
-
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
@@ -58,11 +57,15 @@ export default class RefModal extends Component {
 
 	render() {
 		const {
-			_hiddenRouterStore,
+			_hiddenRouterStore: { location },
 			_store,
 			props: {
-				visible, label,
-				modalWidth, modalStyle, modalTitle, noModalQuery,
+				visible,
+				label,
+				modalWidth,
+				modalStyle,
+				modalTitle,
+				noModalQuery,
 			},
 		} = this;
 
@@ -75,17 +78,8 @@ export default class RefModal extends Component {
 				onCancel={this._handleCancel}
 				onOk={this._handleOk}
 			>
-				{!noModalQuery &&
-					<TableQuery
-						store={_store}
-						routerStore={_hiddenRouterStore}
-					/>
-				}
-				<TableBody
-					store={_store}
-					routerStore={_hiddenRouterStore}
-					selectionType="radio"
-				/>
+				{!noModalQuery && <TableQuery store={_store} location={location} />}
+				<TableBody store={_store} location={location} selectionType="radio" />
 			</Modal>
 		);
 	}

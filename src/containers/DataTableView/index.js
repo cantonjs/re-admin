@@ -110,6 +110,7 @@ export default class DataTableView extends Component {
 		} = this;
 
 		const heading = pageTitle || title || table;
+		const { location } = routerStore;
 
 		return (
 			<DocumentTitle title={`${heading} | ${appConfig.title}`}>
@@ -117,10 +118,10 @@ export default class DataTableView extends Component {
 					<h1>{heading}</h1>
 					{Header && <Header store={store} />}
 					{panelsStore.isShowQuery && (
-						<TableQuery store={store} location={routerStore.location} />
+						<TableQuery store={store} location={location} />
 					)}
 					<Toolbar />
-					<TableBody store={store} />
+					<TableBody store={store} location={location} />
 					{Footer && <Footer store={store} />}
 					<ActionModal />
 				</div>
