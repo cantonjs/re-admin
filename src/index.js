@@ -1,4 +1,3 @@
-
 export * from './schemas';
 export * from './fields';
 
@@ -15,6 +14,8 @@ export UpdateButton from 'components/UpdateButton';
 export RemoveButton from 'components/RemoveButton';
 export RefButton from 'components/RefButton';
 export TableQuerySwitch from 'components/TableQuerySwitch';
+
+export TableQuery from 'components/TableQuery';
 
 export Form from 'components/Nested/Form';
 export Submit from 'components/Nested/Submit';

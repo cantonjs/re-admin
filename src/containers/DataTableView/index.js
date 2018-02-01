@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
@@ -74,12 +73,13 @@ export default class DataTableView extends Component {
 	componentDidUpdate({ location: prevLocation }) {
 		const { pathname, search } = this.props.location;
 
-		if (location === prevLocation) { return; }
+		if (location === prevLocation) {
+			return;
+		}
 
 		if (prevLocation.pathname !== pathname) {
 			this._fetch();
-		}
-		else if (prevLocation.search !== search) {
+		} else if (prevLocation.search !== search) {
 			const { getOmitPaths } = ActionModalStore;
 			const originalPrevQuery = parse(prevLocation.search.slice(1));
 			const prevQuery = omitBy(originalPrevQuery, getOmitPaths);
@@ -106,9 +106,7 @@ export default class DataTableView extends Component {
 				toolbar: Toolbar,
 			},
 			state: { store },
-			context: {
-				appConfig,
-			},
+			context: { appConfig },
 		} = this;
 
 		const heading = pageTitle || title || table;
@@ -118,9 +116,9 @@ export default class DataTableView extends Component {
 				<div>
 					<h1>{heading}</h1>
 					{Header && <Header store={store} />}
-					{panelsStore.isShowQuery &&
-						<TableQuery store={store} />
-					}
+					{panelsStore.isShowQuery && (
+						<TableQuery store={store} location={routerStore.location} />
+					)}
 					<Toolbar />
 					<TableBody store={store} />
 					{Footer && <Footer store={store} />}

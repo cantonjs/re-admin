@@ -1,4 +1,3 @@
-
 import routerStore from 'stores/routerStore';
 import { omit } from 'lodash';
 
