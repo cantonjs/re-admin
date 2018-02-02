@@ -32,6 +32,7 @@ export default class TableQuery extends Component {
 		store: PropTypes.object,
 		location: MobxPropTypes.observableObject.isRequired,
 		children: PropTypes.node,
+		header: PropTypes.node,
 		footer: PropTypes.node,
 	};
 
@@ -107,6 +108,7 @@ export default class TableQuery extends Component {
 	render() {
 		const {
 			children,
+			header,
 			footer,
 			store: { hasSortableField, hasQueryField, sortedOrder, sortedKey },
 		} = this.props;
@@ -126,6 +128,8 @@ export default class TableQuery extends Component {
 				onChange={this._handleChange}
 				layout="inline"
 			>
+				{!!header && header}
+
 				{this._renderBody()}
 
 				{!!footer && <FooterContainer>{footer}</FooterContainer>}
