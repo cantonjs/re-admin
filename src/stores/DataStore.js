@@ -133,32 +133,33 @@ export default class DataStore {
 
 		const { tableRenderers, queryRenderers, extend, api } = this.tableConfig;
 
+		this._request = getRequest(appConfig);
+
 		if (!api) {
 			this.size = +appConfig.api.count;
-			return;
+		} else {
+			const sortableField =
+				tableRenderers && tableRenderers.find(({ props }) => props.sortable);
+
+			const { pathname, query, headers } = api;
+
+			this.uniqueKey = this.tableConfig.uniqueKey;
+			this.hasSortableField = !!sortableField;
+			this.hasQueryField = !!queryRenderers.length;
+			this.pathname = pathname;
+			if (query.count) {
+				this.size = +query.count;
+			}
+			this.extend(extend);
+
+			this._request = this._request.clone({
+				url: pathname,
+				headers,
+				queryTransformer: (reqQuery) => assign({}, query, reqQuery),
+			});
 		}
 
-		const sortableField =
-			tableRenderers && tableRenderers.find(({ props }) => props.sortable);
-
-		const { pathname, query, headers } = api;
-
-		this.uniqueKey = this.tableConfig.uniqueKey;
-		this.hasSortableField = !!sortableField;
-		this.hasQueryField = !!queryRenderers.length;
-		this.pathname = pathname;
-		if (query.count) {
-			this.size = +query.count;
-		}
-		this.extend(extend);
-
-		this._request = getRequest(appConfig).clone({
-			url: pathname,
-			headers,
-			queryTransformer: (reqQuery) => assign({}, query, reqQuery),
-		});
-
-		const { accessTokenLocation } = appConfig.api;
+		const { accessTokenLocation, accessTokenName } = appConfig.api;
 		const fetchAuthTransformerName =
 			accessTokenLocation === 'query' ?
 				'addQueryTransformer' :
@@ -167,7 +168,7 @@ export default class DataStore {
 		this._request[fetchAuthTransformerName]((queryOrHeaders) => {
 			const { accessToken } = authStore;
 			if (accessToken) {
-				queryOrHeaders[appConfig.api.accessTokenName] = accessToken;
+				queryOrHeaders[accessTokenName] = accessToken;
 			}
 			return queryOrHeaders;
 		});
