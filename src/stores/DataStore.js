@@ -1,4 +1,3 @@
-
 import { observable, computed, toJS } from 'mobx';
 import { omitBy, assign, isFunction, isUndefined, reduce } from 'lodash';
 import getRequest from 'utils/getRequest';
@@ -13,7 +12,9 @@ let authStore = {};
 
 export default class DataStore {
 	static get(tableName, customConfig) {
-		if (caches.has(tableName)) { return caches.get(tableName); }
+		if (caches.has(tableName)) {
+			return caches.get(tableName);
+		}
 		const store = new DataStore(tableName, customConfig);
 		caches.set(tableName, store);
 		return store;
@@ -29,87 +30,98 @@ export default class DataStore {
 	@observable selectedKeys = [];
 	@observable data = {};
 
-	@computed get tableConfig() {
+	@computed
+	get tableConfig() {
+		const tableName = this._tableName;
+		const table = appConfig.tables[tableName];
+		if (tableName && !table) {
+			console.warn(`Table "${tableName}" is NOT found`);
+		}
 		return {
-			...appConfig.tables[this._tableName],
+			...table,
 			...this._customConfig,
 		};
 	}
 
-	@computed get collection() {
+	@computed
+	get collection() {
 		return this.collections.get(this._prevFetchKey);
 	}
 
-	@computed get total() {
+	@computed
+	get total() {
 		return this.totals.get(this._prevFetchKey) || 0;
 	}
 
-	@computed get dataSource() {
+	@computed
+	get dataSource() {
 		return toJS(this.collection);
 	}
 
-	@computed get sortedKey() {
+	@computed
+	get sortedKey() {
 		return routerStore.location.query[appConfig.api.sortKey];
 	}
 
-	@computed get sortedOrder() {
+	@computed
+	get sortedOrder() {
 		const { orderKey, ascValue } = appConfig.api;
 		const { query } = routerStore.location;
 		let order = query[orderKey];
 
-		if (!this.sortedKey) { return order; }
+		if (!this.sortedKey) {
+			return order;
+		}
 
 		/* eslint-disable eqeqeq */
 		return order == ascValue ? 'ascend' : 'descend';
 	}
 
-	@computed get columns() {
-		return this
-			.tableConfig
-			.tableRenderers
-			.map(({ render, props, options }) => {
-				const column = {
-					title: props.label,
-					key: props.name,
-					dataIndex: props.name,
-					render: function renderTable(text, record, index) {
-						return render(props, {
-							...options,
-							text,
-							value: text,
-							record,
-							index,
-						});
-					},
-				};
+	@computed
+	get columns() {
+		if (!this.tableConfig.tableRenderers) {
+			return [];
+		}
 
-				if (props.sortable) {
-					const { sortedKey, sortedOrder } = this;
-					column.sortOrder = props.name === sortedKey ? sortedOrder : false;
-					column.sorter = true;
-				}
+		return this.tableConfig.tableRenderers.map(({ render, props, options }) => {
+			const column = {
+				title: props.label,
+				key: props.name,
+				dataIndex: props.name,
+				render: function renderTable(text, record, index) {
+					return render(props, {
+						...options,
+						text,
+						value: text,
+						record,
+						index,
+					});
+				},
+			};
 
-				return column;
-			})
-		;
+			if (props.sortable) {
+				const { sortedKey, sortedOrder } = this;
+				column.sortOrder = props.name === sortedKey ? sortedOrder : false;
+				column.sorter = true;
+			}
+
+			return column;
+		});
 	}
 
-	@computed get maxSelections() {
+	@computed
+	get maxSelections() {
 		return this.tableConfig.maxSelections;
 	}
 
-	@computed get queryRenderers() {
-		return this
-			.tableConfig
-			.queryRenderers
-		;
+	@computed
+	get queryRenderers() {
+		return this.tableConfig.queryRenderers;
 	}
 
-	@computed get formRenderers() {
-		return this
-			.tableConfig
-			.formRenderers
-		;
+	@computed
+	get formRenderers() {
+		return this.tableConfig.formRenderers;
 	}
 
 	collections = observable.map();
@@ -119,16 +131,25 @@ export default class DataStore {
 		this._tableName = tableName;
 		this._customConfig = customConfig;
 
-		const { tableRenderers, queryRenderers, extend } = this.tableConfig;
-		const sortableField = tableRenderers.find(({ props }) => props.sortable);
+		const { tableRenderers, queryRenderers, extend, api } = this.tableConfig;
 
-		const { pathname, query, headers } = this.tableConfig.api;
+		if (!api) {
+			this.size = +appConfig.api.count;
+			return;
+		}
+
+		const sortableField =
+			tableRenderers && tableRenderers.find(({ props }) => props.sortable);
+
+		const { pathname, query, headers } = api;
 
 		this.uniqueKey = this.tableConfig.uniqueKey;
 		this.hasSortableField = !!sortableField;
 		this.hasQueryField = !!queryRenderers.length;
 		this.pathname = pathname;
-		this.size = +(query.count || appConfig.api.count);
+		if (query.count) {
+			this.size = +query.count;
+		}
 		this.extend(extend);
 
 		this._request = getRequest(appConfig).clone({
@@ -138,8 +159,10 @@ export default class DataStore {
 		});
 
 		const { accessTokenLocation } = appConfig.api;
-		const fetchAuthTransformerName = accessTokenLocation === 'query' ?
-			'addQueryTransformer' : 'addHeadersTransformer';
+		const fetchAuthTransformerName =
+			accessTokenLocation === 'query' ?
+				'addQueryTransformer' :
+				'addHeadersTransformer';
 
 		this._request[fetchAuthTransformerName]((queryOrHeaders) => {
 			const { accessToken } = authStore;
@@ -151,23 +174,25 @@ export default class DataStore {
 	}
 
 	extend(extensions) {
-		this.extends = reduce(extensions, (ext, fn, key) => {
-			ext[key] = fn.bind(this);
-			return ext;
-		}, this.extends || {});
+		this.extends = reduce(
+			extensions,
+			(ext, fn, key) => {
+				ext[key] = fn.bind(this);
+				return ext;
+			},
+			this.extends || {}
+		);
 		return this;
 	}
 
 	call(method, ...args) {
 		if (isFunction(this.extends[method])) {
 			return this.extends[method].apply(this, args);
-		}
-		else if (isFunction(this[method])) {
+		} else if (isFunction(this[method])) {
 			return this[method].apply(this, args);
-		}
-		else {
+		} else {
 			throw new Error(
-				`Method "${method}" not found in table store "${this._tableName}"`,
+				`Method "${method}" not found in table store "${this._tableName}"`
 			);
 		}
 	}
@@ -192,13 +217,12 @@ export default class DataStore {
 					page: (function () {
 						const p = query.page || 1;
 						return p < 1 ? 1 : p;
-					}()),
+					})(),
 				},
 			});
-			const {
-				total,
-				list = [],
-			} = await this.tableConfig.mapOnFetchResponse(res);
+			const { total, list = [] } = await this.tableConfig.mapOnFetchResponse(
+				res
+			);
 
 			const collection = list.map((data, index) => {
 				data.key = this.uniqueKey ? data[this.uniqueKey] : index;
@@ -208,8 +232,7 @@ export default class DataStore {
 			this._prevFetchKey = cacheKey || '@@last';
 			this.collections.set(this._prevFetchKey, collection);
 			this.totals.set(this._prevFetchKey, total);
-		}
-		catch (err) {
+		} catch (err) {
 			showError('请求失败', err);
 		}
 
@@ -221,8 +244,7 @@ export default class DataStore {
 		try {
 			const res = await this._request.fetch({ query });
 			this.data = await this.tableConfig.mapOnFetchOneResponse(res);
-		}
-		catch (err) {
+		} catch (err) {
 			showError('请求失败', err);
 		}
 		return this;
@@ -250,10 +272,14 @@ export default class DataStore {
 
 	getData(key) {
 		const { collection, uniqueKey, selectedKeys } = this;
-		if (isUndefined(key)) { key = selectedKeys[0]; }
-		if (isUndefined(key) || !collection) { return null; }
-		return collection.find((dataItem, index) =>
-			key === (uniqueKey ? dataItem[uniqueKey] : index)
+		if (isUndefined(key)) {
+			key = selectedKeys[0];
+		}
+		if (isUndefined(key) || !collection) {
+			return null;
+		}
+		return collection.find(
+			(dataItem, index) => key === (uniqueKey ? dataItem[uniqueKey] : index)
 		);
 	}
 
@@ -295,12 +321,15 @@ export default class DataStore {
 		} = options;
 		try {
 			const res = await this._request.fetch(requestOptions);
-			if (refresh && refresh !== 'no') { this._refresh(); }
+			if (refresh && refresh !== 'no') {
+				this._refresh();
+			}
 			return res;
-		}
-		catch (err) {
-			if (throwError) { throw err; }
+		} catch (err) {
+			if (throwError) {
+				throw err;
+			}
 			showError(errorTitle, err);
-		};
+		}
 	}
 }
