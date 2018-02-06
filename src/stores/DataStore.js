@@ -134,10 +134,9 @@ export default class DataStore {
 		const { tableRenderers, queryRenderers, extend, api } = this.tableConfig;
 
 		this._request = getRequest(appConfig);
+		this.size = +appConfig.api.count;
 
-		if (!api) {
-			this.size = +appConfig.api.count;
-		} else {
+		if (api) {
 			const sortableField =
 				tableRenderers && tableRenderers.find(({ props }) => props.sortable);
 
