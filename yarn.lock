@@ -6275,9 +6275,9 @@ react-router-dom@^4.2.2:
     react-router "^4.2.0"
     warning "^3.0.0"
 
-react-router-mobx@^1.0.2:
-  version "1.0.2"
-  resolved "http://registry.npm.taobao.org/react-router-mobx/download/react-router-mobx-1.0.2.tgz#e66f91d9b512cb70a7afa72eaca0a1296e60a0a8"
+react-router-mobx@^1.1.0:
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/react-router-mobx/download/react-router-mobx-1.1.0.tgz#74a9d4c0bd5cbb1264a28fb59737f79cb83a36cd"
   dependencies:
     prop-types "^15.5.7"
     tiny-querystring "^0.0.2"
