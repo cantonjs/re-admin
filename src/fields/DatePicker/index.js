@@ -37,7 +37,6 @@ export default function DatePickerField(props) {
 
 /* eslint-disable react/prop-types */
 DatePickerField.renderTable = function renderTable({ dateFormat }, { value }) {
-	console.log('render table', dateFormat);
 	return <span>{moment(new Date(value)).format(dateFormat)}</span>;
 };
 
