@@ -82,15 +82,19 @@ export default function dataStoreProvider() {
 				this.state.store.fetch({ query, state: { cacheKey: search } });
 			}
 
-			_withRef = withRef ? { ref: (c) => (this.wrappedInstance = c) } : {};
-
 			getWrappedInstance() {
 				return this.wrappedInstance;
 			}
 
 			render() {
 				const { props, state } = this;
-				return <WrappedComponent {...props} {...state} {...this._withRef} />;
+				return (
+					<WrappedComponent
+						{...props}
+						{...state}
+						ref={(c) => (this.wrappedInstance = c)}
+					/>
+				);
 			}
 		}
 

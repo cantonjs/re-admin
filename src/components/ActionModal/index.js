@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
@@ -66,16 +65,13 @@ export default class ActionModal extends Component {
 			<Modal
 				maskClosable={false}
 				visible={visible}
-				title={visible ? (title || action) : ''}
+				title={visible ? title || action : ''}
 				onOk={this._handleOk}
 				onCancel={this._handleCancel}
 				width={+width || 880}
 			>
 				{visible && (
-					<Comp
-						ref={(c) => (this._child = c)}
-						{...ActionModal.store.state}
-					/>
+					<Comp ref={(c) => (this._child = c)} {...ActionModal.store.state} />
 				)}
 			</Modal>
 		);
