@@ -47,7 +47,7 @@
     "prop-types": "^15.5.7",
     "react-document-title": "^2.0.3",
     "react-nested-form": "^0.0.0-22",
-    "react-router-mobx": "^1.1.0",
+    "react-router-mobx": "^1.2.0",
     "react-title-component": "^1.0.1",
     "tiny-querystring": "^0.0.2"
   },
