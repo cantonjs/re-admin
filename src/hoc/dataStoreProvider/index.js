@@ -44,6 +44,14 @@ export default function dataStoreProvider() {
 				};
 			}
 
+			componentWillMount() {
+				const { history } = routerStore;
+				this._unlisten = history.listen((location, prevLocation) => {
+					console.log('prevLocation.query', prevLocation.query);
+					console.log('location.query', location.query);
+				});
+			}
+
 			componentWillReceiveProps({ table }) {
 				const { DataStore } = this.context;
 				if (this.props.table && this.props.table !== table) {
@@ -75,6 +83,10 @@ export default function dataStoreProvider() {
 						this._fetch();
 					}
 				}
+			}
+
+			componentWillUnmount() {
+				this._unlisten();
 			}
 
 			_fetch() {

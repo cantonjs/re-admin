@@ -5,7 +5,6 @@ import panelsStore from 'stores/panelsStore';
 import routerStore from 'stores/routerStore';
 import ActionModalStore from 'stores/ActionModalStore';
 import { omitBy, isEqual } from 'lodash';
-import { parse } from 'tiny-querystring';
 
 import DocumentTitle from 'react-document-title';
 import TableBody from 'components/TableBody';
@@ -57,6 +56,20 @@ export default class DataTableView extends Component {
 		};
 	}
 
+	componentWillMount() {
+		const { history } = routerStore;
+		this._unlisten = history.listen((location, prevLocation) => {
+			if (location.pathname === prevLocation.pathname) {
+				const { getOmitPaths } = ActionModalStore;
+				const prevQuery = omitBy(prevLocation.query, getOmitPaths);
+				const nextQuery = omitBy(location.query, getOmitPaths);
+				if (!isEqual(prevQuery, nextQuery)) {
+					this._fetch();
+				}
+			}
+		});
+	}
+
 	componentWillReceiveProps({ table }) {
 		const { DataStore } = this.context;
 		if (this.props.table !== table) {
@@ -70,24 +83,8 @@ export default class DataTableView extends Component {
 		this._fetch();
 	}
 
-	componentDidUpdate({ location: prevLocation }) {
-		const { pathname, search } = this.props.location;
-
-		if (location === prevLocation) {
-			return;
-		}
-
-		if (prevLocation.pathname !== pathname) {
-			this._fetch();
-		} else if (prevLocation.search !== search) {
-			const { getOmitPaths } = ActionModalStore;
-			const originalPrevQuery = parse(prevLocation.search.slice(1));
-			const prevQuery = omitBy(originalPrevQuery, getOmitPaths);
-			const nextQuery = omitBy(routerStore.location.query, getOmitPaths);
-			if (!isEqual(prevQuery, nextQuery)) {
-				this._fetch();
-			}
-		}
+	componentWillUnmount() {
+		this._unlisten();
 	}
 
 	_fetch() {
