@@ -5,19 +5,27 @@ import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 import ActionModalStore from 'stores/ActionModalStore';
 import { omitBy, isEqual } from 'lodash';
-import { parse } from 'tiny-querystring';
 
 export default function dataStoreProvider() {
 	return function createDataStoreProviderComponent(WrappedComponent) {
 		@observer
 		class DataStoreProvider extends Component {
 			static propTypes = {
-				location: PropTypes.shape({
-					query: PropTypes.object,
-					pathname: PropTypes.string,
-					search: PropTypes.string,
+				routerStore: PropTypes.shape({
+					location: PropTypes.shape({
+						query: PropTypes.object,
+						pathname: PropTypes.string,
+						search: PropTypes.string,
+					}),
+					history: PropTypes.shape({
+						listen: PropTypes.func,
+					}),
 				}),
 				table: PropTypes.string,
+			};
+
+			static defaultProps = {
+				routerStore,
 			};
 
 			static childContextTypes = {
@@ -45,10 +53,16 @@ export default function dataStoreProvider() {
 			}
 
 			componentWillMount() {
-				const { history } = routerStore;
+				const { history } = this.props.routerStore;
 				this._unlisten = history.listen((location, prevLocation) => {
-					console.log('prevLocation.query', prevLocation.query);
-					console.log('location.query', location.query);
+					if (location.pathname === prevLocation.pathname) {
+						const { getOmitPaths } = ActionModalStore;
+						const prevQuery = omitBy(prevLocation.query, getOmitPaths);
+						const nextQuery = omitBy(location.query, getOmitPaths);
+						if (!isEqual(prevQuery, nextQuery)) {
+							this._fetch();
+						}
+					}
 				});
 			}
 
@@ -65,48 +79,18 @@ export default function dataStoreProvider() {
 				this._fetch();
 			}
 
-			componentDidUpdate({ location: prevLocation }) {
-				const { pathname, search } = this.props.location;
-
-				if (location === prevLocation) {
-					return;
-				}
-
-				if (prevLocation.pathname !== pathname) {
-					this._fetch();
-				} else if (prevLocation.search !== search) {
-					const { getOmitPaths } = ActionModalStore;
-					const originalPrevQuery = parse(prevLocation.search.slice(1));
-					const prevQuery = omitBy(originalPrevQuery, getOmitPaths);
-					const nextQuery = omitBy(routerStore.location.query, getOmitPaths);
-					if (!isEqual(prevQuery, nextQuery)) {
-						this._fetch();
-					}
-				}
-			}
-
 			componentWillUnmount() {
 				this._unlisten();
 			}
 
 			_fetch() {
-				const { query, search } = routerStore.location;
+				const { query, search } = this.props.routerStore.location;
 				this.state.store.fetch({ query, state: { cacheKey: search } });
-			}
-
-			getWrappedInstance() {
-				return this.wrappedInstance;
 			}
 
 			render() {
 				const { props, state } = this;
-				return (
-					<WrappedComponent
-						{...props}
-						{...state}
-						ref={(c) => (this.wrappedInstance = c)}
-					/>
-				);
+				return <WrappedComponent {...props} {...state} />;
 			}
 		}
 
