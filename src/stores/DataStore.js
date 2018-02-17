@@ -1,9 +1,8 @@
-import { autorun, observable, computed, action, toJS } from 'mobx';
+import { autorun, observable, computed, toJS } from 'mobx';
 import { omitBy, assign, isFunction, isUndefined, reduce } from 'lodash';
 import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
 import deprecated from 'utils/deprecated';
-import routerStore from 'stores/routerStore';
 import ActionModalStore from 'stores/ActionModalStore';
 
 const caches = observable.map();

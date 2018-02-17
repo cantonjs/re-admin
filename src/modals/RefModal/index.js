@@ -1,13 +1,11 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-import HiddenRouterStore from './HiddenRouterStore';
 import joinKeys from 'utils/joinKeys';
-import DataStore from 'stores/DataStore';
+import dataStoreProvider from 'hoc/dataStoreProvider';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
-@observer
+@dataStoreProvider()
 export default class RefModal extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
@@ -15,6 +13,7 @@ export default class RefModal extends Component {
 		keys: PropTypes.string,
 		save: PropTypes.string,
 		noQuery: PropTypes.any,
+		store: PropTypes.object,
 	};
 
 	static defaultProps = {
@@ -29,33 +28,30 @@ export default class RefModal extends Component {
 	};
 
 	componentWillMount() {
-		const { props: { table, fetch }, props } = this;
-		this._refStore = new DataStore(table);
-		this._hiddenRouterStore = new HiddenRouterStore(this._refStore, props);
-		this._refStore.call(fetch, props);
+		const { props: { fetch, store: refStore }, props } = this;
+		refStore.call(fetch, props);
 	}
 
 	handleOk() {
 		const {
 			context: { store },
 			props,
-			props: { keys, save },
-			_refStore,
+			props: { keys, save, store: refStore },
 		} = this;
 
-		const { pathname } = _refStore;
-		const refKeys = _refStore.selectedKeys;
+		const { pathname } = refStore;
+		const refKeys = refStore.selectedKeys;
 		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
 		store.call(save, { method: 'POST', url, ...props, keys, refKeys });
 	}
 
 	render() {
-		const { _refStore, props: { noQuery } } = this;
+		const { props: { noQuery, store } } = this;
 
 		return (
 			<div>
-				{!noQuery && <TableQuery store={_refStore} />}
-				<TableBody store={_refStore} selectionType="radio" />
+				{!noQuery && <TableQuery store={store} />}
+				<TableBody store={store} selectionType="radio" />
 			</div>
 		);
 	}

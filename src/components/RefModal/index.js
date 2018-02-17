@@ -2,11 +2,12 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import HiddenRouterStore from './HiddenRouterStore';
+import dataStoreProvider from 'hoc/dataStoreProvider';
 import { Modal } from 'antd';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
-@observer
+@dataStoreProvider()
 export default class RefModal extends Component {
 	static propTypes = {
 		visible: PropTypes.bool,
@@ -19,6 +20,7 @@ export default class RefModal extends Component {
 		modalTitle: PropTypes.node,
 		noModalQuery: PropTypes.bool,
 		fetch: PropTypes.string,
+		store: PropTypes.object,
 	};
 
 	static defaultProps = {
@@ -34,14 +36,13 @@ export default class RefModal extends Component {
 	};
 
 	componentWillMount() {
-		const { props: { table, fetch }, context: { DataStore } } = this;
-		this._store = new DataStore(table);
-		this._hiddenRouterStore = new HiddenRouterStore(this._store, { fetch });
+		const { props: { fetch, store: refStore }, props } = this;
+		refStore.call(fetch, props);
 	}
 
 	componentWillReceiveProps({ visible, fetch }) {
 		if (this.props.visible !== visible && visible) {
-			this._store.call(fetch);
+			this.props.store.call(fetch);
 		}
 	}
 
@@ -51,13 +52,13 @@ export default class RefModal extends Component {
 
 	_handleOk = () => {
 		const { onChange, onRequestHide } = this.props;
-		onChange(this._store.selectedKeys[0], this._hiddenRouterStore);
+		onChange(this.props.store.selectedKeys[0]);
 		onRequestHide();
 	};
 
 	render() {
 		const {
-			_store,
+			store,
 			props: {
 				visible,
 				label,
@@ -77,8 +78,8 @@ export default class RefModal extends Component {
 				onCancel={this._handleCancel}
 				onOk={this._handleOk}
 			>
-				{!noModalQuery && <TableQuery store={_store} />}
-				<TableBody store={_store} selectionType="radio" />
+				{!noModalQuery && <TableQuery store={store} />}
+				<TableBody store={store} selectionType="radio" />
 			</Modal>
 		);
 	}

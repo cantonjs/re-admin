@@ -74,12 +74,13 @@ export default function dataStoreProvider(options = {}) {
 			}
 
 			componentWillUnmount() {
-				this._removeQueryListener();
-				this._unlistenHistory();
+				this._removeQueryListener && this._removeQueryListener();
+				this._unlistenHistory && this._unlistenHistory();
 			}
 
 			_setQuery(query) {
-				this.state.store.query = query;
+				const { store } = this.state;
+				store.query = query;
 			}
 
 			render() {

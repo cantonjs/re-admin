@@ -1,7 +1,6 @@
 import styles from './styles';
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { propTypes as MobxPropTypes } from 'mobx-react';
 import { observable } from 'mobx';
 import { omit } from 'lodash';
 import { QUERIER } from 'constants/Issuers';
