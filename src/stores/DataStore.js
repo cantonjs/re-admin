@@ -1,4 +1,4 @@
-import { observable, computed, toJS } from 'mobx';
+import { autorun, observable, computed, action, toJS } from 'mobx';
 import { omitBy, assign, isFunction, isUndefined, reduce } from 'lodash';
 import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
@@ -25,10 +25,15 @@ export default class DataStore {
 		authStore = auth;
 	}
 
-	@observable _prevFetchKey = '?';
 	@observable isFetching = false;
 	@observable selectedKeys = [];
 	@observable data = {};
+	@observable query = {};
+
+	@computed
+	get fetchKey() {
+		return JSON.stringify(toJS(this.query));
+	}
 
 	@computed
 	get tableConfig() {
@@ -45,12 +50,12 @@ export default class DataStore {
 
 	@computed
 	get collection() {
-		return this.collections.get(this._prevFetchKey);
+		return this.collections.get(this.fetchKey);
 	}
 
 	@computed
 	get total() {
-		return this.totals.get(this._prevFetchKey) || 0;
+		return this.totals.get(this.fetchKey) || 0;
 	}
 
 	@computed
@@ -60,14 +65,13 @@ export default class DataStore {
 
 	@computed
 	get sortedKey() {
-		return routerStore.location.query[appConfig.api.sortKey];
+		return this.query[appConfig.api.sortKey];
 	}
 
 	@computed
 	get sortedOrder() {
 		const { orderKey, ascValue } = appConfig.api;
-		const { query } = routerStore.location;
-		let order = query[orderKey];
+		let order = this.query[orderKey];
 
 		if (!this.sortedKey) {
 			return order;
@@ -197,12 +201,33 @@ export default class DataStore {
 		}
 	}
 
-	async fetch(options = {}) {
-		const { query = {}, state = {}, ...other } = options;
-		const { cacheKey } = state;
+	addQueryListener(routerStore) {
+		if (routerStore && routerStore.location) {
+			this.query = routerStore.location.query;
+			this._routerStore = routerStore;
+		}
+		const disposer = autorun(() => {
+			return this.fetch({ query: this.query });
+		});
+		return function removeQueryListener() {
+			this._routerStore = null;
+			return disposer();
+		};
+	}
 
-		if (cacheKey && this.collections.has(cacheKey)) {
-			this._prevFetchKey = cacheKey;
+	async setQuery(query) {
+		if (this._routerStore) {
+			this._routerStore.location.query = query;
+		} else {
+			this.query = query;
+		}
+	}
+
+	async fetch(options = {}) {
+		const { query = {}, ...other } = options;
+		const { fetchKey } = this;
+
+		if (this.collections.has(fetchKey)) {
 			return this;
 		}
 
@@ -229,9 +254,8 @@ export default class DataStore {
 				return data;
 			});
 
-			this._prevFetchKey = cacheKey || '@@last';
-			this.collections.set(this._prevFetchKey, collection);
-			this.totals.set(this._prevFetchKey, total);
+			this.collections.set(fetchKey, collection);
+			this.totals.set(fetchKey, total);
 		} catch (err) {
 			showError('请求失败', err);
 		}
@@ -253,7 +277,7 @@ export default class DataStore {
 	_refresh() {
 		this.collections.clear();
 		this.totals.clear();
-		this.fetch({ state: { cacheKey: '?' } });
+		this.fetch({ state: { fetchKey: '?' } });
 		this.selectedKeys = [];
 	}
 

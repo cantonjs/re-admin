@@ -57,7 +57,6 @@ export default class RefModal extends Component {
 
 	render() {
 		const {
-			_hiddenRouterStore: { location },
 			_store,
 			props: {
 				visible,
@@ -78,8 +77,8 @@ export default class RefModal extends Component {
 				onCancel={this._handleCancel}
 				onOk={this._handleOk}
 			>
-				{!noModalQuery && <TableQuery store={_store} location={location} />}
-				<TableBody store={_store} location={location} selectionType="radio" />
+				{!noModalQuery && <TableQuery store={_store} />}
+				<TableBody store={_store} selectionType="radio" />
 			</Modal>
 		);
 	}

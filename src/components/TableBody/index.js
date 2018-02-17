@@ -31,8 +31,8 @@ export default class TableBody extends Component {
 			total: PropTypes.number.isRequired,
 			size: PropTypes.number.isRequired,
 			setSelectedKeys: PropTypes.func.isRequired,
+			query: PropTypes.object.isRequired,
 		}),
-		location: MobxPropTypes.observableObject.isRequired,
 		selectionType: PropTypes.oneOf(['checkbox', 'radio']),
 	};
 
@@ -49,8 +49,8 @@ export default class TableBody extends Component {
 	};
 
 	_handlePageChange = (page) => {
-		const { location } = this.props;
-		location.query = { ...location.query, page };
+		const { store } = this.props;
+		store.setQuery({ ...store.query, page });
 	};
 
 	_handleChange = (pagination, filters, sorter) => {
@@ -59,20 +59,20 @@ export default class TableBody extends Component {
 				appConfig,
 				appConfig: { api: { sortKey, orderKey, descValue, ascValue } },
 			},
-			props: { location },
+			props: { store },
 		} = this;
 		if (isEmpty(sorter)) {
 			return clearSortedInfo(appConfig);
 		}
-		location.query = {
-			...location.query,
+		store.setQuery({
+			...store.query,
 			[sortKey]: sorter.columnKey,
 			[orderKey]: sorter.order === 'descend' ? descValue : ascValue,
-		};
+		});
 	};
 
 	render() {
-		const { store, location, selectionType } = this.props;
+		const { store, selectionType } = this.props;
 		const {
 			columns,
 			dataSource,
@@ -82,9 +82,10 @@ export default class TableBody extends Component {
 			selectedKeys,
 			uniqueKey,
 			maxSelections,
+			query,
 		} = store;
 
-		const current = +location.query.page || 1;
+		const current = +query.page || 1;
 
 		const rowSelection = maxSelections ?
 			{

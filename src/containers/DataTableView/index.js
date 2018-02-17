@@ -18,7 +18,6 @@ function DataTableView(
 		footer: Footer,
 		toolbar: Toolbar,
 		store,
-		routerStore: { location },
 	},
 	{ appConfig }
 ) {
@@ -29,11 +28,9 @@ function DataTableView(
 			<div>
 				<h1>{heading}</h1>
 				{Header && <Header store={store} />}
-				{panelsStore.isShowQuery && (
-					<TableQuery store={store} location={location} />
-				)}
+				{panelsStore.isShowQuery && <TableQuery store={store} />}
 				<Toolbar />
-				<TableBody store={store} location={location} />
+				<TableBody store={store} />
 				{Footer && <Footer store={store} />}
 				<ActionModal />
 			</div>
@@ -42,13 +39,6 @@ function DataTableView(
 }
 
 DataTableView.propTypes = {
-	routerStore: PropTypes.shape({
-		location: PropTypes.shape({
-			query: PropTypes.object,
-			pathname: PropTypes.string,
-			search: PropTypes.string,
-		}),
-	}),
 	table: PropTypes.string.isRequired,
 	title: PropTypes.node,
 	pageTitle: PropTypes.node,
@@ -66,4 +56,4 @@ DataTableView.contextTypes = {
 	appConfig: PropTypes.object,
 };
 
-export default dataStoreProvider()(DataTableView);
+export default dataStoreProvider({ bindLocation: true })(DataTableView);

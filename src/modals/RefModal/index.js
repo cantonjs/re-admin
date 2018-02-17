@@ -50,20 +50,12 @@ export default class RefModal extends Component {
 	}
 
 	render() {
-		const {
-			_hiddenRouterStore: { location },
-			_refStore,
-			props: { noQuery },
-		} = this;
+		const { _refStore, props: { noQuery } } = this;
 
 		return (
 			<div>
-				{!noQuery && <TableQuery store={_refStore} location={location} />}
-				<TableBody
-					store={_refStore}
-					location={location}
-					selectionType="radio"
-				/>
+				{!noQuery && <TableQuery store={_refStore} />}
+				<TableBody store={_refStore} selectionType="radio" />
 			</div>
 		);
 	}

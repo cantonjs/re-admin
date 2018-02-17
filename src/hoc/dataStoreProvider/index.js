@@ -2,30 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import hoistStatics from 'hoist-non-react-statics';
 import { observer } from 'mobx-react';
-import routerStore from 'stores/routerStore';
 import ActionModalStore from 'stores/ActionModalStore';
 import { omitBy, isEqual } from 'lodash';
+import routerStore from 'stores/routerStore';
 
-export default function dataStoreProvider() {
+export default function dataStoreProvider(options = {}) {
+	const { bindLocation } = options;
+	const router = bindLocation ? routerStore : {};
 	return function createDataStoreProviderComponent(WrappedComponent) {
 		@observer
 		class DataStoreProvider extends Component {
 			static propTypes = {
-				routerStore: PropTypes.shape({
-					location: PropTypes.shape({
-						query: PropTypes.object,
-						pathname: PropTypes.string,
-						search: PropTypes.string,
-					}),
-					history: PropTypes.shape({
-						listen: PropTypes.func,
-					}),
-				}),
 				table: PropTypes.string,
-			};
-
-			static defaultProps = {
-				routerStore,
 			};
 
 			static childContextTypes = {
@@ -33,7 +21,6 @@ export default function dataStoreProvider() {
 			};
 
 			static contextTypes = {
-				appConfig: PropTypes.object,
 				DataStore: PropTypes.func.isRequired,
 			};
 
@@ -47,23 +34,25 @@ export default function dataStoreProvider() {
 				super(props, context);
 				const { table } = props;
 				const { DataStore } = context;
-				this.state = {
-					store: DataStore.get(table),
-				};
+				const store = DataStore.get(table);
+				this.state = { store };
+				this._removeQueryListener = store.addQueryListener(router);
 			}
 
 			componentWillMount() {
-				const { history } = this.props.routerStore;
-				this._unlisten = history.listen((location, prevLocation) => {
-					if (location.pathname === prevLocation.pathname) {
-						const { getOmitPaths } = ActionModalStore;
-						const prevQuery = omitBy(prevLocation.query, getOmitPaths);
-						const nextQuery = omitBy(location.query, getOmitPaths);
-						if (!isEqual(prevQuery, nextQuery)) {
-							this._fetch();
+				const { history } = router;
+				if (history) {
+					this._unlistenHistory = history.listen((location, prevLocation) => {
+						if (location.pathname === prevLocation.pathname) {
+							const { getOmitPaths } = ActionModalStore;
+							const prevQuery = omitBy(prevLocation.query, getOmitPaths);
+							const nextQuery = omitBy(location.query, getOmitPaths);
+							if (!isEqual(prevQuery, nextQuery)) {
+								this._setQuery(nextQuery);
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 
 			componentWillReceiveProps({ table }) {
@@ -76,16 +65,21 @@ export default function dataStoreProvider() {
 			}
 
 			componentDidMount() {
-				this._fetch();
+				const { location } = router;
+				if (location) {
+					const { getOmitPaths } = ActionModalStore;
+					const query = omitBy(location.query, getOmitPaths);
+					this._setQuery(query);
+				}
 			}
 
 			componentWillUnmount() {
-				this._unlisten();
+				this._removeQueryListener();
+				this._unlistenHistory();
 			}
 
-			_fetch() {
-				const { query, search } = this.props.routerStore.location;
-				this.state.store.fetch({ query, state: { cacheKey: search } });
+			_setQuery(query) {
+				this.state.store.query = query;
 			}
 
 			render() {
