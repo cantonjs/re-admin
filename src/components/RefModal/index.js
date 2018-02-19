@@ -58,8 +58,8 @@ export default class RefModal extends Component {
 
 	render() {
 		const {
-			store,
 			props: {
+				store,
 				visible,
 				label,
 				modalWidth,
