@@ -1,7 +1,5 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-import HiddenRouterStore from './HiddenRouterStore';
 import dataStoreProvider from 'hoc/dataStoreProvider';
 import { Modal } from 'antd';
 import TableBody from 'components/TableBody';
@@ -51,8 +49,8 @@ export default class RefModal extends Component {
 	};
 
 	_handleOk = () => {
-		const { onChange, onRequestHide } = this.props;
-		onChange(this.props.store.selectedKeys[0]);
+		const { onChange, onRequestHide, store } = this.props;
+		onChange(store.selectedKeys[0], store);
 		onRequestHide();
 	};
 
