@@ -1,4 +1,3 @@
-
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
@@ -10,6 +9,7 @@ import ensureFileList from 'utils/ensureFileList';
 import ImageTableCell from './ImageTableCell';
 import resizeMode from './resizeMode';
 import { isObject } from 'lodash';
+import warning from 'warning';
 
 @withField
 @withAppConfig(({ upload }) => ({
@@ -42,10 +42,10 @@ export default class ImageField extends Component {
 	static resizeMode = resizeMode;
 
 	static renderTable(props, { text }) {
-		return (<ImageTableCell {...props} url={text} />);
+		return <ImageTableCell {...props} url={text} />;
 	}
 
-	_strategy = this.props
+	_strategy = this.props;
 
 	state = {
 		fileList: ensureFileList(this.props.getValue()),
@@ -58,22 +58,22 @@ export default class ImageField extends Component {
 		const { authStore, appConfig } = this.context;
 		const { accessTokenName } = appConfig.api;
 
-		if (isObject(strategy)) { this._customRequest = strategy; }
-		else if (strategy) {
+		if (isObject(strategy)) {
+			this._customRequest = strategy;
+		} else if (strategy) {
 			const { strategies } = appConfig.upload;
-			if (__DEV__ && !strategies.hasOwnProperty(strategy)) {
-				console.warn(
+			__DEV__ &&
+				warning(
+					strategies.hasOwnProperty(strategy),
 					`Strategy "${strategy}" is NOT defined in config file`
 				);
-			}
 			this._customRequest = strategies[strategy];
 		}
 
-
 		// TODO: should suppport `accessToken` in header
 		const search = requireAccessToken ?
-			`?${accessTokenName}=${authStore.accessToken}` : ''
-		;
+			`?${accessTokenName}=${authStore.accessToken}` :
+			'';
 		this._uploadPath = imagePath + search;
 	}
 
@@ -94,12 +94,7 @@ export default class ImageField extends Component {
 
 	render() {
 		const {
-			props: {
-				max, strategy,
-				getValue,
-				thumbStyle,
-				...other
-			},
+			props: { max, strategy, getValue, thumbStyle, ...other },
 			state: { previewVisible, previewImage, fileList },
 			_customRequest,
 			_uploadPath,

@@ -6,6 +6,7 @@ import getRequest from 'utils/getRequest';
 import { isString } from 'lodash';
 import deprecated from 'utils/deprecated';
 import showError from 'utils/showError';
+import warning from 'warning';
 
 const verifyAndSaveAccessToken = (authRes = {}) => {
 	const { accessToken, expiresIn, expiresInMilliseconds } = authRes;
@@ -16,9 +17,7 @@ const verifyAndSaveAccessToken = (authRes = {}) => {
 
 	const maxAge = expiresInMilliseconds || (expiresIn && expiresIn * 1000) || 0;
 
-	if (!+maxAge) {
-		__DEV__ && console.warn('Missing `expiresIn` attribute.');
-	}
+	__DEV__ && warning(+maxAge, 'Missing `expiresIn` attribute.');
 
 	maxAge && cookie.set(ACCESS_TOKEN, accessToken, { maxAge });
 };

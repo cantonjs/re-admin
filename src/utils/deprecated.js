@@ -1,3 +1,5 @@
+import warning from 'warning';
+
 const cache = new Set();
 
 export default function deprecated(name, replacement, message) {
@@ -5,7 +7,8 @@ export default function deprecated(name, replacement, message) {
 		return;
 	}
 	cache.add(name);
-	console.warn(
+	warning(
+		false,
 		message ||
 			`"${name}" has been deprecated, please use "${replacement}" instead.`
 	);

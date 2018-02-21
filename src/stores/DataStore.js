@@ -4,6 +4,7 @@ import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
 import deprecated from 'utils/deprecated';
 import ActionModalStore from 'stores/ActionModalStore';
+import warning from 'warning';
 
 const caches = observable.map();
 let appConfig = {};
@@ -38,9 +39,7 @@ export default class DataStore {
 	get tableConfig() {
 		const tableName = this._tableName;
 		const table = appConfig.tables[tableName];
-		if (tableName && !table) {
-			console.warn(`Table "${tableName}" is NOT found`);
-		}
+		warning(!tableName || table, `Table "${tableName}" is NOT found`);
 		return {
 			...table,
 			...this._customConfig,

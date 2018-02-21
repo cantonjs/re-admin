@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AdminContext from 'containers/AdminContext';
@@ -31,14 +30,11 @@ export default class Admin extends Component {
 	}
 
 	componentWillReceiveProps({ children, config }) {
-		// console.log(children || config);
 		this._config = getConfig(children || config);
 		this.forceUpdate();
 	}
 
 	render() {
-		return (
-			<AdminContext appConfig={this._config} />
-		);
+		return <AdminContext appConfig={this._config} />;
 	}
 }

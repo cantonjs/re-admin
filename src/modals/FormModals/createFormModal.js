@@ -8,6 +8,7 @@ import FormItemWrapper from 'components/FormItemWrapper';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'constants/Issuers';
 import DataStore from 'stores/DataStore';
+import warning from 'warning';
 
 const styles = {
 	spinContainer: {
@@ -82,7 +83,7 @@ export default function createFormModal(issuerText, displayName) {
 				store.call(method, { ...props, url, body });
 				modalStore.close();
 			} else if (__DEV__) {
-				console.warn('INVALID');
+				warning(false, 'INVALID');
 			}
 		};
 
