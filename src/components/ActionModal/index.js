@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import ActionModalStore from 'stores/ActionModalStore';
 import routerStore from 'stores/routerStore';
-import * as Actions from 'constants/Actions';
 import { Modal } from 'antd';
-import { UpdaterModal, CreaterModal } from 'modals/FormModals';
-import RefModal from 'modals/RefModal';
 
 @observer
 export default class ActionModal extends Component {
@@ -21,11 +18,8 @@ export default class ActionModal extends Component {
 
 	static store = {};
 
-	static init(modals) {
+	static init() {
 		ActionModal.store = new ActionModalStore(routerStore);
-		modals.set(Actions.CREATE, CreaterModal);
-		modals.set(Actions.UPDATE, UpdaterModal);
-		modals.set(Actions.REF, RefModal);
 	}
 
 	static open(modalState) {
