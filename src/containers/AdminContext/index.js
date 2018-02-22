@@ -40,7 +40,7 @@ export default class AdminContext extends Component {
 
 	componentWillMount() {
 		this._appConfig = observable(this.props.appConfig);
-		authStore.init(this._appConfig);
+		authStore.set(this._appConfig);
 		DataStore.setup(this._appConfig, authStore);
 		ActionModal.init(this._appConfig.modals);
 	}
@@ -48,7 +48,7 @@ export default class AdminContext extends Component {
 	componentWillReceiveProps({ appConfig }) {
 		// this._appConfig = appConfig;
 		Object.assign(this._appConfig, appConfig);
-		authStore.init(this._appConfig);
+		authStore.set(this._appConfig);
 		// DataStore.hotUpdate(appConfig);
 	}
 

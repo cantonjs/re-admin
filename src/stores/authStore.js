@@ -26,7 +26,7 @@ class AuthStore {
 	@observable isFetching = true;
 	@observable accessToken = cookie.get(ACCESS_TOKEN);
 
-	init(config) {
+	set(config) {
 		this._apiConfig = config.api;
 		this._config = config.auth;
 		this._request = getRequest(config).clone(this._config.basePath);
