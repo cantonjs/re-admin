@@ -33,22 +33,31 @@ export default function withActions(WrappedComponent) {
 		};
 
 		open = (name, config) => {
-			modalStore.state = {
-				keys: joinKeys(this.getSelectedKeys()),
-				...config,
-				name,
-			};
+			const { useLocation, ...other } = config;
+			modalStore.setState(
+				{
+					keys: joinKeys(this.getSelectedKeys()),
+					...other,
+					name,
+				},
+				useLocation
+			);
 		};
 
 		openCreaterModal = (options = {}) => {
 			options.keys = options.keys || '';
-			this.open(Actions.CREATE, { title: '创建', ...options });
+			this.open(Actions.CREATE, {
+				title: '创建',
+				useLocation: true,
+				...options,
+			});
 		};
 
 		openUpdaterModal = (options = {}) => {
 			const { select, ...other } = options;
 			const config = {
 				title: '更新',
+				useLocation: true,
 				...other,
 			};
 			if (select && select.length) {
@@ -65,6 +74,7 @@ export default function withActions(WrappedComponent) {
 				fetch = 'fetch',
 				save = 'request',
 				width = 880,
+				useLocation = true,
 			} = options;
 			const config = {
 				table,
@@ -72,6 +82,7 @@ export default function withActions(WrappedComponent) {
 				fetch,
 				save,
 				width,
+				useLocation,
 			};
 			if (noQuery) {
 				config.noQuery = '✓';

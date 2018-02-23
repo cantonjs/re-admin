@@ -1,65 +1,15 @@
-import { computed, observable } from 'mobx';
+import { computed, observable, action } from 'mobx';
 import { omitBy, reduce } from 'lodash';
-
-class ModalLocationBridgeStore {
-	@computed
-	get state() {
-		const prefixLength = this._prefix.length;
-		const { query } = this._loc;
-		return reduce(
-			query,
-			(state, val, key) => {
-				if (key.startsWith(this._prefix)) {
-					const stateKey = key.substr(prefixLength);
-					state[stateKey] = val;
-				}
-				return state;
-			},
-			{}
-		);
-	}
-	set state(state) {
-		const stateQuery = reduce(
-			state,
-			(query, val, key) => {
-				query[`${this._prefix}${key}`] = val;
-				return query;
-			},
-			{}
-		);
-		this._loc.query = { ...this._loc.query, ...stateQuery };
-	}
-
-	constructor(location, prefix) {
-		this._loc = location;
-		this._prefix = prefix;
-	}
-}
-
-class ModalMemoryStore {
-	@observable state = {};
-}
 
 class ModalStore {
 	@observable modalProps = {};
 	@observable state = {};
 
-	prefix = '__';
+	_prefix = '__';
 
 	getOmitPaths = (val, key) => {
-		return key.startsWith(this.prefix);
+		return key.startsWith(this._prefix);
 	};
-
-	// @computed
-	// get state() {
-	// 	return this._mem;
-	// }
-	// set state(state) {
-	// 	this._mem.state = state;
-	// }
-
-	onOk() {}
-	onCancel() {}
 
 	@computed
 	get name() {
@@ -71,16 +21,67 @@ class ModalStore {
 		return !!this.name;
 	}
 
-	close = () => {
-		this.state = {};
-	};
-
-	bindLocation(location) {
-		this._loc = new ModalLocationBridgeStore(location, this.prefix);
+	close() {
+		// this.state = {};
+		this._clearLocation();
 	}
 
-	constructor() {
-		// this._mem = new ModalMemoryStore();
+	@action
+	setState(state, useLocation) {
+		if (useLocation) {
+			this._setLocation(state);
+		} else {
+			this.state = state;
+		}
+	}
+
+	@action
+	setModalProps(props) {
+		const { width } = props;
+		if (width && /^\d+$/.test(width)) {
+			props.width = +width;
+		}
+		this.modalProps = props;
+	}
+
+	bindRouter(router) {
+		if (this._router) {
+			return;
+		}
+		router.history.listen(({ query }) => {
+			const prefixLength = this._prefix.length;
+			this.state = reduce(
+				query,
+				(state, val, key) => {
+					if (key.startsWith(this._prefix)) {
+						const stateKey = key.substr(prefixLength);
+						state[stateKey] = val;
+					}
+					return state;
+				},
+				{}
+			);
+		});
+
+		this._setLocation = (state) => {
+			const modalQuery = reduce(
+				state,
+				(query, val, key) => {
+					query[`${this._prefix}${key}`] = val;
+					return query;
+				},
+				{}
+			);
+			const { location } = router;
+			location.query = { ...location.query, ...modalQuery };
+		};
+
+		this._clearLocation = () => {
+			const { location } = router;
+			location.query = omitBy(location.query, (val, key) =>
+				key.startsWith(this._prefix)
+			);
+		};
 	}
 }
 

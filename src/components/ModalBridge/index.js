@@ -11,11 +11,11 @@ export default class ModalBridge extends Component {
 
 	componentWillMount() {
 		const { children, ...other } = this.props;
-		modalStore.modalProps = other;
+		modalStore.setModalProps(other);
 	}
 
 	componentWillUnmount() {
-		modalStore.modalProps = {};
+		modalStore.setModalProps({});
 	}
 
 	close() {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
+import routerStore from 'stores/routerStore';
 import modalStore from 'stores/modalStore';
 import { Modal } from 'antd';
 
@@ -17,6 +18,10 @@ export default class ModalProvider extends Component {
 
 	getChildContext() {
 		return { modalStore };
+	}
+
+	componentWillMount() {
+		modalStore.bindRouter(routerStore);
 	}
 
 	_close() {
