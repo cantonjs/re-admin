@@ -6,6 +6,7 @@ export authStore from 'stores/authStore';
 export DataStore from 'stores/DataStore';
 
 export Admin from 'containers/Admin';
+export ModalConsumer from 'components/ModalConsumer';
 export Toolbar from 'components/Toolbar';
 export ConfirmButton from 'components/ConfirmButton';
 export ContextButton from 'components/ContextButton';
