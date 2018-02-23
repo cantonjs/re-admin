@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -10,7 +9,7 @@ import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
 import { Router } from 'react-router-mobx';
 import DocumentTitle from 'react-document-title';
-import ActionModal from 'components/ActionModal';
+// import ActionModal from 'components/ActionModal';
 import { initModals } from './initialize';
 
 const styles = {
@@ -43,7 +42,7 @@ export default class AdminContext extends Component {
 		this._appConfig = observable(this.props.appConfig);
 		authStore.set(this._appConfig);
 		DataStore.setup(this._appConfig, authStore);
-		ActionModal.init();
+		// ActionModal.init();
 		initModals(this._appConfig.modals);
 	}
 
@@ -92,14 +91,14 @@ export default class AdminContext extends Component {
 						<Switch>
 							<Route path="/login" component={Login} />
 							<Route onEnter={handleEnter}>
-								{({ match }) =>
+								{({ match }) => (
 									<Frame>
 										<Route exact path="/" component={Index} />
 										{routes}
 										{getRoutes(_appConfig, match)}
 										<Route component={NotFound} />
 									</Frame>
-								}
+								)}
 							</Route>
 						</Switch>
 					</div>

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -56,13 +55,9 @@ export default class FrameView extends Component {
 		const { children } = this.props;
 		return (
 			<div style={styles.container}>
-				{panelsStore.isShowSidebar &&
-					<Sidebar />
-				}
+				{panelsStore.isShowSidebar && <Sidebar />}
 				<div style={styles.main}>
-					<Switch>
-						{children}
-					</Switch>
+					<Switch>{children}</Switch>
 				</div>
 			</div>
 		);

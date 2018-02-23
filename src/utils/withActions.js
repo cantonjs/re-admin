@@ -1,15 +1,14 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import joinKeys from 'utils/joinKeys';
-import ActionModal from 'components/ActionModal';
+// import ActionModal from 'components/ActionModal';
+import modalStore from 'stores/ActionModalStore';
 import * as Actions from 'constants/Actions';
 
 // Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
-
 	@observer
 	class WithActions extends Component {
 		static contextTypes = {
@@ -33,12 +32,12 @@ export default function withActions(WrappedComponent) {
 			return joinKeys(this.getSelectedKeys());
 		};
 
-		open = (action, config) => {
-			ActionModal.open({
+		open = (name, config) => {
+			modalStore.state = {
 				keys: joinKeys(this.getSelectedKeys()),
 				...config,
-				action,
-			});
+				name,
+			};
 		};
 
 		openCreaterModal = (options = {}) => {
@@ -60,7 +59,9 @@ export default function withActions(WrappedComponent) {
 
 		openRefModal = (options = {}) => {
 			const {
-				table, title, noQuery,
+				table,
+				title,
+				noQuery,
 				fetch = 'fetch',
 				save = 'request',
 				width = 880,
@@ -72,7 +73,9 @@ export default function withActions(WrappedComponent) {
 				save,
 				width,
 			};
-			if (noQuery) { config.noQuery = '✓'; }
+			if (noQuery) {
+				config.noQuery = '✓';
+			}
 			this.open(Actions.REF, config);
 		};
 
@@ -82,10 +85,10 @@ export default function withActions(WrappedComponent) {
 		};
 
 		requestCreate = () => {
-			ActionModal.open({
-				action: Actions.CREATE,
+			modalStore.state = {
+				name: Actions.CREATE,
 				title: '创建',
-			});
+			};
 		};
 
 		render() {
