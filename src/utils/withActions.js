@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import joinKeys from 'utils/joinKeys';
-// import ActionModal from 'components/ActionModal';
 import modalStore from 'stores/modalStore';
 import * as Actions from 'constants/Actions';
 
