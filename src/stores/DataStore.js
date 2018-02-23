@@ -3,7 +3,7 @@ import { omitBy, assign, isFunction, isUndefined, reduce } from 'lodash';
 import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
 import deprecated from 'utils/deprecated';
-import ActionModalStore from 'stores/ActionModalStore';
+import modalStore from 'stores/modalStore';
 import warning from 'warning';
 
 const caches = observable.map();
@@ -236,7 +236,7 @@ export default class DataStore {
 				...other,
 				query: {
 					count: this.size,
-					...omitBy(query, ActionModalStore.getOmitPaths),
+					...omitBy(query, modalStore.getOmitPaths),
 					page: (function () {
 						const p = query.page || 1;
 						return p < 1 ? 1 : p;

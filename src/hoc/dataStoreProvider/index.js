@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import hoistStatics from 'hoist-non-react-statics';
 import { observer } from 'mobx-react';
-import ActionModalStore from 'stores/ActionModalStore';
+import modalStore from 'stores/modalStore';
 import { omitBy, isEqual } from 'lodash';
 import routerStore from 'stores/routerStore';
 
@@ -44,7 +44,7 @@ export default function dataStoreProvider(options = {}) {
 				if (history) {
 					this._unlistenHistory = history.listen((location, prevLocation) => {
 						if (location.pathname === prevLocation.pathname) {
-							const { getOmitPaths } = ActionModalStore;
+							const { getOmitPaths } = modalStore;
 							const prevQuery = omitBy(prevLocation.query, getOmitPaths);
 							const nextQuery = omitBy(location.query, getOmitPaths);
 							if (!isEqual(prevQuery, nextQuery)) {
@@ -67,7 +67,7 @@ export default function dataStoreProvider(options = {}) {
 			componentDidMount() {
 				const { location } = router;
 				if (location) {
-					const { getOmitPaths } = ActionModalStore;
+					const { getOmitPaths } = modalStore;
 					const query = omitBy(location.query, getOmitPaths);
 					this._setQuery(query);
 				}
