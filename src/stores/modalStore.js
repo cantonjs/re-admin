@@ -22,7 +22,6 @@ class ModalStore {
 	}
 
 	close() {
-		// this.state = {};
 		this._clearLocation();
 	}
 
@@ -37,10 +36,29 @@ class ModalStore {
 
 	@action
 	setModalProps(props) {
-		const { width } = props;
-		if (width && /^\d+$/.test(width)) {
-			props.width = +width;
-		}
+		const ensureNumber = function ensureNumber(propName) {
+			const val = props[propName];
+			if (val && /^\d+$/.test(val)) {
+				props[propName] = +val;
+			}
+		};
+		const ensureBoolean = function ensureBoolean(propName) {
+			if (!props.hasOwnProperty(propName)) {
+				return;
+			}
+			const val = props[propName];
+			if (val === 'false' || val === 'no') {
+				props[propName] = false;
+			} else if (val) {
+				props[propName] = true;
+			}
+		};
+		ensureNumber('width');
+		ensureNumber('zIndex');
+		ensureBoolean('closable');
+		ensureBoolean('confirmLoading');
+		ensureBoolean('mask');
+		ensureBoolean('maskClosable');
 		this.modalProps = props;
 	}
 
