@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import modalStore from 'stores/modalStore';
 
 @observer
-export default class ModalBridge extends Component {
+export default class ModalConsumer extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 	};

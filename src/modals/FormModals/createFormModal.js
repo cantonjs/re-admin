@@ -4,7 +4,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Spin } from 'antd';
 import { Form } from 'components/Nested';
-import ModalBridge from 'components/ModalBridge';
+import ModalConsumer from 'components/ModalConsumer';
 import FormItemWrapper from 'components/FormItemWrapper';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'constants/Issuers';
@@ -101,7 +101,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			const { isFetching, formRenderers } = dataStore;
 
 			return (
-				<ModalBridge
+				<ModalConsumer
 					title={title}
 					width={width}
 					onOk={this._handleOk}
@@ -126,7 +126,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 								/>
 							))}
 					</Form>
-				</ModalBridge>
+				</ModalConsumer>
 			);
 		}
 	}

@@ -2,7 +2,7 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import joinKeys from 'utils/joinKeys';
 import dataStoreProvider from 'hoc/dataStoreProvider';
-import ModalBridge from 'components/ModalBridge';
+import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
@@ -52,12 +52,12 @@ export default class RefModal extends Component {
 	render() {
 		const { props: { noQuery, store, title, width } } = this;
 		return (
-			<ModalBridge width={width} title={title} onOk={this._handleOk}>
+			<ModalConsumer width={width} title={title} onOk={this._handleOk}>
 				<div>
 					{!noQuery && <TableQuery store={store} />}
 					<TableBody store={store} selectionType="radio" />
 				</div>
-			</ModalBridge>
+			</ModalConsumer>
 		);
 	}
 }
