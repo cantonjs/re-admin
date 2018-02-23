@@ -255,6 +255,7 @@ export default class DataStore {
 			this.collections.set(fetchKey, collection);
 			this.totals.set(fetchKey, total);
 		} catch (err) {
+			console.error(err);
 			showError('请求失败', err);
 		}
 

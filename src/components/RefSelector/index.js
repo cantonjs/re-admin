@@ -1,11 +1,12 @@
-
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import styles from './styles';
 import { observer } from 'mobx-react';
+import modalStore from 'stores/modalStore';
+import { REF } from 'constants/Actions';
 import createComponent from 'components/Nested/createComponent';
 import { Input, Icon } from 'antd';
-import RefModal from 'components/RefModal';
+// import RefModal from 'components/RefModal';
 
 @observer
 class RefSelector extends Component {
@@ -27,7 +28,6 @@ class RefSelector extends Component {
 
 	state = {
 		value: this.props.value,
-		visible: false,
 	};
 
 	componentWillReceiveProps({ value }) {
@@ -37,12 +37,19 @@ class RefSelector extends Component {
 	}
 
 	_handleClick = (ev) => {
+		const { placeholder, style, onKeyPress, onChange, ...other } = this.props;
 		ev.preventDefault();
-		this.setState({ visible: true });
-	};
-
-	_handleRequestHide = () => {
-		this.setState({ visible: false });
+		modalStore.setState({
+			keys: '',
+			...other,
+			name: REF,
+			save(ref) {
+				// TODO
+				if (ref) {
+					onChange(ref.refKeys[0], ref.refStore);
+				}
+			},
+		});
 	};
 
 	_handleChange = (ev) => {
@@ -53,47 +60,34 @@ class RefSelector extends Component {
 
 	render() {
 		const {
-			props: {
-				placeholder, style, label, onKeyPress,
-				...other,
-			},
-			state: { value, visible },
+			props: { placeholder, style, onKeyPress },
+			state: { value },
 		} = this;
 
 		return (
-			<div>
-				<Input
-					style={{ ...styles.button, ...style }}
-					placeholder={placeholder}
-					value={value}
-					size="large"
-					onChange={this._handleChange}
-					onKeyPress={onKeyPress}
-					addonAfter={
-						<a href="#" onClick={this._handleClick}>
-							<Icon type="bars" />
-						</a>
-					}
-				/>
-				<RefModal
-					{...other}
-					visible={visible}
-					onRequestHide={this._handleRequestHide}
-				/>
-			</div>
+			<Input
+				style={{ ...styles.button, ...style }}
+				placeholder={placeholder}
+				value={value}
+				size="large"
+				onChange={this._handleChange}
+				onKeyPress={onKeyPress}
+				addonAfter={
+					<a href="#" onClick={this._handleClick}>
+						<Icon type="bars" />
+					</a>
+				}
+			/>
 		);
 	}
 }
 
 export default createComponent(RefSelector, {
 	displayName: 'NestRefSelector',
-	onChange(val) { return val; },
+	onChange(val) {
+		return val;
+	},
 	render(props, originalProps, Component) {
-		return (
-			<Component
-				{...props}
-				label={originalProps.label}
-			/>
-		);
+		return <Component {...props} label={originalProps.label} />;
 	},
 });

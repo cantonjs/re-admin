@@ -1,6 +1,7 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import joinKeys from 'utils/joinKeys';
+import { isFunction } from 'lodash';
 import dataStoreProvider from 'hoc/dataStoreProvider';
 import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
@@ -10,9 +11,9 @@ import TableQuery from 'components/TableQuery';
 export default class RefModal extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
-		fetch: PropTypes.string,
+		fetch: PropTypes.stringOrFunc,
 		keys: PropTypes.string,
-		save: PropTypes.string,
+		save: PropTypes.stringOrFunc,
 		noQuery: PropTypes.any,
 		store: PropTypes.object,
 		title: PropTypes.node,
@@ -34,7 +35,7 @@ export default class RefModal extends Component {
 
 	componentWillMount() {
 		const { props: { fetch, store: refStore }, props } = this;
-		refStore.call(fetch, props);
+		isFunction(fetch) ? fetch(props) : refStore.call(fetch, props);
 	}
 
 	_handleOk = () => {
@@ -46,7 +47,8 @@ export default class RefModal extends Component {
 		const { pathname } = refStore;
 		const refKeys = refStore.selectedKeys;
 		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
-		store.call(save, { method: 'POST', url, ...props, keys, refKeys });
+		const options = { method: 'POST', url, ...props, keys, refKeys, refStore };
+		isFunction(save) ? save(options) : store.call(save, options);
 	};
 
 	render() {
