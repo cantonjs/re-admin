@@ -1,10 +1,19 @@
-
 import 'antd/dist/antd.less';
 import './reset.scss';
 import React, { Component } from 'react';
 import {
-	Admin, Title, API, Auth, Upload, Navigator, Menu, Modal, ErrorMessages,
-	Toolbar, CreateButton, ContextButton,
+	Admin,
+	Title,
+	API,
+	Auth,
+	Upload,
+	Navigator,
+	Menu,
+	Modal,
+	ErrorMessages,
+	Toolbar,
+	CreateButton,
+	ContextButton,
 } from '../src';
 import testTable from './tables/test';
 import fooTable from './tables/foo';
@@ -43,6 +52,7 @@ export default class App extends Component {
 														ev.preventDefault();
 														open('custom', {
 															title: 'My Custom Modal',
+															useLocation: true,
 														});
 													}}
 													label="自定义弹框"
@@ -85,16 +95,12 @@ export default class App extends Component {
 
 				<Auth basePath="auth" loginPath="login" getUserPath="getUser" />
 
-				<Upload
-					imagePath="/api/upload/image"
-					filePath="/api/upload/file"
-				/>
+				<Upload imagePath="/api/upload/image" filePath="/api/upload/file" />
 
 				<Modal name="custom" component={FooModal} />
 
 				{testTable}
 				{fooTable}
-
 			</Admin>
 		);
 	}
