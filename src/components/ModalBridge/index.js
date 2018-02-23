@@ -18,6 +18,10 @@ export default class ModalBridge extends Component {
 		modalStore.modalProps = {};
 	}
 
+	close() {
+		modalStore.close();
+	}
+
 	render() {
 		return Children.only(this.props.children);
 	}
