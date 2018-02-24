@@ -37,7 +37,7 @@ export default class App extends Component {
 					/>
 					<Menu icon="picture" title="菜单三">
 						<Menu icon="bulb" title="2.1" path="/fork" exact />
-						<Menu icon="bulb" title="2.2">
+						<Menu icon="bulb" title="2.2" path="/bar">
 							<Menu icon="bulb" title="3.1">
 								<Menu
 									icon="bulb"
