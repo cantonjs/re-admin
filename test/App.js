@@ -27,15 +27,15 @@ export default class App extends Component {
 				<Title>上帝的看板</Title>
 
 				<Navigator>
-					<Menu icon="bulb" title="菜单一" path="/" exact />
+					<Menu icon="home" title="菜单一" path="/" exact />
 					<Menu
-						icon="bulb"
+						icon="line-chart"
 						title="菜单二"
 						table="test"
 						path="/test"
 						pageTitle="测试数据表"
 					/>
-					<Menu icon="bulb" title="菜单三">
+					<Menu icon="picture" title="菜单三">
 						<Menu icon="bulb" title="2.1" path="/fork" exact />
 						<Menu icon="bulb" title="2.2">
 							<Menu icon="bulb" title="3.1">
