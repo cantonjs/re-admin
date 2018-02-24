@@ -18,6 +18,9 @@ export default class RefModal extends Component {
 		store: PropTypes.object,
 		title: PropTypes.node,
 		width: PropTypes.stringOrNumber,
+		header: PropTypes.component,
+		footer: PropTypes.component,
+		modalFooter: PropTypes.component,
 	};
 
 	static defaultProps = {
@@ -52,12 +55,27 @@ export default class RefModal extends Component {
 	};
 
 	render() {
-		const { props: { noQuery, store, title, width } } = this;
+		const {
+			noQuery,
+			store,
+			title,
+			width,
+			header: Header,
+			footer: Footer,
+			modalFooter: ModalFooter,
+		} = this.props;
 		return (
-			<ModalConsumer width={width} title={title} onOk={this._handleOk}>
+			<ModalConsumer
+				width={width}
+				title={title}
+				onOk={this._handleOk}
+				footer={ModalFooter && <ModalFooter store={store} />}
+			>
 				<div>
+					{Header && <Header store={store} />}
 					{!noQuery && <TableQuery store={store} />}
 					<TableBody store={store} selectionType="radio" />
+					{Footer && <Footer store={store} />}
 				</div>
 			</ModalConsumer>
 		);
