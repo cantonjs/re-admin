@@ -222,7 +222,7 @@ export default class DataStore {
 	}
 
 	async fetch(options = {}) {
-		const { query = {}, ...other } = options;
+		const { query = {}, method, url, body, headers } = options;
 		const { fetchKey } = this;
 
 		if (this.collections.has(fetchKey)) {
@@ -232,8 +232,11 @@ export default class DataStore {
 		this.isFetching = true;
 
 		try {
-			const res = await this._request.fetch({
-				...other,
+			const fetchOptions = {
+				method,
+				url,
+				body,
+				headers,
 				query: {
 					count: this.size,
 					...omitBy(query, modalStore.getOmitPaths),
@@ -242,7 +245,8 @@ export default class DataStore {
 						return p < 1 ? 1 : p;
 					})(),
 				},
-			});
+			};
+			const res = await this._request.fetch(omitBy(fetchOptions, isUndefined));
 			const { total, list = [] } = await this.tableConfig.mapOnFetchResponse(
 				res
 			);

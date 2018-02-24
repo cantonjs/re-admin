@@ -47,7 +47,7 @@ export default (
 			table="foo"
 			placeholder="请输入超链表"
 			label="超链表"
-			// noModalQuery
+			noQuery
 			inForm
 			inQuery
 		/>

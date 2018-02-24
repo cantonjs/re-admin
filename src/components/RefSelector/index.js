@@ -6,24 +6,26 @@ import modalStore from 'stores/modalStore';
 import { REF } from 'constants/Actions';
 import createComponent from 'components/Nested/createComponent';
 import { Input, Icon } from 'antd';
-// import RefModal from 'components/RefModal';
 
 @observer
 class RefSelector extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
-		fetch: PropTypes.string,
+		fetch: PropTypes.stringOrFunc,
+		save: PropTypes.stringOrFunc,
 		onChange: PropTypes.func,
 		onKeyPress: PropTypes.func,
 		value: PropTypes.any,
 		placeholder: PropTypes.string,
 		style: PropTypes.object,
 		label: PropTypes.node,
+		width: PropTypes.stringOrNumber,
 	};
 
 	static defaultProps = {
 		placeholder: '',
 		fetch: 'fetch',
+		width: '80%',
 	};
 
 	state = {
@@ -41,14 +43,11 @@ class RefSelector extends Component {
 		ev.preventDefault();
 		modalStore.setState({
 			keys: '',
+			save({ refKeys, refStore }) {
+				onChange(refKeys[0], refStore);
+			},
 			...other,
 			name: REF,
-			save(ref) {
-				// TODO
-				if (ref) {
-					onChange(ref.refKeys[0], ref.refStore);
-				}
-			},
 		});
 	};
 
