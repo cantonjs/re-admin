@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import routerStore from 'stores/routerStore';
-import { Modal, Icon } from 'antd';
+import { Modal, Icon, Menu, Dropdown } from 'antd';
 
-const confirm = Modal.confirm;
+const { confirm } = Modal;
+const { Item } = Menu;
 
-export default class Logout extends Component {
+export default class UserMenu extends Component {
 	static propTypes = {
 		style: PropTypes.object,
 	};
@@ -29,9 +30,23 @@ export default class Logout extends Component {
 	render() {
 		const { style } = this.props;
 		return (
-			<a style={style} onClick={this._handleClick} href="#">
-				<Icon type="logout" />
-			</a>
+			<Dropdown
+				overlay={
+					<Menu>
+						<Item>
+							<a rel="noopener noreferrer" onClick={this._handleClick} href="#">
+								<Icon type="logout" /> 退出登录
+							</a>
+						</Item>
+					</Menu>
+				}
+				trigger={['click']}
+			>
+				<a href="#" style={style}>
+					<Icon type="user" />
+					Admin
+				</a>
+			</Dropdown>
 		);
 	}
 }

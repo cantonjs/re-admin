@@ -1,3 +1,4 @@
+import styles from './styles';
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -6,26 +7,19 @@ import authStore from 'stores/authStore';
 import routerStore from 'stores/routerStore';
 import { observer } from 'mobx-react';
 import Sidebar from 'components/Sidebar';
-import { Spin } from 'antd';
+import { Spin, Layout } from 'antd';
+import UserMenu from 'components/UserMenu';
 
-const styles = {
-	container: {
-		minWidth: 1024,
-	},
-	main: {
-		padding: '40px 60px 40px 300px',
-	},
-	spinContainer: {
-		display: 'block',
-		textAlign: 'center',
-		padding: 80,
-	},
-};
+const { Header, Content, Footer } = Layout;
 
 @observer
 export default class FrameView extends Component {
 	static propTypes = {
 		children: PropTypes.node,
+	};
+
+	static contextTypes = {
+		appConfig: PropTypes.object.isRequired,
 	};
 
 	componentDidMount() {
@@ -46,20 +40,30 @@ export default class FrameView extends Component {
 	render() {
 		if (authStore.isFetching || !authStore.accessToken) {
 			return (
-				<div style={styles.spinContainer}>
+				<Layout style={styles.spinContainer}>
 					<Spin delay={800} />
-				</div>
+				</Layout>
 			);
 		}
 
-		const { children } = this.props;
+		const { context: { appConfig: { footer } }, props: { children } } = this;
 		return (
-			<div style={styles.container}>
+			<Layout style={styles.container}>
 				{panelsStore.isShowSidebar && <Sidebar />}
-				<div style={styles.main}>
-					<Switch>{children}</Switch>
-				</div>
-			</div>
+				<Layout>
+					<Header style={styles.header}>
+						<div style={styles.headerRight}>
+							<UserMenu style={styles.footer} />
+						</div>
+					</Header>
+					<Content style={styles.content}>
+						<div style={styles.main}>
+							<Switch>{children}</Switch>
+						</div>
+					</Content>
+					{!!footer && <Footer style={styles.footer}>{footer}</Footer>}
+				</Layout>
+			</Layout>
 		);
 	}
 }
