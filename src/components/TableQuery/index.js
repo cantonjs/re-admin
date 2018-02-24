@@ -69,11 +69,11 @@ export default class TableQuery extends Component {
 	}
 
 	_handleSearch = (query) => {
-		this.props.store.setState(query);
+		this.props.store.setQuery(query);
 	};
 
 	_handleReset = () => {
-		this.props.store.setState({});
+		this.props.store.setQuery({});
 	};
 
 	_handleResetSort = () => {
