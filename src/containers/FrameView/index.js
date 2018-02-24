@@ -22,17 +22,9 @@ export default class FrameView extends Component {
 		appConfig: PropTypes.object.isRequired,
 	};
 
-	state = {
-		collapsed: false,
-	};
-
 	componentDidMount() {
 		this._requestAuth();
 	}
-
-	_handleCollapse = (collapsed) => {
-		this.setState({ collapsed });
-	};
 
 	async _requestAuth() {
 		const { pathname, search } = routerStore.location;
@@ -54,17 +46,13 @@ export default class FrameView extends Component {
 			);
 		}
 
-		const {
-			context: { appConfig: { footer } },
-			props: { children },
-			state: { collapsed },
-		} = this;
+		const { context: { appConfig: { footer } }, props: { children } } = this;
 		return (
 			<Layout style={styles.container}>
-				{panelsStore.isShowSidebar && (
-					<Sidebar collapsed={collapsed} onCollapse={this._handleCollapse} />
-				)}
-				<Layout style={{ marginLeft: collapsed ? 72 : 200 }}>
+				<Sidebar />
+				<Layout
+					style={{ marginLeft: panelsStore.isSidebarCollapsed ? 80 : 200 }}
+				>
 					<Header style={styles.header}>
 						<div style={styles.headerRight}>
 							<UserMenu style={styles.footer} />

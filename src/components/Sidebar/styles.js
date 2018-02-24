@@ -16,5 +16,7 @@ export default {
 	},
 	link: {
 		display: 'inline',
+		color: 'inherit',
+		textDecoration: 'none',
 	},
 };

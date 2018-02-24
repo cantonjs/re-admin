@@ -1,34 +1,38 @@
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { isObservableArray } from 'mobx';
+import { observer } from 'mobx-react';
+import routerStore from 'stores/routerStore';
+import panelsStore from 'stores/panelsStore';
 import { Link } from 'react-router-dom';
 import { Menu, Icon, Layout } from 'antd';
-import routerStore from 'stores/routerStore';
-import { isObservableArray } from 'mobx';
 
 const { Sider } = Layout;
 const { SubMenu, Item: MenuItem } = Menu;
 
+@observer
 export default class Sidebar extends Component {
-	static propTypes = {
-		collapsed: PropTypes.bool.isRequired,
-		onCollapse: PropTypes.func.isRequired,
-	};
-
 	static contextTypes = {
 		appConfig: PropTypes.object,
 	};
 
 	static isPrivate = true;
 
-	state = {
-		collapsed: false,
-	};
-
 	componentWillMount() {
 		this._defaultSelectedKeys = [routerStore.location.pathname];
 		this._defaultOpenKeys = this._findDefaultOpenKeys();
 	}
+
+	_handleCollapse = (collapsed) => {
+		panelsStore.updateSidebar(collapsed);
+	};
+
+	_handleClick = ({ item }) => {
+		if (panelsStore.isSidebarCollapsed) {
+			routerStore.push(item.props.path);
+		}
+	};
 
 	_findDefaultOpenKeys() {
 		const { menus } = this.context.appConfig.navigator;
@@ -61,7 +65,7 @@ export default class Sidebar extends Component {
 			return;
 		}
 
-		const { collapsed } = this.props;
+		const { isSidebarCollapsed } = panelsStore;
 
 		return menus.map(
 			(menu) =>
@@ -78,14 +82,14 @@ export default class Sidebar extends Component {
 						{this._renderMenu(menu.children)}
 					</SubMenu>
 				) : (
-					<MenuItem key={menu.menuKey}>
+					<MenuItem key={menu.menuKey} path={menu.path}>
 						{menu.icon && <Icon type={menu.icon} />}
-						<Link
-							to={menu.path}
-							style={{ ...styles.link, opacity: collapsed ? 0 : 1 }}
-						>
-							{menu.title}
-						</Link>
+						{isSidebarCollapsed && <span>{menu.title}</span>}
+						{!isSidebarCollapsed && (
+							<Link to={menu.path} style={styles.link}>
+								{menu.title}
+							</Link>
+						)}
 					</MenuItem>
 				)
 		);
@@ -94,26 +98,27 @@ export default class Sidebar extends Component {
 	render() {
 		const {
 			context: { appConfig: { navigator, title } },
-			props: { collapsed, onCollapse },
 			_defaultSelectedKeys,
 			_defaultOpenKeys,
 		} = this;
+		const { isSidebarCollapsed } = panelsStore;
 
 		return (
 			<Sider
 				collapsible
-				collapsed={collapsed}
-				onCollapse={onCollapse}
+				collapsed={isSidebarCollapsed}
+				onCollapse={this._handleCollapse}
 				style={styles.container}
 			>
 				<div style={styles.title}>
-					{collapsed ? <Icon type="copyright" /> : title}
+					{isSidebarCollapsed ? <Icon type="copyright" /> : title}
 				</div>
 				<Menu
 					mode="inline"
 					theme="dark"
 					defaultSelectedKeys={_defaultSelectedKeys}
 					defaultOpenKeys={_defaultOpenKeys}
+					onClick={this._handleClick}
 				>
 					{this._renderMenu(navigator.menus)}
 				</Menu>
