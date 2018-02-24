@@ -11,9 +11,6 @@ export default {
 		textAlign: 'center',
 		padding: 80,
 	},
-	main: {
-		marginLeft: 200,
-	},
 	header: {
 		background: '#fff',
 		padding: 0,

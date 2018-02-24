@@ -10,11 +10,20 @@ const { Sider } = Layout;
 const { SubMenu, Item: MenuItem } = Menu;
 
 export default class Sidebar extends Component {
+	static propTypes = {
+		collapsed: PropTypes.bool.isRequired,
+		onCollapse: PropTypes.func.isRequired,
+	};
+
 	static contextTypes = {
 		appConfig: PropTypes.object,
 	};
 
 	static isPrivate = true;
+
+	state = {
+		collapsed: false,
+	};
 
 	componentWillMount() {
 		this._defaultSelectedKeys = [routerStore.location.pathname];
@@ -52,6 +61,8 @@ export default class Sidebar extends Component {
 			return;
 		}
 
+		const { collapsed } = this.props;
+
 		return menus.map(
 			(menu) =>
 				menu.children && menu.children.length ? (
@@ -60,7 +71,7 @@ export default class Sidebar extends Component {
 						title={
 							<span>
 								{menu.icon && <Icon type={menu.icon} />}
-								{menu.title}
+								<span>{menu.title}</span>
 							</span>
 						}
 					>
@@ -69,7 +80,10 @@ export default class Sidebar extends Component {
 				) : (
 					<MenuItem key={menu.menuKey}>
 						{menu.icon && <Icon type={menu.icon} />}
-						<Link to={menu.path} style={styles.link}>
+						<Link
+							to={menu.path}
+							style={{ ...styles.link, opacity: collapsed ? 0 : 1 }}
+						>
 							{menu.title}
 						</Link>
 					</MenuItem>
@@ -80,13 +94,21 @@ export default class Sidebar extends Component {
 	render() {
 		const {
 			context: { appConfig: { navigator, title } },
+			props: { collapsed, onCollapse },
 			_defaultSelectedKeys,
 			_defaultOpenKeys,
 		} = this;
 
 		return (
-			<Sider collapsible trigger={null} style={styles.container}>
-				<div style={styles.title}>{title}</div>
+			<Sider
+				collapsible
+				collapsed={collapsed}
+				onCollapse={onCollapse}
+				style={styles.container}
+			>
+				<div style={styles.title}>
+					{collapsed ? <Icon type="copyright" /> : title}
+				</div>
 				<Menu
 					mode="inline"
 					theme="dark"
