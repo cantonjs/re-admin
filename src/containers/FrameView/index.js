@@ -50,14 +50,14 @@ export default class FrameView extends Component {
 		return (
 			<Layout style={styles.container}>
 				{panelsStore.isShowSidebar && <Sidebar />}
-				<Layout>
+				<Layout style={styles.main}>
 					<Header style={styles.header}>
 						<div style={styles.headerRight}>
 							<UserMenu style={styles.footer} />
 						</div>
 					</Header>
 					<Content style={styles.content}>
-						<div style={styles.main}>
+						<div style={styles.contentBody}>
 							<Switch>{children}</Switch>
 						</div>
 					</Content>

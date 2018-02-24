@@ -1,3 +1,4 @@
+import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -7,33 +8,6 @@ import { isObservableArray } from 'mobx';
 
 const { Sider } = Layout;
 const { SubMenu, Item: MenuItem } = Menu;
-
-const border = '1px solid rgb(233, 233, 233)';
-const styles = {
-	container: {
-		width: 240,
-		position: 'fixed',
-		left: 0,
-		top: 0,
-		bottom: 0,
-		display: 'flex',
-		flexDirection: 'column',
-		zIndex: 9,
-		borderRight: border,
-	},
-	title: {
-		height: 64,
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		fontSize: 20,
-		color: '#fff',
-		backgroundColor: '#002140',
-	},
-	link: {
-		display: 'inline',
-	},
-};
 
 export default class Sidebar extends Component {
 	static contextTypes = {
@@ -111,7 +85,7 @@ export default class Sidebar extends Component {
 		} = this;
 
 		return (
-			<Sider collapsible trigger={null}>
+			<Sider collapsible trigger={null} style={styles.container}>
 				<div style={styles.title}>{title}</div>
 				<Menu
 					mode="inline"
