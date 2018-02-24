@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
-
 import dataStoreProvider from 'hoc/dataStoreProvider';
 import DocumentTitle from 'react-document-title';
 import TableBody from 'components/TableBody';
@@ -56,4 +56,6 @@ DataTableView.contextTypes = {
 	appConfig: PropTypes.object,
 };
 
-export default dataStoreProvider({ bindLocation: true })(DataTableView);
+export default dataStoreProvider({ bindLocation: true })(
+	observer(DataTableView)
+);

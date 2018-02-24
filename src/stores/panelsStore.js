@@ -14,7 +14,7 @@ class PanelsStore {
 	}
 
 	updateQuery(val) {
-		this.isSidebarCollapsed = val;
+		this.isShowQuery = val;
 		cookie.set(QUERY_PANEL, val, { maxAge });
 	}
 }
