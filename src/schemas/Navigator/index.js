@@ -30,7 +30,7 @@ NavigatorSchema.defaultProps = {
 NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 	Object.assign(navigator, other);
 
-	const { dataTable, notFound } = navigator;
+	const { dataTable, index: welcome, notFound } = navigator;
 
 	const getMenus = function getMenus(child, keyPaths = [], rootPath = '/') {
 		const { children, ...props } = child.props;
@@ -70,8 +70,15 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 	};
 
 	const menus = getMenus({ props: { children } }).children;
+	const userRoutes = getRoutes(menus);
+	const routes = [
+		<Route key="_index" exact path="/" component={welcome} />,
+		...userRoutes,
+		<Route key="_notFound" component={notFound} />,
+	];
+
 	navigator.menus = menus;
-	navigator.routes = getRoutes(menus);
+	navigator.routes = routes;
 };
 
 NavigatorSchema.schemaName = 'navigator';

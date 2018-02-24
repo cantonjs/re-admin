@@ -53,16 +53,7 @@ export default class AdminContext extends Component {
 	render() {
 		const {
 			props: {
-				appConfig: {
-					title,
-					navigator: {
-						frame: Frame,
-						login: Login,
-						index: Index,
-						notFound: NotFound,
-						routes,
-					},
-				},
+				appConfig: { title, navigator: { frame: Frame, login: Login, routes } },
 			},
 		} = this;
 
@@ -87,13 +78,7 @@ export default class AdminContext extends Component {
 							<Route path="/login" component={Login} />
 							<Route
 								onEnter={handleEnter}
-								render={() => (
-									<Frame>
-										<Route exact path="/" component={Index} />
-										{routes}
-										<Route component={NotFound} />
-									</Frame>
-								)}
+								render={() => <Frame>{routes}</Frame>}
 							/>
 						</Switch>
 					</div>
