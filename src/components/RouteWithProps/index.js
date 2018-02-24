@@ -1,11 +1,13 @@
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Route } from 'react-router-dom';
 
 export default function RouteWithProps({
 	component: Component,
-	exact, strict, path, ...other,
+	exact,
+	strict,
+	path,
+	...other
 }) {
 	return (
 		<Route
