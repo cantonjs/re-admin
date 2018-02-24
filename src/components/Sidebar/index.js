@@ -84,6 +84,8 @@ export default class Sidebar extends Component {
 				) : (
 					<MenuItem key={menu.menuKey} path={menu.path}>
 						{menu.icon && <Icon type={menu.icon} />}
+
+						{/* To hide title when collapsed */}
 						{isSidebarCollapsed && <span>{menu.title}</span>}
 						{!isSidebarCollapsed && (
 							<Link to={menu.path} style={styles.link}>
@@ -102,7 +104,6 @@ export default class Sidebar extends Component {
 			_defaultOpenKeys,
 		} = this;
 		const { isSidebarCollapsed } = panelsStore;
-
 		return (
 			<Sider
 				collapsible

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import getRoutes from 'utils/getRoutes';
 import routerStore from 'stores/routerStore';
 import authStore from 'stores/authStore';
 import DataStore from 'stores/DataStore';
@@ -65,7 +64,6 @@ export default class AdminContext extends Component {
 					},
 				},
 			},
-			_appConfig,
 		} = this;
 
 		const handleEnter = async (nextState, replace, next) => {
@@ -81,23 +79,22 @@ export default class AdminContext extends Component {
 			}
 			next();
 		};
-
 		return (
 			<DocumentTitle title={title}>
 				<Router component={BrowserRouter} routerStore={routerStore}>
 					<div style={styles.container}>
 						<Switch>
 							<Route path="/login" component={Login} />
-							<Route onEnter={handleEnter}>
-								{({ match }) => (
+							<Route
+								onEnter={handleEnter}
+								render={() => (
 									<Frame>
 										<Route exact path="/" component={Index} />
 										{routes}
-										{getRoutes(_appConfig, match)}
 										<Route component={NotFound} />
 									</Frame>
 								)}
-							</Route>
+							/>
 						</Switch>
 					</div>
 				</Router>

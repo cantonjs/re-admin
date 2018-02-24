@@ -1,4 +1,3 @@
-
 import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
 import FrameView from 'containers/FrameView';
@@ -6,9 +5,10 @@ import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
 import DataTableView from 'containers/DataTableView';
 import NotFoundView from 'containers/NotFoundView';
+import Route from 'components/RouteWithProps';
 
 export default function NavigatorSchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 NavigatorSchema.propTypes = {
@@ -28,25 +28,51 @@ NavigatorSchema.defaultProps = {
 };
 
 NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
-	const getChildren = (menu, keyPaths = []) => {
-		const { children, ...otherMenuProps } = menu.props;
-		const result = {
-			...otherMenuProps,
-			menuKey: otherMenuProps.path || `@${keyPaths.join('-')}`,
-		};
+	Object.assign(navigator, other);
+
+	const { dataTable, notFound } = navigator;
+
+	const getMenus = function getMenus(child, keyPaths = [], rootPath = '/') {
+		const { children, ...props } = child.props;
+
+		if (props.path) {
+			props.path = (rootPath + props.path).replace(/\/\//, '/');
+			props.menuKey = props.path;
+		} else {
+			props.menuKey = `@${keyPaths.join('-')}`;
+		}
 
 		if (children) {
-			result.children = Children.map(children, (child, index) =>
-				getChildren(child, keyPaths.concat(index))
+			props.children = Children.map(children, (child, index) =>
+				getMenus(child, keyPaths.concat(index), props.path || rootPath)
 			);
 		}
 
-		return result;
+		return props;
 	};
 
-	Object.assign(navigator, other, {
-		menus: getChildren({ props: { children } }).children,
-	});
+	const getRoutes = function getRoutes(menus) {
+		if (!menus || !menus.length) {
+			return null;
+		}
+
+		return menus.map(({ children, ...route }, index) => {
+			const props = { key: index, ...route };
+			if (children) {
+				return getRoutes(children);
+			} else {
+				if (!props.component) {
+					props.component = props.table ? dataTable : notFound;
+				}
+				return <Route {...props} />;
+			}
+		});
+	};
+
+	const menus = getMenus({ props: { children } }).children;
+	navigator.menus = menus;
+	navigator.routes = getRoutes(menus);
 };
+
 NavigatorSchema.schemaName = 'navigator';
 NavigatorSchema.DataType = Object;
