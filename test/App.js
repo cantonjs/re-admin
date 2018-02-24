@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
 	Admin,
 	Title,
+	Footer,
 	API,
 	Auth,
 	Upload,
@@ -101,6 +102,8 @@ export default class App extends Component {
 
 				{testTable}
 				{fooTable}
+
+				<Footer>Powered by cantonjs</Footer>
 			</Admin>
 		);
 	}
