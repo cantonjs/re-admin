@@ -66,7 +66,8 @@ class ModalStore {
 		if (this._router) {
 			return;
 		}
-		router.history.listen(({ query }) => {
+
+		const handleQueryChange = ({ query }) => {
 			const prefixLength = this._prefix.length;
 			this.state = reduce(
 				query,
@@ -79,7 +80,10 @@ class ModalStore {
 				},
 				{}
 			);
-		});
+		};
+
+		router.history.listen(handleQueryChange);
+		handleQueryChange(router.location);
 
 		this._setLocation = (state) => {
 			const modalQuery = reduce(
