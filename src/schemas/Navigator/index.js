@@ -13,6 +13,8 @@ export default function NavigatorSchema() {
 }
 
 NavigatorSchema.propTypes = {
+	noBreadcrumb: PropTypes.bool,
+	noHomeBreadcrumb: PropTypes.bool,
 	index: PropTypes.component,
 	login: PropTypes.component,
 	frame: PropTypes.component,
@@ -21,6 +23,8 @@ NavigatorSchema.propTypes = {
 };
 
 NavigatorSchema.defaultProps = {
+	noBreadcrumb: false,
+	noHomeBreadcrumb: false,
 	index: IndexView,
 	login: LoginView,
 	frame: FrameView,
@@ -31,7 +35,7 @@ NavigatorSchema.defaultProps = {
 NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 	Object.assign(navigator, other);
 
-	const { dataTable, index: welcome, notFound } = navigator;
+	const { dataTable, index: welcome, notFound, noBreadcrumb } = navigator;
 	const breadcrumbNameMap = {};
 
 	const getMenus = function getMenus(child, keyPaths = [], rootPath = '/') {
@@ -42,7 +46,11 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 			props.menuKey = props.path;
 			const { title: menuTitle, pageTitle } = props;
 			const title = pageTitle || menuTitle;
-			if (title && (props.table || props.component || props.render)) {
+			if (
+				!noBreadcrumb &&
+				title &&
+				(props.table || props.component || props.render)
+			) {
 				breadcrumbNameMap[props.path] = {
 					title,
 					routeProps: pick(props, ['path', 'exact', 'strict']),

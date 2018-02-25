@@ -14,8 +14,7 @@ export default class Breadcrumb extends Component {
 		appConfig: PropTypes.object,
 	};
 
-	_renderItems() {
-		const { breadcrumbNameMap } = this.context.appConfig.navigator;
+	_renderItems(breadcrumbNameMap) {
 		const { pathname } = routerStore.location;
 		const items = map(breadcrumbNameMap, ({ routeProps, title }) => {
 			if (matchPath(pathname, routeProps)) {
@@ -36,14 +35,24 @@ export default class Breadcrumb extends Component {
 	}
 
 	render() {
+		const {
+			noBreadcrumb,
+			noHomeBreadcrumb,
+			breadcrumbNameMap,
+		} = this.context.appConfig.navigator;
+		if (noBreadcrumb) {
+			return null;
+		}
 		return (
 			<AntdBreadcrumb {...this.props}>
-				<Item>
-					<Link to="/">
-						<Icon type="home" />
-					</Link>
-				</Item>
-				{this._renderItems()}
+				{!noHomeBreadcrumb && (
+					<Item>
+						<Link to="/">
+							<Icon type="home" />
+						</Link>
+					</Item>
+				)}
+				{this._renderItems(breadcrumbNameMap)}
 			</AntdBreadcrumb>
 		);
 	}
