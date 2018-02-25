@@ -1,10 +1,10 @@
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isObservableArray } from 'mobx';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 import panelsStore from 'stores/panelsStore';
+import MenuKeysStore from './MenuKeysStore';
 import { Link } from 'react-router-dom';
 import { Menu, Icon, Layout } from 'antd';
 
@@ -17,11 +17,14 @@ export default class Sidebar extends Component {
 		appConfig: PropTypes.object,
 	};
 
-	static isPrivate = true;
-
 	componentWillMount() {
-		this._defaultSelectedKeys = [routerStore.location.pathname];
-		this._defaultOpenKeys = this._findDefaultOpenKeys();
+		const { menus } = this.context.appConfig.navigator;
+		const { location } = routerStore;
+		this._keysStore = new MenuKeysStore(menus, location);
+	}
+
+	componentWillUnmount() {
+		this._keysStore.disposer();
 	}
 
 	_handleCollapse = (collapsed) => {
@@ -34,31 +37,9 @@ export default class Sidebar extends Component {
 		}
 	};
 
-	_findDefaultOpenKeys() {
-		const { menus } = this.context.appConfig.navigator;
-		const { pathname } = routerStore.location;
-		const findMenuTree = (menus, paths = []) => {
-			if (!menus) {
-				return;
-			}
-			if (Array.isArray(menus) || isObservableArray(menus)) {
-				for (const menu of menus) {
-					const matched = findMenuTree(
-						menu.children,
-						paths.concat(menu.menuKey)
-					);
-					if (matched) {
-						return matched;
-					}
-					if (menu.path === pathname) {
-						return paths;
-					}
-				}
-			}
-		};
-
-		return findMenuTree(menus);
-	}
+	_handleOpenChange = (openKeys) => {
+		this._keysStore.openKeys = openKeys;
+	};
 
 	_renderMenu(menus) {
 		if (!menus) {
@@ -99,9 +80,8 @@ export default class Sidebar extends Component {
 
 	render() {
 		const {
-			context: { appConfig: { navigator, title } },
-			_defaultSelectedKeys,
-			_defaultOpenKeys,
+			context: { appConfig: { navigator: { menus }, title } },
+			_keysStore,
 		} = this;
 		const { isSidebarCollapsed } = panelsStore;
 		return (
@@ -117,11 +97,12 @@ export default class Sidebar extends Component {
 				<Menu
 					mode="inline"
 					theme="dark"
-					defaultSelectedKeys={_defaultSelectedKeys}
-					defaultOpenKeys={_defaultOpenKeys}
+					selectedKeys={_keysStore.selectedKeys}
+					openKeys={_keysStore.openKeys}
 					onClick={this._handleClick}
+					onOpenChange={this._handleOpenChange}
 				>
-					{this._renderMenu(navigator.menus)}
+					{this._renderMenu(menus)}
 				</Menu>
 			</Sider>
 		);
