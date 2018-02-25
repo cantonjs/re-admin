@@ -1,6 +1,8 @@
 import { resolve } from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+// import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
+import OfflinePlugin from 'offline-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
@@ -108,6 +110,16 @@ export default (env = {}) => {
 				}),
 			build && new webpack.optimize.ModuleConcatenationPlugin(),
 			new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+			// new ServiceWorkerWebpackPlugin({
+			// 	entry: inTest('sw.js'),
+			// }),
+			new OfflinePlugin({
+				ServiceWorker: {
+					entry: inTest('sw.js'),
+					events: true,
+				},
+				AppCache: false,
+			}),
 		].filter(Boolean),
 		resolve: {
 			modules: [srcDir, testDir, 'node_modules'],
