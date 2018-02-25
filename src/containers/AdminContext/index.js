@@ -52,10 +52,9 @@ export default class AdminContext extends Component {
 
 	render() {
 		const {
-			props: {
-				appConfig: { title, navigator: { frame: Frame, login: Login, routes } },
-			},
-		} = this;
+			title,
+			navigator: { frame: Frame, login: Login, routes },
+		} = this.props.appConfig;
 
 		const handleEnter = async (nextState, replace, next) => {
 			const { pathname, search } = nextState.location;
@@ -78,7 +77,9 @@ export default class AdminContext extends Component {
 							<Route path="/login" component={Login} />
 							<Route
 								onEnter={handleEnter}
-								render={() => <Frame>{routes}</Frame>}
+								render={({ location }) => (
+									<Frame locKey={location.key}>{routes}</Frame>
+								)}
 							/>
 						</Switch>
 					</div>
