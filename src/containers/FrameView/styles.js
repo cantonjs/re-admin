@@ -14,13 +14,27 @@ export default {
 	header: {
 		background: '#fff',
 		padding: 0,
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+	headerLeft: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginLeft: margin,
 	},
 	headerRight: {
-		float: 'right',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
 		marginRight: margin,
+		paddingRight: margin,
 	},
 	content: {
 		margin,
+	},
+	breadcrumb: {
+		// marginBottom: margin,
 	},
 	contentBody: {
 		padding: 24,

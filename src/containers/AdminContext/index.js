@@ -53,6 +53,7 @@ export default class AdminContext extends Component {
 	render() {
 		const {
 			title,
+			footer,
 			navigator: { frame: Frame, login: Login, routes },
 		} = this.props.appConfig;
 
@@ -78,7 +79,9 @@ export default class AdminContext extends Component {
 							<Route
 								onEnter={handleEnter}
 								render={({ location }) => (
-									<Frame locKey={location.key}>{routes}</Frame>
+									<Frame locKey={location.key} footer={footer}>
+										{routes}
+									</Frame>
 								)}
 							/>
 						</Switch>

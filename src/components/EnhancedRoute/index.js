@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-export default function RouteWithProps({
+export default function EnhancedRoute({
 	component: Component,
 	exact,
 	strict,
@@ -19,8 +19,8 @@ export default function RouteWithProps({
 	);
 }
 
-RouteWithProps.propTypes = {
-	component: PropTypes.func,
+EnhancedRoute.propTypes = {
+	component: PropTypes.func.isRequired,
 	exact: PropTypes.any,
 	strict: PropTypes.any,
 	path: PropTypes.any,

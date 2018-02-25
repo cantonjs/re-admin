@@ -9,17 +9,15 @@ import { observer } from 'mobx-react';
 import Sidebar from 'components/Sidebar';
 import { Spin, Layout } from 'antd';
 import UserMenu from 'components/UserMenu';
+import Breadcrumb from 'components/Breadcrumb';
 
 const { Header, Content, Footer } = Layout;
 
 @observer
 export default class FrameView extends Component {
 	static propTypes = {
-		children: PropTypes.node,
-	};
-
-	static contextTypes = {
-		appConfig: PropTypes.object.isRequired,
+		children: PropTypes.node.isRequired,
+		footer: PropTypes.node,
 	};
 
 	componentDidMount() {
@@ -46,7 +44,7 @@ export default class FrameView extends Component {
 			);
 		}
 
-		const { context: { appConfig: { footer } }, props: { children } } = this;
+		const { children, footer } = this.props;
 		return (
 			<Layout style={styles.container}>
 				<Sidebar />
@@ -54,6 +52,9 @@ export default class FrameView extends Component {
 					style={{ marginLeft: panelsStore.isSidebarCollapsed ? 80 : 200 }}
 				>
 					<Header style={styles.header}>
+						<div style={styles.headerLeft}>
+							<Breadcrumb style={styles.breadcrumb} />
+						</div>
 						<div style={styles.headerRight}>
 							<UserMenu style={styles.footer} />
 						</div>

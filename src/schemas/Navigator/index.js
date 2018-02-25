@@ -1,11 +1,12 @@
 import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
+import { pick } from 'lodash';
 import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
 import DataTableView from 'containers/DataTableView';
 import NotFoundView from 'containers/NotFoundView';
-import Route from 'components/RouteWithProps';
+import Route from 'components/EnhancedRoute';
 
 export default function NavigatorSchema() {
 	return <noscript />;
@@ -31,6 +32,7 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 	Object.assign(navigator, other);
 
 	const { dataTable, index: welcome, notFound } = navigator;
+	const breadcrumbNameMap = {};
 
 	const getMenus = function getMenus(child, keyPaths = [], rootPath = '/') {
 		const { children, ...props } = child.props;
@@ -38,6 +40,14 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 		if (props.path) {
 			props.path = (rootPath + props.path).replace(/\/\//, '/');
 			props.menuKey = props.path;
+			const { title: menuTitle, pageTitle } = props;
+			const title = pageTitle || menuTitle;
+			if (title && (props.table || props.component || props.render)) {
+				breadcrumbNameMap[props.path] = {
+					title,
+					routeProps: pick(props, ['path', 'exact', 'strict']),
+				};
+			}
 		} else {
 			props.menuKey = `@${keyPaths.join('-')}`;
 		}
@@ -61,12 +71,16 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 			if (children) {
 				return getRoutes(children);
 			} else {
-				if (!props.component) {
+				if (!props.component && !props.render) {
 					props.component = props.table ? dataTable : notFound;
 				}
 				return <Route {...props} />;
 			}
 		});
+	};
+
+	const getSlashesLength = function getSlashesLength(path) {
+		return (path.match(/\//g) || []).length;
 	};
 
 	const menus = getMenus({ props: { children } }).children;
@@ -79,6 +93,12 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 
 	navigator.menus = menus;
 	navigator.routes = routes;
+	navigator.breadcrumbNameMap = Object.keys(breadcrumbNameMap)
+		.sort((a, b) => getSlashesLength(a) - getSlashesLength(b))
+		.reduce((acc, key) => {
+			acc[key] = breadcrumbNameMap[key];
+			return acc;
+		}, {});
 };
 
 NavigatorSchema.schemaName = 'navigator';
