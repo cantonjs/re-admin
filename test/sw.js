@@ -42,8 +42,6 @@ const verify = async (ctx, next) => {
 
 router
 	.get('/api/auth/getUser', verify, async (ctx) => {
-		// ctx.body = { accessToken: 'fork', expiresIn };
-		// TODO
 		ctx.body = { accessToken: validAccessToken, expiresIn };
 	})
 	.post('/api/auth/login', async (ctx) => {
