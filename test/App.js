@@ -21,6 +21,7 @@ import { Icon } from 'antd';
 import testTable from './tables/test';
 import fooTable from './tables/foo';
 import FooModal from './modals/Foo';
+import Login from './components/Login';
 
 const isGithubPage = /\.github\.io$/.test(window.location.host);
 const basename = isGithubPage ? '/re-admin' : '/';
@@ -34,7 +35,7 @@ export default class App extends Component {
 					<Icon type="rocket" style={{ fontSize: 20 }} />
 				</Logo>
 
-				<Navigator basename={basename}>
+				<Navigator basename={basename} login={Login}>
 					<Menu icon="home" title="菜单一" path="/" exact />
 					<Menu
 						icon="line-chart"
