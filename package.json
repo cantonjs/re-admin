@@ -17,6 +17,9 @@
     "analyzer:stats": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --env.min -p --profile --json > .stats.json",
     "analyzer:run": "webpack-bundle-analyzer .stats.json",
     "analyzer": "run-s analyzer:*",
+    "predoc": "rimraf doc && mkdirp doc",
+    "doc:build": "cross-env NODE_ENV=production BABEL_ENV=development webpack -p --progress --colors",
+    "doc": "run-s doc:*",
     "preversion": "yarn build"
   },
   "files": [

@@ -5,7 +5,6 @@ import OfflinePlugin from 'offline-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
-const testServerPort = process.env.TEST_SERVER_PORT || 3001;
 const isDev = process.env.NODE_ENV !== 'production';
 const PROJECT_PATH = __dirname;
 const inProject = (...args) => resolve(PROJECT_PATH, ...args);
@@ -25,7 +24,7 @@ export default (env = {}) => {
 		},
 		output: {
 			filename: 'bundle.[hash:7].js',
-			path: resolve(__dirname, 'dist'),
+			path: resolve(__dirname, build ? 'dist' : 'doc'),
 			publicPath: '/',
 		},
 		module: {
@@ -35,7 +34,7 @@ export default (env = {}) => {
 					include: [srcDir, testDir],
 					loader: 'babel-loader',
 					options: {
-						forceEnv: build ? 'umd' : 'demo',
+						forceEnv: build ? 'umd' : 'doc',
 					},
 				},
 				{
@@ -132,9 +131,6 @@ export default (env = {}) => {
 			},
 			historyApiFallback: {
 				disableDotRule: true,
-			},
-			proxy: {
-				'/api': `http://127.0.0.1:${testServerPort}`,
 			},
 		},
 	};
