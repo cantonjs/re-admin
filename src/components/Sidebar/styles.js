@@ -10,9 +10,8 @@ export default {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		fontSize: 20,
-		color: '#fff',
 		backgroundColor: '#002140',
+		color: '#fff',
 	},
 	link: {
 		display: 'inline',

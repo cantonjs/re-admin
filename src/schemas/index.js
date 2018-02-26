@@ -4,6 +4,7 @@ export Fields from './Fields';
 export Menu from './Menu';
 export Navigator from './Navigator';
 export Table from './Table';
+export Logo from './Logo';
 export Title from './Title';
 export Footer from './Footer';
 export Upload from './Upload';

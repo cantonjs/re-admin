@@ -8,6 +8,7 @@ export DataStore from 'stores/DataStore';
 export Admin from 'containers/Admin';
 export ModalConsumer from 'components/ModalConsumer';
 export PageContainer from 'components/PageContainer';
+export AppTitle from 'components/AppTitle';
 export Toolbar from 'components/Toolbar';
 export ConfirmButton from 'components/ConfirmButton';
 export ContextButton from 'components/ContextButton';

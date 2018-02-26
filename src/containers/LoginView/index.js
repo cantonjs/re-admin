@@ -1,9 +1,9 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import routerStore from 'stores/routerStore';
 import { Icon } from 'antd';
 import { Form, Input, Submit } from 'components/Nested';
-import routerStore from 'stores/routerStore';
+import AppTitle from 'components/AppTitle';
 
 const styles = {
 	container: {
@@ -41,10 +41,7 @@ export default class LoginView extends Component {
 
 	async _submit(data) {
 		const {
-			context: {
-				authStore,
-				appConfig: { auth: { defaultLoginRedirection } },
-			},
+			context: { authStore, appConfig: { auth: { defaultLoginRedirection } } },
 		} = this;
 
 		const isOk = await authStore.login(data);
@@ -53,7 +50,7 @@ export default class LoginView extends Component {
 			const { ref } = routerStore.location.query;
 			const url = ref || defaultLoginRedirection;
 			routerStore.history.replace(url);
-		};
+		}
 	}
 
 	_handleValid = () => {
@@ -69,13 +66,10 @@ export default class LoginView extends Component {
 	};
 
 	render() {
-		const {
-			context: { appConfig: { title } },
-			state: { isValid },
-		} = this;
+		const { state: { isValid } } = this;
 		return (
 			<div style={styles.container}>
-				<h1 style={styles.title}>{title}</h1>
+				<AppTitle style={styles.title} />
 				<Form
 					onSubmit={this._handleSubmit}
 					onValid={this._handleValid}
@@ -104,10 +98,7 @@ export default class LoginView extends Component {
 						登录
 					</Submit>
 				</Form>
-
 			</div>
 		);
 	}
 }
-
-

@@ -7,6 +7,7 @@ import panelsStore from 'stores/panelsStore';
 import MenuKeysStore from './MenuKeysStore';
 import { Link } from 'react-router-dom';
 import { Menu, Icon, Layout } from 'antd';
+import AppTitle from 'components/AppTitle';
 
 const { Sider } = Layout;
 const { SubMenu, Item: MenuItem } = Menu;
@@ -80,7 +81,7 @@ export default class Sidebar extends Component {
 
 	render() {
 		const {
-			context: { appConfig: { navigator: { menus }, title } },
+			context: { appConfig: { navigator: { menus }, logoNode } },
 			_keysStore,
 		} = this;
 		const { isSidebarCollapsed } = panelsStore;
@@ -92,7 +93,15 @@ export default class Sidebar extends Component {
 				style={styles.container}
 			>
 				<div style={styles.title}>
-					{isSidebarCollapsed ? <Icon type="copyright" /> : title}
+					{logoNode}
+					<AppTitle
+						style={{
+							width: isSidebarCollapsed ? 0 : 'auto',
+							marginLeft: !isSidebarCollapsed && logoNode ? 8 : 0,
+							opacity: isSidebarCollapsed ? 0 : 1,
+							transition: 'opacity 0.2s',
+						}}
+					/>
 				</div>
 				<Menu
 					mode="inline"

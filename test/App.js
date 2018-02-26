@@ -3,6 +3,7 @@ import './reset.less';
 import React, { Component } from 'react';
 import {
 	Admin,
+	Logo,
 	Title,
 	Footer,
 	API,
@@ -16,6 +17,7 @@ import {
 	CreateButton,
 	ContextButton,
 } from '../src';
+import { Icon } from 'antd';
 import testTable from './tables/test';
 import fooTable from './tables/foo';
 import FooModal from './modals/Foo';
@@ -28,6 +30,9 @@ export default class App extends Component {
 		return (
 			<Admin>
 				<Title>上帝的看板</Title>
+				<Logo>
+					<Icon type="rocket" style={{ fontSize: 20 }} />
+				</Logo>
 
 				<Navigator basename={basename}>
 					<Menu icon="home" title="菜单一" path="/" exact />
@@ -107,8 +112,13 @@ export default class App extends Component {
 				{fooTable}
 
 				<Footer>
-					Checkout on <a href="https://github.com/cantonjs/re-admin">Github</a>{' '}
-					| Powered by <a href="https://github.com/cantonjs">Cantonjs</a>
+					<a
+						href="https://github.com/cantonjs/re-admin"
+						style={{ color: '#999', marginRight: 10 }}
+					>
+						<Icon type="github" />
+					</a>{' '}
+					Powered by <a href="https://github.com/cantonjs">Cantonjs</a>
 				</Footer>
 			</Admin>
 		);
