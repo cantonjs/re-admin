@@ -27,8 +27,6 @@ const ready = function ready() {
 	}
 };
 
-console.log('navigator.serviceWorker.controller', navigator.serviceWorker);
-
 if (
 	navigator.serviceWorker &&
 	navigator.serviceWorker.controller &&
@@ -39,18 +37,9 @@ if (
 
 offlineRuntime.install({
 	onInstalled() {
-		console.log('onInstalled');
 		ready();
 	},
-	onUpdating() {
-		console.log('Updating...');
-	},
 	onUpdateReady: () => {
-		console.log('onUpdateReady');
 		offlineRuntime.applyUpdate();
-	},
-	onUpdated: () => {
-		console.log('onUpdated');
-		// ready();
 	},
 });
