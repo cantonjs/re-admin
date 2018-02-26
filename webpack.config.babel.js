@@ -106,13 +106,14 @@ export default (env = {}) => {
 				}),
 			build && new webpack.optimize.ModuleConcatenationPlugin(),
 			new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-			new OfflinePlugin({
-				ServiceWorker: {
-					entry: inTest('sw.js'),
-					events: true,
-				},
-				AppCache: false,
-			}),
+			!build &&
+				new OfflinePlugin({
+					ServiceWorker: {
+						entry: inTest('sw.js'),
+						events: true,
+					},
+					AppCache: false,
+				}),
 		].filter(Boolean),
 		resolve: {
 			modules: [srcDir, testDir, 'node_modules'],

@@ -12,7 +12,7 @@
     "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel src -d es",
     "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel src -d lib",
     "build:umd": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --progress --colors",
-    "build:min": "yarn build:umd -- --env.min -p",
+    "build:min": "yarn build:umd --env.min -p",
     "build": "run-p build:*",
     "analyzer:stats": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --env.min -p --profile --json > .stats.json",
     "analyzer:run": "webpack-bundle-analyzer .stats.json",
