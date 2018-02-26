@@ -54,11 +54,15 @@ export default class AdminContext extends Component {
 		const {
 			title,
 			footer,
-			navigator: { frame: Frame, login: Login, routes },
+			navigator: { frame: Frame, login: Login, routes, basename },
 		} = this.props.appConfig;
 		return (
 			<DocumentTitle title={title}>
-				<Router component={BrowserRouter} routerStore={routerStore}>
+				<Router
+					component={BrowserRouter}
+					basename={basename}
+					routerStore={routerStore}
+				>
 					<div style={styles.container}>
 						<Switch>
 							<Route path="/login" component={Login} />

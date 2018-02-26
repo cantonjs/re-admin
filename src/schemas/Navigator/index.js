@@ -13,6 +13,7 @@ export default function NavigatorSchema() {
 }
 
 NavigatorSchema.propTypes = {
+	basename: PropTypes.string,
 	noBreadcrumb: PropTypes.bool,
 	noHomeBreadcrumb: PropTypes.bool,
 	index: PropTypes.component,
@@ -23,6 +24,7 @@ NavigatorSchema.propTypes = {
 };
 
 NavigatorSchema.defaultProps = {
+	basename: '/',
 	noBreadcrumb: false,
 	noHomeBreadcrumb: false,
 	index: IndexView,
