@@ -106,7 +106,10 @@ export default class App extends Component {
 				{testTable}
 				{fooTable}
 
-				<Footer>Powered by cantonjs</Footer>
+				<Footer>
+					Checkout on <a href="https://github.com/cantonjs/re-admin">Github</a>{' '}
+					| Powered by <a href="https://github.com/cantonjs">Cantonjs</a>
+				</Footer>
 			</Admin>
 		);
 	}

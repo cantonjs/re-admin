@@ -6,7 +6,7 @@ export default function FooterSchema() {
 }
 
 FooterSchema.propTypes = {
-	children: PropTypes.string,
+	children: PropTypes.node,
 };
 
 FooterSchema.defaultProps = {
