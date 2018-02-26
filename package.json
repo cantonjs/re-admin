@@ -19,6 +19,7 @@
     "analyzer": "run-s analyzer:*",
     "predoc": "rimraf docs",
     "doc:build": "cross-env NODE_ENV=production BABEL_ENV=development webpack -p --progress --colors",
+    "doc:github": "git-directory-deploy --directory docs",
     "doc": "run-s doc:*",
     "clean": "run-p prebuild predoc",
     "preversion": "yarn build"
@@ -94,6 +95,7 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-standard": "^3.0.1",
+    "git-directory-deploy": "^1.5.1",
     "html-webpack-plugin": "^2.29.0",
     "koa-error": "^3.0.0",
     "less": "^2.7.2",
