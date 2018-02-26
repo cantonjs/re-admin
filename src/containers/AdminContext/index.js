@@ -56,20 +56,6 @@ export default class AdminContext extends Component {
 			footer,
 			navigator: { frame: Frame, login: Login, routes },
 		} = this.props.appConfig;
-
-		const handleEnter = async (nextState, replace, next) => {
-			const { pathname, search } = nextState.location;
-			const isOk = await authStore.auth();
-			if (!isOk) {
-				replace({
-					pathname: '/login',
-					query: {
-						ref: pathname + search,
-					},
-				});
-			}
-			next();
-		};
 		return (
 			<DocumentTitle title={title}>
 				<Router component={BrowserRouter} routerStore={routerStore}>
@@ -77,7 +63,6 @@ export default class AdminContext extends Component {
 						<Switch>
 							<Route path="/login" component={Login} />
 							<Route
-								onEnter={handleEnter}
 								render={({ location }) => (
 									<Frame locKey={location.key} footer={footer}>
 										{routes}
