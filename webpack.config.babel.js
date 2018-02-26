@@ -61,29 +61,6 @@ export default (env = {}) => {
 					use: ['style-loader', 'css-loader'],
 				},
 				{
-					test: /\.scss$/,
-					include: [srcDir, testDir],
-					use: [
-						'style-loader',
-						{
-							loader: 'css-loader',
-							options: {
-								sourceMap: isDev,
-								module: true,
-								localIdentName: isDev ?
-									'[path]-[name]-[local]-[hash:base64:3]' :
-									'[hash:base64:7]',
-							},
-						},
-						{
-							loader: 'sass-loader',
-							options: {
-								includePaths: [inSrc('styles')],
-							},
-						},
-					],
-				},
-				{
 					test: /\.less$/,
 					include: [/node_modules/, testDir],
 					use: ['style-loader', 'css-loader', 'less-loader'],
