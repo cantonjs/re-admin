@@ -1,5 +1,6 @@
 import { router as toolboxRouter } from 'sw-toolbox';
 import { parse } from 'tiny-querystring';
+import statuses from 'statuses';
 
 const router = {};
 const createMethod = function createMethod(method) {
@@ -28,25 +29,15 @@ const createMethod = function createMethod(method) {
 			}
 
 			let { status, statusText, body } = ctx;
+
 			if (!body) {
-				if (status === 400) {
-					body = 'CLIENT ERROR';
-				} else if (status === 401) {
-					body = 'Unauthorized';
-				} else if (status === 403) {
-					body = 'Forbidden';
-				} else if (status === 404) {
-					body = 'NOT FOUND';
-				}
-				if (!statusText) {
-					statusText = body;
-				}
+				body = statuses[status];
 			} else {
 				body = JSON.stringify(body);
 			}
 
 			if (!statusText) {
-				statusText = 'ok';
+				statusText = statuses[status];
 			}
 
 			return new Response(body, { status, statusText });

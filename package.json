@@ -116,6 +116,7 @@
     "react-router-dom": "^4.2.2",
     "rimraf": "^2.5.4",
     "sass-loader": "^6.0.6",
+    "statuses": "^1.4.0",
     "style-loader": "^0.17.0",
     "sw-toolbox": "^3.6.0",
     "webpack": "^3.10.0",
