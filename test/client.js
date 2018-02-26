@@ -1,45 +1,25 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import App from './App';
-import * as offlineRuntime from 'offline-plugin/runtime';
+import Root from './Root';
 
-const ready = function ready() {
-	const mount = document.getElementById('mount');
+const mount = document.getElementById('mount');
 
-	render(
-		<AppContainer>
-			<App />
-		</AppContainer>,
-		mount
-	);
+render(
+	<AppContainer>
+		<Root />
+	</AppContainer>,
+	mount
+);
 
-	if (module.hot) {
-		module.hot.accept('./App', () => {
-			const Next = require('./App').default;
-			render(
-				<AppContainer>
-					<Next />
-				</AppContainer>,
-				mount
-			);
-		});
-	}
-};
-
-if (
-	navigator.serviceWorker &&
-	navigator.serviceWorker.controller &&
-	navigator.serviceWorker.controller.state === 'activated'
-) {
-	ready();
+if (module.hot) {
+	module.hot.accept('./Root', () => {
+		const Next = require('./Root').default;
+		render(
+			<AppContainer>
+				<Next />
+			</AppContainer>,
+			mount
+		);
+	});
 }
-
-offlineRuntime.install({
-	onInstalled() {
-		ready();
-	},
-	onUpdateReady: () => {
-		offlineRuntime.applyUpdate();
-	},
-});
