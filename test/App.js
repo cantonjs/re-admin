@@ -20,13 +20,16 @@ import testTable from './tables/test';
 import fooTable from './tables/foo';
 import FooModal from './modals/Foo';
 
+const isGithubPage = /\.github\.io$/.test(window.location.host);
+const basename = isGithubPage ? '/re-admin' : '/';
+
 export default class App extends Component {
 	render() {
 		return (
 			<Admin>
 				<Title>上帝的看板</Title>
 
-				<Navigator>
+				<Navigator basename={basename}>
 					<Menu icon="home" title="菜单一" path="/" exact />
 					<Menu
 						icon="line-chart"
