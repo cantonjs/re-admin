@@ -18,7 +18,7 @@
     "analyzer:run": "webpack-bundle-analyzer .stats.json",
     "analyzer": "run-s analyzer:*",
     "predoc": "rimraf docs",
-    "doc:build": "cross-env NODE_ENV=production BABEL_ENV=development webpack -p --progress --colors",
+    "doc:build": "cross-env CDN=\"https://cantonjs.github.io/re-admin\"  NODE_ENV=production BABEL_ENV=development webpack -p --progress --colors",
     "doc:github": "git-directory-deploy --directory docs",
     "doc": "run-s doc:*",
     "clean": "run-p prebuild predoc",

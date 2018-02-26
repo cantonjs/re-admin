@@ -6,6 +6,7 @@ import OfflinePlugin from 'offline-plugin';
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
 const isDev = process.env.NODE_ENV !== 'production';
+const publicPath = process.env.CDN || '/';
 const PROJECT_PATH = __dirname;
 const inProject = (...args) => resolve(PROJECT_PATH, ...args);
 const inSrc = inProject.bind(null, 'src');
@@ -25,7 +26,7 @@ export default (env = {}) => {
 		output: {
 			filename: 'bundle.[hash:7].js',
 			path: resolve(__dirname, build ? 'dist' : 'docs'),
-			publicPath: '/',
+			publicPath,
 		},
 		module: {
 			rules: [
@@ -97,8 +98,8 @@ export default (env = {}) => {
 			}),
 			!build &&
 				new HtmlWebpackPlugin({
-					filename: 'index.html',
-					template: './test/index.html',
+					filename: '404.html',
+					template: './test/404.html',
 					minify: {
 						collapseWhitespace: true,
 						minifyJS: true,
@@ -132,6 +133,8 @@ export default (env = {}) => {
 			},
 			historyApiFallback: {
 				disableDotRule: true,
+				index: '/404.html',
+				rewrites: [{ from: /./, to: '/404.html' }],
 			},
 		},
 	};
