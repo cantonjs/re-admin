@@ -1,5 +1,5 @@
 import 'antd/dist/antd.less';
-import './reset.scss';
+import './reset.less';
 import React, { Component } from 'react';
 import {
 	Admin,

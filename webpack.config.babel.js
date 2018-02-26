@@ -85,7 +85,7 @@ export default (env = {}) => {
 				},
 				{
 					test: /\.less$/,
-					include: /node_modules/,
+					include: [/node_modules/, testDir],
 					use: ['style-loader', 'css-loader', 'less-loader'],
 				},
 			],
@@ -134,7 +134,6 @@ export default (env = {}) => {
 			historyApiFallback: {
 				disableDotRule: true,
 				index: '/404.html',
-				rewrites: [{ from: /./, to: '/404.html' }],
 			},
 		},
 	};
