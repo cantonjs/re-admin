@@ -3,6 +3,17 @@ import { parse } from 'tiny-querystring';
 import statuses from 'statuses';
 
 const router = {};
+
+const compose = async function compose(ctx, middlewares) {
+	const middleware = middlewares.shift();
+	if (middleware) {
+		const next = async () => {
+			await compose(ctx, middlewares);
+		};
+		await middleware(ctx, next);
+	}
+};
+
 const createMethod = function createMethod(method) {
 	router[method] = (path, ...middlewares) => {
 		toolboxRouter[method](`${path}(.*)`, async (request, params) => {
@@ -19,14 +30,7 @@ const createMethod = function createMethod(method) {
 				request.body = await request.json();
 			}
 
-			for (const middleware of middlewares) {
-				let shouldBreak = true;
-				const next = () => (shouldBreak = false);
-				await middleware(ctx, next);
-				if (shouldBreak) {
-					break;
-				}
-			}
+			await compose(ctx, middlewares.slice());
 
 			let { status, statusText, body } = ctx;
 
