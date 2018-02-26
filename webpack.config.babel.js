@@ -1,7 +1,6 @@
 import { resolve } from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-// import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
 import OfflinePlugin from 'offline-plugin';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -20,11 +19,9 @@ export default (env = {}) => {
 	const config = {
 		devtool: isDev ? 'source-map' : 'none',
 		entry: {
-			app: [
-				'babel-polyfill',
-				isDev && 'react-hot-loader/patch',
-				'./test/client.js',
-			].filter(Boolean),
+			app: [isDev && 'react-hot-loader/patch', './test/client.js'].filter(
+				Boolean
+			),
 		},
 		output: {
 			filename: 'bundle.[hash:7].js',
@@ -110,9 +107,6 @@ export default (env = {}) => {
 				}),
 			build && new webpack.optimize.ModuleConcatenationPlugin(),
 			new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-			// new ServiceWorkerWebpackPlugin({
-			// 	entry: inTest('sw.js'),
-			// }),
 			new OfflinePlugin({
 				ServiceWorker: {
 					entry: inTest('sw.js'),

@@ -18,6 +18,7 @@
 			"plugins": [
 				"react-hot-loader/babel",
 				"transform-decorators-legacy",
+				"transform-runtime",
 				"lodash",
 				["import", {
 					"libraryName": "antd",
