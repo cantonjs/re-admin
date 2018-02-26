@@ -20,6 +20,7 @@
     "predoc": "rimraf doc",
     "doc:build": "cross-env NODE_ENV=production BABEL_ENV=development webpack -p --progress --colors",
     "doc": "run-s doc:*",
+    "clean": "run-p prebuild predoc",
     "preversion": "yarn build"
   },
   "files": [
