@@ -24,7 +24,7 @@ export default (env = {}) => {
 		},
 		output: {
 			filename: 'bundle.[hash:7].js',
-			path: resolve(__dirname, build ? 'dist' : 'doc'),
+			path: resolve(__dirname, build ? 'dist' : 'docs'),
 			publicPath: '/',
 		},
 		module: {
@@ -34,7 +34,7 @@ export default (env = {}) => {
 					include: [srcDir, testDir],
 					loader: 'babel-loader',
 					options: {
-						forceEnv: build ? 'umd' : 'doc',
+						forceEnv: build ? 'umd' : 'docs',
 					},
 				},
 				{
