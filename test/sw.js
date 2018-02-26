@@ -117,9 +117,9 @@ router
 		const { params: { keys, fooKeys } } = ctx;
 		ctx.body = { keys, fooKeys };
 	})
-	.post('/api/upload/file', verify, async (ctx) => {
+	.post('/api/upload/file', async (ctx) => {
 		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };
 	})
-	.post('/api/upload/image', verify, async (ctx) => {
+	.post('/api/upload/image', async (ctx) => {
 		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };
 	});

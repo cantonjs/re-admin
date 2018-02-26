@@ -26,7 +26,10 @@ const createMethod = function createMethod(method) {
 			const search = (request.url.match(/\?.*/) || ['?'])[0];
 			request.query = parse(search.slice(1));
 
-			if (!~['GET', 'HEAD'].indexOf(request.method)) {
+			const contentType = request.headers.get('content-type');
+			const isJson = contentType === 'application/json';
+
+			if (!~['GET', 'HEAD'].indexOf(request.method) && isJson) {
 				request.body = await request.json();
 			}
 
@@ -36,7 +39,7 @@ const createMethod = function createMethod(method) {
 
 			if (!body) {
 				body = statuses[status];
-			} else {
+			} else if (isJson) {
 				body = JSON.stringify(body);
 			}
 
