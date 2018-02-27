@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AdminContext from 'containers/AdminContext';
 import getConfig from './getConfig';
+import localeStore from 'stores/localeStore';
 import moment from 'moment';
+import AdminContext from 'containers/AdminContext';
 import 'moment/locale/zh-cn';
 
 // TODO: should be able to custom
@@ -22,10 +23,14 @@ export default class Admin extends Component {
 			modals: PropTypes.object,
 		}),
 		children: PropTypes.node,
+		locale: PropTypes.object,
 	};
 
 	componentWillMount() {
-		const { children, config } = this.props;
+		const { children, config, locale } = this.props;
+		if (locale) {
+			localeStore.set(locale);
+		}
 		this._config = getConfig(children || config);
 	}
 

@@ -1,20 +1,20 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'antd';
 import clearSortedInfo from 'utils/clearSortedInfo';
-import { observer } from 'mobx-react';
+import { localeHoc, createLocale } from 'hoc/locale';
 
 const { Item } = Form;
+const locale = createLocale('ClearSortButton');
 
-@observer
+@localeHoc
 export default class ClearSortButton extends Component {
 	static propTypes = {
 		wrapperStyle: PropTypes.object,
 	};
 
 	static defaultProps = {
-		children: '默认排序',
+		children: locale.label,
 	};
 
 	static contextTypes = {
@@ -28,12 +28,11 @@ export default class ClearSortButton extends Component {
 	};
 
 	render() {
-		const {
-			props: { wrapperStyle, ...other },
-			context: { store },
-		} = this;
+		const { props: { wrapperStyle, ...other }, context: { store } } = this;
 
-		if (!store.hasSortableField) { return null; }
+		if (!store.hasSortableField) {
+			return null;
+		}
 
 		return (
 			<Item style={wrapperStyle}>

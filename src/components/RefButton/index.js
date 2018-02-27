@@ -1,6 +1,6 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
+import localeStore from 'stores/localeStore';
 import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 
@@ -15,7 +15,7 @@ export default class RefButton extends Component {
 	};
 
 	static defaultProps = {
-		label: '关联',
+		label: localeStore.RefButton.label,
 		noQuery: false,
 	};
 
@@ -34,12 +34,8 @@ export default class RefButton extends Component {
 	};
 
 	render() {
-		const {
-			props: { title, table, fetch, save, noQuery, ...other },
-		} = this;
+		const { props: { title, table, fetch, save, noQuery, ...other } } = this;
 
-		return (
-			<ContextButton {...other} onClick={this._handleClick} />
-		);
+		return <ContextButton {...other} onClick={this._handleClick} />;
 	}
 }

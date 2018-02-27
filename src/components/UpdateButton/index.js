@@ -1,8 +1,11 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
+import { localeHoc, createLocale } from 'hoc/locale';
 
+const locale = createLocale('UpdateButton');
+
+@localeHoc
 export default class UpdateButton extends Component {
 	static propTypes = {
 		names: PropTypes.array,
@@ -11,8 +14,8 @@ export default class UpdateButton extends Component {
 	};
 
 	static defaultProps = {
-		label: '修改',
-		multiLabel: '批量修改',
+		label: locale.label,
+		multiLabel: locale.multiLabel,
 		names: [],
 	};
 
@@ -22,16 +25,10 @@ export default class UpdateButton extends Component {
 	};
 
 	render() {
-		const {
-			props: { names, ...other },
-		} = this;
+		const { props: { names, ...other } } = this;
 
 		return (
-			<ContextButton
-				{...other}
-				onClick={this._handleClick}
-				minSelected={1}
-			/>
+			<ContextButton {...other} onClick={this._handleClick} minSelected={1} />
 		);
 	}
 }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
-import { observer, propTypes as MobxPropTypes } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
+import { getLocaleValues } from 'hoc/locale';
 
 const styles = {
 	footer: {
@@ -20,6 +21,8 @@ const styles = {
 		textAlign: 'right',
 	},
 };
+
+const locale = getLocaleValues('TableBody');
 
 @observer
 export default class TableBody extends Component {
@@ -114,7 +117,9 @@ export default class TableBody extends Component {
 				/>
 
 				<div style={styles.footer}>
-					<p style={styles.total}>共 {total || 0} 条记录</p>
+					<p style={styles.total}>
+						{locale.total}: {total || 0}
+					</p>
 
 					<Pagination
 						style={styles.pagination}

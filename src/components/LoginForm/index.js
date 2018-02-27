@@ -1,10 +1,13 @@
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
+import localeStore from 'stores/localeStore';
 import { Icon } from 'antd';
 import { Form, Input, Submit } from 'components/Nested';
 
+@observer
 export default class LoginForm extends Component {
 	static contextTypes = {
 		appConfig: PropTypes.object,
@@ -41,6 +44,7 @@ export default class LoginForm extends Component {
 
 	render() {
 		const { state: { isValid }, props } = this;
+		const locale = localeStore.LoginForm;
 		return (
 			<Form
 				onSubmit={this._handleSubmit}
@@ -52,14 +56,14 @@ export default class LoginForm extends Component {
 					required
 					name="username"
 					prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-					placeholder="用户名"
+					placeholder={locale.usernamePlaceholder}
 				/>
 				<Input
 					required
 					name="password"
 					type="password"
 					prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-					placeholder="密码"
+					placeholder={locale.passwordPlaceholder}
 				/>
 				<Submit
 					type="primary"
@@ -67,7 +71,7 @@ export default class LoginForm extends Component {
 					wrapperStyle={styles.buttonWrapper}
 					disabled={!isValid}
 				>
-					登录
+					{locale.login}
 				</Submit>
 			</Form>
 		);

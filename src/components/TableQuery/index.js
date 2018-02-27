@@ -2,13 +2,16 @@ import styles from './styles';
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 import { omit } from 'lodash';
 import { QUERIER } from 'constants/Issuers';
 import { Form as AntdForm, Row, Col, Button } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
+import { getLocaleValues } from 'hoc/locale';
 
 const { Item } = AntdForm;
+const locale = getLocaleValues('TableQuery');
 
 class FormState {
 	@observable data = {};
@@ -26,6 +29,7 @@ FooterContainer.propTypes = {
 	children: PropTypes.node,
 };
 
+@observer
 export default class TableQuery extends Component {
 	static propTypes = {
 		store: PropTypes.object,
@@ -134,15 +138,15 @@ export default class TableQuery extends Component {
 
 				{!footer && (
 					<FooterContainer>
-						{hasChildren && <Submit type="primary">查询</Submit>}
-						{hasChildren && <Reset>重置</Reset>}
+						{hasChildren && <Submit type="primary">{locale.query}</Submit>}
+						{hasChildren && <Reset>{locale.reset}</Reset>}
 						{hasSortableField && (
 							<Item>
 								<Button
 									onClick={this._handleResetSort}
 									disabled={!sortedOrder && !sortedKey}
 								>
-									默认排序
+									{locale.resetOrder}
 								</Button>
 							</Item>
 						)}

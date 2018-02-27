@@ -29,7 +29,11 @@ const basename = isGithubPage ? '/re-admin' : '/';
 export default class App extends Component {
 	render() {
 		return (
-			<Admin>
+			<Admin
+				locale={{
+					CreateButton: { label: 'fork' },
+				}}
+			>
 				<Title>上帝的看板</Title>
 				<Logo>
 					<Icon type="rocket" style={{ fontSize: 20 }} />

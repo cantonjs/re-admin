@@ -1,18 +1,19 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
 import { Checkbox } from 'antd';
 import panelsStore from 'stores/panelsStore';
+import { localeHoc, createLocale } from 'hoc/locale';
 
-@observer
-export default class ToolbarQuerySwitch extends Component {
+const locale = createLocale('TableQuerySwitch');
+
+@localeHoc
+export default class TableQuerySwitch extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 	};
 
 	static defaultProps = {
-		children: '高级搜索',
+		children: locale.label,
 	};
 
 	static contextTypes = {
@@ -26,14 +27,13 @@ export default class ToolbarQuerySwitch extends Component {
 	render() {
 		const { hasSortableField, hasQueryField } = this.context.store;
 
-		if (!hasSortableField && !hasQueryField) { return null; }
+		if (!hasSortableField && !hasQueryField) {
+			return null;
+		}
 
 		const { children } = this.props;
 		return (
-			<Checkbox
-				checked={panelsStore.isShowQuery}
-				onChange={this._handleToggle}
-			>
+			<Checkbox checked={panelsStore.isShowQuery} onChange={this._handleToggle}>
 				{children}
 			</Checkbox>
 		);

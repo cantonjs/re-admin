@@ -1,9 +1,12 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import ConfirmButton from 'components/ConfirmButton';
+import { localeHoc, createLocale } from 'hoc/locale';
 import { TOOLBAR } from 'constants/Issuers';
+import ConfirmButton from 'components/ConfirmButton';
 
+const locale = createLocale('RemoveButton');
+
+@localeHoc
 export default class RemoveButton extends Component {
 	static propTypes = {
 		label: PropTypes.stringOrFunc,
@@ -13,10 +16,10 @@ export default class RemoveButton extends Component {
 	};
 
 	static defaultProps = {
-		label: '删除',
-		multiLabel: '批量删除',
-		title: '确定删除？',
-		content: '该操作将不能撤销',
+		label: locale.label,
+		multiLabel: locale.multiLabel,
+		title: locale.title,
+		content: locale.content,
 	};
 
 	static contextTypes = {
@@ -32,7 +35,9 @@ export default class RemoveButton extends Component {
 		const { issuer } = this.context;
 		const isInToolbar = issuer && issuer.has(TOOLBAR);
 		const styleTypes = {};
-		if (isInToolbar) { styleTypes.type = 'danger'; }
+		if (isInToolbar) {
+			styleTypes.type = 'danger';
+		}
 		return (
 			<ConfirmButton
 				onOk={this._handleOk}
