@@ -22,7 +22,7 @@ class LocaleStore {
 	RemoveButton = {
 		label: 'Remove',
 		multiLabel: 'Batch Remove',
-		title: 'Remove?',
+		title: 'Are you absolutely sure to remove?',
 		content: 'This operation cannot be undone!',
 	};
 
@@ -52,6 +52,34 @@ class LocaleStore {
 	UpdateButton = {
 		label: 'Update',
 		multiLabel: 'Batch Update',
+	};
+
+	@observable
+	UserMenu = {
+		confirmSignOut: 'Are you sure to sign out?',
+		signOut: 'Sign out',
+	};
+
+	@observable
+	ActionsField = {
+		label: 'Actions',
+	};
+
+	@observable
+	ArrayOf = {
+		addButtonLabel: 'Add item',
+	};
+
+	@observable
+	requests = {
+		failed: 'Failed',
+		fetchFailed: 'Load failed',
+		createFailed: 'Create failed',
+		updateFailed: 'Update failed',
+		removeFailed: 'Remove failed',
+		loginFailed: 'Login failed',
+		loginSuccess: 'Login success',
+		invalidToken: 'Invalid auth token',
 	};
 
 	@action

@@ -46,7 +46,6 @@ export default function withActions(WrappedComponent) {
 		openCreaterModal = (options = {}) => {
 			options.keys = options.keys || '';
 			this.open(Actions.CREATE, {
-				title: '创建',
 				useLocation: true,
 				...options,
 			});
@@ -55,7 +54,6 @@ export default function withActions(WrappedComponent) {
 		openUpdaterModal = (options = {}) => {
 			const { select, ...other } = options;
 			const config = {
-				title: '更新',
 				useLocation: true,
 				...other,
 			};

@@ -4,9 +4,11 @@ import getRequest from 'utils/getRequest';
 import showError from 'utils/showError';
 import deprecated from 'utils/deprecated';
 import modalStore from 'stores/modalStore';
+import localeStore from 'stores/localeStore';
 import warning from 'warning';
 
 const caches = observable.map();
+const locale = localeStore.requests;
 let appConfig = {};
 let authStore = {};
 
@@ -260,7 +262,7 @@ export default class DataStore {
 			this.totals.set(fetchKey, total);
 		} catch (err) {
 			console.error(err);
-			showError('请求失败', err);
+			showError(locale.fetchFailed, err);
 		}
 
 		this.isFetching = false;
@@ -272,7 +274,7 @@ export default class DataStore {
 			const res = await this._request.fetch({ query });
 			this.data = await this.tableConfig.mapOnFetchOneResponse(res);
 		} catch (err) {
-			showError('请求失败', err);
+			showError(locale.fetchFailed, err);
 		}
 		return this;
 	}
@@ -315,7 +317,7 @@ export default class DataStore {
 			method: 'POST',
 			...options,
 			body: this.tableConfig.mapOnSave(options.body, 'create'),
-			errorTitle: '创建失败',
+			errorTitle: locale.createFailed,
 			refresh: true,
 		});
 	}
@@ -325,7 +327,7 @@ export default class DataStore {
 			method: 'PUT',
 			...options,
 			body: this.tableConfig.mapOnSave(options.body, 'update'),
-			errorTitle: '修改失败',
+			errorTitle: locale.updateFailed,
 			refresh: true,
 		});
 	}
@@ -334,14 +336,14 @@ export default class DataStore {
 		await this.request({
 			method: 'DELETE',
 			...options,
-			errorTitle: '删除失败',
+			errorTitle: locale.removeFailed,
 			refresh: true,
 		});
 	}
 
 	async request(options = {}) {
 		const {
-			errorTitle = '操作失败',
+			errorTitle = locale.failed,
 			refresh = false,
 			throwError = false,
 			...requestOptions

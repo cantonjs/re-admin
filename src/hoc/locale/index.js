@@ -25,19 +25,32 @@ export default function createLocaleHoc(options = {}) {
 			warning(false, `locale component "${name}" not found`);
 		}
 
+		const getLocaleProps = function getLocaleProps() {
+			return Object.keys(defaultProps).reduce((acc, prop) => {
+				const key = defaultProps[prop];
+				acc[prop] = localeStore[name][key];
+				return acc;
+			}, {});
+		};
+
+		const getFinalDefaultProps = function getFinalDefaultProps() {
+			if (!hasLocale || !Object.keys(defaultProps).length) {
+				return WrappedComponent.defaultProps;
+			}
+			return {
+				...WrappedComponent.defaultProps,
+				...getLocaleProps(),
+			};
+		};
+
 		@observer
 		class LocaleComponent extends Component {
-			_getLocaleProps() {
-				return Object.keys(defaultProps).reduce((acc, prop) => {
-					const key = defaultProps[prop];
-					acc[prop] = localeStore[name][key];
-					return acc;
-				}, {});
-			}
+			// static defaultProps = getFinalDefaultProps();
+			static defaultProps = WrappedComponent.defaultProps;
 
 			render() {
 				const { props } = this;
-				const localeProps = hasLocale ? this._getLocaleProps() : {};
+				const localeProps = hasLocale ? getLocaleProps() : {};
 				return <WrappedComponent {...localeProps} {...props} />;
 			}
 		}

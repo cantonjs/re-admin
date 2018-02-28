@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import routerStore from 'stores/routerStore';
 import { Modal, Icon, Menu, Dropdown } from 'antd';
+import locale from 'hoc/locale';
 
 const { confirm } = Modal;
 const { Item } = Menu;
 
+@locale()
 export default class UserMenu extends Component {
 	static propTypes = {
 		style: PropTypes.object,
@@ -17,13 +19,14 @@ export default class UserMenu extends Component {
 
 	_handleClick = (ev) => {
 		ev.preventDefault();
+		const { confirmSignOut, signOut } = this.locale;
 		confirm({
-			title: '确定退出登录？',
+			title: confirmSignOut,
 			onOk: () => {
 				this.context.authStore.logout();
 				routerStore.history.replace('/login');
 			},
-			okText: '退出登录',
+			okText: signOut,
 		});
 	};
 
@@ -35,7 +38,7 @@ export default class UserMenu extends Component {
 					<Menu>
 						<Item>
 							<a rel="noopener noreferrer" onClick={this._handleClick} href="#">
-								<Icon type="logout" /> 退出登录
+								<Icon type="logout" /> {this.locale.signOut}
 							</a>
 						</Item>
 					</Menu>

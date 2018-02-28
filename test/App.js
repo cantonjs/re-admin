@@ -33,6 +33,8 @@ export default class App extends Component {
 				locale={{
 					CreateButton: { label: '新建' },
 					TableBody: { total: '共' },
+					ArrayOf: { addButtonLabel: 'fork' },
+					ActionsField: { label: 'fork' },
 				}}
 			>
 				<Title>上帝的看板</Title>
