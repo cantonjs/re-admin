@@ -94,13 +94,6 @@ export default function withActions(WrappedComponent) {
 			return this.context.store.getData(selectedKeys[0]);
 		};
 
-		requestCreate = () => {
-			modalStore.state = {
-				name: Actions.CREATE,
-				title: '创建',
-			};
-		};
-
 		render() {
 			const { props, context: { store } } = this;
 			return (
