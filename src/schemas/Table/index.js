@@ -1,12 +1,12 @@
-
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
+import { observable } from 'mobx';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
 import { isFunction, isObject, isBoolean } from 'lodash';
 
 export default function TableSchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 TableSchema.propTypes = {
@@ -35,62 +35,75 @@ TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
 		children = Children.toArray(firstChild.props.children);
 	}
 
+	let uniqueKey;
+
 	const formRenderers = [];
 	const queryRenderers = [];
 	const tableRenderers = [];
 
-	const createPusher = (child, props, index) => {
-		return (nodes, inIssuer, renderKey, defaultRender) => {
-			if (inIssuer) {
-				const key = child.key || index;
-				const Component = child.type;
-				const component = Component;
-
-				const render = (function () {
-					if (isFunction(inIssuer)) { return inIssuer; }
-
-					if (isObject(inIssuer)) {
-						return function render(props) {
-							return (<Component {...props} {...inIssuer} />);
-						};
-					}
-
-					if (!isBoolean(inIssuer)) {
-						return function render() {
-							return (<span>{inIssuer}</span>);
-						};
-					}
-
-					if (isFunction(Component[renderKey])) { return Component[renderKey]; }
-
-					if (defaultRender) { return defaultRender; }
-
-					return function render(props) { return (<Component {...props} />); };
-				}());
-
-				const options = {
-					key,
-					component,
-					Component,
-				};
-
-				const renderNode = () => {
-					const node = render(props, options);
-					if (!node) { return null; }
-					return node.key ? node : cloneElement(node, { key });
-				};
-
-				nodes.push({ render, renderNode, props, options });
-			}
-		};
-	};
-
-	let uniqueKey;
-
 	children.forEach((child, index) => {
-		const { inForm, inQuery, inTable, unique, ...props } = child.props;
-		const push = createPusher(child, props, index);
-		if (!uniqueKey && unique) { uniqueKey = props.name; }
+		const { inForm, inQuery, inTable, unique, ...otherProps } = child.props;
+		const props = observable(otherProps);
+
+		const push = (nodes, inIssuer, renderKey, defaultRender) => {
+			if (!inIssuer) {
+				return;
+			}
+
+			const key = child.key || index;
+			const Component = child.type;
+			const component = Component;
+
+			const render = (function () {
+				if (isFunction(inIssuer)) {
+					return inIssuer;
+				}
+
+				if (isObject(inIssuer)) {
+					return function render(props) {
+						return <Component {...props} {...inIssuer} />;
+					};
+				}
+
+				if (!isBoolean(inIssuer)) {
+					return function render() {
+						return <span>{inIssuer}</span>;
+					};
+				}
+
+				if (isFunction(Component[renderKey])) {
+					return Component[renderKey];
+				}
+
+				if (defaultRender) {
+					return defaultRender;
+				}
+
+				return function render(props) {
+					return <Component {...props} />;
+				};
+			})();
+
+			const options = {
+				key,
+				component,
+				Component,
+			};
+
+			const renderNode = () => {
+				const node = render(props, options);
+				if (!node) {
+					return null;
+				}
+				return node.key ? node : cloneElement(node, { key });
+			};
+
+			nodes.push({ render, renderNode, props, options });
+		};
+
+		if (!uniqueKey && unique) {
+			uniqueKey = props.name;
+		}
 		push(formRenderers, inForm, 'renderForm');
 		push(queryRenderers, inQuery, 'renderQuery');
 		push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
