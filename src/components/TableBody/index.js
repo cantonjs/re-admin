@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
-import { getLocaleValues } from 'hoc/locale';
+import locale from 'hoc/locale';
 
 const styles = {
 	footer: {
@@ -22,9 +21,7 @@ const styles = {
 	},
 };
 
-const locale = getLocaleValues('TableBody');
-
-@observer
+@locale()
 export default class TableBody extends Component {
 	static propTypes = {
 		store: PropTypes.shape({
@@ -75,7 +72,7 @@ export default class TableBody extends Component {
 	};
 
 	render() {
-		const { store, selectionType } = this.props;
+		const { props: { store, selectionType }, locale } = this;
 		const {
 			columns,
 			dataSource,

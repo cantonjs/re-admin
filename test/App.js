@@ -31,7 +31,8 @@ export default class App extends Component {
 		return (
 			<Admin
 				locale={{
-					CreateButton: { label: 'fork' },
+					CreateButton: { label: '新建' },
+					TableBody: { total: '共' },
 				}}
 			>
 				<Title>上帝的看板</Title>

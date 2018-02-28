@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
-import { localeHoc, createLocale } from 'hoc/locale';
+import locale from 'hoc/locale';
 
-const locale = createLocale('UpdateButton');
-
-@localeHoc
+@locale({
+	defaultProps: {
+		label: 'label',
+		multiLabel: 'multiLabel',
+	},
+})
 export default class UpdateButton extends Component {
 	static propTypes = {
 		names: PropTypes.array,
@@ -14,8 +17,6 @@ export default class UpdateButton extends Component {
 	};
 
 	static defaultProps = {
-		label: locale.label,
-		multiLabel: locale.multiLabel,
 		names: [],
 	};
 

@@ -2,16 +2,14 @@ import styles from './styles';
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { observable } from 'mobx';
-import { observer } from 'mobx-react';
 import { omit } from 'lodash';
 import { QUERIER } from 'constants/Issuers';
 import { Form as AntdForm, Row, Col, Button } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
-import { getLocaleValues } from 'hoc/locale';
+import locale from 'hoc/locale';
 
 const { Item } = AntdForm;
-const locale = getLocaleValues('TableQuery');
 
 class FormState {
 	@observable data = {};
@@ -29,7 +27,7 @@ FooterContainer.propTypes = {
 	children: PropTypes.node,
 };
 
-@observer
+@locale()
 export default class TableQuery extends Component {
 	static propTypes = {
 		store: PropTypes.object,
@@ -109,11 +107,14 @@ export default class TableQuery extends Component {
 
 	render() {
 		const {
-			children,
-			header,
-			footer,
-			store: { hasSortableField, hasQueryField, sortedOrder, sortedKey },
-		} = this.props;
+			props: {
+				children,
+				header,
+				footer,
+				store: { hasSortableField, hasQueryField, sortedOrder, sortedKey },
+			},
+			locale,
+		} = this;
 
 		const hasChildren = !!Children.count(children) || hasQueryField;
 
@@ -138,7 +139,7 @@ export default class TableQuery extends Component {
 
 				{!footer && (
 					<FooterContainer>
-						{hasChildren && <Submit type="primary">{locale.query}</Submit>}
+						{hasChildren && <Submit type="primary">{locale.search}</Submit>}
 						{hasChildren && <Reset>{locale.reset}</Reset>}
 						{hasSortableField && (
 							<Item>

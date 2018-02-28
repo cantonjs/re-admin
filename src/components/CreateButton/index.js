@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
-import { localeHoc, createLocale } from 'hoc/locale';
+import locale from 'hoc/locale';
 
-const locale = createLocale('CreateButton');
-
-@localeHoc
+@locale({
+	defaultProps: {
+		label: 'label',
+	},
+})
 export default class CreateButton extends Component {
 	static propTypes = {
 		table: PropTypes.string,
@@ -17,7 +19,6 @@ export default class CreateButton extends Component {
 
 	static defaultProps = {
 		save: 'create',
-		label: locale.label,
 	};
 
 	_handleClick = (ev, refs) => {

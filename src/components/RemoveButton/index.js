@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { localeHoc, createLocale } from 'hoc/locale';
+import locale from 'hoc/locale';
 import { TOOLBAR } from 'constants/Issuers';
 import ConfirmButton from 'components/ConfirmButton';
 
-const locale = createLocale('RemoveButton');
-
-@localeHoc
+@locale({
+	defaultProps: {
+		label: 'label',
+		multiLabel: 'multiLabel',
+		title: 'title',
+		content: 'content',
+	},
+})
 export default class RemoveButton extends Component {
 	static propTypes = {
 		label: PropTypes.stringOrFunc,
 		multiLabel: PropTypes.stringOrFunc,
 		title: PropTypes.stringOrFunc,
 		content: PropTypes.stringOrFunc,
-	};
-
-	static defaultProps = {
-		label: locale.label,
-		multiLabel: locale.multiLabel,
-		title: locale.title,
-		content: locale.content,
 	};
 
 	static contextTypes = {

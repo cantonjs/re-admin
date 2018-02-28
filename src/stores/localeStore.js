@@ -33,7 +33,7 @@ class LocaleStore {
 
 	@observable
 	TableQuery = {
-		query: 'Query',
+		search: 'Search',
 		reset: 'Reset',
 		resetOrder: 'Reset Sorting',
 	};

@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'antd';
 import clearSortedInfo from 'utils/clearSortedInfo';
-import { localeHoc, createLocale } from 'hoc/locale';
+import locale from 'hoc/locale';
 
 const { Item } = Form;
-const locale = createLocale('ClearSortButton');
 
-@localeHoc
+@locale({
+	defaultProps: {
+		children: 'label',
+	},
+})
 export default class ClearSortButton extends Component {
 	static propTypes = {
 		wrapperStyle: PropTypes.object,
-	};
-
-	static defaultProps = {
-		children: locale.label,
 	};
 
 	static contextTypes = {
