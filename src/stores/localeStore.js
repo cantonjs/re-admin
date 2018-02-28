@@ -1,77 +1,64 @@
 import { observable, action } from 'mobx';
 
-class LocaleStore {
-	@observable
-	LoginForm = {
+const localeStore = observable({
+	LoginForm: {
 		usernamePlaceholder: 'User',
 		passwordPlaceholder: 'Password',
 		login: 'Login',
-	};
+	},
 
-	@observable
-	CreateButton = {
+	CreateButton: {
 		label: 'Create',
-	};
+	},
 
-	@observable
-	RefButton = {
+	RefButton: {
 		label: 'Reference',
-	};
+	},
 
-	@observable
-	RemoveButton = {
+	RemoveButton: {
 		label: 'Remove',
 		multiLabel: 'Batch Remove',
 		title: 'Are you absolutely sure to remove?',
 		content: 'This operation cannot be undone!',
-	};
+	},
 
-	@observable
-	ClearSortButton = {
+	ClearSortButton: {
 		label: 'Reset Sorting',
-	};
+	},
 
-	@observable
-	TableQuery = {
+	TableQuery: {
 		search: 'Search',
 		reset: 'Reset',
 		resetOrder: 'Reset Sorting',
-	};
+	},
 
-	@observable
-	TableBody = {
+	TableBody: {
 		total: 'Total',
-	};
+	},
 
-	@observable
-	TableQuerySwitch = {
+	TableQuerySwitch: {
 		label: 'Search',
-	};
+	},
 
-	@observable
-	UpdateButton = {
+	UpdateButton: {
 		label: 'Update',
 		multiLabel: 'Batch Update',
-	};
+	},
 
-	@observable
-	UserMenu = {
+	UserMenu: {
 		confirmSignOut: 'Are you sure to sign out?',
 		signOut: 'Sign out',
-	};
+	},
 
-	@observable
-	ActionsField = {
+	ActionsField: {
 		label: 'Actions',
-	};
+	},
 
-	@observable
-	ArrayOf = {
+	ArrayOf: {
 		addButtonLabel: 'Add item',
-	};
+	},
 
-	@observable
-	requests = {
+	requests: {
 		failed: 'Failed',
 		fetchFailed: 'Load failed',
 		createFailed: 'Create failed',
@@ -80,12 +67,11 @@ class LocaleStore {
 		loginFailed: 'Login failed',
 		loginSuccess: 'Login success',
 		invalidToken: 'Invalid auth token',
-	};
+	},
 
-	@action
-	set(values) {
+	set: action.bound(function setLocale(values) {
 		Object.assign(this, values);
-	}
-}
+	}),
+});
 
-export default new LocaleStore();
+export default localeStore;
