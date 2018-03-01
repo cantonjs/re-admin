@@ -8,7 +8,7 @@ import routerStore from 'stores/routerStore';
 import { observer } from 'mobx-react';
 import Sidebar from 'components/Sidebar';
 import { Spin, Layout } from 'antd';
-import UserMenu from 'components/UserMenu';
+import FrameHeader from 'components/FrameHeader';
 import Breadcrumb from 'components/Breadcrumb';
 
 const { Header, Content, Footer } = Layout;
@@ -16,7 +16,7 @@ const { Header, Content, Footer } = Layout;
 @observer
 export default class FrameView extends Component {
 	static propTypes = {
-		children: PropTypes.node.isRequired,
+		routes: PropTypes.node.isRequired,
 		footer: PropTypes.node,
 	};
 
@@ -44,7 +44,7 @@ export default class FrameView extends Component {
 			);
 		}
 
-		const { children, footer } = this.props;
+		const { routes, footer } = this.props;
 		return (
 			<Layout style={styles.container}>
 				<Sidebar />
@@ -55,13 +55,11 @@ export default class FrameView extends Component {
 						<div style={styles.headerLeft}>
 							<Breadcrumb style={styles.breadcrumb} />
 						</div>
-						<div style={styles.headerRight}>
-							<UserMenu style={styles.footer} />
-						</div>
+						<FrameHeader style={styles.headerRight} />
 					</Header>
 					<Content style={styles.content}>
 						<div style={styles.contentBody}>
-							<Switch>{children}</Switch>
+							<Switch>{routes}</Switch>
 						</div>
 					</Content>
 					{!!footer && <Footer style={styles.footer}>{footer}</Footer>}

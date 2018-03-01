@@ -54,7 +54,7 @@ export default class AdminContext extends Component {
 		const {
 			title,
 			footer,
-			navigator: { frame: Frame, login: Login, routes, basename },
+			navigator: { frame: Frame, login: Login, basename, ...otherNaviProps },
 		} = this.props.appConfig;
 		return (
 			<DocumentTitle title={title}>
@@ -68,9 +68,11 @@ export default class AdminContext extends Component {
 							<Route path="/login" component={Login} />
 							<Route
 								render={({ location }) => (
-									<Frame locKey={location.key} footer={footer}>
-										{routes}
-									</Frame>
+									<Frame
+										locKey={location.key}
+										footer={footer}
+										{...otherNaviProps}
+									/>
 								)}
 							/>
 						</Switch>
