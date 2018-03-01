@@ -1,9 +1,10 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { observable } from 'mobx';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
 import { isFunction, isObject, isBoolean } from 'lodash';
+
+const returnsEmptyObject = () => ({});
 
 export default function TableSchema() {
 	return <noscript />;
@@ -42,8 +43,8 @@ TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
 	const tableRenderers = [];
 
 	children.forEach((child, index) => {
-		const { inForm, inQuery, inTable, unique, ...otherProps } = child.props;
-		const props = observable(otherProps);
+		const { inForm, inQuery, inTable, unique, ...props } = child.props;
+		const { getSchemaDefaultProps = returnsEmptyObject } = child.type;
 
 		const push = (nodes, inIssuer, renderKey, defaultRender) => {
 			if (!inIssuer) {
@@ -88,6 +89,7 @@ TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
 				key,
 				component,
 				Component,
+				getSchemaDefaultProps,
 			};
 
 			const renderNode = () => {

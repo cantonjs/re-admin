@@ -88,8 +88,9 @@ export default class DataStore {
 		}
 
 		return this.tableConfig.tableRenderers.map(({ render, props, options }) => {
+			const { getSchemaDefaultProps } = options;
 			const column = {
-				title: props.label,
+				title: props.label || getSchemaDefaultProps().label,
 				key: props.name,
 				dataIndex: props.name,
 				render: function renderTable(text, record, index) {

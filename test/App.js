@@ -29,14 +29,7 @@ const basename = isGithubPage ? '/re-admin' : '/';
 export default class App extends Component {
 	render() {
 		return (
-			<Admin
-				locale={{
-					CreateButton: { label: '新建' },
-					TableBody: { total: '共' },
-					ArrayOf: { addButtonLabel: 'fork' },
-					ActionsField: { label: 'fork' },
-				}}
-			>
+			<Admin>
 				<Title>上帝的看板</Title>
 				<Logo>
 					<Icon type="rocket" style={{ fontSize: 20 }} />

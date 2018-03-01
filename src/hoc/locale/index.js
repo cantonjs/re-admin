@@ -5,9 +5,12 @@ import warning from 'warning';
 import localeStore from 'stores/localeStore';
 
 export default function createLocaleHoc(options = {}) {
-	const { defaultProps = {}, localeAttrName = 'locale' } = options;
+	const { defaultProps, localeAttrName = 'locale' } = options;
 	return function localeHoc(WrappedComponent) {
-		const { name } = WrappedComponent;
+		const {
+			name,
+			getSchemaDefaultProps: originalGetSchemaDefaultProps,
+		} = WrappedComponent;
 		const store = localeStore[name];
 		const hasLocale = !!store;
 
@@ -25,7 +28,10 @@ export default function createLocaleHoc(options = {}) {
 			warning(false, `locale component "${name}" not found`);
 		}
 
-		const getLocaleProps = function getLocaleProps() {
+		const getDefaultLocaleProps = function getDefaultLocaleProps() {
+			if (!hasLocale || !defaultProps) {
+				return {};
+			}
 			return Object.keys(defaultProps).reduce((acc, prop) => {
 				const key = defaultProps[prop];
 				acc[prop] = localeStore[name][key];
@@ -33,25 +39,24 @@ export default function createLocaleHoc(options = {}) {
 			}, {});
 		};
 
-		const getFinalDefaultProps = function getFinalDefaultProps() {
-			if (!hasLocale || !Object.keys(defaultProps).length) {
-				return WrappedComponent.defaultProps;
-			}
-			return {
-				...WrappedComponent.defaultProps,
-				...getLocaleProps(),
-			};
-		};
-
 		@observer
 		class LocaleComponent extends Component {
-			// static defaultProps = getFinalDefaultProps();
+			static getSchemaDefaultProps = function getSchemaDefaultProps() {
+				const localeProps = getDefaultLocaleProps();
+				return originalGetSchemaDefaultProps ?
+					{
+						...originalGetSchemaDefaultProps(),
+						...localeProps,
+					} :
+					localeProps;
+			};
+
 			static defaultProps = WrappedComponent.defaultProps;
 
 			render() {
-				const { props } = this;
-				const localeProps = hasLocale ? getLocaleProps() : {};
-				return <WrappedComponent {...localeProps} {...props} />;
+				return (
+					<WrappedComponent {...getDefaultLocaleProps()} {...this.props} />
+				);
 			}
 		}
 
