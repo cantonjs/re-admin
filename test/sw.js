@@ -51,7 +51,7 @@ router
 		} else {
 			ctx.status = 400;
 			ctx.body = {
-				reason: '用户名或密码错误',
+				reason: 'Invalid username or password',
 			};
 		}
 	})
@@ -94,7 +94,7 @@ router
 		testDB = testDB.filter((data) => !keysArr.includes(data.id));
 		ctx.body = { ok: true };
 	})
-	.get('/api/foo', verify, async (ctx) => {
+	.get('/api/bar', verify, async (ctx) => {
 		const { page, count, id } = ctx.request.query;
 		const start = (page - 1) * +count;
 		ctx.body = {
@@ -102,20 +102,20 @@ router
 			total: id ? 1 : total,
 		};
 	})
-	.post('/api/foo', verify, async (ctx) => {
+	.post('/api/bar', verify, async (ctx) => {
 		const { body } = ctx.request;
 		body.id = `id_${total}`;
 		total++;
 		testDB.unshift(body);
 		ctx.body = body;
 	})
-	.post('/api/test/:keys/foo', verify, async (ctx) => {
+	.post('/api/test/:keys/bar', verify, async (ctx) => {
 		const { request: { body }, params: { keys } } = ctx;
 		ctx.body = { ...body, keys };
 	})
-	.post('/api2/test/:keys/foo/:fooKeys', verify, async (ctx) => {
-		const { params: { keys, fooKeys } } = ctx;
-		ctx.body = { keys, fooKeys };
+	.post('/api2/test/:keys/bar/:barKeys', verify, async (ctx) => {
+		const { params: { keys, barKeys } } = ctx;
+		ctx.body = { keys, barKeys };
 	})
 	.post('/api/upload/file', async (ctx) => {
 		ctx.body = { url: `https://unsplash.it/100/100/?random=${Math.random()}` };

@@ -29,12 +29,12 @@ export default (
 			},
 		}}
 	>
-		<Text name="id" label="ID" disabled unique inQuery />
+		<Text name="id" label="ID" placeholder="ID" disabled unique inQuery />
 
 		<Text
 			name="name"
-			label="用户名"
-			placeholder="请输入用户名"
+			label="Username"
+			placeholder="username"
 			maxLength={10}
 			required
 			inQuery
@@ -44,9 +44,9 @@ export default (
 
 		<Ref
 			name="ref"
-			table="foo"
-			placeholder="请输入超链表"
-			label="超链表"
+			table="bar"
+			placeholder="reference"
+			label="Reference"
 			noQuery
 			inForm
 			inQuery
@@ -55,35 +55,45 @@ export default (
 		<DatePicker
 			name="createdAt"
 			dataType="date"
-			label="创建日期"
+			label="Date Created"
 			disabled
 			inQuery={(props) => <RangePicker {...props} />}
 			inTable
 			inForm
 		/>
 
-		<Image name="avatar" label="头像" width={60} inTable inForm />
+		<Image name="avatar" label="Avatar" width={60} inTable inForm />
 
-		<Text name="desc" label="描述" placeholder="请输入描述" inTable inForm />
+		<Text
+			name="desc"
+			label="Description"
+			placeholder="description"
+			inTable
+			inForm
+		/>
 
-		<ObjectOf name="pet" label="宠物" inForm>
-			<Text name="name" label="宠物名字" placeholder="请输入宠物名字" />
-			<Text name="type" label="宠物物种" placeholder="请输入宠物物种" />
-			<ArrayOf name="languages" label="语言">
+		<ObjectOf name="pet" label="Pets" inForm>
+			<Text name="name" label="Pet Name" placeholder="pet name" />
+			<Text name="type" label="Pet Kind" placeholder="pet kind" />
+			<ArrayOf name="languages" label="Language">
 				<ObjectOf>
-					<Text name="name" label="语言名称" placeholder="请输入语言名称" />
-					<Text name="score" label="语言成绩" placeholder="请输入语言成绩" />
+					<Text name="name" label="Language Name" placeholder="language name" />
+					<Text
+						name="score"
+						label="Language Score"
+						placeholder="language score"
+					/>
 				</ObjectOf>
 			</ArrayOf>
 		</ObjectOf>
 
-		<ArrayOf name="tags" label="标签" inTable inForm>
-			<Text placeholder="请输入标签" />
+		<ArrayOf name="tags" label="Tags" inTable inForm>
+			<Text placeholder="tags" />
 		</ArrayOf>
 
 		<Text
 			name="fee"
-			label="薪酬"
+			label="Fee"
 			required
 			inputFilter={(value) =>
 				/^\$/.test(value) ? value : '$' + (value / 100).toFixed(2)
@@ -104,11 +114,11 @@ export default (
 			inForm
 		/>
 
-		<Uploader name="file" label="文件" inForm />
+		<Uploader name="file" label="File" inForm />
 
-		<Select name="fav" label="爱好" inForm value="2">
-			<Option value="1">吃饭</Option>
-			<Option value="2">睡觉</Option>
+		<Select name="fav" label="Favs" inForm value="2">
+			<Option value="1">Eating</Option>
+			<Option value="2">Sleeping</Option>
 		</Select>
 
 		<Slider
@@ -119,12 +129,12 @@ export default (
 				getData().fav > 1 ? <Component {...props} /> : null
 			}
 		/>
-		<Text name="birthday" label="生日" dataType="date" inForm />
+		<Text name="birthday" label="Birthday" dataType="date" inForm />
 
-		<Checkbox name="check" label="勾选" inQuery inTable inForm />
+		<Checkbox name="check" label="Checked" inQuery inTable inForm />
 
 		<Actions>
-			<CreateButton table="foo" label="新建foo" />
+			<CreateButton table="foo" label="Create Foo" />
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
 			<RefButton table="foo" noQuery />

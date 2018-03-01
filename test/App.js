@@ -19,7 +19,7 @@ import {
 } from '../src';
 import { Icon } from 'antd';
 import testTable from './tables/test';
-import fooTable from './tables/foo';
+import barTable from './tables/bar';
 import FooModal from './modals/Foo';
 import Login from './components/Login';
 
@@ -30,29 +30,29 @@ export default class App extends Component {
 	render() {
 		return (
 			<Admin>
-				<Title>上帝的看板</Title>
+				<Title>The God Vision</Title>
 				<Logo>
 					<Icon type="rocket" style={{ fontSize: 20 }} />
 				</Logo>
 
 				<Navigator basename={basename} login={Login}>
-					<Menu icon="home" title="菜单一" path="/" exact />
+					<Menu icon="home" title="Home" path="/" exact />
 					<Menu
 						icon="line-chart"
-						title="菜单二"
+						title="My Table"
 						table="test"
-						path="/test"
-						pageTitle="测试数据表"
+						path="/table"
+						pageTitle="Testing Table"
 					/>
-					<Menu icon="picture" title="菜单三">
-						<Menu icon="bulb" title="2.1" path="/fork" exact />
-						<Menu icon="bulb" title="2.2" path="/bar">
+					<Menu icon="picture" title="Sub Menu">
+						<Menu icon="bulb" title="2.1" path="/404" exact />
+						<Menu icon="bulb" title="2.2" path="/foo">
 							<Menu icon="bulb" title="3.1">
 								<Menu
 									icon="bulb"
 									title="4.1"
-									table="foo"
-									path="/foo"
+									table="bar"
+									path="/bar"
 									toolbar={() => (
 										<Toolbar
 											left={<CreateButton />}
@@ -65,7 +65,7 @@ export default class App extends Component {
 															useLocation: true,
 														});
 													}}
-													label="自定义弹框"
+													label="Custom Modale"
 												/>
 											}
 										/>
@@ -77,12 +77,12 @@ export default class App extends Component {
 				</Navigator>
 
 				<ErrorMessages
-					defaulst="操作失败"
+					defaulst="Faied"
 					statusMap={{
-						401: '请重新登录',
-						403: '权限不足',
-						404: '找不到对象',
-						500: '系统错误',
+						401: 'Login required',
+						403: 'Forbidden',
+						404: 'Page not found',
+						500: 'Server error',
 					}}
 					getMessage={async (_, response) => {
 						if (response.status === 400) {
@@ -110,7 +110,7 @@ export default class App extends Component {
 				<Modal name="custom" component={FooModal} />
 
 				{testTable}
-				{fooTable}
+				{barTable}
 
 				<Footer>
 					<a
