@@ -1,7 +1,8 @@
+import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import routerStore from 'stores/routerStore';
-import { Modal, Icon, Menu, Dropdown } from 'antd';
+import { Modal, Icon, Menu, Dropdown, Avatar } from 'antd';
 import locale from 'hoc/locale';
 
 const { confirm } = Modal;
@@ -45,10 +46,11 @@ export default class UserMenu extends Component {
 				}
 				trigger={['click']}
 			>
-				<a href="#" style={style}>
-					<Icon type="user" />
-					Admin
-				</a>
+				<div style={styles.container(style)}>
+					<Avatar icon="user" size="small" />
+					<span style={styles.text}>Admin</span>
+					<Icon type="down" />
+				</div>
 			</Dropdown>
 		);
 	}
