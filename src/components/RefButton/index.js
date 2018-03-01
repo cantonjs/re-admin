@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import localeStore from 'stores/localeStore';
+import locale from 'hoc/locale';
 import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 
+@locale({
+	defaultProps: {
+		label: 'label',
+	},
+})
 export default class RefButton extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
@@ -15,7 +20,6 @@ export default class RefButton extends Component {
 	};
 
 	static defaultProps = {
-		label: localeStore.RefButton.label,
 		noQuery: false,
 	};
 

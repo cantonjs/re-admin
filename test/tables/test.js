@@ -134,10 +134,10 @@ export default (
 		<Checkbox name="check" label="Checked" inQuery inTable inForm />
 
 		<Actions>
-			<CreateButton table="foo" label="Create Foo" />
+			<CreateButton table="bar" label="Create Bar" />
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
-			<RefButton table="foo" noQuery />
+			<RefButton table="bar" noQuery />
 		</Actions>
 	</Table>
 );
