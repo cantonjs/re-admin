@@ -42,40 +42,63 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 	const { dataTable, index: welcome, notFound, noBreadcrumb } = navigator;
 	const breadcrumbNameMap = {};
 
-	const getMenus = function getMenus(child, keyPaths = [], rootPath = '/') {
-		const { children, ...props } = child.props;
+	const sidebarChildren = [];
+	const topChildren = [];
 
-		if (props.path) {
-			props.path = (rootPath + props.path).replace(/\/\//, '/');
-			props.menuKey = props.path;
-			const { title: menuTitle, pageTitle } = props;
-			const title = pageTitle || menuTitle;
-			if (
-				!noBreadcrumb &&
-				title &&
-				(props.table || props.component || props.render)
-			) {
-				breadcrumbNameMap[props.path] = {
-					title,
-					routeProps: pick(props, ['path', 'exact', 'strict']),
-				};
-			}
+	Children.toArray(children).forEach((child) => {
+		if (child.props.top) {
+			topChildren.push(child);
 		} else {
-			props.menuKey = `@${keyPaths.join('-')}`;
+			sidebarChildren.push(child);
 		}
+	});
 
-		if (children) {
-			props.children = Children.map(children, (child, index) =>
-				getMenus(child, keyPaths.concat(index), props.path || rootPath)
-			);
-		}
+	const getMenu = function getMenu(children) {
+		const next = function next(child, keyPaths = [], rootPath = '/') {
+			const { children, ...props } = child.props;
+			let nextRootPath = rootPath;
 
-		return props;
+			props.isInternalPath = !/^https?:\/\//i.test(props.path);
+
+			if (props.path) {
+				if (props.isInternalPath) {
+					props.path = (rootPath + props.path).replace(/\/\//, '/');
+					nextRootPath = props.path;
+
+					const { title: menuTitle, pageTitle } = props;
+					const title = pageTitle || menuTitle;
+					if (
+						!noBreadcrumb &&
+						title &&
+						(props.table || props.component || props.render)
+					) {
+						breadcrumbNameMap[props.path] = {
+							title,
+							routeProps: pick(props, ['path', 'exact', 'strict']),
+						};
+					}
+				}
+
+				props.menuKey = props.path;
+			} else {
+				props.menuKey = `@${keyPaths.join('-')}`;
+			}
+
+			if (children) {
+				props.children = Children.map(children, (child, index) =>
+					next(child, keyPaths.concat(index), nextRootPath)
+				);
+			}
+
+			return props;
+		};
+
+		return next({ props: { children } }).children;
 	};
 
 	const getRoutes = function getRoutes(menus) {
 		if (!menus || !menus.length) {
-			return null;
+			return [];
 		}
 
 		return menus.map(({ children, ...route }, index) => {
@@ -95,15 +118,17 @@ NavigatorSchema.setConfig = ({ children, ...other }, navigator) => {
 		return (path.match(/\//g) || []).length;
 	};
 
-	const menus = getMenus({ props: { children } }).children;
-	const userRoutes = getRoutes(menus);
+	const sidebarMenu = getMenu(sidebarChildren);
+	const topMenu = getMenu(topChildren);
+	const userRoutes = [...getRoutes(sidebarMenu), ...getRoutes(topMenu)];
 	const routes = [
 		<Route key="_index" exact path="/" component={welcome} />,
 		...userRoutes,
 		<Route key="_notFound" component={notFound} />,
 	];
 
-	navigator.menus = menus;
+	navigator.menus = sidebarMenu;
+	navigator.topMenu = topMenu;
 	navigator.routes = routes;
 	navigator.breadcrumbNameMap = Object.keys(breadcrumbNameMap)
 		.sort((a, b) => getSlashesLength(a) - getSlashesLength(b))

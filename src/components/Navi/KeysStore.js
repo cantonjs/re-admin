@@ -1,6 +1,6 @@
 import { isObservableArray, computed, autorun, observable, toJS } from 'mobx';
 
-export default class MenuKeysStore {
+export default class KeysStore {
 	@computed
 	get selectedKeys() {
 		return [this._location.pathname];

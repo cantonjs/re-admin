@@ -74,6 +74,13 @@ export default class App extends Component {
 							</Menu>
 						</Menu>
 					</Menu>
+
+					<Menu
+						top
+						icon="github"
+						title="Github"
+						path="https://github.com/cantonjs/re-admin"
+					/>
 				</Navigator>
 
 				<ErrorMessages

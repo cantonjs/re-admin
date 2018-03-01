@@ -13,9 +13,4 @@ export default {
 		backgroundColor: '#002140',
 		color: '#fff',
 	},
-	link: {
-		display: 'inline',
-		color: 'inherit',
-		textDecoration: 'none',
-	},
 };

@@ -1,9 +1,8 @@
-
 import React from 'react';
 import PropTypes from 'utils/PropTypes';
 
 export default function MenuSchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 MenuSchema.propTypes = {
@@ -11,8 +10,13 @@ MenuSchema.propTypes = {
 	icon: PropTypes.string,
 	path: PropTypes.string,
 	table: PropTypes.string,
+	top: PropTypes.bool,
 	children: PropTypes.node,
 	component: PropTypes.component,
 	header: PropTypes.component,
 	footer: PropTypes.component,
+};
+
+MenuSchema.defaultProps = {
+	top: false,
 };
