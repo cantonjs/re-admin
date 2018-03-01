@@ -140,6 +140,7 @@ export default class DataStore {
 
 		this._request = getRequest(appConfig);
 		this.size = +appConfig.api.count;
+		this.extends = {};
 
 		if (api) {
 			const sortableField =
@@ -185,7 +186,7 @@ export default class DataStore {
 				ext[key] = fn.bind(this);
 				return ext;
 			},
-			this.extends || {}
+			this.extends
 		);
 		return this;
 	}
