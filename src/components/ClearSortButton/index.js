@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button } from 'antd';
+import { observer } from 'mobx-react';
 import clearSortedInfo from 'utils/clearSortedInfo';
 import locale from 'hoc/locale';
+import { Form, Button } from 'antd';
 
 const { Item } = Form;
 
@@ -11,6 +12,7 @@ const { Item } = Form;
 		children: 'label',
 	},
 })
+@observer
 export default class ClearSortButton extends Component {
 	static propTypes = {
 		wrapperStyle: PropTypes.object,

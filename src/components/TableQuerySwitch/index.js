@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from 'antd';
+import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
 import locale from 'hoc/locale';
+import { Checkbox } from 'antd';
 
 @locale({
 	defaultProps: {
 		children: 'label',
 	},
 })
+@observer
 export default class TableQuerySwitch extends Component {
 	static propTypes = {
 		children: PropTypes.node,

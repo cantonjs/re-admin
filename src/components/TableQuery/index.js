@@ -2,6 +2,7 @@ import styles from './styles';
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 import { omit } from 'lodash';
 import { QUERIER } from 'constants/Issuers';
 import { Form as AntdForm, Row, Col, Button } from 'antd';
@@ -28,6 +29,7 @@ FooterContainer.propTypes = {
 };
 
 @locale()
+@observer
 export default class TableQuery extends Component {
 	static propTypes = {
 		store: PropTypes.object,

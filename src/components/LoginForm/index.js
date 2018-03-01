@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
-import localeStore from 'stores/localeStore';
+import locale from 'hoc/locale';
 import { Icon } from 'antd';
 import { Form, Input, Submit } from 'components/Nested';
 
+@locale()
 @observer
 export default class LoginForm extends Component {
 	static contextTypes = {
@@ -43,8 +44,7 @@ export default class LoginForm extends Component {
 	};
 
 	render() {
-		const { state: { isValid }, props } = this;
-		const locale = localeStore.LoginForm;
+		const { state: { isValid }, props, locale } = this;
 		return (
 			<Form
 				onSubmit={this._handleSubmit}

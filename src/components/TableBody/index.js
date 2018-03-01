@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table as TableComp, Pagination } from 'antd';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
 import locale from 'hoc/locale';
@@ -22,6 +23,7 @@ const styles = {
 };
 
 @locale()
+@observer
 export default class TableBody extends Component {
 	static propTypes = {
 		store: PropTypes.shape({
