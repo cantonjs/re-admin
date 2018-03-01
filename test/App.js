@@ -30,7 +30,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<Admin>
-				<Title>The God Vision</Title>
+				<Title>{'God\'s Vision'}</Title>
 				<Logo>
 					<Icon type="rocket" style={{ fontSize: 20 }} />
 				</Logo>
