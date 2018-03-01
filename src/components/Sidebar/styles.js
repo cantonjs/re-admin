@@ -1,3 +1,5 @@
+import { flexCenter } from 'utils/Styles';
+
 export default {
 	container: {
 		overflow: 'auto',
@@ -6,10 +8,8 @@ export default {
 		left: 0,
 	},
 	title: {
+		...flexCenter,
 		height: 64,
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
 		backgroundColor: '#002140',
 		color: '#fff',
 	},

@@ -1,8 +1,8 @@
+import { flexCenter } from 'utils/Styles';
+
 export default {
 	container: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
+		...flexCenter,
 		flexDirection: 'column',
 		height: '100%',
 	},

@@ -1,3 +1,5 @@
+import { flexCenter } from 'utils/Styles';
+
 const margin = 16;
 
 export default {
@@ -18,15 +20,11 @@ export default {
 		justifyContent: 'space-between',
 	},
 	headerLeft: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
+		...flexCenter,
 		marginLeft: margin,
 	},
 	headerRight: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
+		...flexCenter,
 		marginRight: margin,
 		paddingRight: margin,
 	},
