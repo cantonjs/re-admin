@@ -651,6 +651,10 @@ babel-plugin-module-resolver@^2.7.1:
     glob "^7.1.1"
     resolve "^1.2.0"
 
+babel-plugin-set-react-class-displayname@^1.0.3:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/babel-plugin-set-react-class-displayname/download/babel-plugin-set-react-class-displayname-1.0.3.tgz#09596bbcdc9aa9c7bf57899e518ad3a5f142a11c"
+
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "http://registry.npm.taobao.org/babel-plugin-syntax-async-functions/download/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"

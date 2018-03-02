@@ -20,6 +20,7 @@
 				"transform-decorators-legacy",
 				"transform-runtime",
 				"lodash",
+				"set-react-class-displayname",
 				["import", {
 					"libraryName": "antd",
 					"style": true,
@@ -35,6 +36,7 @@
 			"plugins": [
 				"transform-decorators-legacy",
 				"lodash",
+				"set-react-class-displayname",
 			],
 		},
 		"es": {
@@ -50,6 +52,7 @@
 				"dev-expression",
 				"transform-decorators-legacy",
 				"lodash",
+				"set-react-class-displayname",
 				["import", {
 					"libraryName": "antd",
 					"style": true,
@@ -69,6 +72,7 @@
 				"dev-expression",
 				"transform-decorators-legacy",
 				"lodash",
+				"set-react-class-displayname",
 				["import", {
 					"libraryName": "antd",
 					"style": true,

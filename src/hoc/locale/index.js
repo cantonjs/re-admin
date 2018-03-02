@@ -8,10 +8,10 @@ export default function createLocaleHoc(options = {}) {
 	const { defaultProps, localeAttrName = 'locale' } = options;
 	return function localeHoc(WrappedComponent) {
 		const {
-			name,
+			displayName,
 			getSchemaDefaultProps: originalGetSchemaDefaultProps,
 		} = WrappedComponent;
-		const store = localeStore[name];
+		const store = localeStore[displayName];
 		const hasLocale = !!store;
 
 		if (hasLocale) {
@@ -19,13 +19,13 @@ export default function createLocaleHoc(options = {}) {
 				return Object.defineProperty(acc, key, {
 					enumerable: true,
 					get() {
-						return localeStore[name][key];
+						return localeStore[displayName][key];
 					},
 				});
 			}, {});
 			WrappedComponent.prototype[localeAttrName] = locale;
 		} else {
-			warning(false, `locale component "${name}" not found`);
+			warning(false, `locale component "${displayName}" not found`);
 		}
 
 		const getDefaultLocaleProps = function getDefaultLocaleProps() {
@@ -34,7 +34,7 @@ export default function createLocaleHoc(options = {}) {
 			}
 			return Object.keys(defaultProps).reduce((acc, prop) => {
 				const key = defaultProps[prop];
-				acc[prop] = localeStore[name][key];
+				acc[prop] = localeStore[displayName][key];
 				return acc;
 			}, {});
 		};
