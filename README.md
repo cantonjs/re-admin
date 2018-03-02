@@ -6,7 +6,7 @@
 
 ## Online Demo
 
-[Online Demo](https://cantonjs.github.io/re-admin/test)
+[Online Demo](https://cantonjs.github.io/re-admin/table)
 
 #### Notes
 
