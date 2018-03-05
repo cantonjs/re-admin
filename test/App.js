@@ -84,7 +84,7 @@ export default class App extends Component {
 				</Navigator>
 
 				<ErrorMessages
-					defaulst="Faied"
+					default="Faied"
 					statusMap={{
 						401: 'Login required',
 						403: 'Forbidden',
