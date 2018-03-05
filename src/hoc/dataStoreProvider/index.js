@@ -18,6 +18,7 @@ export default function dataStoreProvider(options = {}) {
 
 			static childContextTypes = {
 				store: PropTypes.object,
+				service: PropTypes.object,
 			};
 
 			static contextTypes = {
@@ -25,17 +26,19 @@ export default function dataStoreProvider(options = {}) {
 			};
 
 			getChildContext() {
-				return {
-					store: this.state.store,
-				};
+				return this.state;
 			}
 
 			constructor(props, context) {
 				super(props, context);
 				const { table } = props;
 				const { DataStore } = context;
-				const store = DataStore.get(table);
-				this.state = { store };
+				const service = DataStore.get(table);
+
+				// TODO: should not use `_table`
+				const store = service.stores._table;
+
+				this.state = { service, store };
 				this._removeQueryListener = store.addQueryListener(router);
 			}
 
@@ -58,8 +61,12 @@ export default function dataStoreProvider(options = {}) {
 			componentWillReceiveProps({ table }) {
 				const { DataStore } = this.context;
 				if (this.props.table && this.props.table !== table) {
+					const service = DataStore.get(table);
 					this.setState({
-						store: DataStore.get(table),
+						// TODO: should not use `_table`
+						store: service.stores._table,
+
+						service,
 					});
 				}
 			}

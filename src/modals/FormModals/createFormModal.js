@@ -41,6 +41,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
+			service: PropTypes.object.isRequired,
 			issuer: PropTypes.instanceOf(Set),
 		};
 
@@ -82,12 +83,12 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
-				const { context: { store }, props } = this;
+				const { context: { service }, props } = this;
 				const { keys, table, save } = props;
 				const path = table ? `/${DataStore.get(table).pathname}` : '';
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
-				store.call(method, { ...props, url, body });
+				service.call(method, { ...props, url, body });
 				this.modal.close();
 			} else if (__DEV__) {
 				warning(false, 'INVALID');
@@ -97,7 +98,8 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		render() {
 			const { context: { store }, props: { table, title, width } } = this;
 
-			const dataStore = table ? DataStore.get(table) : store;
+			// TODO: should not use `_table`
+			const dataStore = table ? DataStore.get(table).stores._table : store;
 			const { isFetching, formRenderers } = dataStore;
 
 			return (

@@ -1,16 +1,18 @@
-import { autorun, observable, computed, toJS } from 'mobx';
-import { omitBy, assign, isFunction, isUndefined, reduce } from 'lodash';
-import getRequest from 'utils/getRequest';
+import { observable, computed } from 'mobx';
+import { isFunction, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
-import deprecated from 'utils/deprecated';
-import modalStore from 'stores/modalStore';
 import localeStore from 'stores/localeStore';
 import warning from 'warning';
+import getRequest from 'utils/getRequest';
+import TableDataStore from './TableDataStore';
+import DetailDataStore from './DetailDataStore';
 
 const caches = observable.map();
 const locale = localeStore.requests;
 let appConfig = {};
 let authStore = {};
+
+const defaultStoreKey = '_table';
 
 export default class DataStore {
 	static get(tableName, customConfig) {
@@ -27,19 +29,9 @@ export default class DataStore {
 		authStore = auth;
 	}
 
-	@observable isFetching = false;
-	@observable selectedKeys = [];
-	@observable data = {};
-	@observable query = {};
-
-	@computed
-	get fetchKey() {
-		return JSON.stringify(toJS(this.query));
-	}
-
 	@computed
 	get tableConfig() {
-		const tableName = this._tableName;
+		const tableName = this.tableName;
 		const table = appConfig.tables[tableName];
 		warning(!tableName || table, `Table "${tableName}" is NOT found`);
 		return {
@@ -48,135 +40,43 @@ export default class DataStore {
 		};
 	}
 
-	@computed
-	get collection() {
-		return this.collections.get(this.fetchKey);
-	}
-
-	@computed
-	get total() {
-		return this.totals.get(this.fetchKey) || 0;
-	}
-
-	@computed
-	get dataSource() {
-		return toJS(this.collection);
-	}
-
-	@computed
-	get sortedKey() {
-		return this.query[appConfig.api.sortKey];
-	}
-
-	@computed
-	get sortedOrder() {
-		const { orderKey, ascValue } = appConfig.api;
-		let order = this.query[orderKey];
-
-		if (!this.sortedKey) {
-			return order;
-		}
-
-		/* eslint-disable eqeqeq */
-		return order == ascValue ? 'ascend' : 'descend';
-	}
-
-	@computed
-	get columns() {
-		if (!this.tableConfig.tableRenderers) {
-			return [];
-		}
-
-		return this.tableConfig.tableRenderers.map(({ render, props, options }) => {
-			const { getSchemaDefaultProps } = options;
-			const column = {
-				title: props.label || getSchemaDefaultProps().label,
-				key: props.name,
-				dataIndex: props.name,
-				render: function renderTable(text, record, index) {
-					return render(props, {
-						...options,
-						text,
-						value: text,
-						record,
-						index,
-					});
-				},
-			};
-
-			if (props.sortable) {
-				const { sortedKey, sortedOrder } = this;
-				column.sortOrder = props.name === sortedKey ? sortedOrder : false;
-				column.sorter = true;
-			}
-
-			return column;
-		});
-	}
-
-	@computed
-	get maxSelections() {
-		return this.tableConfig.maxSelections;
-	}
-
-	@computed
-	get queryRenderers() {
-		return this.tableConfig.queryRenderers;
-	}
-
-	@computed
-	get formRenderers() {
-		return this.tableConfig.formRenderers;
-	}
-
-	collections = observable.map();
-	totals = observable.map();
-
 	constructor(tableName, customConfig = {}) {
-		this._tableName = tableName;
+		this.tableName = tableName;
 		this._customConfig = customConfig;
-
-		const { tableRenderers, queryRenderers, extend, api } = this.tableConfig;
-
-		this._request = getRequest(appConfig);
-		this.size = +appConfig.api.count;
+		this.appConfig = appConfig;
+		this.stores = {};
 		this.extends = {};
+		const { extend, api } = this.tableConfig;
 
-		if (api) {
-			const sortableField =
-				tableRenderers && tableRenderers.find(({ props }) => props.sortable);
-
-			const { pathname, query, headers } = api;
-
-			this.uniqueKey = this.tableConfig.uniqueKey;
-			this.hasSortableField = !!sortableField;
-			this.hasQueryField = !!queryRenderers.length;
-			this.pathname = pathname;
-			if (query.count) {
-				this.size = +query.count;
-			}
-			this.extend(extend);
-
-			this._request = this._request.clone({
-				url: pathname,
-				headers,
-				queryTransformer: (reqQuery) => assign({}, query, reqQuery),
-			});
-		}
-
+		const baseRequest = getRequest(appConfig);
 		const { accessTokenLocation, accessTokenName } = appConfig.api;
 		const fetchAuthTransformerName =
 			accessTokenLocation === 'query' ?
 				'addQueryTransformer' :
 				'addHeadersTransformer';
-
-		this._request[fetchAuthTransformerName]((queryOrHeaders) => {
+		baseRequest[fetchAuthTransformerName]((queryOrHeaders) => {
 			const { accessToken } = authStore;
 			if (accessToken) {
 				queryOrHeaders[accessTokenName] = accessToken;
 			}
 			return queryOrHeaders;
 		});
+
+		if (api) {
+			const { pathname, query, headers } = api;
+			this.pathname = pathname;
+			this.extend(extend);
+			this.baseRequest = baseRequest.clone({
+				url: pathname,
+				headers,
+				queryTransformer: (reqQuery) => assign({}, query, reqQuery),
+			});
+		} else {
+			this.baseRequest = baseRequest;
+		}
+
+		this.stores[defaultStoreKey] = new TableDataStore(this);
+		this.stores._detail = new DetailDataStore(this);
 	}
 
 	extend(extensions) {
@@ -198,128 +98,26 @@ export default class DataStore {
 			return this[method].apply(this, args);
 		} else {
 			throw new Error(
-				`Method "${method}" not found in table store "${this._tableName}"`
+				`Method "${method}" not found in table store "${this.tableName}"`
 			);
-		}
-	}
-
-	addQueryListener(routerStore) {
-		if (routerStore && routerStore.location) {
-			this.query = routerStore.location.query;
-			this._routerStore = routerStore;
-		}
-		const disposer = autorun(() => {
-			return this.fetch({ query: this.query });
-		});
-		return function removeQueryListener() {
-			this._routerStore = null;
-			return disposer();
-		};
-	}
-
-	async setQuery(query) {
-		if (this._routerStore) {
-			this._routerStore.location.query = query;
-		} else {
-			this.query = query;
 		}
 	}
 
 	async fetch(options = {}) {
-		const { query = {}, method, url, body, headers } = options;
-		const { fetchKey } = this;
-
-		if (this.collections.has(fetchKey)) {
-			return this;
-		}
-
-		this.isFetching = true;
-
-		try {
-			const fetchOptions = {
-				method,
-				url,
-				body,
-				headers,
-				query: {
-					count: this.size,
-					...omitBy(query, modalStore.getOmitPaths),
-					page: (function () {
-						const p = query.page || 1;
-						return p < 1 ? 1 : p;
-					})(),
-				},
-			};
-			const res = await this._request.fetch(omitBy(fetchOptions, isUndefined));
-			const { total, list = [] } = await this.tableConfig.mapOnFetchResponse(
-				res
-			);
-
-			const collection = list.map((data, index) => {
-				data.key = this.uniqueKey ? data[this.uniqueKey] : index;
-				return data;
-			});
-
-			this.collections.set(fetchKey, collection);
-			this.totals.set(fetchKey, total);
-		} catch (err) {
-			console.error(err);
-			showError(locale.fetchFailed, err);
-		}
-
-		this.isFetching = false;
-		return this;
-	}
-
-	async fetchOne(query) {
-		try {
-			const res = await this._request.fetch({ query });
-			this.data = await this.tableConfig.mapOnFetchOneResponse(res);
-		} catch (err) {
-			showError(locale.fetchFailed, err);
-		}
-		return this;
-	}
-
-	_refresh() {
-		this.collections.clear();
-		this.totals.clear();
-		this.fetch({ state: { fetchKey: '?' } });
-		this.selectedKeys = [];
-	}
-
-	setSelectedKeys(selectedKeys = []) {
-		this.selectedKeys = selectedKeys;
-	}
-
-	clearSelectedKeys() {
-		this.selectedKeys = [];
-	}
-
-	findItemByKey(key) {
-		deprecated('store.findItemByKey()', 'store.getData()');
-		return this.getData(key);
-	}
-
-	getData(key) {
-		const { collection, uniqueKey, selectedKeys } = this;
-		if (isUndefined(key)) {
-			key = selectedKeys[0];
-		}
-		if (isUndefined(key) || !collection) {
-			return null;
-		}
-		return collection.find(
-			(dataItem, index) => key === (uniqueKey ? dataItem[uniqueKey] : index)
-		);
+		await this.request({
+			requestFn: 'fetch',
+			errorTitle: locale.fetchFailed,
+			...options,
+			refresh: false,
+		});
 	}
 
 	async create(options = {}) {
 		await this.request({
 			method: 'POST',
-			...options,
 			body: this.tableConfig.mapOnSave(options.body, 'create'),
 			errorTitle: locale.createFailed,
+			...options,
 			refresh: true,
 		});
 	}
@@ -327,9 +125,9 @@ export default class DataStore {
 	async update(options = {}) {
 		await this.request({
 			method: 'PUT',
-			...options,
 			body: this.tableConfig.mapOnSave(options.body, 'update'),
 			errorTitle: locale.updateFailed,
+			...options,
 			refresh: true,
 		});
 	}
@@ -337,29 +135,33 @@ export default class DataStore {
 	async remove(options = {}) {
 		await this.request({
 			method: 'DELETE',
-			...options,
 			errorTitle: locale.removeFailed,
+			...options,
 			refresh: true,
 		});
 	}
 
 	async request(options = {}) {
+		const { ref = defaultStoreKey } = options;
 		const {
 			errorTitle = locale.failed,
 			refresh = false,
 			throwError = false,
+			requestFn = 'request',
 			...requestOptions
 		} = options;
 		try {
-			const res = await this._request.fetch(requestOptions);
-			if (refresh && refresh !== 'no') {
-				this._refresh();
+			const store = this.stores[ref];
+			const res = await store[requestFn](requestOptions);
+			if (refresh && refresh !== 'no' && isFunction(store.refresh)) {
+				store.refresh();
 			}
 			return res;
 		} catch (err) {
 			if (throwError) {
 				throw err;
 			}
+			console.error(errorTitle, err);
 			showError(errorTitle, err);
 		}
 	}
