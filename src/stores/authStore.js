@@ -59,6 +59,7 @@ class AuthStore {
 			this.accessToken = authRes.accessToken;
 			isOk = true;
 		} catch (err) {
+			this.accessToken = null;
 			showError(locale.invalidToken, err);
 		}
 		this.isFetching = false;
@@ -83,6 +84,7 @@ class AuthStore {
 			isOk = true;
 			message.success(locale.loginSuccess);
 		} catch (err) {
+			this.accessToken = null;
 			showError(locale.loginFailed, err);
 		}
 		this.isFetching = false;
