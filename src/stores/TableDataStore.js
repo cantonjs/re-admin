@@ -137,7 +137,7 @@ export default class TableDataStore {
 			this._routerStore = routerStore;
 		}
 		const disposer = autorun(() => {
-			return this.fetch({ query: this.query });
+			return this.callFetch({ query: this.query });
 		});
 		return function removeQueryListener() {
 			this._routerStore = null;
@@ -195,7 +195,7 @@ export default class TableDataStore {
 	refresh() {
 		this.collections.clear();
 		this.totals.clear();
-		this.fetch();
+		this.callFetch();
 		this.selectedKeys = [];
 	}
 
@@ -218,5 +218,13 @@ export default class TableDataStore {
 		return collection.find(
 			(dataItem, index) => key === (uniqueKey ? dataItem[uniqueKey] : index)
 		);
+	}
+
+	async callFetch(options) {
+		return this.service.request({
+			requestFn: 'fetch',
+			ref: this,
+			...options,
+		});
 	}
 }

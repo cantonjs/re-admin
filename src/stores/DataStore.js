@@ -1,5 +1,5 @@
 import { observable, computed } from 'mobx';
-import { isFunction, reduce, assign } from 'lodash';
+import { isFunction, isObject, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
 import localeStore from 'stores/localeStore';
 import warning from 'warning';
@@ -151,7 +151,7 @@ export default class DataStore {
 			...requestOptions
 		} = options;
 		try {
-			const store = this.stores[ref];
+			const store = isObject(ref) ? ref : this.stores[ref];
 			const res = await store[requestFn](requestOptions);
 			if (refresh && refresh !== 'no' && isFunction(store.refresh)) {
 				store.refresh();

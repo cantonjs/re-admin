@@ -1,15 +1,14 @@
-
 import { RequestExtra } from 'fetch-extra';
 
 let request;
 
 export default function getRequest(config) {
-	if (request) { return request; }
+	if (request) {
+		return request;
+	}
 
 	const {
-		api: {
-			baseURL, timeout,
-		},
+		api: { baseURL, timeout },
 		errorMessages: {
 			defaults = 'Request failed',
 			statusMap = {},
@@ -45,7 +44,7 @@ export default function getRequest(config) {
 			return data;
 		},
 		async errorTransformer(err) {
-			err.reason = (await getMessage(err, err.response));
+			err.reason = await getMessage(err, err.response);
 			if (!err.reason && err.response && err.response.status) {
 				const reason = statusMap[err.response.status];
 				err.reason = reason || err.message;
