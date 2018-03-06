@@ -67,7 +67,6 @@ class AuthStore {
 	}
 
 	async login(body) {
-		this.isFetching = true;
 		let isOk = false;
 
 		try {
@@ -87,7 +86,6 @@ class AuthStore {
 			this.accessToken = null;
 			showError(locale.loginFailed, err);
 		}
-		this.isFetching = false;
 		return isOk;
 	}
 
