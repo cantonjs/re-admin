@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import warning from 'warning';
+import dataStoreProvider from 'hoc/dataStoreProvider';
 import { Spin } from 'antd';
 import { Form } from 'components/Nested';
 import ModalConsumer from 'components/ModalConsumer';
 import FormItemWrapper from 'components/FormItemWrapper';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'constants/Issuers';
-import DataStore from 'stores/DataStore';
-import warning from 'warning';
 
 const styles = {
 	spinContainer: {
@@ -23,10 +23,12 @@ class FormState {
 }
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
+	@dataStoreProvider()
 	class FormModalView extends Component {
 		static displayName = displayName;
 
 		static propTypes = {
+			store: PropTypes.object,
 			table: PropTypes.string,
 			keys: PropTypes.string,
 			save: PropTypes.string,
@@ -84,8 +86,8 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
 				const { context: { service }, props } = this;
-				const { keys, table, save } = props;
-				const path = table ? `/${DataStore.get(table).pathname}` : '';
+				const { keys, store, save } = props;
+				const path = store ? `/${store.pathname}` : '';
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				service.call(method, { ...props, url, body });
@@ -96,12 +98,8 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		};
 
 		render() {
-			const { context: { store }, props: { table, title, width } } = this;
-
-			// TODO: should not use `_table`
-			const dataStore = table ? DataStore.get(table).stores._table : store;
-			const { isFetching, formRenderers } = dataStore;
-
+			const { props: { store, title, width }, context } = this;
+			const { isFetching, formRenderers } = store || context.store;
 			return (
 				<ModalConsumer
 					title={title}

@@ -1,7 +1,7 @@
 import { observable, computed, toJS } from 'mobx';
 import { omitBy, isUndefined } from 'lodash';
 
-export default class DetailDataStore {
+export default class DataDetailStore {
 	@observable isFetching = false;
 	cache = observable.map();
 

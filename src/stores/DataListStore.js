@@ -2,7 +2,7 @@ import { autorun, observable, computed, toJS } from 'mobx';
 import { isUndefined, omitBy } from 'lodash';
 import modalStore from 'stores/modalStore';
 
-export default class TableDataStore {
+export default class DataListStore {
 	@observable isFetching = false;
 	@observable selectedKeys = [];
 	@observable query = {};

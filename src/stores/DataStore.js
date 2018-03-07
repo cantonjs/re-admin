@@ -4,15 +4,15 @@ import showError from 'utils/showError';
 import localeStore from 'stores/localeStore';
 import warning from 'warning';
 import getRequest from 'utils/getRequest';
-import TableDataStore from './TableDataStore';
-import DetailDataStore from './DetailDataStore';
+import DataListStore from './DataListStore';
+import DataDetailStore from './DataDetailStore';
 
 const caches = observable.map();
 const locale = localeStore.requests;
 let appConfig = {};
 let authStore = {};
 
-const defaultStoreKey = '_table';
+const defaultStoreName = '_default';
 
 export default class DataStore {
 	static get(tableName, customConfig) {
@@ -44,10 +44,9 @@ export default class DataStore {
 		this.tableName = tableName;
 		this._customConfig = customConfig;
 		this.appConfig = appConfig;
-		this.stores = {};
 		this.extends = {};
-		const { extend, api } = this.tableConfig;
 
+		const { extend, api } = this.tableConfig;
 		const baseRequest = getRequest(appConfig);
 		const { accessTokenLocation, accessTokenName } = appConfig.api;
 		const fetchAuthTransformerName =
@@ -75,8 +74,21 @@ export default class DataStore {
 			this.baseRequest = baseRequest;
 		}
 
-		this.stores[defaultStoreKey] = new TableDataStore(this);
-		this.stores._detail = new DetailDataStore(this);
+		this.stores = {
+			list: { [defaultStoreName]: new DataListStore(this, defaultStoreName) },
+			detail: {
+				[defaultStoreName]: new DataDetailStore(this, defaultStoreName),
+			},
+		};
+	}
+
+	getStore(type = 'list', name = defaultStoreName) {
+		if (!~['list', 'detail'].indexOf(type)) {
+			throw new Error(
+				`Only type "list" or "detail" is valid, but received "${type}"`
+			);
+		}
+		return this.stores[type][name];
 	}
 
 	extend(extensions) {
@@ -142,7 +154,7 @@ export default class DataStore {
 	}
 
 	async request(options = {}) {
-		const { ref = defaultStoreKey } = options;
+		const { ref, storeType } = options;
 		const {
 			errorTitle = locale.failed,
 			refresh = false,
@@ -151,7 +163,7 @@ export default class DataStore {
 			...requestOptions
 		} = options;
 		try {
-			const store = isObject(ref) ? ref : this.stores[ref];
+			const store = isObject(ref) ? ref : this.getStore(storeType, ref);
 			const res = await store[requestFn](requestOptions);
 			if (refresh && refresh !== 'no' && isFunction(store.refresh)) {
 				store.refresh();

@@ -7,8 +7,9 @@ import { omitBy, isEqual } from 'lodash';
 import routerStore from 'stores/routerStore';
 
 export default function dataStoreProvider(options = {}) {
-	const { bindLocation } = options;
+	const { bindLocation, storeType = 'list', storeName } = options;
 	const router = bindLocation ? routerStore : {};
+
 	return function createDataStoreProviderComponent(WrappedComponent) {
 		@observer
 		class DataStoreProvider extends Component {
@@ -23,28 +24,36 @@ export default function dataStoreProvider(options = {}) {
 
 			static contextTypes = {
 				DataStore: PropTypes.func.isRequired,
+				store: PropTypes.object,
+				service: PropTypes.object,
 			};
 
 			getChildContext() {
-				return this.state;
+				const { state: { store, service }, context } = this;
+				return {
+					store: store || context.store,
+					service: service || context.service,
+				};
 			}
 
 			constructor(props, context) {
 				super(props, context);
 				const { table } = props;
-				const { DataStore } = context;
-				const service = DataStore.get(table);
-
-				// TODO: should not use `_table`
-				const store = service.stores._table;
-
-				this.state = { service, store };
-				this._removeQueryListener = store.addQueryListener(router);
+				const state = {};
+				if (table) {
+					const { DataStore } = context;
+					const service = DataStore.get(table);
+					const store = this._getStore(service);
+					state.service = service;
+					state.store = store;
+					this._removeQueryListener = store.addQueryListener(router);
+				}
+				this.state = state;
 			}
 
 			componentWillMount() {
 				const { history } = router;
-				if (history) {
+				if (this.props.table && history) {
 					this._unlistenHistory = history.listen((location, prevLocation) => {
 						if (location.pathname === prevLocation.pathname) {
 							const { getOmitPaths } = modalStore;
@@ -58,31 +67,33 @@ export default function dataStoreProvider(options = {}) {
 				}
 			}
 
-			componentWillReceiveProps({ table }) {
-				const { DataStore } = this.context;
-				if (this.props.table && this.props.table !== table) {
-					const service = DataStore.get(table);
-					this.setState({
-						// TODO: should not use `_table`
-						store: service.stores._table,
-
-						service,
-					});
-				}
-			}
-
 			componentDidMount() {
 				const { location } = router;
-				if (location) {
+				if (this.props.table && location) {
 					const { getOmitPaths } = modalStore;
 					const query = omitBy(location.query, getOmitPaths);
 					this._setQuery(query);
 				}
 			}
 
+			componentWillReceiveProps({ table }) {
+				const { DataStore } = this.context;
+				if (this.props.table && this.props.table !== table) {
+					const service = DataStore.get(table);
+					this.setState({
+						store: this._getStore(service),
+						service,
+					});
+				}
+			}
+
 			componentWillUnmount() {
 				this._removeQueryListener && this._removeQueryListener();
 				this._unlistenHistory && this._unlistenHistory();
+			}
+
+			_getStore(service) {
+				return service.getStore(storeType, storeName);
 			}
 
 			_setQuery(query) {
