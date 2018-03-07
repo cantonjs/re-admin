@@ -1,4 +1,4 @@
-import { autorun, observable, computed, toJS } from 'mobx';
+import { autorun, action, observable, computed, toJS } from 'mobx';
 import { isUndefined, omitBy } from 'lodash';
 import modalStore from 'stores/modalStore';
 
@@ -141,7 +141,10 @@ export default class DataListStore {
 			if (this.query && !this._hasBoundQueryListener) {
 				this._hasBoundQueryListener = true;
 			} else {
-				this.callFetch({ query: this.query });
+				// fetch trick
+				setTimeout(() => {
+					this.callFetch({ query: this.query });
+				});
 			}
 		});
 		return function removeQueryListener() {
@@ -159,7 +162,7 @@ export default class DataListStore {
 	}
 
 	async fetch(options = {}) {
-		const { query = {}, method, url, body, headers } = options;
+		const { query, method, url, body, headers } = options;
 		const { cacheKey } = this;
 
 		if (this.collections.has(cacheKey)) {
@@ -177,11 +180,12 @@ export default class DataListStore {
 				count: this.size,
 				...omitBy(query, modalStore.getOmitPaths),
 				page: (function () {
-					const p = query.page || 1;
+					const p = (query && query.page) || 1;
 					return p < 1 ? 1 : p;
 				})(),
 			},
 		};
+
 		const res = await this.request(omitBy(fetchOptions, isUndefined));
 		const { total, list = [] } = await this.tableConfig.mapOnFetchResponse(res);
 
@@ -192,15 +196,15 @@ export default class DataListStore {
 
 		this.collections.set(cacheKey, collection);
 		this.totals.set(cacheKey, total);
-
 		this.isFetching = false;
 		return this;
 	}
 
+	@action
 	refresh() {
 		this.collections.clear();
 		this.totals.clear();
-		this.callFetch();
+		this.callFetch({ query: this.query });
 		this.selectedKeys = [];
 	}
 
