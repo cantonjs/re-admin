@@ -7,7 +7,7 @@ import { omitBy, isEqual } from 'lodash';
 import routerStore from 'stores/routerStore';
 
 export default function dataStoreProvider(options = {}) {
-	const { bindLocation, storeType = 'list', storeName } = options;
+	const { bindLocation, storeType, storeName } = options;
 	const router = bindLocation ? routerStore : {};
 
 	return function createDataStoreProviderComponent(WrappedComponent) {
