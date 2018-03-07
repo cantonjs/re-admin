@@ -14,6 +14,12 @@ const compose = async function compose(ctx, middlewares) {
 	}
 };
 
+const delay = function delay() {
+	return new Promise((resolve) => {
+		setTimeout(resolve, Math.random() * 1000);
+	});
+};
+
 const createMethod = function createMethod(method) {
 	router[method] = (path, ...middlewares) => {
 		toolboxRouter[method](`${path}(.*)`, async (request, params) => {
@@ -46,6 +52,8 @@ const createMethod = function createMethod(method) {
 			if (!statusText) {
 				statusText = statuses[status];
 			}
+
+			await delay();
 
 			return new Response(body, { status, statusText });
 		});
