@@ -136,8 +136,13 @@ export default class TableDataStore {
 			this.query = routerStore.location.query;
 			this._routerStore = routerStore;
 		}
+		this._hasBoundQueryListener = false;
 		const disposer = autorun(() => {
-			return this.callFetch({ query: this.query });
+			if (this.query && !this._hasBoundQueryListener) {
+				this._hasBoundQueryListener = true;
+			} else {
+				this.callFetch({ query: this.query });
+			}
 		});
 		return function removeQueryListener() {
 			this._routerStore = null;
