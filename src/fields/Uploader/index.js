@@ -1,13 +1,12 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import withAppConfig from 'utils/withAppConfig';
-import withField from 'utils/withField';
+import withAppConfig from 'hoc/withAppConfig';
+import field from 'hoc/field';
 import ensureFileList from 'utils/ensureFileList';
 import { Button, Icon } from 'antd';
 import { Upload } from 'components/Nested';
 
-@withField
+@field
 @withAppConfig(({ upload }) => ({
 	requireAccessToken: upload.requireAccessToken,
 	mapFileList: upload.mapFileList,
@@ -42,8 +41,8 @@ export default class Uploader extends Component {
 
 		// TODO: should suppport `accessToken` in header
 		const search = requireAccessToken ?
-			`?${accessTokenName}=${authStore.accessToken}` : ''
-		;
+			`?${accessTokenName}=${authStore.accessToken}` :
+			'';
 		this._uploadPath = filePath + search;
 	}
 
@@ -54,10 +53,11 @@ export default class Uploader extends Component {
 	render() {
 		const {
 			props: {
+				requireAccessToken,
+				filePath,
 
-				requireAccessToken, filePath,
-
-				max, getValue,
+				max,
+				getValue,
 				...other
 			},
 			state: { fileList },

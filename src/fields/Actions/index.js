@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import withField from 'utils/withField';
+import field from 'hoc/field';
 import ActionInternalView from './ActionInternalView';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 
-@withField
-@locale({
+@field
+@localize({
 	defaultProps: {
 		label: 'label',
 	},

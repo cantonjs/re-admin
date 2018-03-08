@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 
 const styles = {
 	footer: {
@@ -22,7 +22,7 @@ const styles = {
 	},
 };
 
-@locale()
+@localize()
 @observer
 export default class TableBody extends Component {
 	static propTypes = {

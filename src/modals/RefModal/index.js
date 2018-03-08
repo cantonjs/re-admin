@@ -2,12 +2,12 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import joinKeys from 'utils/joinKeys';
 import { isFunction } from 'lodash';
-import dataStoreProvider from 'hoc/dataStoreProvider';
+import connect from 'hoc/connect';
 import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
-@dataStoreProvider()
+@connect()
 export default class RefModal extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,

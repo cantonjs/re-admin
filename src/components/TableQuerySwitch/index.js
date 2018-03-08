@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 import { Checkbox } from 'antd';
 
-@locale({
+@localize({
 	defaultProps: {
 		children: 'label',
 	},

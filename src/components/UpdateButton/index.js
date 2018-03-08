@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 
-@locale({
+@localize({
 	defaultProps: {
 		label: 'label',
 		multiLabel: 'multiLabel',

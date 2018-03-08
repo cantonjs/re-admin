@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 import { TOOLBAR } from 'constants/Issuers';
 import ConfirmButton from 'components/ConfirmButton';
 
-@locale({
+@localize({
 	defaultProps: {
 		label: 'label',
 		multiLabel: 'multiLabel',

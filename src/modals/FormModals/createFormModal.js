@@ -3,7 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import warning from 'warning';
-import dataStoreProvider from 'hoc/dataStoreProvider';
+import connect from 'hoc/connect';
 import { Spin } from 'antd';
 import { Form } from 'components/Nested';
 import ModalConsumer from 'components/ModalConsumer';
@@ -23,7 +23,7 @@ class FormState {
 }
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
-	@dataStoreProvider()
+	@connect()
 	class FormModalView extends Component {
 		static displayName = displayName;
 

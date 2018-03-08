@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
-import dataStoreProvider from 'hoc/dataStoreProvider';
+import connect from 'hoc/connect';
 import PageContainer from 'components/PageContainer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
@@ -46,5 +46,5 @@ DataTableView.defaultProps = {
 	toolbar: DefaultToolbar,
 };
 
-const dataStoreProviderHoc = dataStoreProvider({ bindLocation: true });
-export default dataStoreProviderHoc(observer(DataTableView));
+const connectHoc = connect({ bindLocation: true });
+export default connectHoc(observer(DataTableView));

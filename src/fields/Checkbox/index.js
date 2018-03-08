@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox } from 'components/Nested';
-import withField from 'utils/withField';
+import field from 'hoc/field';
 
-@withField
+@field
 export default class CheckboxField extends Component {
 	static propTypes = {
 		renderToString: PropTypes.func,

@@ -3,15 +3,15 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { Icon, Modal } from 'antd';
 import { Upload } from 'components/Nested';
-import withAppConfig from 'utils/withAppConfig';
-import withField from 'utils/withField';
+import withAppConfig from 'hoc/withAppConfig';
+import field from 'hoc/field';
 import ensureFileList from 'utils/ensureFileList';
 import ImageTableCell from './ImageTableCell';
 import resizeMode from './resizeMode';
 import { isObject } from 'lodash';
 import warning from 'warning';
 
-@withField
+@field
 @withAppConfig(({ upload }) => ({
 	requireAccessToken: upload.requireAccessToken,
 	mapFileList: upload.mapFileList,

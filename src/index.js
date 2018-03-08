@@ -18,14 +18,16 @@ export UpdateButton from 'components/UpdateButton';
 export RemoveButton from 'components/RemoveButton';
 export RefButton from 'components/RefButton';
 export TableQuerySwitch from 'components/TableQuerySwitch';
-
 export TableQuery from 'components/TableQuery';
+export TableBody from 'components/TableBody';
 
 export Form from 'components/Nested/Form';
 export Submit from 'components/Nested/Submit';
 export Reset from 'components/Nested/Reset';
 
-export withField from 'utils/withField';
-export withActions from 'utils/withActions';
+export connect from 'hoc/connect';
+export withActions from 'hoc/withActions';
+export localize from 'hoc/localize';
+export field from 'hoc/field';
 
 export joinKeys from 'utils/joinKeys';

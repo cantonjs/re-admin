@@ -1,7 +1,6 @@
-
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
-import withField from 'utils/withField';
+import field from 'hoc/field';
 import { Form } from 'components/Nested';
 import { Form as AntdForm } from 'antd';
 
@@ -12,7 +11,7 @@ const formItemLayout = {
 	wrapperCol: { span: 14 },
 };
 
-@withField
+@field
 export default class ObjectOf extends Component {
 	static propTypes = {
 		name: PropTypes.string,
@@ -42,8 +41,14 @@ export default class ObjectOf extends Component {
 
 	render() {
 		const {
-			getValue, children,
-			label, labelCol, wrapperCol, colon, required, wrapperStyle,
+			getValue,
+			children,
+			label,
+			labelCol,
+			wrapperCol,
+			colon,
+			required,
+			wrapperStyle,
 
 			...other
 		} = this.props;
@@ -60,10 +65,7 @@ export default class ObjectOf extends Component {
 				style={wrapperStyle}
 			>
 				<Form layout="vertical" {...other}>
-					{Children.map(
-						children,
-						(child) => cloneElement(child, formItemLayout),
-					)}
+					{Children.map(children, (child) => cloneElement(child, formItemLayout))}
 				</Form>
 			</Item>
 		);

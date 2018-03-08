@@ -4,9 +4,9 @@ import { observer } from 'mobx-react';
 import warning from 'warning';
 import localeStore from 'stores/localeStore';
 
-export default function createLocaleHoc(options = {}) {
+export default function localize(options = {}) {
 	const { defaultProps, localeAttrName = 'locale' } = options;
-	return function localeHoc(WrappedComponent) {
+	return function createLocalizedComponent(WrappedComponent) {
 		const {
 			displayName,
 			getSchemaDefaultProps: originalGetSchemaDefaultProps,

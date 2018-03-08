@@ -8,7 +8,7 @@ import { QUERIER } from 'constants/Issuers';
 import { Form as AntdForm, Row, Col, Button } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 
 const { Item } = AntdForm;
 
@@ -28,7 +28,7 @@ FooterContainer.propTypes = {
 	children: PropTypes.node,
 };
 
-@locale()
+@localize()
 @observer
 export default class TableQuery extends Component {
 	static propTypes = {

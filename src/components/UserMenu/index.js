@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import routerStore from 'stores/routerStore';
 import { Modal, Icon, Menu, Dropdown, Avatar } from 'antd';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 
 const { confirm } = Modal;
 const { Item } = Menu;
 
-@locale()
+@localize()
 export default class UserMenu extends Component {
 	static propTypes = {
 		style: PropTypes.object,

@@ -1,7 +1,6 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import withActions from 'utils/withActions';
+import withActions from 'hoc/withActions';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
 import { TOOLBAR } from 'constants/Issuers';
@@ -36,7 +35,9 @@ export default class ContextButton extends Component {
 
 	_handleClick = (ev) => {
 		const { onClick, method, actions } = this.props;
-		if (onClick) { onClick(ev, actions); }
+		if (onClick) {
+			onClick(ev, actions);
+		}
 		if (method) {
 			ev.preventDefault();
 			actions.store.call(method, {
@@ -50,26 +51,27 @@ export default class ContextButton extends Component {
 		const {
 			props: {
 				actions: { selectedKeys, getData },
-				component, children, label, multiLabel,
-				minSelected, maxSelected,
+				component,
+				children,
+				label,
+				multiLabel,
+				minSelected,
+				maxSelected,
 				...other
 			},
 			context: { issuer },
 		} = this;
 
 		const selected = selectedKeys.length;
-		const disabled = (minSelected > selected) || (maxSelected < selected);
+		const disabled = minSelected > selected || maxSelected < selected;
 		const isInToolbar = issuer && issuer.has(TOOLBAR);
 		const Comp = isInToolbar ? Button : component;
-		const renderChild = children ||
-			(minSelected && (selected > 1) && multiLabel ? multiLabel : label);
+		const renderChild =
+			children ||
+			(minSelected && selected > 1 && multiLabel ? multiLabel : label);
 
 		return (
-			<Comp
-				disabled={disabled}
-				{...other}
-				onClick={this._handleClick}
-			>
+			<Comp disabled={disabled} {...other} onClick={this._handleClick}>
 				{isFunction(renderChild) ? renderChild(getData()) : renderChild}
 			</Comp>
 		);

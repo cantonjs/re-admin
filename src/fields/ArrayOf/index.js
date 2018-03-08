@@ -1,9 +1,9 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
-import withField from 'utils/withField';
+import field from 'hoc/field';
 import { Form, Button, Icon } from 'antd';
 import { ArrayOf as NestArrayOf } from 'react-nested-form';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 
 const { Item } = Form;
 
@@ -25,8 +25,8 @@ const styles = {
 	},
 };
 
-@withField
-@locale({
+@field
+@localize({
 	defaultProps: {
 		addButtonLabel: 'addButtonLabel',
 	},

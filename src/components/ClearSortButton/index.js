@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import clearSortedInfo from 'utils/clearSortedInfo';
-import locale from 'hoc/locale';
+import localize from 'hoc/localize';
 import { Form, Button } from 'antd';
 
 const { Item } = Form;
 
-@locale({
+@localize({
 	defaultProps: {
 		children: 'label',
 	},

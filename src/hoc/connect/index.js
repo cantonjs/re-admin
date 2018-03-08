@@ -6,11 +6,11 @@ import modalStore from 'stores/modalStore';
 import { omitBy, isEqual } from 'lodash';
 import routerStore from 'stores/routerStore';
 
-export default function dataStoreProvider(options = {}) {
+export default function connect(options = {}) {
 	const { bindLocation, storeType, storeName } = options;
 	const router = bindLocation ? routerStore : {};
 
-	return function createDataStoreProviderComponent(WrappedComponent) {
+	return function createConnectComponent(WrappedComponent) {
 		@observer
 		class DataStoreProvider extends Component {
 			static propTypes = {
