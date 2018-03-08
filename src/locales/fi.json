@@ -1,0 +1,57 @@
+{
+  "RefButton": {
+    "label": "Viite"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Salasana",
+    "usernamePlaceholder": "käyttäjä",
+    "login": "Kirjaudu sisään"
+  },
+  "TableBody": {
+    "total": "Kaikki yhteensä"
+  },
+  "CreateButton": {
+    "label": "Luoda"
+  },
+  "TableQuerySwitch": {
+    "label": "Hae"
+  },
+  "ActionsField": {
+    "label": "Toimet"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Lisää tavara"
+  },
+  "ClearSortButton": {
+    "label": "Nollaa lajittelu"
+  },
+  "UpdateButton": {
+    "label": "Päivittää",
+    "multiLabel": "Eräpäivitys"
+  },
+  "TableQuery": {
+    "search": "Hae",
+    "reset": "asettaa uudelleen",
+    "resetOrder": "Nollaa lajittelu"
+  },
+  "RemoveButton": {
+    "label": "Poistaa",
+    "multiLabel": "Erän poisto",
+    "title": "Oletko varmasti poissa käytöstä?",
+    "content": "Tätä toimintoa ei voi kumota!"
+  },
+  "requests": {
+    "failed": "epäonnistui",
+    "loginSuccess": "Sisäänkirjautuminen",
+    "fetchFailed": "Lataus epäonnistui",
+    "loginFailed": "Kirjautuminen epäonnistui",
+    "updateFailed": "Päivitys epäonnistui",
+    "createFailed": "Luominen epäonnistui",
+    "removeFailed": "Poista epäonnistui",
+    "invalidToken": "Virheellinen valtuutuskoodi"
+  },
+  "UserMenu": {
+    "signOut": "Kirjaudu ulos",
+    "confirmSignOut": "Oletko varma kirjautumalla ulos?"
+  }
+}

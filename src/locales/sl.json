@@ -1,0 +1,57 @@
+{
+  "TableQuerySwitch": {
+    "label": "Iskanje"
+  },
+  "TableBody": {
+    "total": "Skupaj"
+  },
+  "ActionsField": {
+    "label": "Akcije"
+  },
+  "RefButton": {
+    "label": "Referenca"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Geslo",
+    "login": "Vpiši se",
+    "usernamePlaceholder": "Uporabnik"
+  },
+  "CreateButton": {
+    "label": "Ustvari"
+  },
+  "TableQuery": {
+    "search": "Iskanje",
+    "reset": "Ponastaviti",
+    "resetOrder": "Ponastavite sortiranje"
+  },
+  "RemoveButton": {
+    "label": "Odstraniti",
+    "content": "Te operacije ni mogoče razveljaviti!",
+    "title": "Ali ste popolnoma prepričani, da odstranite?",
+    "multiLabel": "Batch Odstrani"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Dodaj element"
+  },
+  "ClearSortButton": {
+    "label": "Ponastavite sortiranje"
+  },
+  "requests": {
+    "fetchFailed": "Nalaganje ni uspelo",
+    "failed": "Ni uspelo",
+    "removeFailed": "Odstrani ni uspelo",
+    "loginSuccess": "Prijava uspeha",
+    "createFailed": "Ustvarjanje ni uspelo",
+    "invalidToken": "Neveljaven gesel za avtorizacijo",
+    "updateFailed": "Posodobitev ni uspela",
+    "loginFailed": "Prijava ni uspela"
+  },
+  "UpdateButton": {
+    "label": "Nadgradnja",
+    "multiLabel": "Paketna posodobitev"
+  },
+  "UserMenu": {
+    "signOut": "Odjava",
+    "confirmSignOut": "Ste prepričani, da se odjavite?"
+  }
+}

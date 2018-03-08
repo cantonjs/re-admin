@@ -1,0 +1,57 @@
+{
+  "LoginForm": {
+    "passwordPlaceholder": "Hasło",
+    "login": "Zaloguj Się",
+    "usernamePlaceholder": "Użytkownik"
+  },
+  "RefButton": {
+    "label": "Odniesienie"
+  },
+  "TableQuerySwitch": {
+    "label": "Szukaj"
+  },
+  "TableBody": {
+    "total": "Całkowity"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Dodaj Przedmiot"
+  },
+  "ActionsField": {
+    "label": "działania"
+  },
+  "CreateButton": {
+    "label": "Stwórz"
+  },
+  "ClearSortButton": {
+    "label": "Zresetuj sortowanie"
+  },
+  "TableQuery": {
+    "reset": "Nastawić",
+    "search": "Szukaj",
+    "resetOrder": "Zresetuj sortowanie"
+  },
+  "RemoveButton": {
+    "label": "Usunąć",
+    "content": "Ta operacja nie może zostać cofnięta!",
+    "multiLabel": "Batch Remove",
+    "title": "Czy na pewno chcesz usunąć?"
+  },
+  "UserMenu": {
+    "signOut": "Wyloguj się",
+    "confirmSignOut": "Czy na pewno się wylogujesz?"
+  },
+  "requests": {
+    "failed": "Nie powiodło się",
+    "removeFailed": "Usunięto błąd",
+    "fetchFailed": "Ładowanie nie powiodło się",
+    "updateFailed": "Aktualizacja nie powiodła się",
+    "loginSuccess": "Sukces logowania",
+    "loginFailed": "Logowanie nieudane",
+    "invalidToken": "Nieprawidłowy token autoryzacji",
+    "createFailed": "Twórz nieudane"
+  },
+  "UpdateButton": {
+    "label": "Aktualizacja",
+    "multiLabel": "Aktualizacja partii"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "TableQuerySwitch": {
+    "label": "بحث"
+  },
+  "CreateButton": {
+    "label": "خلق"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "اضافة عنصر"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "المستعمل",
+    "login": "تسجيل الدخول",
+    "passwordPlaceholder": "كلمه السر"
+  },
+  "TableBody": {
+    "total": "مجموع"
+  },
+  "RefButton": {
+    "label": "مرجع"
+  },
+  "RemoveButton": {
+    "label": "إزالة",
+    "multiLabel": "ازالة الدفعة",
+    "title": "هل أنت متأكد تماما لإزالة؟",
+    "content": "هذه العملية لا يمكن التراجع عنها!"
+  },
+  "ClearSortButton": {
+    "label": "إعادة فرز الفرز"
+  },
+  "ActionsField": {
+    "label": "أفعال"
+  },
+  "UserMenu": {
+    "signOut": "خروج",
+    "confirmSignOut": "هل أنت متأكد من تسجيل الخروج؟"
+  },
+  "UpdateButton": {
+    "label": "تحديث",
+    "multiLabel": "تحديث دفعة"
+  },
+  "requests": {
+    "invalidToken": "رمز المصادقة غير صالح",
+    "failed": "فشل",
+    "fetchFailed": "فشل التحميل",
+    "updateFailed": "فشل التحديث",
+    "loginSuccess": "النجاح في تسجيل الدخول",
+    "createFailed": "فشل إنشاء",
+    "loginFailed": "فشل تسجيل الدخول",
+    "removeFailed": "إزالة الفاشلة"
+  },
+  "TableQuery": {
+    "resetOrder": "إعادة فرز الفرز",
+    "search": "بحث",
+    "reset": "إعادة تعيين"
+  }
+}

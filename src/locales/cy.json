@@ -1,0 +1,57 @@
+{
+  "LoginForm": {
+    "login": "Mewngofnodi",
+    "passwordPlaceholder": "Cyfrinair",
+    "usernamePlaceholder": "Defnyddiwr"
+  },
+  "CreateButton": {
+    "label": "Creu"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Ychwanegu eitem"
+  },
+  "TableQuerySwitch": {
+    "label": "Chwilio"
+  },
+  "RefButton": {
+    "label": "Cyfeirnod"
+  },
+  "ActionsField": {
+    "label": "Camau gweithredu"
+  },
+  "UpdateButton": {
+    "multiLabel": "Diweddariad Swp",
+    "label": "Diweddariad"
+  },
+  "TableBody": {
+    "total": "Cyfanswm"
+  },
+  "TableQuery": {
+    "search": "Chwilio",
+    "reset": "Ail gychwyn",
+    "resetOrder": "Ailosod Didoli"
+  },
+  "requests": {
+    "removeFailed": "Dileu wedi methu",
+    "loginFailed": "Methodd mewngofnodi",
+    "failed": "Wedi methu",
+    "updateFailed": "Methodd y wybodaeth ddiweddaraf",
+    "createFailed": "Creu methu",
+    "invalidToken": "Token au annilys",
+    "loginSuccess": "Llwyddiant mewn mewngofnodi",
+    "fetchFailed": "Llwythwyd yn methu"
+  },
+  "ClearSortButton": {
+    "label": "Ailosod Didoli"
+  },
+  "UserMenu": {
+    "signOut": "Arwyddwch",
+    "confirmSignOut": "Ydych chi'n siŵr eich bod yn arwyddo?"
+  },
+  "RemoveButton": {
+    "label": "Dileu",
+    "multiLabel": "Swp Tynnu",
+    "title": "Ydych chi'n hollol sicr i gael gwared?",
+    "content": "Ni ellir diystyru'r llawdriniaeth hon!"
+  }
+}

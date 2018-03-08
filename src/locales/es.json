@@ -1,0 +1,57 @@
+{
+  "LoginForm": {
+    "usernamePlaceholder": "Usuario",
+    "passwordPlaceholder": "Contraseña",
+    "login": "Iniciar sesión"
+  },
+  "RefButton": {
+    "label": "Referencia"
+  },
+  "TableBody": {
+    "total": "Total"
+  },
+  "TableQuerySwitch": {
+    "label": "Buscar"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Añadir artículo"
+  },
+  "UpdateButton": {
+    "label": "Actualizar",
+    "multiLabel": "Actualización por lotes"
+  },
+  "ClearSortButton": {
+    "label": "Restablecer ordenación"
+  },
+  "TableQuery": {
+    "reset": "Reiniciar",
+    "search": "Buscar",
+    "resetOrder": "Restablecer ordenación"
+  },
+  "CreateButton": {
+    "label": "Crear"
+  },
+  "ActionsField": {
+    "label": "Comportamiento"
+  },
+  "requests": {
+    "failed": "Ha fallado",
+    "updateFailed": "Actualización fallida",
+    "fetchFailed": "Carga fallida",
+    "removeFailed": "Eliminar error",
+    "createFailed": "Crear fallido",
+    "loginSuccess": "Inicio de sesión exitoso",
+    "loginFailed": "error de inicio de sesion",
+    "invalidToken": "Token de autenticación no válido"
+  },
+  "UserMenu": {
+    "signOut": "desconectar",
+    "confirmSignOut": "¿Estás seguro de cerrar sesión?"
+  },
+  "RemoveButton": {
+    "label": "retirar",
+    "multiLabel": "Lote Eliminar",
+    "title": "¿Estás absolutamente seguro de eliminar?",
+    "content": "¡Esta operación no se puede deshacer!"
+  }
+}

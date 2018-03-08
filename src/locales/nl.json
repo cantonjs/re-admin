@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "creëren"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Wachtwoord",
+    "login": "Log in",
+    "usernamePlaceholder": "Gebruiker"
+  },
+  "RefButton": {
+    "label": "Referentie"
+  },
+  "RemoveButton": {
+    "multiLabel": "Batch verwijderen",
+    "title": "Weet je zeker dat je moet verwijderen?",
+    "content": "Deze bewerking kan niet ongedaan worden gemaakt!",
+    "label": "Verwijderen"
+  },
+  "ClearSortButton": {
+    "label": "Sortering opnieuw instellen"
+  },
+  "TableBody": {
+    "total": "Totaal"
+  },
+  "UpdateButton": {
+    "label": "Bijwerken",
+    "multiLabel": "Batch-update"
+  },
+  "TableQuery": {
+    "reset": "Reset",
+    "search": "Zoeken",
+    "resetOrder": "Sortering opnieuw instellen"
+  },
+  "UserMenu": {
+    "confirmSignOut": "Weet je zeker dat je uitlogt?",
+    "signOut": "Afmelden"
+  },
+  "ActionsField": {
+    "label": "acties"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Voeg item toe"
+  },
+  "requests": {
+    "removeFailed": "Verwijderen is mislukt",
+    "loginFailed": "Aanmelden mislukt",
+    "loginSuccess": "Succesvol ingelogd",
+    "fetchFailed": "Laden mislukt",
+    "failed": "mislukt",
+    "updateFailed": "Update mislukt",
+    "createFailed": "Aanmaken mislukt",
+    "invalidToken": "Ongeldig auth token"
+  },
+  "TableQuerySwitch": {
+    "label": "Zoeken"
+  }
+}

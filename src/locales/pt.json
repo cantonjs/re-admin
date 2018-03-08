@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Crio"
+  },
+  "RefButton": {
+    "label": "Referência"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Do utilizador",
+    "passwordPlaceholder": "Senha",
+    "login": "Login"
+  },
+  "TableBody": {
+    "total": "Total"
+  },
+  "TableQuerySwitch": {
+    "label": "Pesquisa"
+  },
+  "ActionsField": {
+    "label": "Ações"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Adicionar Item"
+  },
+  "UpdateButton": {
+    "label": "Atualizar",
+    "multiLabel": "Atualização do lote"
+  },
+  "ClearSortButton": {
+    "label": "Redefinir classificação"
+  },
+  "UserMenu": {
+    "signOut": "Sair",
+    "confirmSignOut": "Tem certeza de sair?"
+  },
+  "TableQuery": {
+    "reset": "Restabelecer",
+    "search": "Pesquisa",
+    "resetOrder": "Redefinir classificação"
+  },
+  "RemoveButton": {
+    "label": "Remover",
+    "multiLabel": "Batch Remove",
+    "title": "Você está absolutamente certo de remover?",
+    "content": "Esta operação não pode ser desfeita!"
+  },
+  "requests": {
+    "failed": "Falhou",
+    "createFailed": "Criar falhou",
+    "updateFailed": "Atualização falhou",
+    "loginFailed": "Falha na autenticação",
+    "fetchFailed": "Erro de carregamento",
+    "invalidToken": "Token de autenticação inválido",
+    "removeFailed": "Remover falhou",
+    "loginSuccess": "Sucesso de login"
+  }
+}

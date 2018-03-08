@@ -1,0 +1,57 @@
+{
+  "LoginForm": {
+    "usernamePlaceholder": "User",
+    "passwordPlaceholder": "Password",
+    "login": "login"
+  },
+  "RefButton": {
+    "label": "Reference"
+  },
+  "CreateButton": {
+    "label": "Create"
+  },
+  "ClearSortButton": {
+    "label": "Reset Sorting"
+  },
+  "TableQuery": {
+    "search": "Quaerere",
+    "reset": "Reset",
+    "resetOrder": "Reset Sorting"
+  },
+  "TableBody": {
+    "total": "summa"
+  },
+  "UpdateButton": {
+    "label": "Update",
+    "multiLabel": "Update batch"
+  },
+  "TableQuerySwitch": {
+    "label": "Quaerere"
+  },
+  "ActionsField": {
+    "label": "actus"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "item addere"
+  },
+  "requests": {
+    "failed": "Deficio",
+    "updateFailed": "defecit Update",
+    "fetchFailed": "onus defuit",
+    "createFailed": "Create defuit",
+    "loginSuccess": "login victoria",
+    "loginFailed": "defecit login",
+    "removeFailed": "Remove defuit",
+    "invalidToken": "Aliquam auth firmitatis indicium"
+  },
+  "UserMenu": {
+    "signOut": "Exscribe",
+    "confirmSignOut": "Certus es signa ista?"
+  },
+  "RemoveButton": {
+    "multiLabel": "Aufer batch",
+    "label": "Remove",
+    "title": "Esne certus omnino removendum est?",
+    "content": "Haec operatio non potest esse quod factum est?"
+  }
+}

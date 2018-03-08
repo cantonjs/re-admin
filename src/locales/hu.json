@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Teremt"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "használó",
+    "passwordPlaceholder": "Jelszó",
+    "login": "Belépés"
+  },
+  "RefButton": {
+    "label": "Referencia"
+  },
+  "TableBody": {
+    "total": "Teljes"
+  },
+  "TableQuerySwitch": {
+    "label": "Keresés"
+  },
+  "ActionsField": {
+    "label": "Hozzászólások"
+  },
+  "ClearSortButton": {
+    "label": "A rendezés visszaállítása"
+  },
+  "TableQuery": {
+    "search": "Keresés",
+    "reset": "Visszaállítás",
+    "resetOrder": "A rendezés visszaállítása"
+  },
+  "UpdateButton": {
+    "label": "frissítés",
+    "multiLabel": "Batch frissítés"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Elem hozzáadása"
+  },
+  "UserMenu": {
+    "signOut": "Kijelentkezés",
+    "confirmSignOut": "Biztos, hogy kijelentkezik?"
+  },
+  "requests": {
+    "failed": "nem sikerült",
+    "fetchFailed": "A betöltés sikertelen",
+    "createFailed": "A létrehozás sikertelen volt",
+    "updateFailed": "Frissítés sikertelen",
+    "loginSuccess": "Bejelentkezés sikere",
+    "loginFailed": "Bejelentkezés sikertelen",
+    "removeFailed": "Az eltávolítás sikertelen",
+    "invalidToken": "Érvénytelen auth. Tok"
+  },
+  "RemoveButton": {
+    "label": "eltávolít",
+    "multiLabel": "Kötegeltávolítás",
+    "content": "Ezt a műveletet nem lehet visszavonni!",
+    "title": "Teljesen biztos benne, hogy eltávolítod?"
+  }
+}

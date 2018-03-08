@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "yaratmak"
+  },
+  "RefButton": {
+    "label": "Referans"
+  },
+  "LoginForm": {
+    "login": "Oturum aç",
+    "passwordPlaceholder": "Parola",
+    "usernamePlaceholder": "kullanıcı"
+  },
+  "TableBody": {
+    "total": "Genel Toplam"
+  },
+  "TableQuerySwitch": {
+    "label": "Arama"
+  },
+  "ActionsField": {
+    "label": "Eylemler"
+  },
+  "ClearSortButton": {
+    "label": "Sıfırla Sırala"
+  },
+  "TableQuery": {
+    "reset": "Reset",
+    "search": "Arama",
+    "resetOrder": "Sıfırla Sırala"
+  },
+  "RemoveButton": {
+    "label": "Kaldır",
+    "multiLabel": "Toplu Kaldır",
+    "title": "Kaldırmaktan kesinlikle emin misin?",
+    "content": "Bu işlem geri alınamaz!"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Öğe eklemek"
+  },
+  "UpdateButton": {
+    "label": "Güncelleştirme",
+    "multiLabel": "Toplu Güncelleme"
+  },
+  "UserMenu": {
+    "signOut": "oturumu Kapat",
+    "confirmSignOut": "Çıkış yaptığınızdan emin misiniz?"
+  },
+  "requests": {
+    "failed": "Başarısız oldu",
+    "removeFailed": "Kaldırma başarısız oldu",
+    "fetchFailed": "Yükleme başarısız",
+    "loginFailed": "Giriş başarısız",
+    "updateFailed": "Güncelleme başarısız oldu",
+    "createFailed": "Oluşturılamadı",
+    "invalidToken": "Geçersiz kimlik doğrulama belirteci",
+    "loginSuccess": "Giriş başarılı"
+  }
+}

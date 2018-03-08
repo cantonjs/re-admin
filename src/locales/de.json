@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Erstellen"
+  },
+  "RefButton": {
+    "label": "Referenz"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Benutzer",
+    "passwordPlaceholder": "Passwort",
+    "login": "Anmeldung"
+  },
+  "TableBody": {
+    "total": "Gesamt"
+  },
+  "ActionsField": {
+    "label": "Aktionen"
+  },
+  "TableQuerySwitch": {
+    "label": "Suche"
+  },
+  "ClearSortButton": {
+    "label": "Sortierung zurücksetzen"
+  },
+  "UpdateButton": {
+    "label": "Aktualisieren",
+    "multiLabel": "Stapelaktualisierung"
+  },
+  "TableQuery": {
+    "search": "Suche",
+    "reset": "Zurücksetzen",
+    "resetOrder": "Sortierung zurücksetzen"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Artikel hinzufügen"
+  },
+  "RemoveButton": {
+    "label": "Löschen",
+    "multiLabel": "Stapel entfernen",
+    "content": "Dieser Vorgang kann nicht rückgängig gemacht werden!",
+    "title": "Bist du absolut sicher, dass du es entfernst?"
+  },
+  "UserMenu": {
+    "signOut": "Ausloggen",
+    "confirmSignOut": "Bist du sicher, dich abzumelden?"
+  },
+  "requests": {
+    "failed": "Gescheitert",
+    "removeFailed": "Entfernen fehlgeschlagen",
+    "updateFailed": "Update fehlgeschlagen",
+    "loginFailed": "Anmeldung fehlgeschlagen",
+    "createFailed": "Erstellen fehlgeschlagen",
+    "fetchFailed": "Laden fehlgeschlagen",
+    "invalidToken": "Ungültiges Authentifizierungs-Token",
+    "loginSuccess": "Einloggen erfolgreich"
+  }
+}

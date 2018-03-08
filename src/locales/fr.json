@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Créer"
+  },
+  "RefButton": {
+    "label": "Référence"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Utilisateur",
+    "passwordPlaceholder": "Mot de passe",
+    "login": "S'identifier"
+  },
+  "TableBody": {
+    "total": "Total"
+  },
+  "ActionsField": {
+    "label": "Actions"
+  },
+  "TableQuerySwitch": {
+    "label": "Chercher"
+  },
+  "TableQuery": {
+    "search": "Chercher",
+    "reset": "Réinitialiser",
+    "resetOrder": "Réinitialiser le tri"
+  },
+  "ClearSortButton": {
+    "label": "Réinitialiser le tri"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Ajouter un item"
+  },
+  "UpdateButton": {
+    "label": "Mettre à jour",
+    "multiLabel": "Mise à jour par lots"
+  },
+  "UserMenu": {
+    "signOut": "Déconnexion",
+    "confirmSignOut": "Êtes-vous sûr de vous déconnecter?"
+  },
+  "requests": {
+    "failed": "Échoué",
+    "loginFailed": "Échec de la connexion",
+    "removeFailed": "Supprimer a échoué",
+    "fetchFailed": "Chargement raté",
+    "updateFailed": "Mise à jour a échoué",
+    "createFailed": "Créer a échoué",
+    "invalidToken": "Jeton d'authentification invalide",
+    "loginSuccess": "Succès de connexion"
+  },
+  "RemoveButton": {
+    "label": "Retirer",
+    "multiLabel": "Batch Supprimer",
+    "content": "Cette opération ne peut pas être annulée!",
+    "title": "Êtes-vous absolument sûr de supprimer?"
+  }
+}

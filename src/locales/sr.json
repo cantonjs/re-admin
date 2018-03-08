@@ -1,0 +1,57 @@
+{
+  "RefButton": {
+    "label": "Референца"
+  },
+  "TableBody": {
+    "total": "Укупно"
+  },
+  "TableQuerySwitch": {
+    "label": "Претрага"
+  },
+  "ClearSortButton": {
+    "label": "Ресетујте сортирање"
+  },
+  "CreateButton": {
+    "label": "Креирај"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Лозинка",
+    "usernamePlaceholder": "Корисник",
+    "login": "Пријавите се"
+  },
+  "ActionsField": {
+    "label": "Акције"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Додајте ставку"
+  },
+  "UpdateButton": {
+    "label": "ажурирање",
+    "multiLabel": "Батцх Упдате"
+  },
+  "RemoveButton": {
+    "multiLabel": "Батцх Ремове",
+    "label": "Уклони",
+    "content": "Ова операција не може бити поништена!",
+    "title": "Да ли сте апсолутно сигурни да га уклоните?"
+  },
+  "requests": {
+    "loginFailed": "Неуспела Пријава",
+    "createFailed": "Креирање није успело",
+    "updateFailed": "Ажурирање није успело",
+    "failed": "Није успео",
+    "fetchFailed": "Учитавање није успело",
+    "removeFailed": "Уклони неуспешно",
+    "loginSuccess": "Пријава успеха",
+    "invalidToken": "Неважећи ауторитет"
+  },
+  "UserMenu": {
+    "signOut": "Одјава",
+    "confirmSignOut": "Да ли сте сигурни да се одјавите?"
+  },
+  "TableQuery": {
+    "search": "Претрага",
+    "reset": "Ресетовати",
+    "resetOrder": "Ресетујте сортирање"
+  }
+}

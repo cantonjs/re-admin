@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Δημιουργώ"
+  },
+  "TableBody": {
+    "total": "Σύνολο"
+  },
+  "RefButton": {
+    "label": "Αναφορά"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Χρήστης",
+    "login": "Σύνδεση",
+    "passwordPlaceholder": "Κωδικός πρόσβασης"
+  },
+  "ActionsField": {
+    "label": "Ενέργειες"
+  },
+  "TableQuerySwitch": {
+    "label": "Ψάξιμο"
+  },
+  "UpdateButton": {
+    "label": "Εκσυγχρονίζω",
+    "multiLabel": "Ενημέρωση παρτίδας"
+  },
+  "RemoveButton": {
+    "label": "Αφαιρώ",
+    "title": "Είστε σίγουροι ότι θα καταργήσετε;",
+    "multiLabel": "Κατάργηση παρτίδας",
+    "content": "Αυτή η λειτουργία δεν μπορεί να ανατραπεί!"
+  },
+  "requests": {
+    "loginFailed": "Η σύνδεση απέτυχε",
+    "createFailed": "Η δημιουργία απέτυχε",
+    "updateFailed": "Ενημέρωση απέτυχε",
+    "loginSuccess": "Συνδεθείτε επιτυχία",
+    "removeFailed": "Η κατάργηση απέτυχε",
+    "fetchFailed": "Η φόρτωση απέτυχε",
+    "failed": "Απέτυχε",
+    "invalidToken": "Μη έγκυρο αναγνωριστικό auth"
+  },
+  "UserMenu": {
+    "signOut": "Αποσύνδεση",
+    "confirmSignOut": "Είστε σίγουροι ότι θα αποσυνδεθείτε;"
+  },
+  "ClearSortButton": {
+    "label": "Επαναφορά ταξινόμησης"
+  },
+  "TableQuery": {
+    "reset": "Επαναφορά",
+    "search": "Ψάξιμο",
+    "resetOrder": "Επαναφορά ταξινόμησης"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Πρόσθεσε είδος"
+  }
+}

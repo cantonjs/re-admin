@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Loo"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Parool",
+    "login": "Logi sisse",
+    "usernamePlaceholder": "Kasutaja"
+  },
+  "RefButton": {
+    "label": "Viide"
+  },
+  "ActionsField": {
+    "label": "Toimingud"
+  },
+  "TableBody": {
+    "total": "Kokku"
+  },
+  "TableQuerySwitch": {
+    "label": "Otsing"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Lisa üksus"
+  },
+  "ClearSortButton": {
+    "label": "Lähtesta sortimine"
+  },
+  "TableQuery": {
+    "reset": "Lähtesta",
+    "search": "Otsing",
+    "resetOrder": "Lähtesta sortimine"
+  },
+  "RemoveButton": {
+    "label": "Eemalda",
+    "multiLabel": "Partii eemaldamine",
+    "title": "Kas olete kindlasti eemaldanud?",
+    "content": "Seda toimingut ei saa tagasi võtta!"
+  },
+  "UserMenu": {
+    "signOut": "Logi välja",
+    "confirmSignOut": "Kas soovite kindlasti välja logida?"
+  },
+  "UpdateButton": {
+    "label": "Uuenda",
+    "multiLabel": "Partii värskendamine"
+  },
+  "requests": {
+    "createFailed": "Loo ebaõnnestunud",
+    "loginFailed": "Sisselogimine ebaõnnestus",
+    "failed": "Ebaõnnestus",
+    "fetchFailed": "Kogu ebaõnnestus",
+    "loginSuccess": "Sisselogimise edu",
+    "updateFailed": "Uuendus ebaõnnestus",
+    "invalidToken": "Kehtetu autohoovitussignaal",
+    "removeFailed": "Eemaldamine nurjus"
+  }
+}
