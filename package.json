@@ -8,7 +8,7 @@
     "host": "output-host --no-external",
     "client": "webpack-dev-server",
     "format": "prettier-eslint --write \"+(src|test)/**/*.js\"",
-    "i18n": "neo-json-i18n ./src/locales/en.json -p=%lang.json -l=ar,zh-cn,zh-tw,da,nl,et,fi,fr,de,el,hu,is,ga,it,ja,ko,la,no,pl,pt,ro,ru,sr,sk,sl,es,sv,tr,cy",
+    "i18n": "node ./node_modules/.bin/neo-json-i18n ./src/locales/en.json -p=%lang.json -l=ar,zh-cn,zh-tw,da,nl,et,fi,fr,de,el,hu,is,ga,it,ja,ko,la,no,pl,pt,ro,ru,sr,sk,sl,es,sv,tr,cy",
     "prebuild": "rimraf dist lib es",
     "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel src -d es",
     "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel src -d lib",
