@@ -1,53 +1,37 @@
-import { observable, computed } from 'mobx';
-import { isFunction, isObject, reduce, assign } from 'lodash';
+import { computed } from 'mobx';
+import { isFunction, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
 import localeStore from 'stores/localeStore';
 import warning from 'warning';
-import getRequest from 'utils/getRequest';
-import DataListStore from './DataListStore';
-import DataDetailStore from './DataDetailStore';
 
-const caches = observable.map();
 const locale = localeStore.requests;
-let appConfig = {};
-let authStore = {};
 
-const defaultStoreName = '_default';
-
-export default class DataStore {
-	static get(tableName, customConfig) {
-		if (caches.has(tableName)) {
-			return caches.get(tableName);
-		}
-		const store = new DataStore(tableName, customConfig);
-		caches.set(tableName, store);
-		return store;
-	}
-
-	static setup(config, auth) {
-		appConfig = config;
-		authStore = auth;
-	}
-
+export default class BaseDataStore {
 	@computed
-	get tableConfig() {
-		const tableName = this.tableName;
-		const table = appConfig.tables[tableName];
-		warning(!tableName || table, `Table "${tableName}" is NOT found`);
+	get config() {
+		const name = this.name;
+		const table = this.appConfig.tables[name];
+		warning(!name || table, `Table "${name}" is NOT found`);
 		return {
 			...table,
 			...this._customConfig,
 		};
 	}
 
-	constructor(tableName, customConfig = {}) {
-		this.tableName = tableName;
+	constructor(options = {}) {
+		const {
+			name,
+			appConfig,
+			authStore,
+			config: customConfig,
+			baseRequest,
+		} = options;
+		this.name = name;
 		this._customConfig = customConfig;
 		this.appConfig = appConfig;
 		this.extends = {};
 
-		const { extend, api } = this.tableConfig;
-		const baseRequest = getRequest(appConfig);
+		const { extend, api } = this.config;
 		const { accessTokenLocation, accessTokenName } = appConfig.api;
 		const fetchAuthTransformerName =
 			accessTokenLocation === 'query' ?
@@ -73,22 +57,7 @@ export default class DataStore {
 		} else {
 			this.baseRequest = baseRequest;
 		}
-
-		this.stores = {
-			list: { [defaultStoreName]: new DataListStore(this, defaultStoreName) },
-			detail: {
-				[defaultStoreName]: new DataDetailStore(this, defaultStoreName),
-			},
-		};
-	}
-
-	getStore(type = 'list', name = defaultStoreName) {
-		if (!~['list', 'detail'].indexOf(type)) {
-			throw new Error(
-				`Only type "list" or "detail" is valid, but received "${type}"`
-			);
-		}
-		return this.stores[type][name];
+		this.performRequest = this.baseRequest.fetch.bind(this.baseRequest);
 	}
 
 	extend(extensions) {
@@ -110,7 +79,7 @@ export default class DataStore {
 			return this[method].apply(this, args);
 		} else {
 			throw new Error(
-				`Method "${method}" not found in table store "${this.tableName}"`
+				`Method "${method}" not found in table store "${this.name}"`
 			);
 		}
 	}
@@ -127,7 +96,7 @@ export default class DataStore {
 	async create(options = {}) {
 		await this.request({
 			method: 'POST',
-			body: this.tableConfig.mapOnSave(options.body, 'create'),
+			body: this.config.mapOnSave(options.body, 'create'),
 			errorTitle: locale.createFailed,
 			...options,
 			refresh: true,
@@ -137,7 +106,7 @@ export default class DataStore {
 	async update(options = {}) {
 		await this.request({
 			method: 'PUT',
-			body: this.tableConfig.mapOnSave(options.body, 'update'),
+			body: this.config.mapOnSave(options.body, 'update'),
 			errorTitle: locale.updateFailed,
 			...options,
 			refresh: true,
@@ -154,19 +123,16 @@ export default class DataStore {
 	}
 
 	async request(options = {}) {
-		const { ref, storeType } = options;
 		const {
 			errorTitle = locale.failed,
 			refresh = false,
 			throwError = false,
-			requestFn = 'request',
 			...requestOptions
 		} = options;
 		try {
-			const store = isObject(ref) ? ref : this.getStore(storeType, ref);
-			const res = await store[requestFn](requestOptions);
-			if (refresh && refresh !== 'no' && isFunction(store.refresh)) {
-				store.refresh();
+			const res = await this.performRequest(requestOptions);
+			if (refresh && refresh !== 'no' && isFunction(this.refresh)) {
+				this.refresh();
 			}
 			return res;
 		} catch (err) {

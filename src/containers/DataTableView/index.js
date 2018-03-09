@@ -46,5 +46,5 @@ DataTableView.defaultProps = {
 	toolbar: DefaultToolbar,
 };
 
-const connectHoc = connect({ bindLocation: true });
+const connectHoc = connect({ syncLocation: true, useCache: true });
 export default connectHoc(observer(DataTableView));

@@ -22,11 +22,11 @@ export default class RemoveButton extends Component {
 
 	static contextTypes = {
 		issuer: PropTypes.instanceOf(Set),
-		service: PropTypes.object.isRequired,
+		store: PropTypes.object.isRequired,
 	};
 
 	_handleOk = ({ getSelectedKeysString }) => {
-		this.context.service.remove({ url: getSelectedKeysString() });
+		this.context.store.remove({ url: getSelectedKeysString() });
 	};
 
 	render() {

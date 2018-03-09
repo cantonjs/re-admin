@@ -7,32 +7,29 @@ import { omitBy, isEqual } from 'lodash';
 import routerStore from 'stores/routerStore';
 
 export default function connect(options = {}) {
-	const { bindLocation, storeType, storeName } = options;
-	const router = bindLocation ? routerStore : {};
+	const { syncLocation, useCache } = options;
+	const router = syncLocation ? routerStore : {};
 
 	return function createConnectComponent(WrappedComponent) {
 		@observer
-		class DataStoreProvider extends Component {
+		class ConnectStore extends Component {
 			static propTypes = {
 				table: PropTypes.string,
 			};
 
 			static childContextTypes = {
 				store: PropTypes.object,
-				service: PropTypes.object,
 			};
 
 			static contextTypes = {
-				DataStore: PropTypes.func.isRequired,
+				storesDispatcher: PropTypes.object.isRequired,
 				store: PropTypes.object,
-				service: PropTypes.object,
 			};
 
 			getChildContext() {
-				const { state: { store, service }, context } = this;
+				const { state: { store }, context } = this;
 				return {
 					store: store || context.store,
-					service: service || context.service,
 				};
 			}
 
@@ -41,10 +38,7 @@ export default function connect(options = {}) {
 				const { table } = props;
 				const state = {};
 				if (table) {
-					const { DataStore } = context;
-					const service = DataStore.get(table);
-					const store = this._getStore(service);
-					state.service = service;
+					const store = this._getStore(table);
 					state.store = store;
 					this._removeQueryListener = store.addQueryListener(router);
 				}
@@ -77,12 +71,9 @@ export default function connect(options = {}) {
 			}
 
 			componentWillReceiveProps({ table }) {
-				const { DataStore } = this.context;
 				if (this.props.table && this.props.table !== table) {
-					const service = DataStore.get(table);
 					this.setState({
-						store: this._getStore(service),
-						service,
+						store: this._getStore(table),
 					});
 				}
 			}
@@ -92,8 +83,9 @@ export default function connect(options = {}) {
 				this._unlistenHistory && this._unlistenHistory();
 			}
 
-			_getStore(service) {
-				return service.getStore(storeType, storeName);
+			_getStore(table) {
+				const { context: { storesDispatcher } } = this;
+				return storesDispatcher.ensureStore(table, { useCache });
 			}
 
 			_setQuery(query) {
@@ -107,6 +99,6 @@ export default function connect(options = {}) {
 			}
 		}
 
-		return hoistStatics(DataStoreProvider, WrappedComponent);
+		return hoistStatics(ConnectStore, WrappedComponent);
 	};
 }

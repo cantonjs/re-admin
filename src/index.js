@@ -3,7 +3,8 @@ export * from './fields';
 
 export routerStore from 'stores/routerStore';
 export authStore from 'stores/authStore';
-export DataStore from 'stores/DataStore';
+export DataListStore from 'stores/DataListStore';
+export DataDetailStore from 'stores/DataDetailStore';
 
 export Admin from 'containers/Admin';
 export PageContainer from 'components/PageContainer';

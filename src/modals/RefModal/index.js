@@ -38,7 +38,7 @@ export default class RefModal extends Component {
 
 	componentWillMount() {
 		const { props: { fetch, store: refStore }, props } = this;
-		isFunction(fetch) ? fetch(props) : refStore.service.call(fetch, props);
+		isFunction(fetch) ? fetch(props) : refStore.call(fetch, props);
 	}
 
 	_handleOk = () => {
@@ -51,7 +51,7 @@ export default class RefModal extends Component {
 		const refKeys = refStore.selectedKeys;
 		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
 		const options = { method: 'POST', url, ...props, keys, refKeys, refStore };
-		isFunction(save) ? save(options) : store.service.call(save, options);
+		isFunction(save) ? save(options) : store.call(save, options);
 	};
 
 	render() {

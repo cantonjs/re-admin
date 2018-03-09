@@ -43,7 +43,6 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
-			service: PropTypes.object.isRequired,
 			issuer: PropTypes.instanceOf(Set),
 		};
 
@@ -85,12 +84,13 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
-				const { context: { service }, props } = this;
-				const { keys, store, save } = props;
+				const { context, props } = this;
+				const { keys, save } = props;
+				const store = props.store || context.store;
 				const path = store ? `/${store.pathname}` : '';
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
-				service.call(method, { ...props, url, body });
+				store.call(method, { ...props, url, body });
 				this.modal.close();
 			} else if (__DEV__) {
 				warning(false, 'INVALID');

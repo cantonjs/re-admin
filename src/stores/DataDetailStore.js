@@ -1,7 +1,8 @@
 import { observable, computed, toJS } from 'mobx';
 import { omitBy, isUndefined } from 'lodash';
+import BaseDataStore from 'stores/BaseDataStore';
 
-export default class DataDetailStore {
+export default class DataDetailStore extends BaseDataStore {
 	@observable isFetching = false;
 	cache = observable.map();
 
@@ -13,13 +14,6 @@ export default class DataDetailStore {
 	@computed
 	get data() {
 		return this.cache.get(this.cacheKey);
-	}
-
-	constructor(service) {
-		const { tableConfig, baseRequest } = service;
-		this.service = service;
-		this.tableConfig = tableConfig;
-		this.request = baseRequest.fetch.bind(baseRequest);
 	}
 
 	async fetch(options = {}) {
@@ -39,7 +33,7 @@ export default class DataDetailStore {
 			query,
 		};
 		const res = await this.request(omitBy(fetchOptions, isUndefined));
-		const data = await this.tableConfig.mapOnFetchOneResponse(res);
+		const data = await this.config.mapOnFetchOneResponse(res);
 		this.cache.set(url, data);
 
 		this.isFetching = false;

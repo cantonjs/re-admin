@@ -1,8 +1,9 @@
 import { autorun, action, observable, computed, toJS } from 'mobx';
 import { isUndefined, omitBy } from 'lodash';
 import modalStore from 'stores/modalStore';
+import BaseDataStore from 'stores/BaseDataStore';
 
-export default class DataListStore {
+export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
 	@observable selectedKeys = [];
 	@observable query = {};
@@ -31,12 +32,12 @@ export default class DataListStore {
 
 	@computed
 	get sortedKey() {
-		return this.query[this._appConfig.api.sortKey];
+		return this.query[this.appConfig.api.sortKey];
 	}
 
 	@computed
 	get sortedOrder() {
-		const { orderKey, ascValue } = this._appConfig.api;
+		const { orderKey, ascValue } = this.appConfig.api;
 		let order = this.query[orderKey];
 
 		if (!this.sortedKey) {
@@ -49,11 +50,11 @@ export default class DataListStore {
 
 	@computed
 	get columns() {
-		if (!this.tableConfig.tableRenderers) {
+		if (!this.config.tableRenderers) {
 			return [];
 		}
 
-		return this.tableConfig.tableRenderers.map(({ render, props, options }) => {
+		return this.config.tableRenderers.map(({ render, props, options }) => {
 			const { getSchemaDefaultProps } = options;
 			const column = {
 				title: props.label || getSchemaDefaultProps().label,
@@ -82,25 +83,24 @@ export default class DataListStore {
 
 	@computed
 	get maxSelections() {
-		return this.tableConfig.maxSelections;
+		return this.config.maxSelections;
 	}
 
 	@computed
 	get queryRenderers() {
-		return this.tableConfig.queryRenderers;
+		return this.config.queryRenderers;
 	}
 
 	@computed
 	get formRenderers() {
-		return this.tableConfig.formRenderers;
+		return this.config.formRenderers;
 	}
 
-	constructor(service) {
-		const { tableConfig, appConfig, baseRequest } = service;
-		this.service = service;
-		this.tableConfig = tableConfig;
-		this._appConfig = appConfig;
-		const { tableRenderers, queryRenderers, api } = this.tableConfig;
+	constructor(options) {
+		super(options);
+
+		const { config, appConfig, baseRequest } = this;
+		const { tableRenderers, queryRenderers, api } = config;
 
 		this.size = +appConfig.api.count;
 		this.extends = {};
@@ -109,7 +109,7 @@ export default class DataListStore {
 			const sortableField =
 				tableRenderers && tableRenderers.find(({ props }) => props.sortable);
 
-			this.uniqueKey = this.tableConfig.uniqueKey;
+			this.uniqueKey = config.uniqueKey;
 			this.hasSortableField = !!sortableField;
 			this.hasQueryField = !!queryRenderers.length;
 			const count = +api.query.count;
@@ -127,7 +127,7 @@ export default class DataListStore {
 					return query;
 				},
 			});
-			this.request = request.fetch.bind(request);
+			this.performRequest = request.fetch.bind(request);
 		}
 	}
 
@@ -143,7 +143,7 @@ export default class DataListStore {
 			} else {
 				// fetch trick
 				setTimeout(() => {
-					this.callFetch({ query: this.query });
+					this.fetch({ query: this.query });
 				});
 			}
 		});
@@ -186,8 +186,11 @@ export default class DataListStore {
 			},
 		};
 
-		const res = await this.request(omitBy(fetchOptions, isUndefined));
-		const { total, list = [] } = await this.tableConfig.mapOnFetchResponse(res);
+		const res = await this.request({
+			...omitBy(fetchOptions, isUndefined),
+			refresh: false,
+		});
+		const { total, list = [] } = await this.config.mapOnFetchResponse(res);
 
 		const collection = list.map((data, index) => {
 			data.key = this.uniqueKey ? data[this.uniqueKey] : index;
@@ -204,7 +207,7 @@ export default class DataListStore {
 	refresh() {
 		this.collections.clear();
 		this.totals.clear();
-		this.callFetch({ query: this.query });
+		this.fetch({ query: this.query });
 		this.selectedKeys = [];
 	}
 
@@ -227,13 +230,5 @@ export default class DataListStore {
 		return collection.find(
 			(dataItem, index) => key === (uniqueKey ? dataItem[uniqueKey] : index)
 		);
-	}
-
-	async callFetch(options) {
-		return this.service.request({
-			requestFn: 'fetch',
-			ref: this,
-			...options,
-		});
 	}
 }
