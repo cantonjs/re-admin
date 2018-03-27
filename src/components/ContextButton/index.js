@@ -72,7 +72,7 @@ export default class ContextButton extends Component {
 
 		return (
 			<Comp disabled={disabled} {...other} onClick={this._handleClick}>
-				{isFunction(renderChild) ? renderChild(getData()) : renderChild}
+				{isFunction(renderChild) ? renderChild(getData() || {}) : renderChild}
 			</Comp>
 		);
 	}
