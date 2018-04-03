@@ -3,6 +3,7 @@ import { isFunction, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
 import localeStore from 'stores/localeStore';
 import warning from 'warning';
+import Table from 'schemas/Table';
 
 const locale = localeStore.requests;
 
@@ -13,6 +14,7 @@ export default class BaseDataStore {
 		const table = this.appConfig.tables[name];
 		warning(!name || table, `Table "${name}" is NOT found`);
 		return {
+			...Table.defaultProps,
 			...table,
 			...this._customConfig,
 		};

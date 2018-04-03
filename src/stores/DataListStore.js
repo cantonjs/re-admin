@@ -190,7 +190,9 @@ export default class DataListStore extends BaseDataStore {
 			...omitBy(fetchOptions, isUndefined),
 			refresh: false,
 		});
-		const { total, list = [] } = await this.config.mapOnFetchResponse(res);
+
+		const requestRes = await this.config.mapOnFetchResponse(res);
+		const { total, list = [] } = requestRes || {};
 
 		const collection = list.map((data, index) => {
 			data.key = this.uniqueKey ? data[this.uniqueKey] : index;
