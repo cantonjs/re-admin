@@ -1,0 +1,57 @@
+{
+  "RefButton": {
+    "label": "Referència"
+  },
+  "ActionsField": {
+    "label": "Accions"
+  },
+  "TableBody": {
+    "total": "Total"
+  },
+  "TableQuerySwitch": {
+    "label": "Cerca"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Usuari",
+    "login": "iniciar Sessió",
+    "passwordPlaceholder": "Contrasenya"
+  },
+  "UpdateButton": {
+    "label": "Actualització",
+    "multiLabel": "Actualització per lots"
+  },
+  "CreateButton": {
+    "label": "Crear"
+  },
+  "TableQuery": {
+    "search": "Cerca",
+    "reset": "Restablir",
+    "resetOrder": "Restableix la classificació"
+  },
+  "UserMenu": {
+    "signOut": "Tanca sessió",
+    "confirmSignOut": "Esteu segur de tancar la sessió?"
+  },
+  "RemoveButton": {
+    "label": "Elimina",
+    "multiLabel": "Eliminar els lots",
+    "content": "Aquesta operació no es pot desfer!",
+    "title": "Esteu segur que voleu eliminar?"
+  },
+  "ClearSortButton": {
+    "label": "Restableix la classificació"
+  },
+  "requests": {
+    "updateFailed": "No s'ha pogut actualitzar",
+    "createFailed": "S'ha produït un error en crear",
+    "removeFailed": "S'ha produït un error en eliminar",
+    "fetchFailed": "Error de càrrega",
+    "loginFailed": "Error a l'iniciar sessió",
+    "failed": "Fracassat",
+    "invalidToken": "Compte d'autenticació no vàlida",
+    "loginSuccess": "Èxit de l'inici de sessió"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Afegeix un element"
+  }
+}

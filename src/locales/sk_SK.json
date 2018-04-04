@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "vytvoriť"
+  },
+  "TableBody": {
+    "total": "totálnej"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "užívateľ",
+    "login": "Prihlásiť sa",
+    "passwordPlaceholder": "heslo"
+  },
+  "TableQuerySwitch": {
+    "label": "Vyhľadávanie"
+  },
+  "RefButton": {
+    "label": "referencie"
+  },
+  "ActionsField": {
+    "label": "Akcia"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Pridať položku"
+  },
+  "requests": {
+    "failed": "neúspešný",
+    "removeFailed": "Odstrániť zlyhalo",
+    "updateFailed": "Aktualizacia neuspešná",
+    "fetchFailed": "Naloženie zlyhalo",
+    "invalidToken": "Neplatný token auth",
+    "loginFailed": "Prihlásenie zlyhalo",
+    "createFailed": "Vytvorenie zlyhalo",
+    "loginSuccess": "Prihláste sa na úspech"
+  },
+  "UpdateButton": {
+    "label": "aktualizovať",
+    "multiLabel": "Dávková aktualizácia"
+  },
+  "TableQuery": {
+    "search": "Vyhľadávanie",
+    "reset": "resetovať",
+    "resetOrder": "Obnoviť triedenie"
+  },
+  "UserMenu": {
+    "signOut": "Odhlásiť Sa",
+    "confirmSignOut": "Naozaj sa odhlásíte?"
+  },
+  "ClearSortButton": {
+    "label": "Obnoviť triedenie"
+  },
+  "RemoveButton": {
+    "label": "odstrániť",
+    "multiLabel": "Odstráňte dávku",
+    "title": "Ste si absolútne istý, že odstránite?",
+    "content": "Táto operácia sa nedá vrátiť späť!"
+  }
+}

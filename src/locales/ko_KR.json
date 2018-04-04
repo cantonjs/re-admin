@@ -1,57 +1,57 @@
 {
+  "CreateButton": {
+    "label": "몹시 떠들어 대다"
+  },
   "LoginForm": {
     "passwordPlaceholder": "암호",
     "usernamePlaceholder": "사용자",
     "login": "로그인"
   },
-  "CreateButton": {
-    "label": "몹시 떠들어 대다"
-  },
   "RefButton": {
     "label": "참고"
-  },
-  "TableBody": {
-    "total": "합계"
   },
   "TableQuerySwitch": {
     "label": "수색"
   },
+  "ArrayOf": {
+    "addButtonLabel": "아이템 추가"
+  },
+  "TableBody": {
+    "total": "합계"
+  },
   "ActionsField": {
     "label": "행위"
   },
-  "ClearSortButton": {
-    "label": "정렬 재설정"
-  },
   "TableQuery": {
-    "search": "수색",
     "reset": "다시 놓기",
+    "search": "수색",
     "resetOrder": "정렬 재설정"
   },
   "UpdateButton": {
     "label": "최신 정보",
     "multiLabel": "일괄 업데이트"
   },
-  "ArrayOf": {
-    "addButtonLabel": "아이템 추가"
-  },
-  "RemoveButton": {
-    "label": "풀다",
-    "multiLabel": "일괄 제거",
-    "title": "절대 제거 하시겠습니까?",
-    "content": "이 작업은 실행 취소 할 수 없습니다!"
-  },
-  "requests": {
-    "failed": "실패한",
-    "fetchFailed": "로드 실패",
-    "loginFailed": "로그인 실패",
-    "updateFailed": "업데이트가 실패",
-    "createFailed": "만들기 실패",
-    "loginSuccess": "로그인 성공",
-    "removeFailed": "제거 실패",
-    "invalidToken": "잘못된 인증 토큰"
+  "ClearSortButton": {
+    "label": "정렬 재설정"
   },
   "UserMenu": {
     "signOut": "로그 아웃",
     "confirmSignOut": "로그 아웃 하시겠습니까?"
+  },
+  "requests": {
+    "updateFailed": "업데이트가 실패",
+    "failed": "실패한",
+    "loginFailed": "로그인 실패",
+    "createFailed": "만들기 실패",
+    "fetchFailed": "로드 실패",
+    "loginSuccess": "로그인 성공",
+    "removeFailed": "제거 실패",
+    "invalidToken": "잘못된 인증 토큰"
+  },
+  "RemoveButton": {
+    "label": "풀다",
+    "multiLabel": "일괄 제거",
+    "content": "이 작업은 실행 취소 할 수 없습니다!",
+    "title": "절대 제거 하시겠습니까?"
   }
 }

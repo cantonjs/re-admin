@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Erstellen"
+  },
+  "RefButton": {
+    "label": "Referenz"
+  },
+  "TableQuerySwitch": {
+    "label": "Suche"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Passwort",
+    "usernamePlaceholder": "Benutzer",
+    "login": "Anmeldung"
+  },
+  "ActionsField": {
+    "label": "Aktionen"
+  },
+  "TableBody": {
+    "total": "Gesamt"
+  },
+  "ClearSortButton": {
+    "label": "Sortierung zurücksetzen"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Artikel hinzufügen"
+  },
+  "UpdateButton": {
+    "label": "Aktualisieren",
+    "multiLabel": "Stapelaktualisierung"
+  },
+  "TableQuery": {
+    "search": "Suche",
+    "resetOrder": "Sortierung zurücksetzen",
+    "reset": "Zurücksetzen"
+  },
+  "requests": {
+    "failed": "Gescheitert",
+    "loginFailed": "Anmeldung fehlgeschlagen",
+    "removeFailed": "Entfernen fehlgeschlagen",
+    "fetchFailed": "Laden fehlgeschlagen",
+    "createFailed": "Erstellen fehlgeschlagen",
+    "loginSuccess": "Einloggen erfolgreich",
+    "updateFailed": "Update fehlgeschlagen",
+    "invalidToken": "Ungültiges Authentifizierungs-Token"
+  },
+  "UserMenu": {
+    "signOut": "Ausloggen",
+    "confirmSignOut": "Bist du sicher, dich abzumelden?"
+  },
+  "RemoveButton": {
+    "label": "Löschen",
+    "multiLabel": "Stapel entfernen",
+    "content": "Dieser Vorgang kann nicht rückgängig gemacht werden!",
+    "title": "Sind Sie absolut sicher, dass Sie entfernen?"
+  }
+}

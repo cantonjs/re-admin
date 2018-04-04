@@ -1,20 +1,20 @@
 {
-  "CreateButton": {
-    "label": "Skape"
+  "RefButton": {
+    "label": "Henvisning"
   },
   "TableBody": {
     "total": "Total"
   },
-  "LoginForm": {
-    "usernamePlaceholder": "Bruker",
-    "passwordPlaceholder": "Passord",
-    "login": "Logg Inn"
-  },
-  "RefButton": {
-    "label": "Henvisning"
-  },
   "TableQuerySwitch": {
     "label": "Søke"
+  },
+  "LoginForm": {
+    "login": "Logg Inn",
+    "usernamePlaceholder": "Bruker",
+    "passwordPlaceholder": "Passord"
+  },
+  "CreateButton": {
+    "label": "Skape"
   },
   "ActionsField": {
     "label": "handlinger"
@@ -22,27 +22,21 @@
   "ArrayOf": {
     "addButtonLabel": "Legg til element"
   },
+  "UserMenu": {
+    "signOut": "Logg ut",
+    "confirmSignOut": "Er du sikker på å logge ut?"
+  },
   "UpdateButton": {
     "label": "Oppdater",
     "multiLabel": "Batchoppdatering"
   },
   "TableQuery": {
-    "reset": "tilbakestille",
     "search": "Søke",
+    "reset": "tilbakestille",
     "resetOrder": "Tilbakestill sortering"
   },
   "ClearSortButton": {
     "label": "Tilbakestill sortering"
-  },
-  "requests": {
-    "failed": "mislyktes",
-    "createFailed": "Opprett mislyktes",
-    "updateFailed": "Oppdatering mislyktes",
-    "loginFailed": "Innlogging feilet",
-    "removeFailed": "Fjern mislyktes",
-    "invalidToken": "Ugyldig auth token",
-    "fetchFailed": "Lastingen mislyktes",
-    "loginSuccess": "Innloggingssuksess"
   },
   "RemoveButton": {
     "label": "Fjerne",
@@ -50,8 +44,14 @@
     "title": "Er du helt sikker på å fjerne?",
     "content": "Denne operasjonen kan ikke fortrykkes!"
   },
-  "UserMenu": {
-    "signOut": "Logg ut",
-    "confirmSignOut": "Er du sikker på å logge ut?"
+  "requests": {
+    "failed": "mislyktes",
+    "loginFailed": "Innlogging feilet",
+    "removeFailed": "Fjern mislyktes",
+    "updateFailed": "Oppdatering mislyktes",
+    "createFailed": "Opprett mislyktes",
+    "loginSuccess": "Innloggingssuksess",
+    "fetchFailed": "Lastingen mislyktes",
+    "invalidToken": "Ugyldig auth token"
   }
 }

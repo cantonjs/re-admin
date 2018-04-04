@@ -1,0 +1,57 @@
+{
+  "TableQuerySwitch": {
+    "label": "Vyhledávání"
+  },
+  "RefButton": {
+    "label": "Odkaz"
+  },
+  "TableBody": {
+    "total": "Celkový"
+  },
+  "CreateButton": {
+    "label": "Vytvořit"
+  },
+  "LoginForm": {
+    "login": "Přihlásit se",
+    "usernamePlaceholder": "Uživatel",
+    "passwordPlaceholder": "Heslo"
+  },
+  "ActionsField": {
+    "label": "Akce"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Přidat položku"
+  },
+  "TableQuery": {
+    "reset": "Resetovat",
+    "search": "Vyhledávání",
+    "resetOrder": "Obnovit třídění"
+  },
+  "UpdateButton": {
+    "label": "Aktualizace",
+    "multiLabel": "Dávková aktualizace"
+  },
+  "ClearSortButton": {
+    "label": "Obnovit třídění"
+  },
+  "requests": {
+    "failed": "Selhalo",
+    "loginSuccess": "Přihlaste se k úspěchu",
+    "removeFailed": "Odstranit selhala",
+    "updateFailed": "Aktualizace selhala",
+    "fetchFailed": "Načtení selhalo",
+    "loginFailed": "Přihlášení selhalo",
+    "invalidToken": "Neplatný token auth",
+    "createFailed": "Vytvořit se nezdařilo"
+  },
+  "RemoveButton": {
+    "label": "Odstranit",
+    "multiLabel": "Batch Remove",
+    "title": "Jste si naprosto jisti, že odstraníte?",
+    "content": "Tuto operaci nelze vrátit zpět!"
+  },
+  "UserMenu": {
+    "signOut": "Odhlásit se",
+    "confirmSignOut": "Opravdu se odhlásíte?"
+  }
+}

@@ -6,9 +6,9 @@
     "label": "Referans"
   },
   "LoginForm": {
+    "usernamePlaceholder": "kullanıcı",
     "login": "Oturum aç",
-    "passwordPlaceholder": "Parola",
-    "usernamePlaceholder": "kullanıcı"
+    "passwordPlaceholder": "Parola"
   },
   "TableBody": {
     "total": "Genel Toplam"
@@ -19,39 +19,39 @@
   "ActionsField": {
     "label": "Eylemler"
   },
-  "ClearSortButton": {
-    "label": "Sıfırla Sırala"
-  },
-  "TableQuery": {
-    "reset": "Reset",
-    "search": "Arama",
-    "resetOrder": "Sıfırla Sırala"
-  },
-  "RemoveButton": {
-    "label": "Kaldır",
-    "multiLabel": "Toplu Kaldır",
-    "title": "Kaldırmaktan kesinlikle emin misin?",
-    "content": "Bu işlem geri alınamaz!"
-  },
   "ArrayOf": {
     "addButtonLabel": "Öğe eklemek"
-  },
-  "UpdateButton": {
-    "label": "Güncelleştirme",
-    "multiLabel": "Toplu Güncelleme"
   },
   "UserMenu": {
     "signOut": "oturumu Kapat",
     "confirmSignOut": "Çıkış yaptığınızdan emin misiniz?"
   },
+  "TableQuery": {
+    "reset": "Reset",
+    "search": "Arama",
+    "resetOrder": "Sıralama Sıfırla"
+  },
+  "UpdateButton": {
+    "label": "Güncelleştirme",
+    "multiLabel": "Toplu Güncelleme"
+  },
+  "ClearSortButton": {
+    "label": "Sıralama Sıfırla"
+  },
+  "RemoveButton": {
+    "label": "Kaldır",
+    "multiLabel": "Toplu Kaldırma",
+    "content": "Bu işlem geri alınamaz!",
+    "title": "Kaldırdığınızdan kesinlikle emin misiniz?"
+  },
   "requests": {
     "failed": "Başarısız oldu",
-    "removeFailed": "Kaldırma başarısız oldu",
-    "fetchFailed": "Yükleme başarısız",
-    "loginFailed": "Giriş başarısız",
     "updateFailed": "Güncelleme başarısız oldu",
+    "fetchFailed": "Yükleme başarısız",
+    "removeFailed": "Kaldırma başarısız oldu",
     "createFailed": "Oluşturılamadı",
     "invalidToken": "Geçersiz kimlik doğrulama belirteci",
+    "loginFailed": "Giriş başarısız",
     "loginSuccess": "Giriş başarılı"
   }
 }

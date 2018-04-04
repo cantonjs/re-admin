@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "创建"
+  },
+  "LoginForm": {
+    "login": "登录",
+    "passwordPlaceholder": "密码",
+    "usernamePlaceholder": "用户"
+  },
+  "RefButton": {
+    "label": "参考"
+  },
+  "UpdateButton": {
+    "multiLabel": "批量更新",
+    "label": "更新"
+  },
+  "TableQuerySwitch": {
+    "label": "搜索"
+  },
+  "ActionsField": {
+    "label": "操作"
+  },
+  "TableBody": {
+    "total": "总"
+  },
+  "TableQuery": {
+    "reset": "重启",
+    "search": "搜索",
+    "resetOrder": "重置排序"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "新增项目"
+  },
+  "requests": {
+    "createFailed": "创建失败",
+    "failed": "失败",
+    "loginSuccess": "登录成功",
+    "updateFailed": "更新失败",
+    "loginFailed": "登录失败",
+    "fetchFailed": "加载失败",
+    "removeFailed": "删除失败",
+    "invalidToken": "身份验证令牌无效"
+  },
+  "ClearSortButton": {
+    "label": "重置排序"
+  },
+  "UserMenu": {
+    "signOut": "登出",
+    "confirmSignOut": "你确定要退出吗？"
+  },
+  "RemoveButton": {
+    "label": "去掉",
+    "multiLabel": "批量删除",
+    "title": "你绝对肯定要删除？",
+    "content": "此操作无法撤消！"
+  }
+}

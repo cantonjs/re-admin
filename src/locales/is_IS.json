@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Búa til"
+  },
+  "TableBody": {
+    "total": "Samtals"
+  },
+  "TableQuerySwitch": {
+    "label": "Leita"
+  },
+  "RefButton": {
+    "label": "Tilvísun"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Notandi",
+    "login": "Skrá inn",
+    "passwordPlaceholder": "Lykilorð"
+  },
+  "ActionsField": {
+    "label": "Aðgerðir"
+  },
+  "TableQuery": {
+    "reset": "Endurstilla",
+    "search": "Leita",
+    "resetOrder": "Endurstilla flokkun"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Bæta við hlut"
+  },
+  "UpdateButton": {
+    "label": "Uppfæra",
+    "multiLabel": "Hópur uppfærsla"
+  },
+  "UserMenu": {
+    "signOut": "Útskrá",
+    "confirmSignOut": "Ertu viss um að skrá þig út?"
+  },
+  "ClearSortButton": {
+    "label": "Endurstilla flokkun"
+  },
+  "requests": {
+    "failed": "Mistókst",
+    "updateFailed": "Uppfærsla mistókst",
+    "removeFailed": "Fjarlægja mistókst",
+    "createFailed": "Búa til mistókst",
+    "loginFailed": "Innskráning mistókst",
+    "loginSuccess": "Innskrá velgengni",
+    "invalidToken": "Ógilt auth token",
+    "fetchFailed": "Hleðsla mistókst"
+  },
+  "RemoveButton": {
+    "label": "Fjarlægja",
+    "multiLabel": "Hópur Fjarlægja",
+    "content": "Ekki er hægt að afturkalla þessa aðgerð!",
+    "title": "Ertu alveg viss um að fjarlægja?"
+  }
+}

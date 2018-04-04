@@ -1,0 +1,57 @@
+{
+  "LoginForm": {
+    "login": "Влизам",
+    "passwordPlaceholder": "парола",
+    "usernamePlaceholder": "потребител"
+  },
+  "TableQuerySwitch": {
+    "label": "Търсене"
+  },
+  "CreateButton": {
+    "label": "създавам"
+  },
+  "TableBody": {
+    "total": "Обща сума"
+  },
+  "ActionsField": {
+    "label": "мерки"
+  },
+  "RefButton": {
+    "label": "препратка"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Добавете артикул"
+  },
+  "TableQuery": {
+    "search": "Търсене",
+    "reset": "Нулиране",
+    "resetOrder": "Възстановяване на сортирането"
+  },
+  "UpdateButton": {
+    "label": "Актуализация",
+    "multiLabel": "Актуализиране на партидата"
+  },
+  "ClearSortButton": {
+    "label": "Възстановяване на сортирането"
+  },
+  "UserMenu": {
+    "signOut": "Отписване",
+    "confirmSignOut": "Сигурни ли сте, че сте се отказали?"
+  },
+  "RemoveButton": {
+    "label": "Премахване",
+    "multiLabel": "Премахване на партидата",
+    "title": "Сигурни ли сте, че сте напълно премахнати?",
+    "content": "Тази операция не може да бъде отменена!"
+  },
+  "requests": {
+    "failed": "Се провали",
+    "loginFailed": "Неуспешно влизане",
+    "updateFailed": "Update failed",
+    "removeFailed": "Премахването не бе успешно",
+    "loginSuccess": "Успех при влизането",
+    "fetchFailed": "Зареждането не бе успешно",
+    "createFailed": "Създаването не бе успешно",
+    "invalidToken": "Невалиден символ за автор"
+  }
+}

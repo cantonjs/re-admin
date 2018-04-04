@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "สร้าง"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "ผู้ใช้งาน",
+    "login": "เข้าสู่ระบบ",
+    "passwordPlaceholder": "รหัสผ่าน"
+  },
+  "RefButton": {
+    "label": "การอ้างอิง"
+  },
+  "ActionsField": {
+    "label": "การปฏิบัติ"
+  },
+  "TableQuerySwitch": {
+    "label": "ค้นหา"
+  },
+  "TableBody": {
+    "total": "ทั้งหมด"
+  },
+  "TableQuery": {
+    "reset": "รีเซ็ต",
+    "search": "ค้นหา",
+    "resetOrder": "รีเซ็ตการเรียงลำดับ"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "เพิ่มรายการ"
+  },
+  "UpdateButton": {
+    "label": "ปรับปรุง",
+    "multiLabel": "อัปเดตแบทช์"
+  },
+  "ClearSortButton": {
+    "label": "รีเซ็ตการเรียงลำดับ"
+  },
+  "UserMenu": {
+    "signOut": "ออกจากระบบ",
+    "confirmSignOut": "คุณแน่ใจที่จะออกจากระบบหรือไม่?"
+  },
+  "requests": {
+    "failed": "ล้มเหลว",
+    "loginFailed": "เข้าสู่ระบบล้มเหลว",
+    "loginSuccess": "ความสำเร็จในการเข้าสู่ระบบ",
+    "updateFailed": "การอัพเดทล้มเหลว",
+    "removeFailed": "นำออกล้มเหลว",
+    "fetchFailed": "โหลดล้มเหลว",
+    "createFailed": "สร้างล้มเหลว",
+    "invalidToken": "โทเค็นการรับรองความถูกต้องไม่ถูกต้อง"
+  },
+  "RemoveButton": {
+    "label": "เอาออก",
+    "multiLabel": "นำออกแบทช์",
+    "title": "คุณแน่ใจหรือไม่ว่าจะลบ",
+    "content": "การดำเนินการนี้ไม่สามารถยกเลิกได้!"
+  }
+}

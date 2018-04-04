@@ -1,0 +1,57 @@
+{
+  "LoginForm": {
+    "usernamePlaceholder": "User",
+    "passwordPlaceholder": "Password",
+    "login": "Login"
+  },
+  "CreateButton": {
+    "label": "Create"
+  },
+  "ClearSortButton": {
+    "label": "Reset Sorting"
+  },
+  "UserMenu": {
+    "confirmSignOut": "Are you sure to sign out?",
+    "signOut": "Sign out"
+  },
+  "RefButton": {
+    "label": "Reference"
+  },
+  "TableBody": {
+    "total": "Total"
+  },
+  "ActionsField": {
+    "label": "Actions"
+  },
+  "TableQuerySwitch": {
+    "label": "Search"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Add item"
+  },
+  "RemoveButton": {
+    "title": "Are you absolutely sure to remove?",
+    "multiLabel": "Batch Remove",
+    "content": "This operation cannot be undone!",
+    "label": "Remove"
+  },
+  "UpdateButton": {
+    "multiLabel": "Batch Update",
+    "label": "Update"
+  },
+  "requests": {
+    "updateFailed": "Update failed",
+    "createFailed": "Create failed",
+    "fetchFailed": "Load failed",
+    "removeFailed": "Remove failed",
+    "loginFailed": "Login failed",
+    "failed": "Failed",
+    "loginSuccess": "Login success",
+    "invalidToken": "Invalid auth token"
+  },
+  "TableQuery": {
+    "resetOrder": "Reset Sorting",
+    "reset": "Reset",
+    "search": "Search"
+  }
+}

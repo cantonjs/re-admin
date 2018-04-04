@@ -1,0 +1,57 @@
+{
+  "RefButton": {
+    "label": "Viide"
+  },
+  "TableQuerySwitch": {
+    "label": "Otsing"
+  },
+  "ActionsField": {
+    "label": "Toimingud"
+  },
+  "TableBody": {
+    "total": "Kokku"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Parool",
+    "login": "Logi sisse",
+    "usernamePlaceholder": "Kasutaja"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Lisa üksus"
+  },
+  "UpdateButton": {
+    "label": "Uuenda",
+    "multiLabel": "Partii värskendamine"
+  },
+  "CreateButton": {
+    "label": "Loo"
+  },
+  "TableQuery": {
+    "search": "Otsing",
+    "reset": "Lähtesta",
+    "resetOrder": "Lähtesta sortimine"
+  },
+  "UserMenu": {
+    "signOut": "Logi välja",
+    "confirmSignOut": "Kas soovite kindlasti välja logida?"
+  },
+  "ClearSortButton": {
+    "label": "Lähtesta sortimine"
+  },
+  "requests": {
+    "failed": "Ebaõnnestus",
+    "fetchFailed": "Kogu ebaõnnestus",
+    "createFailed": "Loo ebaõnnestunud",
+    "removeFailed": "Eemaldamine nurjus",
+    "loginFailed": "Sisselogimine ebaõnnestus",
+    "updateFailed": "Uuendus ebaõnnestus",
+    "loginSuccess": "Sisselogimise edu",
+    "invalidToken": "Kehtetu autohoovitussignaal"
+  },
+  "RemoveButton": {
+    "label": "Eemalda",
+    "multiLabel": "Partii eemaldamine",
+    "title": "Kas olete kindlasti eemaldanud?",
+    "content": "Seda toimingut ei saa tagasi võtta!"
+  }
+}

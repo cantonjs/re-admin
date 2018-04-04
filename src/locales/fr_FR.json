@@ -1,14 +1,17 @@
 {
+  "LoginForm": {
+    "usernamePlaceholder": "Utilisateur",
+    "passwordPlaceholder": "Mot de passe",
+    "login": "S'identifier"
+  },
   "CreateButton": {
     "label": "Créer"
   },
   "RefButton": {
     "label": "Référence"
   },
-  "LoginForm": {
-    "usernamePlaceholder": "Utilisateur",
-    "passwordPlaceholder": "Mot de passe",
-    "login": "S'identifier"
+  "TableQuerySwitch": {
+    "label": "Chercher"
   },
   "TableBody": {
     "total": "Total"
@@ -16,23 +19,20 @@
   "ActionsField": {
     "label": "Actions"
   },
-  "TableQuerySwitch": {
-    "label": "Chercher"
+  "ArrayOf": {
+    "addButtonLabel": "Ajouter un item"
+  },
+  "ClearSortButton": {
+    "label": "Réinitialiser le tri"
+  },
+  "UpdateButton": {
+    "label": "Mettre à jour",
+    "multiLabel": "Mise à jour par lots"
   },
   "TableQuery": {
     "search": "Chercher",
     "reset": "Réinitialiser",
     "resetOrder": "Réinitialiser le tri"
-  },
-  "ClearSortButton": {
-    "label": "Réinitialiser le tri"
-  },
-  "ArrayOf": {
-    "addButtonLabel": "Ajouter un item"
-  },
-  "UpdateButton": {
-    "label": "Mettre à jour",
-    "multiLabel": "Mise à jour par lots"
   },
   "UserMenu": {
     "signOut": "Déconnexion",
@@ -40,18 +40,18 @@
   },
   "requests": {
     "failed": "Échoué",
+    "fetchFailed": "Chargement raté",
+    "loginSuccess": "Succès de connexion",
     "loginFailed": "Échec de la connexion",
     "removeFailed": "Supprimer a échoué",
-    "fetchFailed": "Chargement raté",
     "updateFailed": "Mise à jour a échoué",
     "createFailed": "Créer a échoué",
-    "invalidToken": "Jeton d'authentification invalide",
-    "loginSuccess": "Succès de connexion"
+    "invalidToken": "Jeton d'authentification invalide"
   },
   "RemoveButton": {
     "label": "Retirer",
     "multiLabel": "Batch Supprimer",
-    "content": "Cette opération ne peut pas être annulée!",
-    "title": "Êtes-vous absolument sûr de supprimer?"
+    "title": "Êtes-vous absolument sûr de supprimer?",
+    "content": "Cette opération ne peut pas être annulée!"
   }
 }

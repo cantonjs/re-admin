@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Creare"
+  },
+  "RefButton": {
+    "label": "Riferimento"
+  },
+  "TableBody": {
+    "total": "Totale"
+  },
+  "LoginForm": {
+    "login": "Accesso",
+    "passwordPlaceholder": "Password",
+    "usernamePlaceholder": "Utente"
+  },
+  "TableQuerySwitch": {
+    "label": "Ricerca"
+  },
+  "ActionsField": {
+    "label": "Azioni"
+  },
+  "UpdateButton": {
+    "label": "Aggiornare",
+    "multiLabel": "Aggiornamento batch"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Aggiungi articolo"
+  },
+  "UserMenu": {
+    "signOut": "disconnessione",
+    "confirmSignOut": "Sei sicuro di uscire?"
+  },
+  "RemoveButton": {
+    "label": "Rimuovere",
+    "multiLabel": "Batch Rimuovi",
+    "title": "Sei sicuro di rimuovere?",
+    "content": "Questa operazione non può essere annullata!"
+  },
+  "ClearSortButton": {
+    "label": "Reimposta ordinamento"
+  },
+  "requests": {
+    "failed": "mancato",
+    "fetchFailed": "Carico fallito",
+    "createFailed": "Crea fallito",
+    "loginSuccess": "Accedi al successo",
+    "updateFailed": "Aggiornamento non riuscito",
+    "removeFailed": "Rimuovi fallito",
+    "loginFailed": "Accesso fallito",
+    "invalidToken": "Token di autorizzazione non valido"
+  },
+  "TableQuery": {
+    "search": "Ricerca",
+    "resetOrder": "Reimposta ordinamento",
+    "reset": "Reset"
+  }
+}

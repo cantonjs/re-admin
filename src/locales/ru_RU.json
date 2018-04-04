@@ -1,0 +1,57 @@
+{
+  "LoginForm": {
+    "passwordPlaceholder": "пароль",
+    "login": "Авторизоваться",
+    "usernamePlaceholder": "пользователь"
+  },
+  "RefButton": {
+    "label": "Справка"
+  },
+  "TableQuerySwitch": {
+    "label": "Поиск"
+  },
+  "TableBody": {
+    "total": "Всего"
+  },
+  "ActionsField": {
+    "label": "действия"
+  },
+  "CreateButton": {
+    "label": "Создайте"
+  },
+  "ClearSortButton": {
+    "label": "Сбросить сортировку"
+  },
+  "UpdateButton": {
+    "label": "Обновить",
+    "multiLabel": "Пакетное обновление"
+  },
+  "RemoveButton": {
+    "label": "Удалить",
+    "multiLabel": "Удаление партии",
+    "title": "Вы абсолютно уверены удалить?",
+    "content": "Эта операция не может быть отменена!"
+  },
+  "TableQuery": {
+    "search": "Поиск",
+    "reset": "Сброс",
+    "resetOrder": "Сбросить сортировку"
+  },
+  "requests": {
+    "failed": "Не смогли",
+    "fetchFailed": "Ошибка загрузки",
+    "removeFailed": "Не удалось удалить",
+    "createFailed": "Создать неудачный",
+    "updateFailed": "Не удалось обновить",
+    "loginFailed": "Ошибка входа",
+    "invalidToken": "Недопустимый токен авторизации",
+    "loginSuccess": "Успех прихода"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Добавить элемент"
+  },
+  "UserMenu": {
+    "signOut": "выход",
+    "confirmSignOut": "Вы обязательно выйдете из системы?"
+  }
+}

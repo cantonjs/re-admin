@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "創建"
+  },
+  "TableBody": {
+    "total": "總"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "新增項目"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "用戶",
+    "passwordPlaceholder": "密碼",
+    "login": "登錄"
+  },
+  "UpdateButton": {
+    "label": "更新",
+    "multiLabel": "批量更新"
+  },
+  "RefButton": {
+    "label": "參考"
+  },
+  "ActionsField": {
+    "label": "操作"
+  },
+  "TableQuerySwitch": {
+    "label": "搜索"
+  },
+  "TableQuery": {
+    "search": "搜索",
+    "reset": "重啟",
+    "resetOrder": "重置排序"
+  },
+  "ClearSortButton": {
+    "label": "重置排序"
+  },
+  "requests": {
+    "failed": "失敗",
+    "loginFailed": "登錄失敗",
+    "invalidToken": "身份驗證令牌無效",
+    "updateFailed": "更新失敗",
+    "fetchFailed": "加載失敗",
+    "removeFailed": "刪除失敗",
+    "createFailed": "創建失敗",
+    "loginSuccess": "登錄成功"
+  },
+  "UserMenu": {
+    "signOut": "登出",
+    "confirmSignOut": "你確定要退出嗎？"
+  },
+  "RemoveButton": {
+    "label": "去掉",
+    "multiLabel": "批量刪除",
+    "title": "你絕對肯定要刪除？",
+    "content": "此操作無法撤消！"
+  }
+}

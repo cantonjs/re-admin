@@ -1,0 +1,57 @@
+{
+  "TableBody": {
+    "total": "Totaal"
+  },
+  "CreateButton": {
+    "label": "creëren"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Gebruiker",
+    "passwordPlaceholder": "Wachtwoord",
+    "login": "Log in"
+  },
+  "RefButton": {
+    "label": "Referentie"
+  },
+  "ActionsField": {
+    "label": "acties"
+  },
+  "TableQuerySwitch": {
+    "label": "Zoeken"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Voeg item toe"
+  },
+  "ClearSortButton": {
+    "label": "Sortering opnieuw instellen"
+  },
+  "TableQuery": {
+    "reset": "Reset",
+    "search": "Zoeken",
+    "resetOrder": "Sortering opnieuw instellen"
+  },
+  "UpdateButton": {
+    "label": "Bijwerken",
+    "multiLabel": "Batch-update"
+  },
+  "RemoveButton": {
+    "label": "Verwijderen",
+    "multiLabel": "Batch verwijderen",
+    "title": "Weet je zeker dat je moet verwijderen?",
+    "content": "Deze bewerking kan niet ongedaan worden gemaakt!"
+  },
+  "UserMenu": {
+    "signOut": "Afmelden",
+    "confirmSignOut": "Weet je zeker dat je uitlogt?"
+  },
+  "requests": {
+    "updateFailed": "Update mislukt",
+    "failed": "mislukt",
+    "createFailed": "Aanmaken mislukt",
+    "loginFailed": "Aanmelden mislukt",
+    "removeFailed": "Verwijderen is mislukt",
+    "fetchFailed": "Laden mislukt",
+    "loginSuccess": "Succesvol ingelogd",
+    "invalidToken": "Ongeldig auth token"
+  }
+}

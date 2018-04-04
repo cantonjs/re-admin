@@ -1,24 +1,30 @@
 {
-  "LoginForm": {
-    "usernamePlaceholder": "Usuario",
-    "passwordPlaceholder": "Contraseña",
-    "login": "Iniciar sesión"
-  },
   "RefButton": {
     "label": "Referencia"
   },
-  "TableBody": {
-    "total": "Total"
+  "CreateButton": {
+    "label": "Crear"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Contraseña",
+    "usernamePlaceholder": "Usuario",
+    "login": "Iniciar sesión"
   },
   "TableQuerySwitch": {
     "label": "Buscar"
   },
-  "ArrayOf": {
-    "addButtonLabel": "Añadir artículo"
-  },
   "UpdateButton": {
     "label": "Actualizar",
     "multiLabel": "Actualización por lotes"
+  },
+  "TableBody": {
+    "total": "Total"
+  },
+  "ActionsField": {
+    "label": "Comportamiento"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Añadir artículo"
   },
   "ClearSortButton": {
     "label": "Restablecer ordenación"
@@ -28,30 +34,24 @@
     "search": "Buscar",
     "resetOrder": "Restablecer ordenación"
   },
-  "CreateButton": {
-    "label": "Crear"
-  },
-  "ActionsField": {
-    "label": "Comportamiento"
-  },
   "requests": {
-    "failed": "Ha fallado",
-    "updateFailed": "Actualización fallida",
-    "fetchFailed": "Carga fallida",
-    "removeFailed": "Eliminar error",
-    "createFailed": "Crear fallido",
     "loginSuccess": "Inicio de sesión exitoso",
+    "removeFailed": "Eliminar error",
+    "updateFailed": "Actualización fallida",
     "loginFailed": "error de inicio de sesion",
+    "fetchFailed": "Carga fallida",
+    "failed": "Ha fallado",
+    "createFailed": "Crear fallido",
     "invalidToken": "Token de autenticación no válido"
-  },
-  "UserMenu": {
-    "signOut": "desconectar",
-    "confirmSignOut": "¿Estás seguro de cerrar sesión?"
   },
   "RemoveButton": {
     "label": "retirar",
     "multiLabel": "Lote Eliminar",
     "title": "¿Estás absolutamente seguro de eliminar?",
     "content": "¡Esta operación no se puede deshacer!"
+  },
+  "UserMenu": {
+    "signOut": "desconectar",
+    "confirmSignOut": "¿Estás seguro de cerrar sesión?"
   }
 }

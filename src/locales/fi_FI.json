@@ -1,20 +1,20 @@
 {
-  "RefButton": {
-    "label": "Viite"
+  "CreateButton": {
+    "label": "Luoda"
   },
   "LoginForm": {
     "passwordPlaceholder": "Salasana",
     "usernamePlaceholder": "käyttäjä",
     "login": "Kirjaudu sisään"
   },
-  "TableBody": {
-    "total": "Kaikki yhteensä"
-  },
-  "CreateButton": {
-    "label": "Luoda"
-  },
   "TableQuerySwitch": {
     "label": "Hae"
+  },
+  "RefButton": {
+    "label": "Viite"
+  },
+  "TableBody": {
+    "total": "Kaikki yhteensä"
   },
   "ActionsField": {
     "label": "Toimet"
@@ -22,12 +22,16 @@
   "ArrayOf": {
     "addButtonLabel": "Lisää tavara"
   },
-  "ClearSortButton": {
-    "label": "Nollaa lajittelu"
-  },
   "UpdateButton": {
     "label": "Päivittää",
     "multiLabel": "Eräpäivitys"
+  },
+  "ClearSortButton": {
+    "label": "Nollaa lajittelu"
+  },
+  "UserMenu": {
+    "signOut": "Kirjaudu ulos",
+    "confirmSignOut": "Oletko varma kirjautumalla ulos?"
   },
   "TableQuery": {
     "search": "Hae",
@@ -42,16 +46,12 @@
   },
   "requests": {
     "failed": "epäonnistui",
-    "loginSuccess": "Sisäänkirjautuminen",
-    "fetchFailed": "Lataus epäonnistui",
-    "loginFailed": "Kirjautuminen epäonnistui",
-    "updateFailed": "Päivitys epäonnistui",
     "createFailed": "Luominen epäonnistui",
+    "fetchFailed": "Lataus epäonnistui",
+    "invalidToken": "Virheellinen valtuutuskoodi",
     "removeFailed": "Poista epäonnistui",
-    "invalidToken": "Virheellinen valtuutuskoodi"
-  },
-  "UserMenu": {
-    "signOut": "Kirjaudu ulos",
-    "confirmSignOut": "Oletko varma kirjautumalla ulos?"
+    "loginSuccess": "Sisäänkirjautuminen",
+    "loginFailed": "Kirjautuminen epäonnistui",
+    "updateFailed": "Päivitys epäonnistui"
   }
 }

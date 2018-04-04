@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import defaultLocale from 'locales/en.json';
+import defaultLocale from 'locales/en_US.json';
 
 const localeStore = observable({
 	...defaultLocale,

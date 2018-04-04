@@ -1,0 +1,57 @@
+{
+  "CreateButton": {
+    "label": "Tạo nên"
+  },
+  "LoginForm": {
+    "usernamePlaceholder": "Người dùng",
+    "login": "Đăng nhập",
+    "passwordPlaceholder": "Mật khẩu"
+  },
+  "RefButton": {
+    "label": "Tài liệu tham khảo"
+  },
+  "TableBody": {
+    "total": "Toàn bộ"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Thêm mục"
+  },
+  "ActionsField": {
+    "label": "Hành động"
+  },
+  "TableQuerySwitch": {
+    "label": "Tìm kiếm"
+  },
+  "ClearSortButton": {
+    "label": "Đặt lại Sắp xếp"
+  },
+  "TableQuery": {
+    "reset": "Cài lại",
+    "search": "Tìm kiếm",
+    "resetOrder": "Đặt lại Sắp xếp"
+  },
+  "UpdateButton": {
+    "label": "Cập nhật",
+    "multiLabel": "Cập nhật hàng loạt"
+  },
+  "requests": {
+    "failed": "Thất bại",
+    "loginFailed": "Đăng nhập thất bại",
+    "loginSuccess": "Đăng nhập thành công",
+    "invalidToken": "Mã thông báo xác thực không hợp lệ",
+    "createFailed": "Tạo không thành công",
+    "fetchFailed": "Tải không thành công",
+    "removeFailed": "Xóa không thành công",
+    "updateFailed": "Cập nhật không thành công"
+  },
+  "RemoveButton": {
+    "label": "Tẩy",
+    "multiLabel": "Xóa hàng loạt",
+    "title": "Bạn có chắc chắn để loại bỏ?",
+    "content": "Thao tác này không thể hoàn tác!"
+  },
+  "UserMenu": {
+    "signOut": "Đăng xuất",
+    "confirmSignOut": "Bạn có chắc chắn đăng xuất không?"
+  }
+}

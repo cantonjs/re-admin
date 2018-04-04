@@ -1,0 +1,57 @@
+{
+  "TableBody": {
+    "total": "Всього"
+  },
+  "ActionsField": {
+    "label": "Дії"
+  },
+  "RefButton": {
+    "label": "Посилання"
+  },
+  "TableQuerySwitch": {
+    "label": "Пошук"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "Пароль",
+    "login": "Увійти",
+    "usernamePlaceholder": "Користувач"
+  },
+  "ArrayOf": {
+    "addButtonLabel": "Додати елемент"
+  },
+  "CreateButton": {
+    "label": "Створити"
+  },
+  "requests": {
+    "fetchFailed": "Не вдалося завантажити",
+    "loginFailed": "Помилка логіну",
+    "createFailed": "Створення не вдалося",
+    "loginSuccess": "Вхід до успіху",
+    "updateFailed": "Оновлення не вдалося",
+    "failed": "Помилка",
+    "invalidToken": "Невірний токен аутентифікації",
+    "removeFailed": "Видалити не вдалося"
+  },
+  "TableQuery": {
+    "search": "Пошук",
+    "reset": "Скинути",
+    "resetOrder": "Скидання сортування"
+  },
+  "ClearSortButton": {
+    "label": "Скидання сортування"
+  },
+  "UserMenu": {
+    "signOut": "Вийти з аккаунта",
+    "confirmSignOut": "Ви впевнені, що виписали?"
+  },
+  "RemoveButton": {
+    "label": "Видалити",
+    "multiLabel": "Пакетне видалення",
+    "content": "Цю операцію неможливо скасувати!",
+    "title": "Ви абсолютно впевнені, що видалите?"
+  },
+  "UpdateButton": {
+    "label": "Оновити",
+    "multiLabel": "Оновлення пакетів"
+  }
+}

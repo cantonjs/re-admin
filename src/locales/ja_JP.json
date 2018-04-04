@@ -1,57 +1,57 @@
 {
-  "TableQuerySwitch": {
-    "label": "サーチ"
-  },
   "CreateButton": {
     "label": "作成する"
-  },
-  "TableBody": {
-    "total": "合計"
   },
   "RefButton": {
     "label": "参照"
   },
+  "TableBody": {
+    "total": "合計"
+  },
+  "TableQuerySwitch": {
+    "label": "サーチ"
+  },
+  "LoginForm": {
+    "passwordPlaceholder": "パスワード",
+    "login": "ログイン",
+    "usernamePlaceholder": "ユーザー"
+  },
   "ActionsField": {
     "label": "行動"
   },
-  "LoginForm": {
-    "usernamePlaceholder": "ユーザー",
-    "passwordPlaceholder": "パスワード",
-    "login": "ログイン"
-  },
-  "UpdateButton": {
-    "label": "更新",
-    "multiLabel": "バッチ更新"
-  },
   "ArrayOf": {
     "addButtonLabel": "アイテムを追加"
-  },
-  "ClearSortButton": {
-    "label": "ソートのリセット"
-  },
-  "requests": {
-    "updateFailed": "アップデートに失敗しました",
-    "loginFailed": "ログインに失敗しました",
-    "removeFailed": "削除に失敗しました",
-    "createFailed": "作成に失敗しました",
-    "loginSuccess": "ログイン成功",
-    "fetchFailed": "読み込み失敗",
-    "failed": "失敗",
-    "invalidToken": "無効な認証トークン"
-  },
-  "UserMenu": {
-    "signOut": "サインアウト",
-    "confirmSignOut": "サインアウトしてもよろしいですか？"
   },
   "TableQuery": {
     "reset": "リセット",
     "search": "サーチ",
     "resetOrder": "ソートのリセット"
   },
+  "ClearSortButton": {
+    "label": "ソートのリセット"
+  },
+  "requests": {
+    "fetchFailed": "読み込み失敗",
+    "loginSuccess": "ログイン成功",
+    "loginFailed": "ログインに失敗しました",
+    "failed": "失敗",
+    "createFailed": "作成に失敗しました",
+    "updateFailed": "アップデートに失敗しました",
+    "removeFailed": "削除に失敗しました",
+    "invalidToken": "無効な認証トークン"
+  },
+  "UserMenu": {
+    "signOut": "サインアウト",
+    "confirmSignOut": "サインアウトしてもよろしいですか？"
+  },
   "RemoveButton": {
     "label": "削除する",
     "multiLabel": "一括削除",
     "content": "この操作は元に戻すことはできません！",
     "title": "絶対に削除してもよろしいですか？"
+  },
+  "UpdateButton": {
+    "label": "更新",
+    "multiLabel": "バッチ更新"
   }
 }
