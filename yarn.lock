@@ -4987,9 +4987,9 @@ neo-async@^2.5.0:
   version "2.5.0"
   resolved "http://registry.npm.taobao.org/neo-async/download/neo-async-2.5.0.tgz#76b1c823130cca26acfbaccc8fbaf0a2fa33b18f"
 
-neo-json-i18n@^2.0.1:
-  version "2.0.1"
-  resolved "http://registry.npm.taobao.org/neo-json-i18n/download/neo-json-i18n-2.0.1.tgz#9ad011ec4ca2a6e64fbf6938953fb6dfef625ac3"
+neo-json-i18n@^2.1.0:
+  version "2.1.0"
+  resolved "http://registry.npm.taobao.org/neo-json-i18n/download/neo-json-i18n-2.1.0.tgz#34ab17bc7b0397fdcfe4813f32ae93652bcc1761"
   dependencies:
     aggregate-error "^1.0.0"
     ajv "^6.2.1"

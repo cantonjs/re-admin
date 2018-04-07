@@ -1,0 +1,4 @@
+/* eslint-disable */
+import antd from 'antd/lib/locale-provider/ja_JP';
+const locale = {"ArrayOf":{"addButtonLabel":"アイテムを追加"},"TableQuerySwitch":{"label":"サーチ"},"ClearSortButton":{"label":"ソートのリセット"},"RefButton":{"label":"参照"},"UpdateButton":{"label":"更新","multiLabel":"バッチ更新"},"CreateButton":{"label":"作成する"},"TableQuery":{"resetOrder":"ソートのリセット","reset":"リセット","search":"サーチ"},"TableBody":{"total":"合計"},"RemoveButton":{"multiLabel":"一括削除","label":"削除する","content":"この操作は元に戻すことはできません！","title":"絶対に削除してもよろしいですか？"},"requests":{"removeFailed":"削除に失敗しました","loginFailed":"ログインに失敗しました","loginSuccess":"ログイン成功","fetchFailed":"読み込み失敗","failed":"失敗","createFailed":"作成に失敗しました","updateFailed":"アップデートに失敗しました","invalidToken":"無効な認証トークン"},"UserMenu":{"signOut":"サインアウト","confirmSignOut":"サインアウトしてもよろしいですか？"},"ActionsField":{"label":"行動"},"LoginForm":{"login":"ログイン","usernamePlaceholder":"ユーザー","passwordPlaceholder":"パスワード"}};
+export default { language: ja_JP, ...locale, antd };

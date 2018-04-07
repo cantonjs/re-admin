@@ -1,0 +1,4 @@
+/* eslint-disable */
+import antd from 'antd/lib/locale-provider/zh_CN';
+const locale = {"ClearSortButton":{"label":"重置排序"},"TableQuery":{"reset":"重启","search":"搜索","resetOrder":"重置排序"},"TableBody":{"total":"总"},"CreateButton":{"label":"创建"},"TableQuerySwitch":{"label":"搜索"},"ArrayOf":{"addButtonLabel":"新增项目"},"UpdateButton":{"label":"更新","multiLabel":"批量更新"},"LoginForm":{"login":"登录","usernamePlaceholder":"用户","passwordPlaceholder":"密码"},"UserMenu":{"signOut":"登出","confirmSignOut":"你确定要退出吗？"},"RefButton":{"label":"参考"},"RemoveButton":{"multiLabel":"批量删除","title":"你绝对肯定要删除？","label":"去掉","content":"此操作无法撤消！"},"ActionsField":{"label":"操作"},"requests":{"createFailed":"创建失败","loginSuccess":"登录成功","updateFailed":"更新失败","fetchFailed":"加载失败","failed":"失败","loginFailed":"登录失败","removeFailed":"删除失败","invalidToken":"身份验证令牌无效"}};
+export default { language: zh_CN, ...locale, antd };

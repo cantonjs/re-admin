@@ -8,37 +8,33 @@
 		"host": "output-host --no-external",
 		"client": "webpack-dev-server",
 		"format": "prettier-eslint --write \"+(src|test)/**/*.js\"",
-		"i18n": "proxychains4 node ./node_modules/.bin/neo-json-i18n ./src/locales/en_US.json -c=i18nconfig.js",
+		"i18n":
+			"proxychains4 node ./node_modules/.bin/neo-json-i18n ./src/locales/index.json -c=i18nconfig.js",
 		"prebuild": "rimraf dist lib es",
-		"build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel src -d es --copy-files",
-		"build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel src -d lib --copy-files",
-		"build:umd": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --progress --colors",
+		"build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel src -d es",
+		"build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel src -d lib",
+		"build:umd":
+			"cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --progress --colors",
 		"build:min": "yarn build:umd --env.min -p",
 		"build": "run-p build:*",
-		"analyzer:stats": "cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --env.min -p --profile --json > .stats.json",
+		"analyzer:stats":
+			"cross-env NODE_ENV=production BABEL_ENV=development webpack --env.build --env.min -p --profile --json > .stats.json",
 		"analyzer:run": "webpack-bundle-analyzer .stats.json",
 		"analyzer": "run-s analyzer:*",
 		"predoc": "rimraf docs",
-		"doc:build": "cross-env CDN=\"https://cantonjs.github.io/re-admin\" NODE_ENV=production BABEL_ENV=development webpack -p --progress --colors",
+		"doc:build":
+			"cross-env CDN=\"https://cantonjs.github.io/re-admin\" NODE_ENV=production BABEL_ENV=development webpack -p --progress --colors",
 		"doc:github": "git-directory-deploy --directory docs",
 		"doc": "run-s doc:*",
 		"clean": "run-p prebuild predoc",
 		"preversion": "yarn build"
 	},
-	"files": [
-		"README.md",
-		"LICENSE.md",
-		"lib",
-		"es",
-		"dist"
-	],
+	"files": ["README.md", "LICENSE.md", "lib", "es", "dist"],
 	"main": "lib/index.js",
 	"module": "es/index.js",
 	"jsnext:main": "es/index.js",
 	"author": "Cap32 <webb.png@gmail.com> (https://github.com/Cap32)",
-	"contributors": [
-		"jaceechan (https://github.com/jaceechan)"
-	],
+	"contributors": ["jaceechan (https://github.com/jaceechan)"],
 	"license": "MIT",
 	"dependencies": {
 		"cookie": "^0.3.1",
@@ -103,7 +99,7 @@
 		"less-loader": "^4.0.5",
 		"mobx": "^3.1.9",
 		"mobx-react": "^4.1.8",
-		"neo-json-i18n": "^2.0.1",
+		"neo-json-i18n": "^2.1.0",
 		"npm-run-all": "^4.0.2",
 		"offline-plugin": "^4.9.0",
 		"output-host": "^3.1.0",
