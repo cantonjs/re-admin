@@ -5,13 +5,18 @@ import warning from 'warning';
 import localeStore from 'stores/localeStore';
 
 export default function localize(options = {}) {
-	const { defaultProps, localeAttrName = 'locale' } = options;
+	const {
+		defaultProps,
+		localeAttrName = 'locale',
+		component: localeComponent,
+	} = options;
 	return function createLocalizedComponent(WrappedComponent) {
 		const {
 			displayName,
 			getSchemaDefaultProps: originalGetSchemaDefaultProps,
 		} = WrappedComponent;
-		const store = localeStore[displayName];
+		const localeComponentName = localeComponent || displayName;
+		const store = localeStore[localeComponentName];
 		const hasLocale = !!store;
 
 		if (hasLocale) {
@@ -19,13 +24,13 @@ export default function localize(options = {}) {
 				return Object.defineProperty(acc, key, {
 					enumerable: true,
 					get() {
-						return localeStore[displayName][key];
+						return localeStore[localeComponentName][key];
 					},
 				});
 			}, {});
 			WrappedComponent.prototype[localeAttrName] = locale;
 		} else {
-			warning(false, `locale component "${displayName}" not found`);
+			warning(false, `locale component "${localeComponentName}" not found`);
 		}
 
 		const getDefaultLocaleProps = function getDefaultLocaleProps() {
@@ -34,7 +39,7 @@ export default function localize(options = {}) {
 			}
 			return Object.keys(defaultProps).reduce((acc, prop) => {
 				const key = defaultProps[prop];
-				acc[prop] = localeStore[displayName][key];
+				acc[prop] = localeStore[localeComponentName][key];
 				return acc;
 			}, {});
 		};
