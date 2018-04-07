@@ -4,6 +4,7 @@ import getConfig from './getConfig';
 import localeStore from 'stores/localeStore';
 import moment from 'moment';
 import AdminContext from 'containers/AdminContext';
+import { LocaleProvider } from 'antd';
 import 'moment/locale/zh-cn';
 
 // TODO: should be able to custom
@@ -39,7 +40,20 @@ export default class Admin extends Component {
 		this.forceUpdate();
 	}
 
-	render() {
+	_renderContext() {
 		return <AdminContext appConfig={this._config} />;
+	}
+
+	render() {
+		const { locale } = this.props;
+		if (locale) {
+			return (
+				<LocaleProvider locale={locale.antd}>
+					{this._renderContext()}
+				</LocaleProvider>
+			);
+		} else {
+			return this._renderContext();
+		}
 	}
 }
