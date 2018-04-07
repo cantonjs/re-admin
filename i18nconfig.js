@@ -39,7 +39,7 @@ module.exports = {
 		return `/* eslint-disable */
 import antd from 'antd/lib/locale-provider/${langOutput}';
 const locale = ${outputStr};
-export default { language: ${langOutput}, ...locale, antd };
+export default { language: '${langOutput}', ...locale, antd };
 `;
 	},
 };
