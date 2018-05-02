@@ -21,16 +21,16 @@ APISchema.defaultProps = {
 	timeout: 15000,
 	count: 20,
 	accessTokenName: 'X-ACCESS-TOKEN',
-	accessTokenLocation: 'header',
+	accessTokenLocation: 'headers',
 	sortKey: 'sort',
 	orderKey: 'order',
 	descValue: 'desc',
 	ascValue: 'asc',
 };
 
-APISchema.schema = {
-	pipe: ({ accessTokenLocation, ...props }, api) => {
-		return Object.assign(api, props, {
+APISchema.configuration = {
+	pipe({ accessTokenLocation, ...props }) {
+		return Object.assign(this, props, {
 			accessTokenLocation:
 				accessTokenLocation !== 'query' ? 'headers' : 'query',
 		});

@@ -8,7 +8,6 @@ import authStore from 'stores/authStore';
 import storesDispatcher from './storesDispatcher';
 import { Router } from 'react-router-mobx';
 import DocumentTitle from 'react-document-title';
-import { initModals } from './initialize';
 
 const styles = {
 	container: {
@@ -40,7 +39,6 @@ export default class AdminContext extends Component {
 		this._appConfig = observable(this.props.appConfig);
 		authStore.set(this._appConfig);
 		storesDispatcher.init(this._appConfig, authStore);
-		initModals(this._appConfig.modals);
 	}
 
 	componentWillReceiveProps({ appConfig }) {

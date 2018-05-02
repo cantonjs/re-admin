@@ -21,7 +21,7 @@ AuthSchema.defaultProps = {
 	mapOnGetUserResponse: returnsArgument,
 };
 
-AuthSchema.schema = {
+AuthSchema.configuration = {
 	pipe: (props, auth) => Object.assign(auth, props),
 	name: 'auth',
 };

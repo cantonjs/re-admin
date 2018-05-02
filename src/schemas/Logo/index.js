@@ -9,8 +9,8 @@ LogoSchema.propTypes = {
 	children: PropTypes.node,
 };
 
-LogoSchema.schema = {
+LogoSchema.configuration = {
 	pipe: ({ children }) => Children.only(children),
 	name: 'logoNode',
-	initialConfig: null,
+	initialData: null,
 };

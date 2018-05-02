@@ -30,7 +30,7 @@ UploadSchema.defaultProps = {
 	},
 };
 
-UploadSchema.schema = {
+UploadSchema.configuration = {
 	name: 'upload',
 	pipe: (props, config) => Object.assign(config, props),
 };

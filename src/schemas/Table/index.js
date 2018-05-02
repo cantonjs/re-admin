@@ -29,9 +29,9 @@ TableSchema.defaultProps = {
 	extend: {},
 };
 
-TableSchema.schema = {
+TableSchema.configuration = {
 	name: 'tables',
-	pipe({ name, api, children, ...other }, tables) {
+	pipe({ name, api, children, ...other }) {
 		children = Children.toArray(children);
 		const firstChild = children[0];
 		if (firstChild && children.length === 1 && firstChild.type === 'noscript') {
@@ -122,12 +122,13 @@ TableSchema.schema = {
 			tableRenderers,
 		};
 
-		tables[name] = table;
+		this[name] = table;
 
 		if (tableRenderers.length && !table.uniqueKey) {
 			console.error(`Table "${name}" is missing uniqueKey!`);
 		}
 
-		return tables;
+		return this;
 	},
+	initialData: {},
 };

@@ -13,7 +13,7 @@ ErrorMessagesSchema.propTypes = {
 	getMessage: PropTypes.func,
 };
 
-ErrorMessagesSchema.schema = {
+ErrorMessagesSchema.configuration = {
 	pipe: (props, messages) => Object.assign(messages, props),
 	name: 'errorMessages',
 };

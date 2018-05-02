@@ -6,14 +6,10 @@ export default function TitleSchema() {
 }
 
 TitleSchema.propTypes = {
-	children: PropTypes.string,
+	children: PropTypes.string.isRequired,
 };
 
-TitleSchema.defaultProps = {
-	children: 'Admin',
-};
-
-TitleSchema.schema = {
+TitleSchema.configuration = {
 	name: 'title',
 	pipe: ({ children }) => children,
 	initialData: 'Admin',

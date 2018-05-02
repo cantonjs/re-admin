@@ -36,12 +36,12 @@ NavigatorSchema.defaultProps = {
 	notFound: NotFoundView,
 };
 
-NavigatorSchema.schema = {
+NavigatorSchema.configuration = {
 	name: 'navigator',
-	pipe({ children, ...other }, navigator) {
-		Object.assign(navigator, other);
+	pipe({ children, ...other }) {
+		Object.assign(this, other);
 
-		const { dataTable, index: welcome, notFound, noBreadcrumb } = navigator;
+		const { dataTable, index: welcome, notFound, noBreadcrumb } = this;
 		const breadcrumbNameMap = {};
 
 		const sidebarChildren = [];
@@ -129,15 +129,15 @@ NavigatorSchema.schema = {
 			<Route key="_notFound" component={notFound} />,
 		];
 
-		navigator.menus = sidebarMenu;
-		navigator.topMenu = topMenu;
-		navigator.routes = routes;
-		navigator.breadcrumbNameMap = Object.keys(breadcrumbNameMap)
+		this.menus = sidebarMenu;
+		this.topMenu = topMenu;
+		this.routes = routes;
+		this.breadcrumbNameMap = Object.keys(breadcrumbNameMap)
 			.sort((a, b) => getSlashesLength(a) - getSlashesLength(b))
 			.reduce((acc, key) => {
 				acc[key] = breadcrumbNameMap[key];
 				return acc;
 			}, {});
-		return navigator;
+		return this;
 	},
 };

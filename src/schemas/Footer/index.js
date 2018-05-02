@@ -9,12 +9,8 @@ FooterSchema.propTypes = {
 	children: PropTypes.node,
 };
 
-FooterSchema.defaultProps = {
-	children: 'Admin',
-};
-
-FooterSchema.schema = {
+FooterSchema.configuration = {
 	pipe: ({ children }) => children,
 	name: 'footer',
-	initialConfig: null,
+	initialData: null,
 };
