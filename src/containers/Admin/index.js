@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import getConfig from './getConfig';
-import localeStore from 'stores/localeStore';
+import { getAppConfig, configShape } from './utils';
 import moment from 'moment';
+import localeStore from 'stores/localeStore';
 import AdminContext from 'containers/AdminContext';
 import { LocaleProvider } from 'antd';
 import 'moment/locale/zh-cn';
@@ -12,31 +12,18 @@ moment.locale('zh-cn');
 
 export default class Admin extends Component {
 	static propTypes = {
-		config: PropTypes.shape({
-			name: PropTypes.string,
-			sidebar: PropTypes.array,
-			tables: PropTypes.object,
-			api: PropTypes.object,
-			auth: PropTypes.object,
-			upload: PropTypes.object,
-			router: PropTypes.any,
-			views: PropTypes.object,
-			modals: PropTypes.object,
-		}),
+		...configShape,
+		config: PropTypes.shape(configShape),
 		children: PropTypes.node,
-		locale: PropTypes.object,
 	};
 
 	componentWillMount() {
-		const { children, config, locale } = this.props;
-		if (locale) {
-			localeStore.set(locale);
-		}
-		this._config = getConfig(children || config);
+		const { locale } = (this._config = getAppConfig(this.props));
+		if (locale) localeStore.set(locale);
 	}
 
-	componentWillReceiveProps({ children, config }) {
-		this._config = getConfig(children || config);
+	componentWillReceiveProps(props) {
+		this._config = getAppConfig(props);
 		this.forceUpdate();
 	}
 
@@ -45,7 +32,7 @@ export default class Admin extends Component {
 	}
 
 	render() {
-		const { locale } = this.props;
+		const { locale } = this._config;
 		if (locale) {
 			return (
 				<LocaleProvider locale={locale.antd}>

@@ -11,6 +11,7 @@ TitleSchema.propTypes = {
 
 TitleSchema.configuration = {
 	name: 'title',
+	propType: PropTypes.string,
 	pipe: ({ children }) => children,
 	initialData: 'Admin',
 };

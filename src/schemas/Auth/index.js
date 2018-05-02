@@ -22,6 +22,7 @@ AuthSchema.defaultProps = {
 };
 
 AuthSchema.configuration = {
-	pipe: (props, auth) => Object.assign(auth, props),
 	name: 'auth',
+	propType: PropTypes.object,
+	pipe: (props, auth) => Object.assign(auth, props),
 };

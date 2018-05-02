@@ -29,11 +29,12 @@ APISchema.defaultProps = {
 };
 
 APISchema.configuration = {
+	name: 'api',
+	propType: PropTypes.object,
 	pipe({ accessTokenLocation, ...props }) {
 		return Object.assign(this, props, {
 			accessTokenLocation:
 				accessTokenLocation !== 'query' ? 'headers' : 'query',
 		});
 	},
-	name: 'api',
 };

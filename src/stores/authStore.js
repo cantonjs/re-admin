@@ -32,6 +32,7 @@ class AuthStore {
 	set(config) {
 		this._apiConfig = config.api;
 		this._config = config.auth;
+		warning(this._config.basePath, 'Missing auth.basePath');
 		this._request = getRequest(config).clone(this._config.basePath);
 	}
 

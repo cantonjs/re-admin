@@ -15,6 +15,7 @@ ModalSchema.propTypes = {
 
 ModalSchema.configuration = {
 	name: 'modals',
+	propType: PropTypes.map,
 	pipe: ({ name, component }, modals) => {
 		modals.set(name, component);
 		return modals;

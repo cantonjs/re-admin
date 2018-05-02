@@ -31,6 +31,7 @@ TableSchema.defaultProps = {
 
 TableSchema.configuration = {
 	name: 'tables',
+	propType: PropTypes.object,
 	pipe({ name, api, children, ...other }) {
 		children = Children.toArray(children);
 		const firstChild = children[0];

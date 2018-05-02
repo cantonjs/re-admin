@@ -38,6 +38,7 @@ NavigatorSchema.defaultProps = {
 
 NavigatorSchema.configuration = {
 	name: 'navigator',
+	propType: PropTypes.object,
 	pipe({ children, ...other }) {
 		Object.assign(this, other);
 

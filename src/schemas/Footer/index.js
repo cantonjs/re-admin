@@ -10,7 +10,8 @@ FooterSchema.propTypes = {
 };
 
 FooterSchema.configuration = {
-	pipe: ({ children }) => children,
 	name: 'footer',
+	propType: PropTypes.node,
+	pipe: ({ children }) => children,
 	initialData: null,
 };

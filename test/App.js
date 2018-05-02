@@ -12,12 +12,13 @@ import {
 	Navigator,
 	Menu,
 	Modal,
+	Locale,
 	ErrorMessages,
 	Toolbar,
 	CreateButton,
 	ContextButton,
 } from '../src';
-import locale from '../src/locales/en_US';
+import locale from '../src/locales/zh_CN';
 import { Icon } from 'antd';
 import testTable from './tables/test';
 import barTable from './tables/bar';

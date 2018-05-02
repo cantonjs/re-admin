@@ -14,6 +14,7 @@ ErrorMessagesSchema.propTypes = {
 };
 
 ErrorMessagesSchema.configuration = {
-	pipe: (props, messages) => Object.assign(messages, props),
 	name: 'errorMessages',
+	propType: PropTypes.object,
+	pipe: (props, messages) => Object.assign(messages, props),
 };

@@ -9,4 +9,5 @@ export Title from './Title';
 export Footer from './Footer';
 export Upload from './Upload';
 export Modal from './Modal';
+export Locale from './Locale';
 export ErrorMessages from './ErrorMessages';
