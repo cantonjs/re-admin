@@ -1,9 +1,8 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function APISchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 APISchema.propTypes = {
@@ -29,11 +28,12 @@ APISchema.defaultProps = {
 	ascValue: 'asc',
 };
 
-APISchema.setConfig = ({ accessTokenLocation, ...props }, api) => {
-	Object.assign(api, props, {
-		accessTokenLocation: accessTokenLocation !== 'query' ? 'headers' : 'query',
-	});
+APISchema.schema = {
+	pipe: ({ accessTokenLocation, ...props }, api) => {
+		return Object.assign(api, props, {
+			accessTokenLocation:
+				accessTokenLocation !== 'query' ? 'headers' : 'query',
+		});
+	},
+	name: 'api',
 };
-
-APISchema.schemaName = 'api';
-APISchema.DataType = Object;

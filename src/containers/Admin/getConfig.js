@@ -1,19 +1,19 @@
 import { isValidElement } from 'react';
 import jsxToPlainObject from 'utils/jsxToPlainObject';
 import plainObjectToJsx from 'utils/plainObjectToJsx';
-import { defaults, isFunction } from 'lodash';
+import { defaults, isUndefined, isObject } from 'lodash';
 import warning from 'warning';
 
 const parseSchemaNodes = (nodes) => {
 	const config = {};
 	const parse = (nodes) => {
 		if (isValidElement(nodes)) {
-			if (!nodes.type || !isFunction(nodes.type.setConfig)) {
+			if (!nodes.type || !isObject(nodes.type.schema)) {
 				warning(false, `${nodes} is NOT a valid schema`);
 			} else {
-				const { DataType, schemaName, setConfig } = nodes.type;
-				config[schemaName] = config[schemaName] || new DataType();
-				setConfig(nodes.props, config[schemaName], config);
+				const { name, pipe, initialData = {} } = nodes.type.schema;
+				config[name] = isUndefined(config[name]) ? initialData : config[name];
+				config[name] = pipe(nodes.props, config[name], config);
 			}
 			return config;
 		} else if (Array.isArray(nodes)) {

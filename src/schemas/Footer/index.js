@@ -13,9 +13,8 @@ FooterSchema.defaultProps = {
 	children: 'Admin',
 };
 
-FooterSchema.setConfig = ({ children }, _, config) => {
-	config.footer = children;
+FooterSchema.schema = {
+	pipe: ({ children }) => children,
+	name: 'footer',
+	initialConfig: null,
 };
-
-FooterSchema.schemaName = 'footer';
-FooterSchema.DataType = String;

@@ -9,9 +9,8 @@ LogoSchema.propTypes = {
 	children: PropTypes.node,
 };
 
-LogoSchema.setConfig = ({ children }, _, config) => {
-	config.logoNode = Children.only(children);
+LogoSchema.schema = {
+	pipe: ({ children }) => Children.only(children),
+	name: 'logoNode',
+	initialConfig: null,
 };
-
-LogoSchema.schemaName = 'logo';
-LogoSchema.DataType = Object;

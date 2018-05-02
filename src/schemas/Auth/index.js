@@ -21,9 +21,7 @@ AuthSchema.defaultProps = {
 	mapOnGetUserResponse: returnsArgument,
 };
 
-AuthSchema.setConfig = (props, auth) => {
-	Object.assign(auth, props);
+AuthSchema.schema = {
+	pipe: (props, auth) => Object.assign(auth, props),
+	name: 'auth',
 };
-
-AuthSchema.schemaName = 'auth';
-AuthSchema.DataType = Object;

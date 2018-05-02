@@ -1,9 +1,8 @@
-
 import React from 'react';
 import PropTypes from 'utils/PropTypes';
 
 export default function ModalSchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 ModalSchema.propTypes = {
@@ -11,8 +10,11 @@ ModalSchema.propTypes = {
 	component: PropTypes.component.isRequired,
 };
 
-ModalSchema.setConfig = ({ name, component }, modals) => {
-	modals.set(name, component);
+ModalSchema.schema = {
+	name: 'modales',
+	initialData: new Map(),
+	pipe: ({ name, component }, modals) => {
+		modals.set(name, component);
+		return modals;
+	},
 };
-ModalSchema.schemaName = 'modals';
-ModalSchema.DataType = Map;

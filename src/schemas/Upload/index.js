@@ -1,9 +1,8 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function UploadSchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 UploadSchema.propTypes = {
@@ -27,14 +26,11 @@ UploadSchema.defaultProps = {
 		return fileList
 			.filter(({ status }) => status === 'done')
 			.map(({ thumbUrl, response }) => response.url || thumbUrl)
-			.join(',')
-		;
+			.join(',');
 	},
 };
 
-UploadSchema.setConfig = (props, upload) => {
-	Object.assign(upload, props);
+UploadSchema.schema = {
+	name: 'upload',
+	pipe: (props, config) => Object.assign(config, props),
 };
-
-UploadSchema.schemaName = 'upload';
-UploadSchema.DataType = Object;

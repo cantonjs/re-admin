@@ -1,9 +1,8 @@
-
 import React from 'react';
 import PropTypes from 'utils/PropTypes';
 
 export default function ErrorMessagesSchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 ErrorMessagesSchema.propTypes = {
@@ -14,8 +13,7 @@ ErrorMessagesSchema.propTypes = {
 	getMessage: PropTypes.func,
 };
 
-ErrorMessagesSchema.setConfig = (props, errorMessages) => {
-	Object.assign(errorMessages, props);
+ErrorMessagesSchema.schema = {
+	pipe: (props, messages) => Object.assign(messages, props),
+	name: 'errorMessages',
 };
-ErrorMessagesSchema.schemaName = 'errorMessages';
-ErrorMessagesSchema.DataType = Object;

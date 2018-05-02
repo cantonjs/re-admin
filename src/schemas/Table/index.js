@@ -29,102 +29,105 @@ TableSchema.defaultProps = {
 	extend: {},
 };
 
-TableSchema.setConfig = ({ name, api, children, ...other }, tables) => {
-	children = Children.toArray(children);
-	const firstChild = children[0];
-	if (firstChild && children.length === 1 && firstChild.type === 'noscript') {
-		children = Children.toArray(firstChild.props.children);
-	}
+TableSchema.schema = {
+	name: 'tables',
+	pipe({ name, api, children, ...other }, tables) {
+		children = Children.toArray(children);
+		const firstChild = children[0];
+		if (firstChild && children.length === 1 && firstChild.type === 'noscript') {
+			children = Children.toArray(firstChild.props.children);
+		}
 
-	let uniqueKey;
+		let uniqueKey;
 
-	const formRenderers = [];
-	const queryRenderers = [];
-	const tableRenderers = [];
+		const formRenderers = [];
+		const queryRenderers = [];
+		const tableRenderers = [];
 
-	children.forEach((child, index) => {
-		const { inForm, inQuery, inTable, unique, ...props } = child.props;
-		const { getSchemaDefaultProps = returnsEmptyObject } = child.type;
+		children.forEach((child, index) => {
+			const { inForm, inQuery, inTable, unique, ...props } = child.props;
+			const { getSchemaDefaultProps = returnsEmptyObject } = child.type;
 
-		const push = (nodes, inIssuer, renderKey, defaultRender) => {
-			if (!inIssuer) {
-				return;
-			}
-
-			const key = child.key || index;
-			const Component = child.type;
-			const component = Component;
-
-			const render = (function () {
-				if (isFunction(inIssuer)) {
-					return inIssuer;
+			const push = (nodes, inIssuer, renderKey, defaultRender) => {
+				if (!inIssuer) {
+					return;
 				}
 
-				if (isObject(inIssuer)) {
+				const key = child.key || index;
+				const Component = child.type;
+				const component = Component;
+
+				const render = (function () {
+					if (isFunction(inIssuer)) {
+						return inIssuer;
+					}
+
+					if (isObject(inIssuer)) {
+						return function render(props) {
+							return <Component {...props} {...inIssuer} />;
+						};
+					}
+
+					if (!isBoolean(inIssuer)) {
+						return function render() {
+							return <span>{inIssuer}</span>;
+						};
+					}
+
+					if (isFunction(Component[renderKey])) {
+						return Component[renderKey];
+					}
+
+					if (defaultRender) {
+						return defaultRender;
+					}
+
 					return function render(props) {
-						return <Component {...props} {...inIssuer} />;
+						return <Component {...props} />;
 					};
-				}
+				})();
 
-				if (!isBoolean(inIssuer)) {
-					return function render() {
-						return <span>{inIssuer}</span>;
-					};
-				}
-
-				if (isFunction(Component[renderKey])) {
-					return Component[renderKey];
-				}
-
-				if (defaultRender) {
-					return defaultRender;
-				}
-
-				return function render(props) {
-					return <Component {...props} />;
+				const options = {
+					key,
+					component,
+					Component,
+					getSchemaDefaultProps,
 				};
-			})();
 
-			const options = {
-				key,
-				component,
-				Component,
-				getSchemaDefaultProps,
+				const renderNode = () => {
+					const node = render(props, options);
+					if (!node) {
+						return null;
+					}
+					return node.key ? node : cloneElement(node, { key });
+				};
+
+				nodes.push({ render, renderNode, props, options });
 			};
 
-			const renderNode = () => {
-				const node = render(props, options);
-				if (!node) {
-					return null;
-				}
-				return node.key ? node : cloneElement(node, { key });
-			};
+			if (!uniqueKey && unique) {
+				uniqueKey = props.name;
+			}
+			push(formRenderers, inForm, 'renderForm');
+			push(queryRenderers, inQuery, 'renderQuery');
+			push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
+		});
 
-			nodes.push({ render, renderNode, props, options });
+		const table = {
+			uniqueKey,
+			...other,
+			api: parseAPIPath(api || name),
+			formRenderers,
+			queryRenderers,
+			tableRenderers,
 		};
 
-		if (!uniqueKey && unique) {
-			uniqueKey = props.name;
+		tables[name] = table;
+
+		if (tableRenderers.length && !table.uniqueKey) {
+			console.error(`Table "${name}" is missing uniqueKey!`);
 		}
-		push(formRenderers, inForm, 'renderForm');
-		push(queryRenderers, inQuery, 'renderQuery');
-		push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
-	});
 
-	const table = {
-		uniqueKey,
-		...other,
-		api: parseAPIPath(api || name),
-		formRenderers,
-		queryRenderers,
-		tableRenderers,
-	};
-
-	tables[name] = table;
-
-	if (tableRenderers.length && !table.uniqueKey) {
-		console.error(`Table "${name}" is missing uniqueKey!`);
-	}
+		return tables;
+	},
 };
-TableSchema.schemaName = 'tables';
-TableSchema.DataType = Object;

@@ -1,9 +1,8 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function TitleSchema() {
-	return (<noscript />);
+	return <noscript />;
 }
 
 TitleSchema.propTypes = {
@@ -14,9 +13,8 @@ TitleSchema.defaultProps = {
 	children: 'Admin',
 };
 
-TitleSchema.setConfig = ({ children }, _, config) => {
-	config.title = children;
+TitleSchema.schema = {
+	name: 'title',
+	pipe: ({ children }) => children,
+	initialData: 'Admin',
 };
-
-TitleSchema.schemaName = 'title';
-TitleSchema.DataType = String;
