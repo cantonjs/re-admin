@@ -109,7 +109,6 @@ export default (
 			dataType="integer"
 			value={32}
 			sortable
-			inQuery={{ value: 33 }}
 			inTable
 			inForm
 		/>
@@ -131,7 +130,7 @@ export default (
 		/>
 		<Text name="birthday" label="Birthday" dataType="date" inForm />
 
-		<Checkbox name="check" label="Checked" inQuery inTable inForm />
+		<Checkbox name="check" label="Checked" value inQuery inTable inForm />
 
 		<Actions>
 			<CreateButton table="bar" label="Create Bar" />

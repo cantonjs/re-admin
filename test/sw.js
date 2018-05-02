@@ -64,10 +64,14 @@ router
 		};
 	})
 	.get('/api/test', verify, verify, async (ctx) => {
-		const { page, count, id } = ctx.request.query;
+		const { page, count, id, check } = ctx.request.query;
 		const start = (page - 1) * +count;
+		const db =
+			check === undefined ?
+				testDB :
+				testDB.filter((item) => item.check === (check && check !== 'false'));
 		ctx.body = {
-			list: id ? [testDB[0]] : testDB.slice(start, start + +count),
+			list: id ? [db[0]] : db.slice(start, start + +count),
 			total: id ? 1 : total,
 		};
 	})
