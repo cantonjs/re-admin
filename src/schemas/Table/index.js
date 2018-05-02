@@ -25,6 +25,7 @@ TableSchema.defaultProps = {
 	mapOnFetchResponse: returnsArgument,
 	mapOnFetchOneResponse: returnsArgument,
 	mapOnSave: returnsArgument,
+	uniqueKey: '_id',
 	maxSelections: -1,
 	extend: {},
 };
@@ -115,13 +116,14 @@ TableSchema.configuration = {
 		});
 
 		const table = {
-			uniqueKey,
 			...other,
 			api: parseAPIPath(api || name),
 			formRenderers,
 			queryRenderers,
 			tableRenderers,
 		};
+
+		if (uniqueKey) table.uniqueKey = uniqueKey;
 
 		this[name] = table;
 
