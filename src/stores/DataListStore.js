@@ -81,17 +81,14 @@ export default class DataListStore extends BaseDataStore {
 		});
 	}
 
-	@computed
 	get maxSelections() {
 		return this.config.maxSelections;
 	}
 
-	@computed
 	get queryRenderers() {
 		return this.config.queryRenderers;
 	}
 
-	@computed
 	get formRenderers() {
 		return this.config.formRenderers;
 	}
