@@ -18,7 +18,7 @@ import {
 	CreateButton,
 	ContextButton,
 } from '../src';
-import locale from '../src/locales/zh_CN';
+import locale from '../src/locales/en_US';
 import { Icon } from 'antd';
 import testTable from './tables/test';
 import barTable from './tables/bar';
@@ -31,8 +31,9 @@ const basename = isGithubPage ? '/re-admin' : '/';
 export default class App extends Component {
 	render() {
 		return (
-			<Admin locale={locale}>
+			<Admin>
 				<Title>{'God\'s Vision'}</Title>
+				<Locale>{locale}</Locale>
 				<Logo>
 					<Icon type="rocket" style={{ fontSize: 20 }} />
 				</Logo>
