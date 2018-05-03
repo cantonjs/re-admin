@@ -1,6 +1,5 @@
-
-export const QUERIER = 'QUERIER';
-export const UPDATER = 'UPDATER';
-export const CREATER = 'CREATER';
-export const TOOLBAR = 'TOOLBAR';
-export const TABLE_ROW = 'TABLE_ROW';
+export const QUERIER = '__QUERIER__';
+export const UPDATER = '__UPDATER__';
+export const CREATER = '__CREATER__';
+export const TOOLBAR = '__TOOLBAR__';
+export const TABLE = '__TABLE__';

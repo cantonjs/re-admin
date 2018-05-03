@@ -5,8 +5,10 @@ import State from './State';
 import { QUERIER } from 'constants/Issuers';
 import { observer } from 'mobx-react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
+import withIssuer from 'hoc/withIssuer';
 
 export default function field(WrappedComponent) {
+	@withIssuer()
 	@observer
 	class WithField extends Component {
 		static propTypes = {
@@ -21,6 +23,9 @@ export default function field(WrappedComponent) {
 			disabled: PropTypes.bool,
 			validations: PropTypes.array,
 			sortable: PropTypes.bool,
+
+			// provided by `withIssuer()`
+			issuers: PropTypes.instanceOf(Set).isRequired,
 		};
 
 		static defaultProps = {
@@ -32,7 +37,6 @@ export default function field(WrappedComponent) {
 		static contextTypes = {
 			store: PropTypes.object,
 			modalStore: PropTypes.object,
-			issuer: PropTypes.instanceOf(Set),
 			getParentValue: PropTypes.func,
 		};
 
@@ -53,6 +57,7 @@ export default function field(WrappedComponent) {
 				props: {
 					disabled,
 					required,
+					issuers,
 
 					value,
 					defaultValue,
@@ -61,10 +66,9 @@ export default function field(WrappedComponent) {
 
 					...other
 				},
-				context: { issuer },
 			} = this;
 
-			const isInQuery = issuer && issuer.has(QUERIER);
+			const isInQuery = issuers.has(QUERIER);
 
 			return (
 				<WrappedComponent

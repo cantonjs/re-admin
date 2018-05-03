@@ -4,6 +4,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import warning from 'warning';
 import connect from 'hoc/connect';
+import withIssuer from 'hoc/withIssuer';
 import { Spin } from 'antd';
 import { Form } from 'components/Nested';
 import ModalConsumer from 'components/ModalConsumer';
@@ -23,6 +24,7 @@ class FormState {
 }
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
+	@withIssuer({ issuer: issuerText })
 	@connect()
 	class FormModalView extends Component {
 		static displayName = displayName;
@@ -43,7 +45,6 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
-			issuer: PropTypes.instanceOf(Set),
 		};
 
 		static childContextTypes = {
@@ -52,23 +53,11 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		};
 
 		getChildContext() {
-			const issuer = this.context.issuer || new Set();
-			issuer.add(issuerText);
-			return {
-				formState: this._formState,
-				issuer,
-			};
+			return { formState: this._formState };
 		}
 
 		componentWillMount() {
 			this._formState = new FormState();
-		}
-
-		componentWillUnmount() {
-			const { issuer } = this.context;
-			if (issuer) {
-				issuer.delete(issuerText);
-			}
 		}
 
 		_handleOk(ev) {

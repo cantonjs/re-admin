@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import withActions from 'hoc/withActions';
+import withIssuer from 'hoc/withIssuer';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
 import { TOOLBAR } from 'constants/Issuers';
 import { isFunction } from 'lodash';
 
+@withIssuer()
 @withActions
 export default class ContextButton extends Component {
 	static propTypes = {
@@ -20,6 +22,7 @@ export default class ContextButton extends Component {
 		maxSelected: PropTypes.number,
 		onClick: PropTypes.func,
 		method: PropTypes.string,
+		issuers: PropTypes.instanceOf(Set).isRequired,
 	};
 
 	static defaultProps = {
@@ -27,10 +30,6 @@ export default class ContextButton extends Component {
 		component: LinkButton,
 		minSelected: 0,
 		maxSelected: Infinity,
-	};
-
-	static contextTypes = {
-		issuer: PropTypes.instanceOf(Set),
 	};
 
 	_handleClick = (ev) => {
@@ -57,15 +56,14 @@ export default class ContextButton extends Component {
 				multiLabel,
 				minSelected,
 				maxSelected,
+				issuers,
 				...other
 			},
-			context: { issuer },
 		} = this;
 
 		const selected = selectedKeys.length;
 		const disabled = minSelected > selected || maxSelected < selected;
-		const isInToolbar = issuer && issuer.has(TOOLBAR);
-		const Comp = isInToolbar ? Button : component;
+		const Comp = issuers.has(TOOLBAR) ? Button : component;
 		const renderChild =
 			children ||
 			(minSelected && selected > 1 && multiLabel ? multiLabel : label);

@@ -53,8 +53,8 @@ export default class State {
 	constructor(props, context) {
 		this._props = props;
 		this._context = context;
-		const { issuer } = context;
-		this._isUpdater = issuer && issuer.has(UPDATER);
-		this._isQuerier = issuer && issuer.has(QUERIER);
+		const { issuers } = props;
+		this._isUpdater = issuers && issuers.has(UPDATER);
+		this._isQuerier = issuers && issuers.has(QUERIER);
 	}
 }

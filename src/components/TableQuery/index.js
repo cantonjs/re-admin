@@ -9,6 +9,7 @@ import { Form as AntdForm, Row, Col, Button } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
 import localize from 'hoc/localize';
+import withIssuer from 'hoc/withIssuer';
 
 const { Item } = AntdForm;
 
@@ -28,6 +29,7 @@ FooterContainer.propTypes = {
 	children: PropTypes.node,
 };
 
+@withIssuer({ issuer: QUERIER })
 @localize()
 @observer
 export default class TableQuery extends Component {
@@ -53,23 +55,11 @@ export default class TableQuery extends Component {
 	};
 
 	getChildContext() {
-		const issuer = this.context.issuer || new Set();
-		issuer.add(QUERIER);
-		return {
-			issuer,
-			formState: this._formState,
-		};
+		return { formState: this._formState };
 	}
 
 	componentWillMount() {
 		this._formState = new FormState();
-	}
-
-	componentWillUnmount() {
-		const { issuer } = this.context;
-		if (issuer) {
-			issuer.delete(QUERIER);
-		}
 	}
 
 	_handleSearch = (query) => {

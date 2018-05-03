@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import localize from 'hoc/localize';
+import withIssuer from 'hoc/withIssuer';
 import { TOOLBAR } from 'constants/Issuers';
 import ConfirmButton from 'components/ConfirmButton';
 
+@withIssuer()
 @localize({
 	defaultProps: {
 		label: 'label',
@@ -18,10 +20,10 @@ export default class RemoveButton extends Component {
 		multiLabel: PropTypes.stringOrFunc,
 		title: PropTypes.stringOrFunc,
 		content: PropTypes.stringOrFunc,
+		issuers: PropTypes.instanceOf(Set).isRequired,
 	};
 
 	static contextTypes = {
-		issuer: PropTypes.instanceOf(Set),
 		store: PropTypes.object.isRequired,
 	};
 
@@ -30,17 +32,15 @@ export default class RemoveButton extends Component {
 	};
 
 	render() {
-		const { issuer } = this.context;
-		const isInToolbar = issuer && issuer.has(TOOLBAR);
+		const { issuers, ...other } = this.props;
+		const isInToolbar = issuers.has(TOOLBAR);
 		const styleTypes = {};
-		if (isInToolbar) {
-			styleTypes.type = 'danger';
-		}
+		if (isInToolbar) styleTypes.type = 'danger';
 		return (
 			<ConfirmButton
 				onOk={this._handleOk}
 				{...styleTypes}
-				{...this.props}
+				{...other}
 				minSelected={1}
 			/>
 		);
