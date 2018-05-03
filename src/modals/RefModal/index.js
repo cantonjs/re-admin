@@ -1,12 +1,15 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import joinKeys from 'utils/joinKeys';
+import { REF_MODAL } from 'utils/Issuers';
 import { isFunction } from 'lodash';
 import connect from 'hoc/connect';
+import withIssuer from 'hoc/withIssuer';
 import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
+@withIssuer({ issuer: REF_MODAL })
 @connect()
 export default class RefModal extends Component {
 	static propTypes = {
