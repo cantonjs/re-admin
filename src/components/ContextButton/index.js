@@ -4,7 +4,7 @@ import withActions from 'hoc/withActions';
 import withIssuer from 'hoc/withIssuer';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
-import { TOOLBAR } from 'constants/Issuers';
+import { TOOLBAR } from 'utils/Issuers';
 import { isFunction } from 'lodash';
 
 @withIssuer()

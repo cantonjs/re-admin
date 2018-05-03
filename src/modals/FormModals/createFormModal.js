@@ -10,7 +10,7 @@ import { Form } from 'components/Nested';
 import ModalConsumer from 'components/ModalConsumer';
 import FormItemWrapper from 'components/FormItemWrapper';
 import joinKeys from 'utils/joinKeys';
-import { CREATER } from 'constants/Issuers';
+import { CREATER } from 'utils/Issuers';
 
 const styles = {
 	spinContainer: {

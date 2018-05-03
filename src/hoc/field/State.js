@@ -1,5 +1,5 @@
 import { computed } from 'mobx';
-import { UPDATER, QUERIER } from 'constants/Issuers';
+import { UPDATER, QUERIER } from 'utils/Issuers';
 import routerStore from 'stores/routerStore';
 import { isUndefined } from 'lodash';
 

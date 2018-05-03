@@ -1,4 +1,4 @@
-import * as Issuers from 'constants/Issuers';
+import * as Issuers from 'utils/Issuers';
 import createFormModal from './createFormModal';
 
 export const CreaterModal = createFormModal(

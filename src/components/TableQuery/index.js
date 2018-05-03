@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { omit } from 'lodash';
-import { QUERIER } from 'constants/Issuers';
+import { QUERIER } from 'utils/Issuers';
 import { Form as AntdForm, Row, Col, Button } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';

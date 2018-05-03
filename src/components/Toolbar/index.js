@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'antd';
-import { TOOLBAR } from 'constants/Issuers';
+import { TOOLBAR } from 'utils/Issuers';
 import withIssuer from 'hoc/withIssuer';
 
 const { Group } = Button;

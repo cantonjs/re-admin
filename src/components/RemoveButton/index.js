@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import localize from 'hoc/localize';
 import withIssuer from 'hoc/withIssuer';
-import { TOOLBAR } from 'constants/Issuers';
+import { TOOLBAR } from 'utils/Issuers';
 import ConfirmButton from 'components/ConfirmButton';
 
 @withIssuer()

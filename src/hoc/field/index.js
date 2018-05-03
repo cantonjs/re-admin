@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from './styles';
 import PropTypes from 'prop-types';
 import State from './State';
-import { QUERIER } from 'constants/Issuers';
+import { QUERIER } from 'utils/Issuers';
 import { observer } from 'mobx-react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import withIssuer from 'hoc/withIssuer';
