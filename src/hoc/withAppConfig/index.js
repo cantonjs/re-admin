@@ -1,19 +1,15 @@
-
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 import hoistReactInstanceMethods from 'hoist-react-instance-methods';
 
 export default function withAppConfig(mapConfig, options = {}) {
-	const {
-		withRef = false,
-		hoistMethods = [],
-	} = options;
+	const { withRef = false, hoistMethods = [] } = options;
 
 	return function createWithAppConfigComponent(WrappedComponent) {
 		@hoistReactInstanceMethods(
 			(instance) => instance.getWrappedInstance(),
-			hoistMethods,
+			hoistMethods
 		)
 		class WithAppConfig extends Component {
 			static contextTypes = {
@@ -38,6 +34,7 @@ export default function withAppConfig(mapConfig, options = {}) {
 			}
 		}
 
+		WithAppConfig.WrappedComponent = WrappedComponent;
 		return hoistStatics(WithAppConfig, WrappedComponent);
 	};
-};
+}

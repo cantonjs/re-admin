@@ -54,15 +54,14 @@ export default class DataListStore extends BaseDataStore {
 			return [];
 		}
 
-		return this.config.tableRenderers.map(({ render, props, options }) => {
+		return this.config.renderers.map(({ render, props, options }) => {
 			const { getSchemaDefaultProps } = options;
 			const column = {
 				title: props.label || getSchemaDefaultProps().label,
 				key: props.name,
 				dataIndex: props.name,
 				render: function renderTable(text, record, index) {
-					return render(props, {
-						...options,
+					return render('renderTable', {
 						text,
 						value: text,
 						record,
@@ -70,15 +69,51 @@ export default class DataListStore extends BaseDataStore {
 					});
 				},
 			};
-
 			if (props.sortable) {
 				const { sortedKey, sortedOrder } = this;
 				column.sortOrder = props.name === sortedKey ? sortedOrder : false;
 				column.sorter = true;
 			}
-
 			return column;
 		});
+
+		// return this.config.tableRenderers.map(({ render, props, options }) => {
+		// 	const column = {
+		// 		title: null,
+		// 		key: props.name,
+		// 		dataIndex: props.name,
+		// 		render: () => ({
+		// 			props: {
+		// 				colSpan: 0,
+		// 			},
+		// 		}),
+		// 		colSpan: 0,
+		// 	};
+
+		// 	// const { getSchemaDefaultProps } = options;
+		// 	// const column = {
+		// 	// 	title: props.label || getSchemaDefaultProps().label,
+		// 	// 	key: props.name,
+		// 	// 	dataIndex: props.name,
+		// 	// 	render: function renderTable(text, record, index) {
+		// 	// 		return render(props, {
+		// 	// 			...options,
+		// 	// 			text,
+		// 	// 			value: text,
+		// 	// 			record,
+		// 	// 			index,
+		// 	// 		});
+		// 	// 	},
+		// 	// };
+
+		// 	if (props.sortable) {
+		// 		const { sortedKey, sortedOrder } = this;
+		// 		column.sortOrder = props.name === sortedKey ? sortedOrder : false;
+		// 		column.sorter = true;
+		// 	}
+
+		// 	return column;
+		// });
 	}
 
 	get maxSelections() {

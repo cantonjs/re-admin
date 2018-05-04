@@ -82,5 +82,6 @@ export default function field(WrappedComponent) {
 		}
 	}
 
+	WithField.WrappedComponent = WrappedComponent;
 	return hoistNonReactStatics(WithField, WrappedComponent);
 }

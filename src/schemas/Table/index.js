@@ -3,6 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
 import { isFunction, isObject, isBoolean } from 'lodash';
+import FieldBaseWrapper from 'components/FieldBaseWrapper';
 
 const returnsEmptyObject = () => ({});
 
@@ -45,9 +46,17 @@ TableSchema.configuration = {
 		const formRenderers = [];
 		const queryRenderers = [];
 		const tableRenderers = [];
+		const renderers = [];
 
 		children.forEach((child, index) => {
-			const { inForm, inQuery, inTable, unique, ...props } = child.props;
+			const {
+				inForm,
+				inQuery,
+				inTable,
+				unique,
+				renderer,
+				...props
+			} = child.props;
 			const { getSchemaDefaultProps = returnsEmptyObject } = child.type;
 
 			const push = (nodes, inIssuer, renderKey, defaultRender) => {
@@ -113,6 +122,77 @@ TableSchema.configuration = {
 			push(formRenderers, inForm, 'renderForm');
 			push(queryRenderers, inQuery, 'renderQuery');
 			push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
+
+			const key = child.key || index;
+			const Component = child.type;
+			const component = Component;
+			const options = {
+				key,
+				component,
+				Component,
+				getSchemaDefaultProps,
+			};
+			renderers.push({
+				render(renderKey, extraOptions) {
+					// eslint-disable-next-line react/display-name
+					const createRenderFn = (inIssuer) => () => {
+						if (isFunction(inIssuer)) {
+							return inIssuer(props, {
+								...options,
+								...extraOptions,
+							});
+						}
+
+						if (isObject(inIssuer)) {
+							return <Component {...props} {...inIssuer} />;
+						}
+
+						// if (!isBoolean(inIssuer)) {
+						// 	return function render() {
+						// 		return <span>{inIssuer}</span>;
+						// 	};
+						// }
+
+						if (isFunction(Component[renderKey])) {
+							return Component[renderKey](props, {
+								...options,
+								...extraOptions,
+							});
+						}
+
+						if (renderKey === 'renderTable') {
+							console.log(extraOptions.value);
+
+							return extraOptions.value;
+						}
+
+						return <Component {...props} />;
+					};
+
+					const finalRenderer = (ctx) => {
+						if (inTable) ctx.when(ctx.is(ctx.TABLE), createRenderFn(inTable));
+						if (inForm) {
+							ctx.when(
+								ctx.is(ctx.UPDATER) || ctx.is(ctx.CREATER),
+								createRenderFn(inForm)
+							);
+						}
+						if (inQuery) {
+							ctx.when(ctx.is(ctx.QUERIER), createRenderFn(inQuery));
+						}
+						if (renderer) renderer(ctx);
+					};
+					return (
+						<FieldBaseWrapper
+							options={options}
+							props={props}
+							renderer={finalRenderer}
+						/>
+					);
+				},
+				props,
+				options,
+			});
 		});
 
 		const table = {
@@ -121,6 +201,7 @@ TableSchema.configuration = {
 			formRenderers,
 			queryRenderers,
 			tableRenderers,
+			renderers,
 		};
 
 		if (uniqueKey) table.uniqueKey = uniqueKey;

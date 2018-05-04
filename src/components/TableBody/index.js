@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
 import localize from 'hoc/localize';
+import { TABLE } from 'utils/Issuers';
+import withIssuer from 'hoc/withIssuer';
 
 const styles = {
 	footer: {
@@ -22,6 +24,7 @@ const styles = {
 	},
 };
 
+@withIssuer({ issuer: TABLE })
 @localize()
 @observer
 export default class TableBody extends Component {
