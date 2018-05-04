@@ -5,9 +5,10 @@ import hoistReactInstanceMethods from 'hoist-react-instance-methods';
 
 const IssuerContext = createReactContext(new Set());
 
-const mergeIssuers = (issuers, issuer) => {
-	issuers.add(issuer);
-	return issuers;
+const extendIssuers = (issuers, issuer) => {
+	const newIssuers = new Set(issuers);
+	newIssuers.add(issuer);
+	return newIssuers;
 };
 
 export default function withIssuer(options = {}) {
@@ -27,7 +28,7 @@ export default function withIssuer(options = {}) {
 
 			_renderProvider(issuers) {
 				return (
-					<IssuerContext.Provider value={mergeIssuers(issuers, issuer)}>
+					<IssuerContext.Provider value={extendIssuers(issuers, issuer)}>
 						<WrappedComponent {...this.props} {...this._withRef} />
 					</IssuerContext.Provider>
 				);
@@ -56,6 +57,7 @@ export default function withIssuer(options = {}) {
 			}
 		}
 
+		WithIssuer.WrappedComponent = WrappedComponent;
 		return hoistStatics(WithIssuer, WrappedComponent);
 	};
 }
