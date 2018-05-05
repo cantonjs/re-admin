@@ -8,10 +8,12 @@ export default class FieldBaseWrapper extends Component {
 	static propTypes = {
 		renderer: PropTypes.func.isRequired,
 		issuers: PropTypes.instanceOf(Set).isRequired,
+		props: PropTypes.object.isRequired,
+		options: PropTypes.object.isRequired,
 		children: PropTypes.func,
 	};
 
-	_rendererContext = new RendererContext();
+	_rendererContext = new RendererContext(this.props);
 
 	render() {
 		const { renderer, issuers, children } = this.props;

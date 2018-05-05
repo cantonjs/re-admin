@@ -1,7 +1,9 @@
 import * as Issuers from 'utils/Issuers';
 
 export default class RendererContext {
-	constructor() {
+	constructor({ props, options }) {
+		this.props = props;
+		this.options = options;
 		this._flows = [];
 		Object.assign(this, Issuers);
 	}
