@@ -133,7 +133,7 @@ TableSchema.configuration = {
 				getSchemaDefaultProps,
 			};
 			renderers.push({
-				render(renderKey, extraOptions) {
+				render(renderKey, extraOptions, extraProps) {
 					// eslint-disable-next-line react/display-name
 					const createRenderFn = (inIssuer) => () => {
 						if (isFunction(inIssuer)) {
@@ -147,12 +147,6 @@ TableSchema.configuration = {
 							return <Component {...props} {...inIssuer} />;
 						}
 
-						// if (!isBoolean(inIssuer)) {
-						// 	return function render() {
-						// 		return <span>{inIssuer}</span>;
-						// 	};
-						// }
-
 						if (isFunction(Component[renderKey])) {
 							return Component[renderKey](props, {
 								...options,
@@ -161,8 +155,6 @@ TableSchema.configuration = {
 						}
 
 						if (renderKey === 'renderTable') {
-							console.log(extraOptions.value);
-
 							return extraOptions.value;
 						}
 
@@ -182,11 +174,13 @@ TableSchema.configuration = {
 						}
 						if (renderer) renderer(ctx);
 					};
+
 					return (
 						<FieldBaseWrapper
 							options={options}
 							props={props}
 							renderer={finalRenderer}
+							{...extraProps}
 						/>
 					);
 				},

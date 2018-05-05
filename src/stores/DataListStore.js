@@ -50,23 +50,33 @@ export default class DataListStore extends BaseDataStore {
 
 	@computed
 	get columns() {
-		if (!this.config.tableRenderers) {
-			return [];
-		}
-
-		return this.config.renderers.map(({ render, props, options }) => {
+		const { renderers } = this.config;
+		if (!renderers) return [];
+		return renderers.map(({ render, props, options }) => {
 			const { getSchemaDefaultProps } = options;
 			const column = {
 				title: props.label || getSchemaDefaultProps().label,
 				key: props.name,
 				dataIndex: props.name,
-				render: function renderTable(text, record, index) {
-					return render('renderTable', {
-						text,
-						value: text,
-						record,
-						index,
-					});
+
+				// inject `column` prop to <TableHeadCell />
+				onHeaderCell: (column) => ({ column }),
+
+				// for `components/TableBody/TableHeadCell` component
+				renderHeaderCell: function renderCell(extraProps) {
+					return render('renderTable', {}, extraProps);
+				},
+
+				// for `components/TableBody/TableCell` component
+				render: function renderTable(value, record, index) {
+					return {
+						props: {
+							renderProps: { text: value, value, record, index },
+							renderBodyCell(...args) {
+								return render('renderTable', ...args);
+							},
+						},
+					};
 				},
 			};
 			if (props.sortable) {

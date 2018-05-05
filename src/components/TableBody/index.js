@@ -7,6 +7,8 @@ import clearSortedInfo from 'utils/clearSortedInfo';
 import localize from 'hoc/localize';
 import { TABLE } from 'utils/Issuers';
 import withIssuer from 'hoc/withIssuer';
+import TableCell from './TableCell';
+import TableHeadCell from './TableHeadCell';
 
 const styles = {
 	footer: {
@@ -22,6 +24,11 @@ const styles = {
 		float: 'right',
 		textAlign: 'right',
 	},
+};
+
+const components = {
+	header: { cell: TableHeadCell },
+	body: { cell: TableCell },
 };
 
 @withIssuer({ issuer: TABLE })
@@ -115,6 +122,7 @@ export default class TableBody extends Component {
 					dataSource={dataSource}
 					loading={isFetching}
 					pagination={false}
+					components={components}
 					onChange={this._handleChange}
 				/>
 
