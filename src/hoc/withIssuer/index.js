@@ -20,6 +20,10 @@ export default function withIssuer(options = {}) {
 			hoistMethods
 		)
 		class WithIssuer extends Component {
+			static defaultProps = {
+				...WrappedComponent.defaultProps,
+			};
+
 			_withRef = withRef ? { ref: (c) => (this.wrappedInstance = c) } : {};
 
 			getWrappedInstance() {
@@ -57,6 +61,7 @@ export default function withIssuer(options = {}) {
 			}
 		}
 
+		WithIssuer.WrappedComponent = WrappedComponent;
 		WithIssuer.WrappedComponent = WrappedComponent;
 		return hoistStatics(WithIssuer, WrappedComponent);
 	};
