@@ -124,6 +124,7 @@ export default class TableBody extends Component {
 					pagination={false}
 					components={components}
 					onChange={this._handleChange}
+					size="middle"
 				/>
 
 				<div style={styles.footer}>
