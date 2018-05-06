@@ -130,12 +130,8 @@ export default class DataListStore extends BaseDataStore {
 		return this.config.maxSelections;
 	}
 
-	get queryRenderers() {
-		return this.config.queryRenderers;
-	}
-
-	get formRenderers() {
-		return this.config.formRenderers;
+	get renderers() {
+		return this.config.renderers;
 	}
 
 	constructor(options) {

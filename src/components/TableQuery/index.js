@@ -82,14 +82,14 @@ export default class TableQuery extends Component {
 	};
 
 	_renderBody() {
-		const { children, store: { queryRenderers } } = this.props;
+		const { children, store: { renderers } } = this.props;
 		if (children) {
 			return children;
 		}
 		return (
-			queryRenderers.length > 0 && (
+			renderers.length > 0 && (
 				<Row style={styles.main}>
-					{queryRenderers.map((renderOptions, index) => (
+					{renderers.map((renderOptions, index) => (
 						<FormItemWrapper renderOptions={renderOptions} key={index} />
 					))}
 				</Row>

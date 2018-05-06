@@ -88,7 +88,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 
 		render() {
 			const { props: { store, title, width }, context } = this;
-			const { isFetching, formRenderers } = store || context.store;
+			const { isFetching, renderers } = store || context.store;
 			return (
 				<ModalConsumer
 					title={title}
@@ -107,7 +107,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 							</div>
 						)}
 						{!isFetching &&
-							formRenderers.map((renderOptions, index) => (
+							renderers.map((renderOptions, index) => (
 								<FormItemWrapper
 									renderOptions={renderOptions}
 									withLayout

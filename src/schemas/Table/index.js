@@ -43,7 +43,6 @@ TableSchema.configuration = {
 
 		let uniqueKey;
 
-		const formRenderers = [];
 		const queryRenderers = [];
 		const tableRenderers = [];
 		const renderers = [];
@@ -59,6 +58,7 @@ TableSchema.configuration = {
 			} = child.props;
 			const { getSchemaDefaultProps = returnsEmptyObject } = child.type;
 
+			/* TO BE DELETED STARTS */
 			const push = (nodes, inIssuer, renderKey, defaultRender) => {
 				if (!inIssuer) {
 					return;
@@ -119,9 +119,9 @@ TableSchema.configuration = {
 			if (!uniqueKey && unique) {
 				uniqueKey = props.name;
 			}
-			push(formRenderers, inForm, 'renderForm');
 			push(queryRenderers, inQuery, 'renderQuery');
 			push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
+			/* TO BE DELETED END */
 
 			const key = child.key || index;
 			const Component = child.type;
@@ -133,25 +133,26 @@ TableSchema.configuration = {
 				getSchemaDefaultProps,
 			};
 			renderers.push({
-				render(renderKey, extraOptions, extraProps) {
-					const getRenderOptions = () => ({ ...options, ...extraOptions });
-
+				render(renderKey, extraOptions, extraGatewayProps) {
 					// eslint-disable-next-line react/display-name
-					const createRenderFn = (inIssuer) => () => {
+					const createRenderFn = (inIssuer) => (otherProps) => {
+						const instanceProps = { ...props, ...otherProps };
+						const getRenderOptions = () => ({ ...options, ...extraOptions });
+
 						if (isFunction(inIssuer)) {
-							return inIssuer(props, getRenderOptions());
+							return inIssuer(instanceProps, getRenderOptions());
 						}
 
 						if (isObject(inIssuer)) {
-							return <Component {...props} {...inIssuer} />;
+							return <Component {...instanceProps} {...inIssuer} />;
 						}
 
 						if (isFunction(Component[renderKey])) {
-							return Component[renderKey](props, getRenderOptions());
+							return Component[renderKey](instanceProps, getRenderOptions());
 						}
 
 						if (renderKey === 'renderTable') return extraOptions.value;
-						return <Component {...props} />;
+						return <Component {...instanceProps} />;
 					};
 
 					const renderer = (ctx) => {
@@ -173,7 +174,7 @@ TableSchema.configuration = {
 							options={options}
 							props={props}
 							renderer={renderer}
-							{...extraProps}
+							{...extraGatewayProps}
 						/>
 					);
 				},
@@ -185,7 +186,6 @@ TableSchema.configuration = {
 		const table = {
 			...other,
 			api: parseAPIPath(api || name),
-			formRenderers,
 			queryRenderers,
 			tableRenderers,
 			renderers,
