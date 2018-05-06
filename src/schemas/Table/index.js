@@ -155,15 +155,15 @@ TableSchema.configuration = {
 					};
 
 					const renderer = (ctx) => {
-						if (inTable) ctx.when(ctx.is(ctx.TABLE), createRenderFn(inTable));
+						if (inTable) ctx.when(ctx.is.TABLE, createRenderFn(inTable));
 						if (inForm) {
 							ctx.when(
-								ctx.is(ctx.UPDATER) || ctx.is(ctx.CREATER),
+								ctx.is.UPDATER || ctx.is.CREATER,
 								createRenderFn(inForm)
 							);
 						}
 						if (inQuery) {
-							ctx.when(ctx.is(ctx.QUERIER), createRenderFn(inQuery));
+							ctx.when(ctx.is.QUERIER, createRenderFn(inQuery));
 						}
 						if (rendererProp) rendererProp(ctx);
 					};
