@@ -3,7 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
 import { isFunction, isObject, isBoolean } from 'lodash';
-import FieldBaseWrapper from 'components/FieldBaseWrapper';
+import FieldGateway from 'components/FieldGateway';
 
 const returnsEmptyObject = () => ({});
 
@@ -54,7 +54,7 @@ TableSchema.configuration = {
 				inQuery,
 				inTable,
 				unique,
-				renderer,
+				renderer: rendererProp,
 				...props
 			} = child.props;
 			const { getSchemaDefaultProps = returnsEmptyObject } = child.type;
@@ -134,13 +134,12 @@ TableSchema.configuration = {
 			};
 			renderers.push({
 				render(renderKey, extraOptions, extraProps) {
+					const getRenderOptions = () => ({ ...options, ...extraOptions });
+
 					// eslint-disable-next-line react/display-name
 					const createRenderFn = (inIssuer) => () => {
 						if (isFunction(inIssuer)) {
-							return inIssuer(props, {
-								...options,
-								...extraOptions,
-							});
+							return inIssuer(props, getRenderOptions());
 						}
 
 						if (isObject(inIssuer)) {
@@ -148,20 +147,14 @@ TableSchema.configuration = {
 						}
 
 						if (isFunction(Component[renderKey])) {
-							return Component[renderKey](props, {
-								...options,
-								...extraOptions,
-							});
+							return Component[renderKey](props, getRenderOptions());
 						}
 
-						if (renderKey === 'renderTable') {
-							return extraOptions.value;
-						}
-
+						if (renderKey === 'renderTable') return extraOptions.value;
 						return <Component {...props} />;
 					};
 
-					const finalRenderer = (ctx) => {
+					const renderer = (ctx) => {
 						if (inTable) ctx.when(ctx.is(ctx.TABLE), createRenderFn(inTable));
 						if (inForm) {
 							ctx.when(
@@ -172,14 +165,14 @@ TableSchema.configuration = {
 						if (inQuery) {
 							ctx.when(ctx.is(ctx.QUERIER), createRenderFn(inQuery));
 						}
-						if (renderer) renderer(ctx);
+						if (rendererProp) rendererProp(ctx);
 					};
 
 					return (
-						<FieldBaseWrapper
+						<FieldGateway
 							options={options}
 							props={props}
-							renderer={finalRenderer}
+							renderer={renderer}
 							{...extraProps}
 						/>
 					);

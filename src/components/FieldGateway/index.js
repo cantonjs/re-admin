@@ -4,7 +4,7 @@ import withIssuer from 'hoc/withIssuer';
 import RendererContext from './RendererContext';
 
 @withIssuer()
-export default class FieldBaseWrapper extends Component {
+export default class FieldGateway extends Component {
 	static propTypes = {
 		renderer: PropTypes.func.isRequired,
 		issuers: PropTypes.instanceOf(Set).isRequired,
