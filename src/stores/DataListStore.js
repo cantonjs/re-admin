@@ -86,44 +86,6 @@ export default class DataListStore extends BaseDataStore {
 			}
 			return column;
 		});
-
-		// return this.config.tableRenderers.map(({ render, props, options }) => {
-		// 	const column = {
-		// 		title: null,
-		// 		key: props.name,
-		// 		dataIndex: props.name,
-		// 		render: () => ({
-		// 			props: {
-		// 				colSpan: 0,
-		// 			},
-		// 		}),
-		// 		colSpan: 0,
-		// 	};
-
-		// 	// const { getSchemaDefaultProps } = options;
-		// 	// const column = {
-		// 	// 	title: props.label || getSchemaDefaultProps().label,
-		// 	// 	key: props.name,
-		// 	// 	dataIndex: props.name,
-		// 	// 	render: function renderTable(text, record, index) {
-		// 	// 		return render(props, {
-		// 	// 			...options,
-		// 	// 			text,
-		// 	// 			value: text,
-		// 	// 			record,
-		// 	// 			index,
-		// 	// 		});
-		// 	// 	},
-		// 	// };
-
-		// 	if (props.sortable) {
-		// 		const { sortedKey, sortedOrder } = this;
-		// 		column.sortOrder = props.name === sortedKey ? sortedOrder : false;
-		// 		column.sorter = true;
-		// 	}
-
-		// 	return column;
-		// });
 	}
 
 	get maxSelections() {
@@ -138,17 +100,13 @@ export default class DataListStore extends BaseDataStore {
 		super(options);
 
 		const { config, appConfig, baseRequest } = this;
-		const { tableRenderers, queryRenderers, api } = config;
+		const { queryRenderers, api } = config;
 
 		this.size = +appConfig.api.count;
 		this.extends = {};
 
 		if (api) {
-			const sortableField =
-				tableRenderers && tableRenderers.find(({ props }) => props.sortable);
-
 			this.uniqueKey = config.uniqueKey;
-			this.hasSortableField = !!sortableField;
 			this.hasQueryField = !!queryRenderers.length;
 			const count = +api.query.count;
 			const hasCount = !!count;
@@ -159,9 +117,7 @@ export default class DataListStore extends BaseDataStore {
 
 			const request = baseRequest.clone({
 				queryTransformer: (query) => {
-					if (hasCount) {
-						query.count = count;
-					}
+					if (hasCount) query.count = count;
 					return query;
 				},
 			});

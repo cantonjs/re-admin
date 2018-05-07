@@ -120,7 +120,6 @@ TableSchema.configuration = {
 				uniqueKey = props.name;
 			}
 			push(queryRenderers, inQuery, 'renderQuery');
-			push(tableRenderers, inTable, 'renderTable', (props, { text }) => text);
 			/* TO BE DELETED END */
 
 			const key = child.key || index;
@@ -187,7 +186,6 @@ TableSchema.configuration = {
 			...other,
 			api: parseAPIPath(api || name),
 			queryRenderers,
-			tableRenderers,
 			renderers,
 		};
 
@@ -195,7 +193,7 @@ TableSchema.configuration = {
 
 		this[name] = table;
 
-		if (tableRenderers.length && !table.uniqueKey) {
+		if (renderers.length && !table.uniqueKey) {
 			console.error(`Table "${name}" is missing uniqueKey!`);
 		}
 

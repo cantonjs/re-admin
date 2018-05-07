@@ -25,11 +25,8 @@ export default class TableQuerySwitch extends Component {
 	};
 
 	render() {
-		const { hasSortableField, hasQueryField } = this.context.store;
-
-		if (!hasSortableField && !hasQueryField) {
-			return null;
-		}
+		const { hasQueryField } = this.context.store;
+		if (!hasQueryField) return null;
 
 		const { children } = this.props;
 		return (

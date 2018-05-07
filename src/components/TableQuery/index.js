@@ -3,15 +3,12 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { omit } from 'lodash';
 import { QUERIER } from 'utils/Issuers';
-import { Form as AntdForm, Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import FormItemWrapper from 'components/FormItemWrapper';
 import localize from 'hoc/localize';
 import withIssuer from 'hoc/withIssuer';
-
-const { Item } = AntdForm;
 
 class FormState {
 	@observable data = {};
@@ -70,13 +67,6 @@ export default class TableQuery extends Component {
 		this.props.store.setQuery({});
 	};
 
-	_handleResetSort = () => {
-		const { sortKey, orderKey } = this.context.appConfig.api;
-		const { store } = this.props;
-		const query = omit(store.query, [sortKey, orderKey]);
-		store.setQuery(query);
-	};
-
 	_handleChange = (data) => {
 		this._formState.data = data;
 	};
@@ -99,20 +89,13 @@ export default class TableQuery extends Component {
 
 	render() {
 		const {
-			props: {
-				children,
-				header,
-				footer,
-				store: { hasSortableField, hasQueryField, sortedOrder, sortedKey },
-			},
+			props: { children, header, footer, store: { hasQueryField } },
 			locale,
 		} = this;
 
 		const hasChildren = !!Children.count(children) || hasQueryField;
 
-		if (!hasChildren && !hasSortableField) {
-			return null;
-		}
+		if (!hasChildren) return null;
 
 		return (
 			<Form
@@ -129,16 +112,6 @@ export default class TableQuery extends Component {
 					<FooterContainer>
 						{hasChildren && <Submit type="primary">{locale.search}</Submit>}
 						{hasChildren && <Reset>{locale.reset}</Reset>}
-						{hasSortableField && (
-							<Item>
-								<Button
-									onClick={this._handleResetSort}
-									disabled={!sortedOrder && !sortedKey}
-								>
-									{locale.resetOrder}
-								</Button>
-							</Item>
-						)}
 					</FooterContainer>
 				)}
 			</Form>
