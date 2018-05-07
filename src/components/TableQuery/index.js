@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { QUERIER } from 'utils/Issuers';
 import { Row, Col } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
-import FormItemWrapper from 'components/FormItemWrapper';
+import QueryItem from './QueryItem';
 import localize from 'hoc/localize';
 import withIssuer from 'hoc/withIssuer';
 
@@ -35,10 +35,12 @@ export default class TableQuery extends Component {
 		children: PropTypes.node,
 		header: PropTypes.node,
 		footer: PropTypes.node,
+		hidden: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		store: {},
+		hidden: false,
 	};
 
 	static contextTypes = {
@@ -74,32 +76,28 @@ export default class TableQuery extends Component {
 	_renderBody() {
 		const { children, store: { renderers } } = this.props;
 		if (children) {
-			return children;
+			return Children.map(children, (child, index) => (
+				<QueryItem key={index}>{child}</QueryItem>
+			));
 		}
 		return (
 			renderers.length > 0 && (
 				<Row style={styles.main}>
-					{renderers.map((renderOptions, index) => (
-						<FormItemWrapper renderOptions={renderOptions} key={index} />
-					))}
+					{renderers.map(({ render, props, options }, index) => {
+						const children = render(props, options);
+						if (children) return <QueryItem key={index}>{children}</QueryItem>;
+						return null;
+					})}
 				</Row>
 			)
 		);
 	}
 
 	render() {
-		const {
-			props: { children, header, footer, store: { hasQueryField } },
-			locale,
-		} = this;
-
-		const hasChildren = !!Children.count(children) || hasQueryField;
-
-		if (!hasChildren) return null;
-
+		const { props: { header, footer, hidden, store }, locale } = this;
 		return (
 			<Form
-				style={styles.container}
+				style={styles.container(hidden ? styles.hidden : {})}
 				onSubmit={this._handleSearch}
 				onReset={this._handleReset}
 				onChange={this._handleChange}
@@ -110,8 +108,8 @@ export default class TableQuery extends Component {
 				{!!footer && <FooterContainer>{footer}</FooterContainer>}
 				{!footer && (
 					<FooterContainer>
-						{hasChildren && <Submit type="primary">{locale.search}</Submit>}
-						{hasChildren && <Reset>{locale.reset}</Reset>}
+						<Submit type="primary">{locale.search}</Submit>
+						<Reset>{locale.reset}</Reset>
 					</FooterContainer>
 				)}
 			</Form>

@@ -54,68 +54,7 @@ TableSchema.configuration = {
 				...props
 			} = child.props;
 
-			/* TO BE DELETED STARTS */
-			const push = (nodes, inIssuer, renderKey, defaultRender) => {
-				if (!inIssuer) {
-					return;
-				}
-
-				const key = child.key || index;
-				const Component = child.type;
-				const component = Component;
-
-				const render = (function () {
-					if (isFunction(inIssuer)) {
-						return inIssuer;
-					}
-
-					if (isObject(inIssuer)) {
-						return function render(props) {
-							return <Component {...props} {...inIssuer} />;
-						};
-					}
-
-					if (!isBoolean(inIssuer)) {
-						return function render() {
-							return <span>{inIssuer}</span>;
-						};
-					}
-
-					if (isFunction(Component[renderKey])) {
-						return Component[renderKey];
-					}
-
-					if (defaultRender) {
-						return defaultRender;
-					}
-
-					return function render(props) {
-						return <Component {...props} />;
-					};
-				})();
-
-				const options = {
-					key,
-					component,
-					Component,
-				};
-
-				const renderNode = () => {
-					const node = render(props, options);
-					if (!node) {
-						return null;
-					}
-					return node.key ? node : cloneElement(node, { key });
-				};
-
-				nodes.push({ render, renderNode, props, options });
-			};
-
-			if (!uniqueKey && unique) {
-				uniqueKey = props.name;
-			}
-			push(queryRenderers, inQuery, 'renderQuery');
-			/* TO BE DELETED END */
+			if (!uniqueKey && unique) uniqueKey = props.name;
 
 			const key = child.key || index;
 			const Component = child.type;

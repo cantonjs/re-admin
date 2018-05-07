@@ -25,9 +25,8 @@ export default class TableQuerySwitch extends Component {
 	};
 
 	render() {
-		const { hasQueryField } = this.context.store;
-		if (!hasQueryField) return null;
-
+		const { queryFieldsCount } = this.context.store;
+		if (!queryFieldsCount) return null;
 		const { children } = this.props;
 		return (
 			<Checkbox checked={panelsStore.isShowQuery} onChange={this._handleToggle}>

@@ -7,7 +7,7 @@ export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
 	@observable selectedKeys = [];
 	@observable query = {};
-	@observable queryFieldsCounter = 0;
+	@observable queryFieldsCount = 0;
 
 	collections = observable.map();
 	totals = observable.map();
@@ -101,14 +101,13 @@ export default class DataListStore extends BaseDataStore {
 		super(options);
 
 		const { config, appConfig, baseRequest } = this;
-		const { queryRenderers, api } = config;
+		const { api } = config;
 
 		this.size = +appConfig.api.count;
 		this.extends = {};
 
 		if (api) {
 			this.uniqueKey = config.uniqueKey;
-			this.hasQueryField = !!queryRenderers.length;
 			const count = +api.query.count;
 			const hasCount = !!count;
 
@@ -209,13 +208,13 @@ export default class DataListStore extends BaseDataStore {
 	}
 
 	@action
-	increaseQueryFieldsCounter() {
-		this.queryFieldsCounter++;
+	increaseQueryFieldsCount() {
+		this.queryFieldsCount++;
 	}
 
 	@action
-	decreaseQueryFieldsCounter() {
-		this.queryFieldsCounter--;
+	decreaseQueryFieldsCount() {
+		this.queryFieldsCount--;
 	}
 
 	setSelectedKeys(selectedKeys = []) {
