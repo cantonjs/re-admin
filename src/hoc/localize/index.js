@@ -11,10 +11,7 @@ export default function localize(options = {}) {
 		component: localeComponent,
 	} = options;
 	return function createLocalizedComponent(WrappedComponent) {
-		const {
-			displayName,
-			getSchemaDefaultProps: originalGetSchemaDefaultProps,
-		} = WrappedComponent;
+		const { displayName } = WrappedComponent;
 		const localeComponentName = localeComponent || displayName;
 		const store = localeStore[localeComponentName];
 		const hasLocale = !!store;
@@ -47,16 +44,6 @@ export default function localize(options = {}) {
 		@hoist(WrappedComponent)
 		@observer
 		class LocaleComponent extends Component {
-			static getSchemaDefaultProps = function getSchemaDefaultProps() {
-				const localeProps = getDefaultLocaleProps();
-				return originalGetSchemaDefaultProps ?
-					{
-						...originalGetSchemaDefaultProps(),
-						...localeProps,
-					} :
-					localeProps;
-			};
-
 			static defaultProps = WrappedComponent.defaultProps;
 
 			render() {

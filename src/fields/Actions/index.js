@@ -2,14 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import field from 'hoc/field';
 import ActionInternalView from './ActionInternalView';
-import localize from 'hoc/localize';
+import ActionLabel from './ActionLabel';
 
 @field
-@localize({
-	defaultProps: {
-		label: 'label',
-	},
-})
 export default class ActionsField extends Component {
 	static propTypes = {
 		component: PropTypes.component,
@@ -18,6 +13,7 @@ export default class ActionsField extends Component {
 	static defaultProps = {
 		component: 'div',
 		inTable: true,
+		label: () => <ActionLabel />,
 	};
 
 	static renderTable(props, { record }) {

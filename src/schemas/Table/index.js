@@ -5,8 +5,6 @@ import parseAPIPath from 'utils/parseAPIPath';
 import { isFunction, isObject, isBoolean } from 'lodash';
 import FieldGateway from 'components/FieldGateway';
 
-const returnsEmptyObject = () => ({});
-
 export default function TableSchema() {
 	return <noscript />;
 }
@@ -44,7 +42,6 @@ TableSchema.configuration = {
 		let uniqueKey;
 
 		const queryRenderers = [];
-		const tableRenderers = [];
 		const renderers = [];
 
 		children.forEach((child, index) => {
@@ -56,7 +53,6 @@ TableSchema.configuration = {
 				renderer: rendererProp,
 				...props
 			} = child.props;
-			const { getSchemaDefaultProps = returnsEmptyObject } = child.type;
 
 			/* TO BE DELETED STARTS */
 			const push = (nodes, inIssuer, renderKey, defaultRender) => {
@@ -102,7 +98,6 @@ TableSchema.configuration = {
 					key,
 					component,
 					Component,
-					getSchemaDefaultProps,
 				};
 
 				const renderNode = () => {
@@ -129,7 +124,6 @@ TableSchema.configuration = {
 				key,
 				component,
 				Component,
-				getSchemaDefaultProps,
 			};
 			renderers.push({
 				render(renderKey, extraOptions, extraGatewayProps) {

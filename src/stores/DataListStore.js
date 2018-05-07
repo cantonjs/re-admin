@@ -1,5 +1,5 @@
 import { autorun, action, observable, computed, toJS } from 'mobx';
-import { isUndefined, omitBy } from 'lodash';
+import { isUndefined, isFunction, omitBy } from 'lodash';
 import modalStore from 'stores/modalStore';
 import BaseDataStore from 'stores/BaseDataStore';
 
@@ -7,6 +7,8 @@ export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
 	@observable selectedKeys = [];
 	@observable query = {};
+	@observable queryFieldsCounter = 0;
+
 	collections = observable.map();
 	totals = observable.map();
 
@@ -52,10 +54,9 @@ export default class DataListStore extends BaseDataStore {
 	get columns() {
 		const { renderers } = this.config;
 		if (!renderers) return [];
-		return renderers.map(({ render, props, options }) => {
-			const { getSchemaDefaultProps } = options;
+		return renderers.map(({ render, props }) => {
 			const column = {
-				title: props.label || getSchemaDefaultProps().label,
+				title: isFunction(props.label) ? props.label() : props.label,
 				key: props.name,
 				dataIndex: props.name,
 
@@ -205,6 +206,16 @@ export default class DataListStore extends BaseDataStore {
 		this.totals.clear();
 		this.fetch({ query: this.query });
 		this.selectedKeys = [];
+	}
+
+	@action
+	increaseQueryFieldsCounter() {
+		this.queryFieldsCounter++;
+	}
+
+	@action
+	decreaseQueryFieldsCounter() {
+		this.queryFieldsCounter--;
 	}
 
 	setSelectedKeys(selectedKeys = []) {
