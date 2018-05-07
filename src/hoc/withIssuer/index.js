@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import createReactContext from 'create-react-context';
-import hoistStatics from 'hoist-non-react-statics';
-import hoistReactInstanceMethods from 'hoist-react-instance-methods';
+import hoist, { extractRef } from 'hoc/hoist';
 
 const IssuerContext = createReactContext(new Set());
 
@@ -12,39 +11,26 @@ const extendIssuers = (issuers, issuer) => {
 };
 
 export default function withIssuer(options = {}) {
-	const { issuer, withRef = false, hoistMethods = [] } = options;
+	const { issuer } = options;
 
 	return function createIssuerComponent(WrappedComponent) {
-		@hoistReactInstanceMethods(
-			(instance) => instance.getWrappedInstance(),
-			hoistMethods
-		)
+		@hoist(WrappedComponent)
 		class WithIssuer extends Component {
 			static defaultProps = {
 				...WrappedComponent.defaultProps,
 			};
 
-			_withRef = withRef ? { ref: (c) => (this.wrappedInstance = c) } : {};
-
-			getWrappedInstance() {
-				return this.wrappedInstance;
-			}
-
 			_renderProvider(issuers) {
 				return (
 					<IssuerContext.Provider value={extendIssuers(issuers, issuer)}>
-						<WrappedComponent {...this.props} {...this._withRef} />
+						<WrappedComponent {...extractRef(this.props)} />
 					</IssuerContext.Provider>
 				);
 			}
 
 			_renderConsumer(issuers) {
 				return (
-					<WrappedComponent
-						{...this.props}
-						{...this._withRef}
-						issuers={issuers}
-					/>
+					<WrappedComponent {...extractRef(this.props)} issuers={issuers} />
 				);
 			}
 
@@ -60,9 +46,6 @@ export default function withIssuer(options = {}) {
 				);
 			}
 		}
-
-		WithIssuer.WrappedComponent = WrappedComponent;
-		WithIssuer.WrappedComponent = WrappedComponent;
-		return hoistStatics(WithIssuer, WrappedComponent);
+		return WithIssuer;
 	};
 }

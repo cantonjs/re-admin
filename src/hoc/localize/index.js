@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import hoistStatics from 'hoist-non-react-statics';
 import { observer } from 'mobx-react';
 import warning from 'warning';
 import localeStore from 'stores/localeStore';
+import hoist, { extractRef } from 'hoc/hoist';
 
 export default function localize(options = {}) {
 	const {
@@ -44,6 +44,7 @@ export default function localize(options = {}) {
 			}, {});
 		};
 
+		@hoist(WrappedComponent)
 		@observer
 		class LocaleComponent extends Component {
 			static getSchemaDefaultProps = function getSchemaDefaultProps() {
@@ -60,11 +61,14 @@ export default function localize(options = {}) {
 
 			render() {
 				return (
-					<WrappedComponent {...getDefaultLocaleProps()} {...this.props} />
+					<WrappedComponent
+						{...getDefaultLocaleProps()}
+						{...extractRef(this.props)}
+					/>
 				);
 			}
 		}
 
-		return hoistStatics(LocaleComponent, WrappedComponent);
+		return LocaleComponent;
 	};
 }

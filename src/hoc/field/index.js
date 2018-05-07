@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import State from './State';
 import { QUERIER } from 'utils/Issuers';
 import { observer } from 'mobx-react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
 import withIssuer from 'hoc/withIssuer';
+import hoist, { extractRef } from 'hoc/hoist';
 
 export default function field(WrappedComponent) {
+	@hoist(WrappedComponent)
 	@withIssuer()
 	@observer
 	class WithField extends Component {
@@ -73,7 +74,7 @@ export default function field(WrappedComponent) {
 			return (
 				<WrappedComponent
 					wrapperStyle={styles.container}
-					{...other}
+					{...extractRef(other)}
 					required={required && !isInQuery}
 					disabled={disabled && !isInQuery}
 					getValue={this.getValue}
@@ -82,6 +83,5 @@ export default function field(WrappedComponent) {
 		}
 	}
 
-	WithField.WrappedComponent = WrappedComponent;
-	return hoistNonReactStatics(WithField, WrappedComponent);
+	return WithField;
 }

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
+import hoist, { extractRef } from 'hoc/hoist';
 import joinKeys from 'utils/joinKeys';
 import modalStore from 'stores/modalStore';
 import * as Actions from 'constants/Actions';
 
 // Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
+	@hoist(WrappedComponent)
 	@observer
 	class WithActions extends Component {
 		static contextTypes = {
@@ -96,7 +97,7 @@ export default function withActions(WrappedComponent) {
 			const { props, context: { store } } = this;
 			return (
 				<WrappedComponent
-					{...props}
+					{...extractRef(props)}
 					actions={{
 						store,
 						open: this.open,
@@ -112,5 +113,5 @@ export default function withActions(WrappedComponent) {
 		}
 	}
 
-	return hoistNonReactStatics(WithActions, WrappedComponent);
+	return WithActions;
 }

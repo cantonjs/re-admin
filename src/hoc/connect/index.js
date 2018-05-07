@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import hoistStatics from 'hoist-non-react-statics';
+import hoist, { extractRef } from 'hoc/hoist';
 import { observer } from 'mobx-react';
 import modalStore from 'stores/modalStore';
 import { omitBy, isEqual } from 'lodash';
@@ -11,6 +11,7 @@ export default function connect(options = {}) {
 	const router = syncLocation ? routerStore : {};
 
 	return function createConnectComponent(WrappedComponent) {
+		@hoist(WrappedComponent)
 		@observer
 		class ConnectStore extends Component {
 			static propTypes = {
@@ -95,10 +96,10 @@ export default function connect(options = {}) {
 
 			render() {
 				const { props, state } = this;
-				return <WrappedComponent {...props} {...state} />;
+				return <WrappedComponent {...extractRef(props)} {...state} />;
 			}
 		}
 
-		return hoistStatics(ConnectStore, WrappedComponent);
+		return ConnectStore;
 	};
 }
