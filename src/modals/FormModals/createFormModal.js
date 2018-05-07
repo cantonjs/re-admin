@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { createRef } from 'create-react-ref';
 import PropTypes from 'utils/PropTypes';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -52,6 +53,9 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			issuer: PropTypes.instanceOf(Set),
 		};
 
+		_form = createRef();
+		_modal = createRef();
+
 		getChildContext() {
 			return { formState: this._formState };
 		}
@@ -60,12 +64,12 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			this._formState = new FormState();
 		}
 
-		_handleOk(ev) {
-			if (this._form) {
+		_handleOk = (ev) => {
+			if (this._form.current) {
 				ev.preventDefault();
-				this._form.submit();
+				this._form.current.submit();
 			}
-		}
+		};
 
 		_handleChange = (data) => {
 			this._formState.data = data;
@@ -80,7 +84,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
-				this.modal.close();
+				this._modal.current.close();
 			} else if (__DEV__) {
 				warning(false, 'INVALID');
 			}
@@ -94,10 +98,10 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 					title={title}
 					width={width}
 					onOk={this._handleOk}
-					ref={(c) => (this.modal = c)}
+					ref={this._modal}
 				>
 					<Form
-						ref={(c) => (this._form = c)}
+						ref={this._form}
 						onSubmit={this._handleSubmit}
 						onChange={this._handleChange}
 					>

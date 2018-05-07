@@ -1,4 +1,5 @@
 import React, { Component, Children, cloneElement } from 'react';
+import { createRef } from 'create-react-ref';
 import PropTypes from 'utils/PropTypes';
 import field from 'hoc/field';
 import { Form, Button, Icon } from 'antd';
@@ -49,13 +50,15 @@ export default class ArrayOf extends Component {
 		return text.join(',');
 	}
 
+	_ref = createRef();
+
 	_handleAdd = () => {
-		this._node.push(this.props.defaultItemValue);
+		this._ref.current.push(this.props.defaultItemValue);
 	};
 
 	_handleRemove = (ev, key) => {
 		ev.preventDefault();
-		this._node.dropByKey(key);
+		this._ref.current.dropByKey(key);
 	};
 
 	render() {
@@ -74,7 +77,7 @@ export default class ArrayOf extends Component {
 			<NestArrayOf
 				name={name}
 				value={this.props.getValue() || []}
-				ref={(c) => (this._node = c)}
+				ref={this._ref}
 				render={(items) => (
 					<Item {...other} style={wrapperStyle}>
 						{items.map(({ value, name, key }) => (

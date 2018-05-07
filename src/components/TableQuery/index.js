@@ -116,7 +116,6 @@ export default class TableQuery extends Component {
 
 		return (
 			<Form
-				ref={this._saveForm}
 				style={styles.container}
 				onSubmit={this._handleSearch}
 				onReset={this._handleReset}
@@ -124,11 +123,8 @@ export default class TableQuery extends Component {
 				layout="inline"
 			>
 				{!!header && header}
-
 				{this._renderBody()}
-
 				{!!footer && <FooterContainer>{footer}</FooterContainer>}
-
 				{!footer && (
 					<FooterContainer>
 						{hasChildren && <Submit type="primary">{locale.search}</Submit>}
