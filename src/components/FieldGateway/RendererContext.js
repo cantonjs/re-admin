@@ -13,9 +13,9 @@ export default class RendererContext {
 		}
 	}
 
-	constructor(props, options) {
+	constructor(props, state) {
 		this.props = props;
-		this.options = options;
+		this.state = state;
 		Object.assign(this, Issuers);
 		this.is = (issuer) => this.__issuers.has(issuer);
 		Object.keys(Issuers).forEach((key) => {

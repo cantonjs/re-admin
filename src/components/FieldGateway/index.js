@@ -11,7 +11,7 @@ export default class FieldGateway extends Component {
 		renderer: PropTypes.func.isRequired,
 		issuers: PropTypes.instanceOf(Set).isRequired,
 		props: PropTypes.object.isRequired,
-		options: PropTypes.object.isRequired,
+		state: PropTypes.object.isRequired,
 		children: PropTypes.func,
 	};
 
@@ -21,10 +21,10 @@ export default class FieldGateway extends Component {
 			issuers,
 			children,
 			props,
-			options,
+			state,
 			...otherProps
 		} = this.props;
-		const render = RendererContext.render(issuers, renderer, props, options);
+		const render = RendererContext.render(issuers, renderer, props, state);
 		if (children) return children(render, otherProps);
 		return render ? render(otherProps) : null;
 	}

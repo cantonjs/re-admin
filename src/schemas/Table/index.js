@@ -4,8 +4,9 @@ import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
-import { isFunction, isObject, defaults } from 'lodash';
+import { isFunction, isObject } from 'lodash';
 import FieldGateway from 'components/FieldGateway';
+import createRendererState from './createRendererState';
 
 export default function TableSchema() {
 	return <noscript />;
@@ -61,22 +62,10 @@ TableSchema.configuration = {
 
 			const key = child.key || index;
 			const Component = child.type;
-			const component = Component;
-			const options = {
-				key,
-				component,
-				Component,
-			};
+			const options = { key, Component, name };
 
-			const makeRender = (renderProp) => (store = {}, otherProps) => {
-				const ensuredStore = (function () {
-					defaults(store, options);
-					if (!('record' in store)) store.record = {};
-					if (!('name' in store)) store.name = name;
-					if (!('value' in store)) store.value = store.record[store.name];
-					if (!('index' in store)) store.index = 0;
-					return store;
-				})();
+			const makeRender = (renderProp) => (store, otherProps) => {
+				const state = createRendererState(store, options);
 
 				if (isFunction(otherProps)) {
 					const children = otherProps;
@@ -87,7 +76,7 @@ TableSchema.configuration = {
 					const instanceProps = { ...props, ...extraProps };
 
 					if (isFunction(inIssuer)) {
-						return inIssuer(instanceProps, ensuredStore);
+						return inIssuer(instanceProps, state);
 					}
 
 					if (isObject(inIssuer)) {
@@ -95,10 +84,10 @@ TableSchema.configuration = {
 					}
 
 					if (isFunction(Component[renderProp])) {
-						return Component[renderProp](instanceProps, ensuredStore);
+						return Component[renderProp](instanceProps, state);
 					}
 
-					if (renderProp === 'renderTable') return ensuredStore.value;
+					if (renderProp === 'renderTable') return state.value;
 					return <Component {...instanceProps} />;
 				};
 
@@ -113,7 +102,7 @@ TableSchema.configuration = {
 
 				return (
 					<FieldGateway
-						options={ensuredStore}
+						state={state}
 						props={props}
 						renderer={renderer}
 						{...otherProps}
@@ -121,7 +110,6 @@ TableSchema.configuration = {
 				);
 			};
 			renderers.push({
-				options,
 				props,
 				renderTable: makeRender('renderTable'),
 				renderQuery: makeRender('renderQuery'),

@@ -9,11 +9,11 @@ export default (
 			placeholder="ID"
 			disabled
 			unique
-			// inQuery
+			inQuery
 			inForm
 			inTable
 		/>
 
-		{/* <Image name="avatar" label="Avatar" width={60} inForm inTable /> */}
+		<Image name="avatar" label="Avatar" width={60} inForm inTable />
 	</Table>
 );

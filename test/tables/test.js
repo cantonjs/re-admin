@@ -134,8 +134,8 @@ export default (
 			name="check"
 			label="Checked"
 			value
-			inQuery={(props, { record }) =>
-				record.name === 'checkbox' ? <Checkbox {...props} /> : null
+			inQuery={(props, { record, Component }) =>
+				record.name === 'checkbox' ? <Component {...props} /> : null
 			}
 			inTable
 			inForm
