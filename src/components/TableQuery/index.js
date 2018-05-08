@@ -10,7 +10,7 @@ import QueryItem from './QueryItem';
 import localize from 'hoc/localize';
 import withIssuer from 'hoc/withIssuer';
 
-class FormState {
+class QueryState {
 	@observable data = {};
 }
 
@@ -45,21 +45,10 @@ export default class TableQuery extends Component {
 
 	static contextTypes = {
 		appConfig: PropTypes.object.isRequired,
-		issuer: PropTypes.instanceOf(Set),
 	};
 
-	static childContextTypes = {
-		issuer: PropTypes.instanceOf(Set),
-		formState: PropTypes.object,
-	};
-
-	getChildContext() {
-		return { formState: this._formState };
-	}
-
-	componentWillMount() {
-		this._formState = new FormState();
-	}
+	// TODO: use store.queryState instead
+	queryState = new QueryState();
 
 	_handleSearch = (query) => {
 		this.props.store.setQuery(query);
@@ -70,7 +59,7 @@ export default class TableQuery extends Component {
 	};
 
 	_handleChange = (data) => {
-		this._formState.data = data;
+		this.queryState.data = data;
 	};
 
 	_renderBody() {

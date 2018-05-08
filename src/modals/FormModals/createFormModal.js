@@ -43,21 +43,11 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			store: PropTypes.object.isRequired,
 		};
 
-		static childContextTypes = {
-			formState: PropTypes.object,
-			issuer: PropTypes.instanceOf(Set),
-		};
-
 		_form = createRef();
 		_modal = createRef();
 
-		getChildContext() {
-			return { formState: this._formState };
-		}
-
-		componentWillMount() {
-			this._formState = new FormState();
-		}
+		// TODO: use store.formState instead
+		formState = new FormState();
 
 		_handleOk = (ev) => {
 			if (this._form.current) {
@@ -67,8 +57,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		};
 
 		_handleChange = (data) => {
-			console.log('data', data);
-			this._formState.data = data;
+			this.formState.data = data;
 		};
 
 		_handleSubmit = (body, { isInvalid }) => {
@@ -87,7 +76,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		};
 
 		render() {
-			const { props: { store, title, width }, context } = this;
+			const { props: { store, title, width }, context, formState } = this;
 			const { isFetching, renderers } = store || context.store;
 			return (
 				<ModalConsumer
@@ -107,8 +96,8 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 							</div>
 						)}
 						{!isFetching &&
-							renderers.map((renderOptions, index) => (
-								<FormItem renderOptions={renderOptions} key={index} />
+							renderers.map(({ render }, index) => (
+								<FormItem render={render} formState={formState} key={index} />
 							))}
 					</Form>
 				</ModalConsumer>

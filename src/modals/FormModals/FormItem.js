@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Component, cloneElement } from 'react';
+import { cloneElement } from 'react';
 import { observer } from 'mobx-react';
 
 const formItemLayout = {
@@ -13,25 +13,16 @@ const formItemLayout = {
 	},
 };
 
-@observer
-export default class FormItem extends Component {
-	static propTypes = {
-		renderOptions: PropTypes.object,
-	};
+const FormItem = function FormItem({ render, formState }) {
+	const children = render('renderForm', {
+		getData: () => (formState ? formState.data : {}),
+	});
+	return children ? cloneElement(children, formItemLayout) : null;
+};
 
-	static contextTypes = {
-		formState: PropTypes.object,
-	};
+FormItem.propTypes = {
+	render: PropTypes.func.isRequired,
+	formState: PropTypes.object.isRequired,
+};
 
-	render() {
-		const { renderOptions: { render, options } } = this.props;
-		const children = render('renderForm', {
-			...options,
-			getData: () => {
-				const { formState } = this.context;
-				return formState ? formState.data : {};
-			},
-		});
-		return children ? cloneElement(children, formItemLayout) : null;
-	}
-}
+export default observer(FormItem);
