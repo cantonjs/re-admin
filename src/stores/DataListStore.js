@@ -1,5 +1,5 @@
 import { autorun, action, observable, computed, toJS } from 'mobx';
-import { isUndefined, isFunction, omitBy } from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import modalStore from 'stores/modalStore';
 import BaseDataStore from 'stores/BaseDataStore';
 import parseColumn from 'utils/parseColumn';
@@ -55,21 +55,15 @@ export default class DataListStore extends BaseDataStore {
 	get columns() {
 		const { renderers } = this.config;
 		if (!renderers) return [];
-		return renderers.map(({ render, props }) => {
+		return renderers.map(({ renderTable: renderCell, props }) => {
 			const column = parseColumn({
 				title: props.label,
 				key: props.name,
 				dataIndex: props.name,
-				headers: {
-					renderHeaderCell(extraProps) {
-						return render('renderTable', {}, extraProps);
-					},
-				},
+				headers: { renderCell },
 				body: (options) => ({
-					renderProps: { text: options.value, ...options },
-					renderBodyCell(...args) {
-						return render('renderTable', ...args);
-					},
+					extraProps: { text: options.value, ...options },
+					renderCell,
 				}),
 			});
 			if (props.sortable) {

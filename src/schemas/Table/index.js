@@ -1,8 +1,10 @@
-import React, { Children, cloneElement } from 'react';
+/* eslint-disable react/display-name */
+
+import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
-import { isFunction, isObject, isBoolean } from 'lodash';
+import { isFunction, isObject } from 'lodash';
 import FieldGateway from 'components/FieldGateway';
 
 export default function TableSchema() {
@@ -64,54 +66,50 @@ TableSchema.configuration = {
 				component,
 				Component,
 			};
+
+			const makeRender = (renderKey) => (extraOptions, children) => {
+				const createRenderFn = (inIssuer) => (otherProps) => {
+					const instanceProps = { ...props, ...otherProps };
+					const getRenderOptions = () => ({ ...options, ...extraOptions });
+
+					if (isFunction(inIssuer)) {
+						return inIssuer(instanceProps, getRenderOptions());
+					}
+
+					if (isObject(inIssuer)) {
+						return <Component {...instanceProps} {...inIssuer} />;
+					}
+
+					if (isFunction(Component[renderKey])) {
+						return Component[renderKey](instanceProps, getRenderOptions());
+					}
+
+					if (renderKey === 'renderTable') return extraOptions.value;
+					return <Component {...instanceProps} />;
+				};
+
+				const renderer = (ctx) => {
+					if (inTable) ctx.when(ctx.is.TABLE, createRenderFn(inTable));
+					if (inForm) {
+						ctx.when(ctx.is.UPDATER || ctx.is.CREATER, createRenderFn(inForm));
+					}
+					if (inQuery) {
+						ctx.when(ctx.is.QUERIER, createRenderFn(inQuery));
+					}
+					if (rendererProp) rendererProp(ctx);
+				};
+
+				return (
+					<FieldGateway options={options} props={props} renderer={renderer}>
+						{children}
+					</FieldGateway>
+				);
+			};
 			renderers.push({
 				props,
-				options,
-				render(renderKey, extraOptions, extraGatewayProps) {
-					// eslint-disable-next-line react/display-name
-					const createRenderFn = (inIssuer) => (otherProps) => {
-						const instanceProps = { ...props, ...otherProps };
-						const getRenderOptions = () => ({ ...options, ...extraOptions });
-
-						if (isFunction(inIssuer)) {
-							return inIssuer(instanceProps, getRenderOptions());
-						}
-
-						if (isObject(inIssuer)) {
-							return <Component {...instanceProps} {...inIssuer} />;
-						}
-
-						if (isFunction(Component[renderKey])) {
-							return Component[renderKey](instanceProps, getRenderOptions());
-						}
-
-						if (renderKey === 'renderTable') return extraOptions.value;
-						return <Component {...instanceProps} />;
-					};
-
-					const renderer = (ctx) => {
-						if (inTable) ctx.when(ctx.is.TABLE, createRenderFn(inTable));
-						if (inForm) {
-							ctx.when(
-								ctx.is.UPDATER || ctx.is.CREATER,
-								createRenderFn(inForm)
-							);
-						}
-						if (inQuery) {
-							ctx.when(ctx.is.QUERIER, createRenderFn(inQuery));
-						}
-						if (rendererProp) rendererProp(ctx);
-					};
-
-					return (
-						<FieldGateway
-							options={options}
-							props={props}
-							renderer={renderer}
-							{...extraGatewayProps}
-						/>
-					);
-				},
+				renderTable: makeRender('renderTable'),
+				renderQuery: makeRender('renderQuery'),
+				renderForm: makeRender('renderForm'),
 			});
 		});
 

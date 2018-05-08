@@ -96,8 +96,12 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 							</div>
 						)}
 						{!isFetching &&
-							renderers.map(({ render }, index) => (
-								<FormItem render={render} formState={formState} key={index} />
+							renderers.map(({ renderForm }, index) => (
+								<FormItem
+									renderForm={renderForm}
+									formState={formState}
+									key={index}
+								/>
 							))}
 					</Form>
 				</ModalConsumer>

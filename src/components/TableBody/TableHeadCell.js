@@ -6,17 +6,15 @@ import { observer } from 'mobx-react';
 export default class TableHeadCell extends Component {
 	static propTypes = {
 		children: PropTypes.node,
-		renderHeaderCell: PropTypes.func,
+		renderCell: PropTypes.func,
 	};
 
 	render() {
-		const { children, renderHeaderCell, ...other } = this.props;
-		if (!renderHeaderCell) return <th {...other}>{children}</th>;
-		return renderHeaderCell({
-			children: (render) => {
-				if (!render) return null;
-				return <th {...other}>{children}</th>;
-			},
-		});
+		const { children, renderCell, ...other } = this.props;
+		if (!renderCell) return <th {...other}>{children}</th>;
+		return renderCell(
+			null,
+			(render) => (render ? <th {...other}>{children}</th> : null)
+		);
 	}
 }
