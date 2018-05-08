@@ -43,7 +43,7 @@ export default function localize(options = {}) {
 
 		@hoist(WrappedComponent)
 		@observer
-		class LocaleComponent extends Component {
+		class Locale extends Component {
 			static defaultProps = WrappedComponent.defaultProps;
 
 			render() {
@@ -56,6 +56,6 @@ export default function localize(options = {}) {
 			}
 		}
 
-		return LocaleComponent;
+		return Locale;
 	};
 }

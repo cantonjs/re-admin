@@ -25,6 +25,13 @@ export default function hoist(WrappedComponent, options = {}) {
 			hoistStatics(HoistedComponent, WrappedComponent);
 		}
 		if (displayName) HoistedComponent.displayName = displayName;
+		else {
+			// else if (!HoistedComponent.displayName) {
+			const originalDisplayName =
+				WrappedComponent.displayName || WrappedComponent.name;
+			const finalName = `${HoistedComponent.name}(${originalDisplayName})`;
+			HoistedComponent.displayName = finalName;
+		}
 		return HoistedComponent;
 	};
 }
