@@ -1,8 +1,5 @@
 export function extendable(style) {
-	return (styleProps) => ({
-		...style,
-		...styleProps,
-	});
+	return (...styles) => Object.assign({}, style, ...styles);
 }
 
 export const flexCenter = {

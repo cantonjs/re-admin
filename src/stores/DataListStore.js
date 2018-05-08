@@ -2,6 +2,7 @@ import { autorun, action, observable, computed, toJS } from 'mobx';
 import { isUndefined, isFunction, omitBy } from 'lodash';
 import modalStore from 'stores/modalStore';
 import BaseDataStore from 'stores/BaseDataStore';
+import parseColumn from 'utils/parseColumn';
 
 export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
@@ -55,31 +56,22 @@ export default class DataListStore extends BaseDataStore {
 		const { renderers } = this.config;
 		if (!renderers) return [];
 		return renderers.map(({ render, props }) => {
-			const column = {
-				title: isFunction(props.label) ? props.label() : props.label,
+			const column = parseColumn({
+				title: props.label,
 				key: props.name,
 				dataIndex: props.name,
-
-				// inject `column` prop to <TableHeadCell />
-				onHeaderCell: (column) => ({ column }),
-
-				// for `components/TableBody/TableHeadCell` component
-				renderHeaderCell: function renderCell(extraProps) {
-					return render('renderTable', {}, extraProps);
+				headers: {
+					renderHeaderCell(extraProps) {
+						return render('renderTable', {}, extraProps);
+					},
 				},
-
-				// for `components/TableBody/TableCell` component
-				render: function renderTable(value, record, index) {
-					return {
-						props: {
-							renderProps: { text: value, value, record, index },
-							renderBodyCell(...args) {
-								return render('renderTable', ...args);
-							},
-						},
-					};
-				},
-			};
+				body: (options) => ({
+					renderProps: { text: options.value, ...options },
+					renderBodyCell(...args) {
+						return render('renderTable', ...args);
+					},
+				}),
+			});
 			if (props.sortable) {
 				const { sortedKey, sortedOrder } = this;
 				column.sortOrder = props.name === sortedKey ? sortedOrder : false;

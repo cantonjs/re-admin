@@ -9,7 +9,7 @@ export default (
 			placeholder="ID"
 			disabled
 			unique
-			inQuery
+			// inQuery
 			inForm
 			inTable
 		/>

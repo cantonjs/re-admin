@@ -1,9 +1,11 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import withIssuer from 'hoc/withIssuer';
 import RendererContext from './RendererContext';
 
 @withIssuer()
+@observer
 export default class FieldGateway extends Component {
 	static propTypes = {
 		renderer: PropTypes.func.isRequired,

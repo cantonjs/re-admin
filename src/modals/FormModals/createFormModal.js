@@ -5,20 +5,14 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import warning from 'warning';
 import connect from 'hoc/connect';
+import styles from './styles';
 import withIssuer from 'hoc/withIssuer';
 import { Spin } from 'antd';
 import { Form } from 'components/Nested';
 import ModalConsumer from 'components/ModalConsumer';
-import FormItemWrapper from 'components/FormItemWrapper';
+import FormItem from './FormItem';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
-
-const styles = {
-	spinContainer: {
-		textAlign: 'center',
-		padding: 40,
-	},
-};
 
 class FormState {
 	@observable data = {};
@@ -27,6 +21,7 @@ class FormState {
 export default function createFormModal(defaultTitle, issuerText, displayName) {
 	@withIssuer({ issuer: issuerText })
 	@connect()
+	@observer
 	class FormModalView extends Component {
 		static displayName = displayName;
 
@@ -72,6 +67,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		};
 
 		_handleChange = (data) => {
+			console.log('data', data);
 			this._formState.data = data;
 		};
 
@@ -112,11 +108,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 						)}
 						{!isFetching &&
 							renderers.map((renderOptions, index) => (
-								<FormItemWrapper
-									renderOptions={renderOptions}
-									withLayout
-									key={index}
-								/>
+								<FormItem renderOptions={renderOptions} key={index} />
 							))}
 					</Form>
 				</ModalConsumer>
@@ -124,5 +116,5 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		}
 	}
 
-	return observer(FormModalView);
+	return FormModalView;
 }

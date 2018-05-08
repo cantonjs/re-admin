@@ -65,6 +65,8 @@ TableSchema.configuration = {
 				Component,
 			};
 			renderers.push({
+				props,
+				options,
 				render(renderKey, extraOptions, extraGatewayProps) {
 					// eslint-disable-next-line react/display-name
 					const createRenderFn = (inIssuer) => (otherProps) => {
@@ -110,8 +112,6 @@ TableSchema.configuration = {
 						/>
 					);
 				},
-				props,
-				options,
 			});
 		});
 

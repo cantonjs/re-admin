@@ -83,10 +83,17 @@ export default class TableQuery extends Component {
 		return (
 			renderers.length > 0 && (
 				<Row style={styles.main}>
-					{renderers.map(({ render, props, options }, index) => {
-						const children = render(props, options);
-						if (children) return <QueryItem key={index}>{children}</QueryItem>;
-						return null;
+					{renderers.map(({ render }, index) => {
+						return (
+							<span key={index}>
+								{render('renderQuery', null, {
+									children: (render) => {
+										if (!render) return null;
+										return <QueryItem>{render()}</QueryItem>;
+									},
+								})}
+							</span>
+						);
 					})}
 				</Row>
 			)
@@ -94,10 +101,14 @@ export default class TableQuery extends Component {
 	}
 
 	render() {
-		const { props: { header, footer, hidden, store }, locale } = this;
+		const { props: { header, footer, children, hidden, store }, locale } = this;
+		const shouldHide =
+			hidden ||
+			((!children || !Children.count(children)) &&
+				(!store || !store.renderers.length || !store.queryFieldsCount));
 		return (
 			<Form
-				style={styles.container(hidden ? styles.hidden : {})}
+				style={styles.container(shouldHide && styles.hidden)}
 				onSubmit={this._handleSearch}
 				onReset={this._handleReset}
 				onChange={this._handleChange}
