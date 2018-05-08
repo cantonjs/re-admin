@@ -67,11 +67,16 @@ export default class TableQuery extends Component {
 		return (
 			renderers.length > 0 && (
 				<Row style={styles.main}>
-					{renderers.map(({ renderQuery }, index) => {
-						const children = renderQuery(formStore);
-						if (children) return <QueryItem key={index}>{children}</QueryItem>;
-						return null;
-					})}
+					{renderers.map(({ renderQuery }, key) =>
+						renderQuery(formStore, {
+							key,
+							children: (render) => {
+								if (!render) return null;
+								const children = render();
+								return children && <QueryItem>{children}</QueryItem>;
+							},
+						})
+					)}
 				</Row>
 			)
 		);

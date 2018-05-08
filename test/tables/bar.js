@@ -14,6 +14,6 @@ export default (
 			inTable
 		/>
 
-		<Image name="avatar" label="Avatar" width={60} inForm inTable />
+		{/* <Image name="avatar" label="Avatar" width={60} inForm inTable /> */}
 	</Table>
 );

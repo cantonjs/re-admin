@@ -68,7 +68,7 @@ TableSchema.configuration = {
 				Component,
 			};
 
-			const makeRender = (renderKey) => (store = {}, children) => {
+			const makeRender = (renderProp) => (store = {}, otherProps) => {
 				const ensuredStore = (function () {
 					defaults(store, options);
 					if (!('record' in store)) store.record = {};
@@ -78,8 +78,13 @@ TableSchema.configuration = {
 					return store;
 				})();
 
-				const createRenderFn = (inIssuer) => (otherProps) => {
-					const instanceProps = { ...props, ...otherProps };
+				if (isFunction(otherProps)) {
+					const children = otherProps;
+					otherProps = { children };
+				}
+
+				const createRenderFn = (inIssuer) => (extraProps) => {
+					const instanceProps = { ...props, ...extraProps };
 
 					if (isFunction(inIssuer)) {
 						return inIssuer(instanceProps, ensuredStore);
@@ -89,11 +94,11 @@ TableSchema.configuration = {
 						return <Component {...instanceProps} {...inIssuer} />;
 					}
 
-					if (isFunction(Component[renderKey])) {
-						return Component[renderKey](instanceProps, ensuredStore);
+					if (isFunction(Component[renderProp])) {
+						return Component[renderProp](instanceProps, ensuredStore);
 					}
 
-					if (renderKey === 'renderTable') return ensuredStore.value;
+					if (renderProp === 'renderTable') return ensuredStore.value;
 					return <Component {...instanceProps} />;
 				};
 
@@ -102,9 +107,7 @@ TableSchema.configuration = {
 					if (inForm) {
 						ctx.when(ctx.is.UPDATER || ctx.is.CREATER, createRenderFn(inForm));
 					}
-					if (inQuery) {
-						ctx.when(ctx.is.QUERIER, createRenderFn(inQuery));
-					}
+					if (inQuery) ctx.when(ctx.is.QUERIER, createRenderFn(inQuery));
 					if (rendererProp) rendererProp(ctx);
 				};
 
@@ -113,9 +116,8 @@ TableSchema.configuration = {
 						options={ensuredStore}
 						props={props}
 						renderer={renderer}
-					>
-						{children}
-					</FieldGateway>
+						{...otherProps}
+					/>
 				);
 			};
 			renderers.push({
