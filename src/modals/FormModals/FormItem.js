@@ -13,17 +13,14 @@ const formItemLayout = {
 	},
 };
 
-const FormItem = function FormItem({ renderForm, formState }) {
-	const extraProps = {
-		getData: () => (formState ? formState.data : {}),
-	};
-	const children = renderForm(extraProps);
+const FormItem = function FormItem({ renderForm, formStore }) {
+	const children = renderForm(formStore);
 	return children ? cloneElement(children, formItemLayout) : null;
 };
 
 FormItem.propTypes = {
 	renderForm: PropTypes.func.isRequired,
-	formState: PropTypes.object.isRequired,
+	formStore: PropTypes.object.isRequired,
 };
 
 export default observer(FormItem);

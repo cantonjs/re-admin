@@ -13,7 +13,7 @@ export default class RendererContext {
 		}
 	}
 
-	constructor({ props, options }) {
+	constructor(props, options) {
 		this.props = props;
 		this.options = options;
 		Object.assign(this, Issuers);

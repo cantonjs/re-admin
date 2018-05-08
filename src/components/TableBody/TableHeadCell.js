@@ -13,7 +13,7 @@ export default class TableHeadCell extends Component {
 		const { children, renderCell, ...other } = this.props;
 		if (!renderCell) return <th {...other}>{children}</th>;
 		return renderCell(
-			null,
+			{},
 			(render) => (render ? <th {...other}>{children}</th> : null)
 		);
 	}

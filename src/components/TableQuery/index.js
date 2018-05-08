@@ -1,7 +1,6 @@
 import styles from './styles';
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { QUERIER } from 'utils/Issuers';
 import { Row, Col } from 'antd';
@@ -9,10 +8,7 @@ import { Form, Submit, Reset } from 'components/Nested';
 import QueryItem from './QueryItem';
 import localize from 'hoc/localize';
 import withIssuer from 'hoc/withIssuer';
-
-class QueryState {
-	@observable data = {};
-}
+import FormStore from 'stores/FormStore';
 
 const FooterContainer = ({ children }) => (
 	<Row>
@@ -47,8 +43,7 @@ export default class TableQuery extends Component {
 		appConfig: PropTypes.object.isRequired,
 	};
 
-	// TODO: use store.queryState instead
-	queryState = new QueryState();
+	formStore = new FormStore();
 
 	_handleSearch = (query) => {
 		this.props.store.setQuery(query);
@@ -58,12 +53,12 @@ export default class TableQuery extends Component {
 		this.props.store.setQuery({});
 	};
 
-	_handleChange = (data) => {
-		this.queryState.data = data;
+	_handleChange = (state) => {
+		this.formStore.setState(state);
 	};
 
 	_renderBody() {
-		const { children, store: { renderers } } = this.props;
+		const { props: { children, store: { renderers } }, formStore } = this;
 		if (children) {
 			return Children.map(children, (child, index) => (
 				<QueryItem key={index}>{child}</QueryItem>
@@ -73,15 +68,9 @@ export default class TableQuery extends Component {
 			renderers.length > 0 && (
 				<Row style={styles.main}>
 					{renderers.map(({ renderQuery }, index) => {
-						return (
-							<span key={index}>
-								{renderQuery(
-									null,
-									(render) =>
-										render ? <QueryItem>{render()}</QueryItem> : null
-								)}
-							</span>
-						);
+						const children = renderQuery(formStore);
+						if (children) return <QueryItem key={index}>{children}</QueryItem>;
+						return null;
 					})}
 				</Row>
 			)

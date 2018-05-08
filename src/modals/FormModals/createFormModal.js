@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { createRef } from 'create-react-ref';
 import PropTypes from 'utils/PropTypes';
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import warning from 'warning';
 import connect from 'hoc/connect';
@@ -13,10 +12,7 @@ import ModalConsumer from 'components/ModalConsumer';
 import FormItem from './FormItem';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
-
-class FormState {
-	@observable data = {};
-}
+import FormStore from 'stores/FormStore';
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
 	@withIssuer({ issuer: issuerText })
@@ -43,21 +39,19 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			store: PropTypes.object.isRequired,
 		};
 
-		_form = createRef();
-		_modal = createRef();
-
-		// TODO: use store.formState instead
-		formState = new FormState();
+		formRef = createRef();
+		modalRef = createRef();
+		formStore = new FormStore();
 
 		_handleOk = (ev) => {
-			if (this._form.current) {
+			if (this.formRef.current) {
 				ev.preventDefault();
-				this._form.current.submit();
+				this.formRef.current.submit();
 			}
 		};
 
-		_handleChange = (data) => {
-			this.formState.data = data;
+		_handleChange = (state) => {
+			this.formStore.setState(state);
 		};
 
 		_handleSubmit = (body, { isInvalid }) => {
@@ -69,24 +63,24 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
-				this._modal.current.close();
+				this.modalRef.current.close();
 			} else if (__DEV__) {
 				warning(false, 'INVALID');
 			}
 		};
 
 		render() {
-			const { props: { store, title, width }, context, formState } = this;
+			const { props: { store, title, width }, context, formStore } = this;
 			const { isFetching, renderers } = store || context.store;
 			return (
 				<ModalConsumer
 					title={title}
 					width={width}
 					onOk={this._handleOk}
-					ref={this._modal}
+					ref={this.modalRef}
 				>
 					<Form
-						ref={this._form}
+						ref={this.formRef}
 						onSubmit={this._handleSubmit}
 						onChange={this._handleChange}
 					>
@@ -99,7 +93,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 							renderers.map(({ renderForm }, index) => (
 								<FormItem
 									renderForm={renderForm}
-									formState={formState}
+									formStore={formStore}
 									key={index}
 								/>
 							))}

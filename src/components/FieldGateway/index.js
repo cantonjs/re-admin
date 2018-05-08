@@ -17,10 +17,14 @@ export default class FieldGateway extends Component {
 
 	render() {
 		const {
+			renderer,
+			issuers,
+			children,
 			props,
-			props: { renderer, issuers, children, ...otherProps },
-		} = this;
-		const render = RendererContext.render(issuers, renderer, props);
+			options,
+			...otherProps
+		} = this.props;
+		const render = RendererContext.render(issuers, renderer, props, options);
 		if (children) return children(render, otherProps);
 		return render ? render(otherProps) : null;
 	}

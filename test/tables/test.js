@@ -124,13 +124,22 @@ export default (
 			name="gpa"
 			label="GPA"
 			dataType="integer"
-			inForm={(props, { Component, getData }) =>
-				getData().fav > 1 ? <Component {...props} /> : null
+			inForm={(props, { Component, record }) =>
+				record.fav > 1 ? <Component {...props} /> : null
 			}
 		/>
 		<Text name="birthday" label="Birthday" dataType="date" inForm />
 
-		<Checkbox name="check" label="Checked" value inQuery inTable inForm />
+		<Checkbox
+			name="check"
+			label="Checked"
+			value
+			inQuery={(props, { record }) =>
+				record.name === 'checkbox' ? <Checkbox {...props} /> : null
+			}
+			inTable
+			inForm
+		/>
 
 		<Actions>
 			<CreateButton table="bar" label="Create Bar" />

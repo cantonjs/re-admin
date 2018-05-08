@@ -4,7 +4,7 @@ import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
-import { isFunction, isObject } from 'lodash';
+import { isFunction, isObject, defaults } from 'lodash';
 import FieldGateway from 'components/FieldGateway';
 
 export default function TableSchema() {
@@ -55,8 +55,9 @@ TableSchema.configuration = {
 				renderer: rendererProp,
 				...props
 			} = child.props;
+			const { name } = props;
 
-			if (!uniqueKey && unique) uniqueKey = props.name;
+			if (!uniqueKey && unique) uniqueKey = name;
 
 			const key = child.key || index;
 			const Component = child.type;
@@ -67,13 +68,21 @@ TableSchema.configuration = {
 				Component,
 			};
 
-			const makeRender = (renderKey) => (extraOptions, children) => {
+			const makeRender = (renderKey) => (store = {}, children) => {
+				const ensuredStore = (function () {
+					defaults(store, options);
+					if (!('record' in store)) store.record = {};
+					if (!('name' in store)) store.name = name;
+					if (!('value' in store)) store.value = store.record[store.name];
+					if (!('index' in store)) store.index = 0;
+					return store;
+				})();
+
 				const createRenderFn = (inIssuer) => (otherProps) => {
 					const instanceProps = { ...props, ...otherProps };
-					const getRenderOptions = () => ({ ...options, ...extraOptions });
 
 					if (isFunction(inIssuer)) {
-						return inIssuer(instanceProps, getRenderOptions());
+						return inIssuer(instanceProps, ensuredStore);
 					}
 
 					if (isObject(inIssuer)) {
@@ -81,10 +90,10 @@ TableSchema.configuration = {
 					}
 
 					if (isFunction(Component[renderKey])) {
-						return Component[renderKey](instanceProps, getRenderOptions());
+						return Component[renderKey](instanceProps, ensuredStore);
 					}
 
-					if (renderKey === 'renderTable') return extraOptions.value;
+					if (renderKey === 'renderTable') return ensuredStore.value;
 					return <Component {...instanceProps} />;
 				};
 
@@ -100,12 +109,17 @@ TableSchema.configuration = {
 				};
 
 				return (
-					<FieldGateway options={options} props={props} renderer={renderer}>
+					<FieldGateway
+						options={ensuredStore}
+						props={props}
+						renderer={renderer}
+					>
 						{children}
 					</FieldGateway>
 				);
 			};
 			renderers.push({
+				options,
 				props,
 				renderTable: makeRender('renderTable'),
 				renderQuery: makeRender('renderQuery'),

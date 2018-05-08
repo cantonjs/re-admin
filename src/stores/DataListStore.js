@@ -61,8 +61,8 @@ export default class DataListStore extends BaseDataStore {
 				key: props.name,
 				dataIndex: props.name,
 				headers: { renderCell },
-				body: (options) => ({
-					extraProps: { text: options.value, ...options },
+				body: (state) => ({
+					store: { text: state.value, ...state },
 					renderCell,
 				}),
 			});
