@@ -2,11 +2,12 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import styles from './styles';
 import { observer } from 'mobx-react';
-import modalStore from 'stores/modalStore';
 import { REF } from 'constants/Actions';
+import withModalStore from 'hoc/withModalStore';
 import createComponent from 'components/Nested/createComponent';
 import { Input, Icon } from 'antd';
 
+@withModalStore()
 @observer
 class RefSelector extends Component {
 	static propTypes = {
@@ -20,6 +21,7 @@ class RefSelector extends Component {
 		style: PropTypes.object,
 		label: PropTypes.node,
 		width: PropTypes.stringOrNumber,
+		modalStore: PropTypes.object.isRequired,
 	};
 
 	static defaultProps = {
@@ -39,7 +41,14 @@ class RefSelector extends Component {
 	}
 
 	_handleClick = (ev) => {
-		const { placeholder, style, onKeyPress, onChange, ...other } = this.props;
+		const {
+			placeholder,
+			style,
+			onKeyPress,
+			onChange,
+			modalStore,
+			...other
+		} = this.props;
 		ev.preventDefault();
 		modalStore.setState({
 			keys: '',

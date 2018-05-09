@@ -1,28 +1,31 @@
-import { Component, Children } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import modalStore from 'stores/modalStore';
+import withModalStore from 'hoc/withModalStore';
+import ModalProvider from 'components/ModalProvider';
 
+@withModalStore()
 @observer
 export default class ModalConsumer extends Component {
 	static propTypes = {
 		children: PropTypes.node,
+		modalStore: PropTypes.object.isRequired,
 	};
 
 	componentWillMount() {
-		const { children, ...other } = this.props;
+		const { children, modalStore, ...other } = this.props;
 		modalStore.setModalProps(other);
 	}
 
 	componentWillUnmount() {
-		modalStore.setModalProps({});
+		this.props.modalStore.setModalProps({});
 	}
 
-	close() {
-		modalStore.close();
-	}
+	close = () => {
+		this.props.modalStore.close();
+	};
 
 	render() {
-		return Children.only(this.props.children);
+		return <ModalProvider>{this.props.children}</ModalProvider>;
 	}
 }

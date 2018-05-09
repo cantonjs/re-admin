@@ -1,15 +1,17 @@
 import { computed, observable, action } from 'mobx';
 import { omitBy, reduce } from 'lodash';
 
-class ModalStore {
+export default class ModalStore {
+	static prefix = '__';
+
+	static getOmitPaths(val, key) {
+		return key.startsWith(ModalStore.prefix);
+	}
+
 	@observable modalProps = {};
 	@observable state = {};
 
 	_prefix = '__';
-
-	getOmitPaths = (val, key) => {
-		return key.startsWith(this._prefix);
-	};
 
 	@computed
 	get name() {
@@ -22,16 +24,14 @@ class ModalStore {
 	}
 
 	close() {
-		this._clearLocation();
+		if (this._router) this._clearLocation();
+		else this.state = {};
 	}
 
 	@action
-	setState(state, useLocation) {
-		if (useLocation) {
-			this._setLocation(state);
-		} else {
-			this.state = state;
-		}
+	setState(state) {
+		if (this._router) this._setLocation(state);
+		else this.state = state;
 	}
 
 	@action
@@ -63,16 +63,16 @@ class ModalStore {
 	}
 
 	bindRouter(router) {
-		if (this._router) {
-			return;
-		}
+		if (this._router) return;
+
+		this._router = router;
 
 		const handleQueryChange = ({ query }) => {
-			const prefixLength = this._prefix.length;
+			const prefixLength = ModalStore.prefix.length;
 			this.state = reduce(
 				query,
 				(state, val, key) => {
-					if (key.startsWith(this._prefix)) {
+					if (key.startsWith(ModalStore.prefix)) {
 						const stateKey = key.substr(prefixLength);
 						state[stateKey] = val;
 					}
@@ -89,7 +89,7 @@ class ModalStore {
 			const modalQuery = reduce(
 				state,
 				(query, val, key) => {
-					query[`${this._prefix}${key}`] = val;
+					query[`${ModalStore.prefix}${key}`] = val;
 					return query;
 				},
 				{}
@@ -101,10 +101,8 @@ class ModalStore {
 		this._clearLocation = () => {
 			const { location } = router;
 			location.query = omitBy(location.query, (val, key) =>
-				key.startsWith(this._prefix)
+				key.startsWith(ModalStore.prefix)
 			);
 		};
 	}
 }
-
-export default new ModalStore();

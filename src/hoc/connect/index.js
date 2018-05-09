@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hoc/hoist';
 import { observer } from 'mobx-react';
-import modalStore from 'stores/modalStore';
+import ModalStore from 'stores/ModalStateStore';
 import { omitBy, isEqual } from 'lodash';
 import routerStore from 'stores/routerStore';
 
@@ -51,7 +51,7 @@ export default function connect(options = {}) {
 				if (this.props.table && history) {
 					this._unlistenHistory = history.listen((location, prevLocation) => {
 						if (location.pathname === prevLocation.pathname) {
-							const { getOmitPaths } = modalStore;
+							const { getOmitPaths } = ModalStore;
 							const prevQuery = omitBy(prevLocation.query, getOmitPaths);
 							const nextQuery = omitBy(location.query, getOmitPaths);
 							if (!isEqual(prevQuery, nextQuery)) {
@@ -65,7 +65,7 @@ export default function connect(options = {}) {
 			componentDidMount() {
 				const { location } = router;
 				if (this.props.table && location) {
-					const { getOmitPaths } = modalStore;
+					const { getOmitPaths } = ModalStore;
 					const query = omitBy(location.query, getOmitPaths);
 					this._setQuery(query);
 				}

@@ -5,11 +5,13 @@ import State from './State';
 import { QUERIER } from 'utils/Issuers';
 import { observer } from 'mobx-react';
 import withIssuer from 'hoc/withIssuer';
+import withModalStore from 'hoc/withModalStore';
 import hoist, { extractRef } from 'hoc/hoist';
 
 export default function field(WrappedComponent) {
 	@hoist(WrappedComponent)
 	@withIssuer()
+	@withModalStore()
 	@observer
 	class WithField extends Component {
 		static propTypes = {
@@ -27,6 +29,9 @@ export default function field(WrappedComponent) {
 
 			// provided by `withIssuer()`
 			issuers: PropTypes.instanceOf(Set).isRequired,
+
+			// provided by `withIssuer()`
+			modalStore: PropTypes.object.isRequired,
 		};
 
 		static defaultProps = {
@@ -37,13 +42,10 @@ export default function field(WrappedComponent) {
 
 		static contextTypes = {
 			store: PropTypes.object,
-			modalStore: PropTypes.object,
 			getParentValue: PropTypes.func,
 		};
 
-		componentWillMount() {
-			this._state = new State(this.props, this.context);
-		}
+		_state = new State(this.props, this.context);
 
 		getValue = () => {
 			return this._state.value;
@@ -64,6 +66,7 @@ export default function field(WrappedComponent) {
 					defaultValue,
 					unique,
 					sortable,
+					modalStore,
 
 					...other
 				},

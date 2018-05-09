@@ -6,7 +6,7 @@ import { isUndefined } from 'lodash';
 export default class State {
 	@computed
 	get shouldShow() {
-		const { _props: { name }, _context: { modalStore }, _isUpdater } = this;
+		const { _props: { name, modalStore }, _isUpdater } = this;
 		if (_isUpdater) {
 			const { select } = modalStore.state;
 			if (!select) {
@@ -21,8 +21,8 @@ export default class State {
 	@computed
 	get value() {
 		const {
-			_props: { name, value },
-			_context: { store, getParentValue, modalStore },
+			_props: { name, value, modalStore },
+			_context: { store, getParentValue },
 			_isUpdater,
 			_isQuerier,
 		} = this;

@@ -1,36 +1,48 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
-import modalStore from 'stores/modalStore';
+import { withModalStoreProvider } from 'hoc/withModalStore';
 import { Modal } from 'antd';
+import withIssuer from 'hoc/withIssuer';
+import { MODAL } from 'utils/Issuers';
 
+@withIssuer({ issuer: MODAL })
+@withModalStoreProvider()
 @observer
 export default class ModalProvider extends Component {
+	static propTypes = {
+		modalStore: PropTypes.object.isRequired,
+		children: PropTypes.node,
+		component: PropTypes.component,
+		syncLocation: PropTypes.bool,
+	};
+
+	static defaultProps = {
+		component: 'div',
+		syncLocation: false,
+	};
+
 	static contextTypes = {
-		store: PropTypes.object.isRequired,
+		// store: PropTypes.object.isRequired,
 		appConfig: PropTypes.object.isRequired,
 	};
 
-	static childContextTypes = {
-		modalStore: PropTypes.object,
-	};
-
-	getChildContext() {
-		return { modalStore };
-	}
-
-	componentWillMount() {
-		modalStore.bindRouter(routerStore);
+	constructor(props) {
+		super(props);
+		const { syncLocation, modalStore } = this.props;
+		syncLocation && modalStore.bindRouter(routerStore);
 	}
 
 	_close() {
-		modalStore.close();
-		this.context.store.setSelectedKeys([]);
+		this.props.modalStore.close();
+
+		// TODO:
+		// this.context.store.setSelectedKeys([]);
 	}
 
 	_handleOk = (ev) => {
-		const { modalProps } = modalStore;
+		const { modalProps } = this.props.modalStore;
 		if (modalProps.onOk) {
 			modalProps.onOk(ev);
 		}
@@ -38,7 +50,7 @@ export default class ModalProvider extends Component {
 	};
 
 	_handleCancel = (ev) => {
-		const { modalProps } = modalStore;
+		const { modalProps } = this.props.modalStore;
 		if (modalProps.onCancel) {
 			modalProps.onCancel(ev);
 		}
@@ -46,19 +58,25 @@ export default class ModalProvider extends Component {
 	};
 
 	render() {
-		const { context: { appConfig: { modals } } } = this;
+		const {
+			context: { appConfig: { modals } },
+			props: { modalStore, children, component: Wrap, syncLocation, ...other },
+		} = this;
 		const { visible, modalProps, state, name } = modalStore;
 		const Comp = modals.get(name);
 		return (
-			<Modal
-				maskClosable={false}
-				{...modalProps}
-				visible={visible}
-				onOk={this._handleOk}
-				onCancel={this._handleCancel}
-			>
-				{visible && <Comp {...state} />}
-			</Modal>
+			<Wrap {...other}>
+				{children}
+				<Modal
+					maskClosable={false}
+					{...modalProps}
+					visible={visible}
+					onOk={this._handleOk}
+					onCancel={this._handleCancel}
+				>
+					{visible && <Comp {...state} />}
+				</Modal>
+			</Wrap>
 		);
 	}
 }

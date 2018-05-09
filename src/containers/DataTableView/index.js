@@ -22,12 +22,13 @@ function DataTableView({
 
 	return (
 		<PageContainer title={title}>
-			{Header && <Header store={store} title={title} />}
-			<TableQuery store={store} hidden={!panelsStore.isShowQuery} />
-			<Toolbar />
-			<TableBody store={store} />
-			{Footer && <Footer store={store} />}
-			<ModalProvider />
+			<ModalProvider syncLocation>
+				{Header && <Header store={store} title={title} />}
+				<TableQuery store={store} hidden={!panelsStore.isShowQuery} />
+				<Toolbar />
+				<TableBody store={store} />
+				{Footer && <Footer store={store} />}
+			</ModalProvider>
 		</PageContainer>
 	);
 }

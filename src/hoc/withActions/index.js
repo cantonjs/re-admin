@@ -3,14 +3,19 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import hoist, { extractRef } from 'hoc/hoist';
 import joinKeys from 'utils/joinKeys';
-import modalStore from 'stores/modalStore';
+import withModalStore from 'hoc/withModalStore';
 import * as Actions from 'constants/Actions';
 
 // Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
 	@hoist(WrappedComponent)
+	@withModalStore()
 	@observer
 	class WithActions extends Component {
+		static propTypes = {
+			modalStore: PropTypes.object.isRequired,
+		};
+
 		static contextTypes = {
 			store: PropTypes.object.isRequired,
 			tableRowKey: PropTypes.string,
@@ -32,32 +37,21 @@ export default function withActions(WrappedComponent) {
 			return joinKeys(this.getSelectedKeys());
 		};
 
-		open = (name, config) => {
-			const { useLocation, ...other } = config;
-			modalStore.setState(
-				{
-					keys: joinKeys(this.getSelectedKeys()),
-					...other,
-					name,
-				},
-				useLocation
-			);
+		open = (name, options) => {
+			this.props.modalStore.setState({
+				keys: joinKeys(this.getSelectedKeys()),
+				...options,
+				name,
+			});
 		};
 
 		openCreaterModal = (options = {}) => {
 			options.keys = options.keys || '';
-			this.open(Actions.CREATE, {
-				useLocation: true,
-				...options,
-			});
+			this.open(Actions.CREATE, options);
 		};
 
 		openUpdaterModal = (options = {}) => {
-			const { select, ...other } = options;
-			const config = {
-				useLocation: true,
-				...other,
-			};
+			const { select, ...config } = options;
 			if (select && select.length) {
 				config.select = select.join(',');
 			}
@@ -72,19 +66,9 @@ export default function withActions(WrappedComponent) {
 				fetch = 'fetch',
 				save = 'request',
 				width = 880,
-				useLocation = true,
 			} = options;
-			const config = {
-				table,
-				title,
-				fetch,
-				save,
-				width,
-				useLocation,
-			};
-			if (noQuery) {
-				config.noQuery = '✓';
-			}
+			const config = { table, title, fetch, save, width };
+			if (noQuery) config.noQuery = '✓';
 			this.open(Actions.REF, config);
 		};
 
@@ -94,7 +78,7 @@ export default function withActions(WrappedComponent) {
 		};
 
 		render() {
-			const { props, context: { store } } = this;
+			const { props: { modalStore, ...props }, context: { store } } = this;
 			return (
 				<WrappedComponent
 					{...extractRef(props)}

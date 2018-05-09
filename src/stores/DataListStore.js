@@ -1,6 +1,6 @@
 import { autorun, action, observable, computed, toJS } from 'mobx';
 import { isUndefined, omitBy } from 'lodash';
-import modalStore from 'stores/modalStore';
+import ModalStore from 'stores/ModalStateStore';
 import BaseDataStore from 'stores/BaseDataStore';
 import parseColumn from 'utils/parseColumn';
 
@@ -158,7 +158,7 @@ export default class DataListStore extends BaseDataStore {
 			headers,
 			query: {
 				count: this.size,
-				...omitBy(query, modalStore.getOmitPaths),
+				...omitBy(query, ModalStore.getOmitPaths),
 				page: (function () {
 					const p = (query && query.page) || 1;
 					return p < 1 ? 1 : p;

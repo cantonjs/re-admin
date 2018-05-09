@@ -1,7 +1,7 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import joinKeys from 'utils/joinKeys';
-import { REF_MODAL } from 'utils/Issuers';
+import { REF } from 'utils/Issuers';
 import { isFunction } from 'lodash';
 import connect from 'hoc/connect';
 import withIssuer from 'hoc/withIssuer';
@@ -9,7 +9,7 @@ import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
-@withIssuer({ issuer: REF_MODAL })
+@withIssuer({ issuer: REF })
 @connect()
 export default class RefModal extends Component {
 	static propTypes = {
@@ -35,7 +35,6 @@ export default class RefModal extends Component {
 	};
 
 	static contextTypes = {
-		modalStore: PropTypes.object.isRequired,
 		store: PropTypes.object.isRequired,
 	};
 
@@ -74,12 +73,10 @@ export default class RefModal extends Component {
 				onOk={this._handleOk}
 				footer={ModalFooter && <ModalFooter store={store} />}
 			>
-				<div>
-					{Header && <Header store={store} />}
-					{!noQuery && <TableQuery store={store} />}
-					<TableBody store={store} selectionType="radio" />
-					{Footer && <Footer store={store} />}
-				</div>
+				{Header && <Header store={store} />}
+				{!noQuery && <TableQuery store={store} />}
+				<TableBody store={store} selectionType="radio" />
+				{Footer && <Footer store={store} />}
 			</ModalConsumer>
 		);
 	}

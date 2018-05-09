@@ -9,10 +9,12 @@ import withIssuer from 'hoc/withIssuer';
 import { Spin } from 'antd';
 import { Form } from 'components/Nested';
 import ModalConsumer from 'components/ModalConsumer';
+import ModalProvider from 'components/ModalProvider';
 import FormItem from './FormItem';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
 import FormStore from 'stores/FormStore';
+import { dirname } from 'path';
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
 	@withIssuer({ issuer: issuerText })
@@ -44,10 +46,12 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		formStore = new FormStore();
 
 		_handleOk = (ev) => {
-			if (this.formRef.current) {
-				ev.preventDefault();
-				this.formRef.current.submit();
-			}
+			if (!this.formRef.current) return;
+			ev.preventDefault();
+			const { context, props } = this;
+			const store = props.store || context.store;
+			this.formRef.current.submit();
+			store.setSelectedKeys([]);
 		};
 
 		_handleChange = (state) => {
@@ -63,6 +67,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
+				console.dir(this.modalRef.current);
 				this.modalRef.current.close();
 			} else if (__DEV__) {
 				warning(false, 'INVALID');
