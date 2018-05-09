@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hocs/hoist';
+import { withStoreProvider } from 'hocs/withStore';
 import { observer } from 'mobx-react';
-import ModalStore from 'stores/ModalStore';
 import { omitBy, isEqual } from 'lodash';
+import ModalStore from 'stores/ModalStore';
 import routerStore from 'stores/routerStore';
 
 export default function connect(options = {}) {
@@ -12,38 +13,36 @@ export default function connect(options = {}) {
 
 	return function createConnectComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
+		@withStoreProvider({ useCache })
 		@observer
 		class ConnectStore extends Component {
 			static propTypes = {
 				table: PropTypes.string,
-			};
-
-			static childContextTypes = {
 				store: PropTypes.object,
 			};
 
-			static contextTypes = {
-				storesDispatcher: PropTypes.object.isRequired,
-				store: PropTypes.object,
-			};
+			// TODO:
+			// static contextTypes = {
+			// 	store: PropTypes.object,
+			// };
 
-			getChildContext() {
-				const { state: { store }, context } = this;
-				return {
-					store: store || context.store,
-				};
-			}
+			// static childContextTypes = {
+			// 	store: PropTypes.object,
+			// };
+
+			// getChildContext() {
+			// 	const { state: { store }, context } = this;
+			// 	return {
+			// 		store: store || (context && context.store),
+			// 	};
+			// }
 
 			constructor(props, context) {
 				super(props, context);
-				const { table } = props;
-				const state = {};
-				if (table) {
-					const store = this._getStore(table);
-					state.store = store;
+				const { store } = props;
+				if (store) {
 					this._removeQueryListener = store.addQueryListener(router);
 				}
-				this.state = state;
 			}
 
 			componentWillMount() {
@@ -71,32 +70,18 @@ export default function connect(options = {}) {
 				}
 			}
 
-			componentWillReceiveProps({ table }) {
-				if (this.props.table && this.props.table !== table) {
-					this.setState({
-						store: this._getStore(table),
-					});
-				}
-			}
-
 			componentWillUnmount() {
 				this._removeQueryListener && this._removeQueryListener();
 				this._unlistenHistory && this._unlistenHistory();
 			}
 
-			_getStore(table) {
-				const { context: { storesDispatcher } } = this;
-				return storesDispatcher.ensureStore(table, { useCache });
-			}
-
 			_setQuery(query) {
-				const { store } = this.state;
+				const { store } = this.props;
 				store.query = query;
 			}
 
 			render() {
-				const { props, state } = this;
-				return <WrappedComponent {...extractRef(props)} {...state} />;
+				return <WrappedComponent {...extractRef(this.props)} />;
 			}
 		}
 

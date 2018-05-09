@@ -1,21 +1,20 @@
 import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import withStore from 'hocs/withStore';
 
+@withStore()
 export default class QueryItem extends Component {
 	static propTypes = {
 		children: PropTypes.node.isRequired,
-	};
-
-	static contextTypes = {
 		store: PropTypes.object.isRequired,
 	};
 
 	componentDidMount() {
-		this.context.store.increaseQueryFieldsCount();
+		this.props.store.increaseQueryFieldsCount();
 	}
 
 	componentWillUnmount() {
-		this.context.store.decreaseQueryFieldsCount();
+		this.props.store.decreaseQueryFieldsCount();
 	}
 
 	render() {

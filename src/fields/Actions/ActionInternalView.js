@@ -1,15 +1,13 @@
-
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { isFunction } from 'lodash';
+import withStore from 'hocs/withStore';
 
+@withStore()
 export default class ActionInternalView extends Component {
 	static propTypes = {
 		children: PropTypes.nodeOrFunc.isRequired,
 		tableRowKey: PropTypes.string,
-	};
-
-	static contextTypes = {
 		store: PropTypes.object.isRequired,
 	};
 
@@ -24,9 +22,10 @@ export default class ActionInternalView extends Component {
 	}
 
 	_renderChildren() {
-		const { props: { children, tableRowKey }, context: { store } } = this;
+		const { props: { children, tableRowKey, store } } = this;
 		const list = isFunction(children) ?
-			children(store.getData(tableRowKey)) : children;
+			children(store.getData(tableRowKey)) :
+			children;
 		const childrenArr = [];
 		const length = Children.count(list);
 		Children.forEach(list, (child, index) => {
@@ -39,8 +38,6 @@ export default class ActionInternalView extends Component {
 	}
 
 	render() {
-		return (
-			<div>{this._renderChildren()}</div>
-		);
+		return <div>{this._renderChildren()}</div>;
 	}
 }

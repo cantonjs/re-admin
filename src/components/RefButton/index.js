@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import localize from 'hocs/localize';
+import withStore from 'hocs/withStore';
 import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 
+@withStore()
 @localize({
 	defaultProps: {
 		label: 'label',
@@ -17,14 +19,11 @@ export default class RefButton extends Component {
 		save: PropTypes.string,
 		noQuery: PropTypes.bool,
 		label: PropTypes.stringOrFunc,
+		store: PropTypes.object,
 	};
 
 	static defaultProps = {
 		noQuery: false,
-	};
-
-	static contextTypes = {
-		store: PropTypes.object,
 	};
 
 	_handleClick = (ev, { openRefModal, getData }) => {
@@ -39,7 +38,6 @@ export default class RefButton extends Component {
 
 	render() {
 		const { props: { title, table, fetch, save, noQuery, ...other } } = this;
-
 		return <ContextButton {...other} onClick={this._handleClick} />;
 	}
 }

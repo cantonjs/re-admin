@@ -5,11 +5,13 @@ import State from './State';
 import { QUERIER } from 'utils/Issuers';
 import { observer } from 'mobx-react';
 import withIssuer from 'hocs/withIssuer';
+import withStore from 'hocs/withStore';
 import withModalStore from 'hocs/withModalStore';
 import hoist, { extractRef } from 'hocs/hoist';
 
 export default function field(WrappedComponent) {
 	@hoist(WrappedComponent)
+	@withStore()
 	@withIssuer()
 	@withModalStore()
 	@observer
@@ -26,6 +28,7 @@ export default function field(WrappedComponent) {
 			disabled: PropTypes.bool,
 			validations: PropTypes.array,
 			sortable: PropTypes.bool,
+			store: PropTypes.object,
 
 			// provided by `withIssuer()`
 			issuers: PropTypes.instanceOf(Set).isRequired,
@@ -41,11 +44,15 @@ export default function field(WrappedComponent) {
 		};
 
 		static contextTypes = {
-			store: PropTypes.object,
 			getParentValue: PropTypes.func,
 		};
 
-		_state = new State(this.props, this.context);
+		constructor(props, context) {
+			super(props, context);
+			console.log('props', props.store);
+
+			this._state = new State(props, context);
+		}
 
 		getValue = () => {
 			return this._state.value;

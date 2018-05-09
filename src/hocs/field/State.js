@@ -22,8 +22,8 @@ export default class State {
 	@computed
 	get value() {
 		const {
-			_props: { name, value, modalStore },
-			_context: { store, getParentValue },
+			_props: { name, value, store, modalStore },
+			_context: { getParentValue },
 			_isUpdater,
 			_isQuerier,
 		} = this;
@@ -44,9 +44,10 @@ export default class State {
 			if (selectedKeys.length !== 1) {
 				return '';
 			}
+
 			const item = getParentValue ?
 				getParentValue() :
-				store.getData(selectedKeys[0]);
+				store && store.getData(selectedKeys[0]);
 			return item ? item[name] : undefined;
 		}
 

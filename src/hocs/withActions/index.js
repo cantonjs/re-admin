@@ -4,20 +4,22 @@ import { observer } from 'mobx-react';
 import hoist, { extractRef } from 'hocs/hoist';
 import joinKeys from 'utils/joinKeys';
 import withModalStore from 'hocs/withModalStore';
+import withStore from 'hocs/withStore';
 import * as Actions from 'constants/Actions';
 
 // Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
 	@hoist(WrappedComponent)
+	@withStore()
 	@withModalStore()
 	@observer
 	class WithActions extends Component {
 		static propTypes = {
 			modalStore: PropTypes.object.isRequired,
+			store: PropTypes.object.isRequired,
 		};
 
 		static contextTypes = {
-			store: PropTypes.object.isRequired,
 			tableRowKey: PropTypes.string,
 		};
 
@@ -29,7 +31,7 @@ export default function withActions(WrappedComponent) {
 		}
 
 		getSelectedKeys() {
-			const { tableRowKey, store } = this.context;
+			const { context: { tableRowKey }, props: { store } } = this;
 			return tableRowKey ? [tableRowKey] : store.selectedKeys;
 		}
 
@@ -74,11 +76,11 @@ export default function withActions(WrappedComponent) {
 
 		_getData = () => {
 			const selectedKeys = this.getSelectedKeys();
-			return this.context.store.getData(selectedKeys[0]);
+			return this.props.store.getData(selectedKeys[0]);
 		};
 
 		render() {
-			const { props: { modalStore, ...props }, context: { store } } = this;
+			const { props: { modalStore, store, ...props } } = this;
 			return (
 				<WrappedComponent
 					{...extractRef(props)}
@@ -88,7 +90,7 @@ export default function withActions(WrappedComponent) {
 						openCreaterModal: this.openCreaterModal,
 						openUpdaterModal: this.openUpdaterModal,
 						openRefModal: this.openRefModal,
-						selectedKeys: this._selectedKeys || this.context.store.selectedKeys,
+						selectedKeys: this._selectedKeys || store.selectedKeys,
 						getSelectedKeysString: this.getSelectedKeysString,
 						getData: this._getData,
 					}}

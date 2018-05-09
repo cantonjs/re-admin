@@ -6,17 +6,17 @@ import warning from 'warning';
 import connect from 'hocs/connect';
 import styles from './styles';
 import withIssuer from 'hocs/withIssuer';
+import withStore from 'hocs/withStore';
 import { Spin } from 'antd';
 import { Form } from 'components/Nested';
 import ModalConsumer from 'components/ModalConsumer';
-import ModalProvider from 'components/ModalProvider';
 import FormItem from './FormItem';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
 import FormStore from 'stores/FormStore';
-import { dirname } from 'path';
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
+	@withStore({ prop: 'contextStore' })
 	@withIssuer({ issuer: issuerText })
 	@connect()
 	@observer
@@ -24,6 +24,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		static displayName = displayName;
 
 		static propTypes = {
+			contextStore: PropTypes.object.isRequired,
 			store: PropTypes.object,
 			table: PropTypes.string,
 			keys: PropTypes.string,
@@ -37,10 +38,6 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			width: 800,
 		};
 
-		static contextTypes = {
-			store: PropTypes.object.isRequired,
-		};
-
 		formRef = createRef();
 		modalRef = createRef();
 		formStore = new FormStore();
@@ -48,8 +45,8 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		_handleOk = (ev) => {
 			if (!this.formRef.current) return;
 			ev.preventDefault();
-			const { context, props } = this;
-			const store = props.store || context.store;
+			const { props } = this;
+			const store = props.store || props.contextStore;
 			this.formRef.current.submit();
 			store.setSelectedKeys([]);
 		};
@@ -60,9 +57,9 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 
 		_handleSubmit = (body, { isInvalid }) => {
 			if (!isInvalid) {
-				const { context, props } = this;
+				const { props } = this;
+				const store = props.store || props.contextStore;
 				const { keys, save } = props;
-				const store = props.store || context.store;
 				const path = store ? `/${store.pathname}` : '';
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
@@ -74,8 +71,8 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		};
 
 		render() {
-			const { props: { store, title, width }, context, formStore } = this;
-			const { isFetching, renderers } = store || context.store;
+			const { props: { store, contextStore, title, width }, formStore } = this;
+			const { isFetching, renderers } = store || contextStore;
 			return (
 				<ModalConsumer
 					title={title}

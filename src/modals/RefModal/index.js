@@ -5,10 +5,12 @@ import { REF } from 'utils/Issuers';
 import { isFunction } from 'lodash';
 import connect from 'hocs/connect';
 import withIssuer from 'hocs/withIssuer';
+import withStore from 'hocs/withStore';
 import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
+@withStore({ prop: 'contextStore' })
 @withIssuer({ issuer: REF })
 @connect()
 export default class RefModal extends Component {
@@ -19,6 +21,7 @@ export default class RefModal extends Component {
 		save: PropTypes.stringOrFunc,
 		noQuery: PropTypes.any,
 		store: PropTypes.object,
+		contextStore: PropTypes.object.isRequired,
 		title: PropTypes.node,
 		width: PropTypes.stringOrNumber,
 		header: PropTypes.component,
@@ -34,10 +37,6 @@ export default class RefModal extends Component {
 		width: 800,
 	};
 
-	static contextTypes = {
-		store: PropTypes.object.isRequired,
-	};
-
 	componentWillMount() {
 		const { props: { fetch, store: refStore }, props } = this;
 		isFunction(fetch) ? fetch(props) : refStore.call(fetch, props);
@@ -45,15 +44,14 @@ export default class RefModal extends Component {
 
 	_handleOk = () => {
 		const {
-			context: { store },
 			props,
-			props: { keys, save, store: refStore },
+			props: { keys, save, store: refStore, contextStore },
 		} = this;
 		const { pathname } = refStore;
 		const refKeys = refStore.selectedKeys;
 		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
 		const options = { method: 'POST', url, ...props, keys, refKeys, refStore };
-		isFunction(save) ? save(options) : store.call(save, options);
+		isFunction(save) ? save(options) : contextStore.call(save, options);
 	};
 
 	render() {

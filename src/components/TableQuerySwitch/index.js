@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
+import withStore from 'hocs/withStore';
 import localize from 'hocs/localize';
 import { Checkbox } from 'antd';
 
+@withStore()
 @localize({
 	defaultProps: {
 		children: 'label',
@@ -14,9 +16,6 @@ import { Checkbox } from 'antd';
 export default class TableQuerySwitch extends Component {
 	static propTypes = {
 		children: PropTypes.node,
-	};
-
-	static contextTypes = {
 		store: PropTypes.object.isRequired,
 	};
 
@@ -25,9 +24,8 @@ export default class TableQuerySwitch extends Component {
 	};
 
 	render() {
-		const { queryFieldsCount } = this.context.store;
+		const { store: { queryFieldsCount }, children } = this.props;
 		if (!queryFieldsCount) return null;
-		const { children } = this.props;
 		return (
 			<Checkbox checked={panelsStore.isShowQuery} onChange={this._handleToggle}>
 				{children}
