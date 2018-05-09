@@ -23,6 +23,14 @@ export default class ModalStore {
 		return !!this.name;
 	}
 
+	constructor(parent, router) {
+		this.parent = parent;
+		if (router) {
+			this._bindRouter(router);
+			this._router = router;
+		}
+	}
+
 	close() {
 		if (this._router) this._clearLocation();
 		else this.state = {};
@@ -62,11 +70,8 @@ export default class ModalStore {
 		this.modalProps = props;
 	}
 
-	bindRouter(router) {
+	_bindRouter(router) {
 		if (this._router) return;
-
-		this._router = router;
-
 		const handleQueryChange = ({ query }) => {
 			const prefixLength = ModalStore.prefix.length;
 			this.state = reduce(

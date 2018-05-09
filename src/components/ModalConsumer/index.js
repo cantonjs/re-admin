@@ -26,6 +26,7 @@ export default class ModalConsumer extends Component {
 	};
 
 	render() {
-		return <ModalProvider>{this.props.children}</ModalProvider>;
+		const { modalStore, children } = this.props;
+		return <ModalProvider modalStore={modalStore}>{children}</ModalProvider>;
 	}
 }

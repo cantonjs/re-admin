@@ -67,7 +67,6 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 				const url = joinKeys(keys) + path;
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
-				console.dir(this.modalRef.current);
 				this.modalRef.current.close();
 			} else if (__DEV__) {
 				warning(false, 'INVALID');

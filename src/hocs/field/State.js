@@ -8,7 +8,8 @@ export default class State {
 	get shouldShow() {
 		const { _props: { name, modalStore }, _isUpdater } = this;
 		if (_isUpdater) {
-			const { select } = modalStore.state;
+			if (!modalStore || !modalStore.parent) return false;
+			const { select } = modalStore.parent.state;
 			if (!select) {
 				return true;
 			} else if (select.split(',').indexOf(name) < 0) {
@@ -31,12 +32,14 @@ export default class State {
 			return value;
 		}
 
+		// TODO: query object may not come from router
 		const { query } = routerStore.location;
 
 		if (_isQuerier) {
 			return query[name];
 		} else if (_isUpdater) {
-			const { keys } = modalStore.state;
+			if (!modalStore || !modalStore.parent) return '';
+			const { keys } = modalStore.parent.state;
 			const selectedKeys = (keys || '').split(',');
 			if (selectedKeys.length !== 1) {
 				return '';
