@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import hoist, { extractRef } from 'hoc/hoist';
-import ModalStore from 'stores/ModalStateStore';
+import ModalStore from 'stores/ModalStore';
 import ModalStoreContext from './ModalStoreContext';
 
 export default function withModalStoreProvider() {

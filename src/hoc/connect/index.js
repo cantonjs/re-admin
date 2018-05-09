@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hoc/hoist';
 import { observer } from 'mobx-react';
-import ModalStore from 'stores/ModalStateStore';
+import ModalStore from 'stores/ModalStore';
 import { omitBy, isEqual } from 'lodash';
 import routerStore from 'stores/routerStore';
 
