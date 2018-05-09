@@ -3,7 +3,7 @@ import hoistStatics from 'hoist-non-react-statics';
 import { forwardRef } from 'create-react-ref';
 
 const isStatelessComponent = function isStatelessComponent(component) {
-	return !!component.prototype.render;
+	return !('render' in component.prototype);
 };
 
 export default function hoist(WrappedComponent, options = {}) {
@@ -24,9 +24,9 @@ export default function hoist(WrappedComponent, options = {}) {
 			HoistedComponent.WrappedComponent = WrappedComponent;
 			hoistStatics(HoistedComponent, WrappedComponent);
 		}
-		if (displayName) HoistedComponent.displayName = displayName;
-		else {
-			// else if (!HoistedComponent.displayName) {
+		if (displayName) {
+			HoistedComponent.displayName = displayName;
+		} else {
 			const originalDisplayName =
 				WrappedComponent.displayName || WrappedComponent.name;
 			const finalName = `${HoistedComponent.name}(${originalDisplayName})`;
