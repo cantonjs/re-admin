@@ -8,6 +8,7 @@ export DataDetailStore from 'stores/DataDetailStore';
 
 export Admin from 'containers/Admin';
 export PageContainer from 'components/PageContainer';
+export ModalProvider from 'components/ModalProvider';
 export ModalConsumer from 'components/ModalConsumer';
 export AppTitle from 'components/AppTitle';
 export LoginForm from 'components/LoginForm';
@@ -28,6 +29,7 @@ export Reset from 'components/Nested/Reset';
 
 export connect from 'hocs/connect';
 export withActions from 'hocs/withActions';
+export withIssuer from 'hocs/withIssuer';
 export localize from 'hocs/localize';
 export field from 'hocs/field';
 
