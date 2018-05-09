@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import warning from 'warning';
 import localeStore from 'stores/localeStore';
-import hoist, { extractRef } from 'hoc/hoist';
+import hoist, { extractRef } from 'hocs/hoist';
 
 export default function localize(options = {}) {
 	const {

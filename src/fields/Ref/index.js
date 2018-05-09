@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import field from 'hoc/field';
+import field from 'hocs/field';
 import RefSelector from 'components/RefSelector';
 
 @field

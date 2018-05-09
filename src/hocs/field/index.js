@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import State from './State';
 import { QUERIER } from 'utils/Issuers';
 import { observer } from 'mobx-react';
-import withIssuer from 'hoc/withIssuer';
-import withModalStore from 'hoc/withModalStore';
-import hoist, { extractRef } from 'hoc/hoist';
+import withIssuer from 'hocs/withIssuer';
+import withModalStore from 'hocs/withModalStore';
+import hoist, { extractRef } from 'hocs/hoist';
 
 export default function field(WrappedComponent) {
 	@hoist(WrappedComponent)

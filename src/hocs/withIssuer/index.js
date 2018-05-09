@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import createReactContext from 'create-react-context';
-import hoist, { extractRef } from 'hoc/hoist';
+import hoist, { extractRef } from 'hocs/hoist';
 
 const IssuerContext = createReactContext(new Set());
 

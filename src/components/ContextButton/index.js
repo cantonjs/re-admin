@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import withActions from 'hoc/withActions';
-import withIssuer from 'hoc/withIssuer';
+import withActions from 'hocs/withActions';
+import withIssuer from 'hocs/withIssuer';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
 import { TOOLBAR } from 'utils/Issuers';

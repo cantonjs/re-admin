@@ -1,5 +1,5 @@
 import React from 'react';
-import localize from 'hoc/localize';
+import localize from 'hocs/localize';
 
 const ActionLabel = function ActionLabel(props) {
 	return <span {...props} />;

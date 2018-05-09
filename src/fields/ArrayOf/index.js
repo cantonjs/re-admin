@@ -1,10 +1,10 @@
 import React, { Component, Children, cloneElement } from 'react';
 import { createRef } from 'create-react-ref';
 import PropTypes from 'utils/PropTypes';
-import field from 'hoc/field';
+import field from 'hocs/field';
 import { Form, Button, Icon } from 'antd';
 import { ArrayOf as NestArrayOf } from 'react-nested-form';
-import localize from 'hoc/localize';
+import localize from 'hocs/localize';
 
 const { Item } = Form;
 

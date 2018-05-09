@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import hoist, { extractRef } from 'hoc/hoist';
+import hoist, { extractRef } from 'hocs/hoist';
 import joinKeys from 'utils/joinKeys';
-import withModalStore from 'hoc/withModalStore';
+import withModalStore from 'hocs/withModalStore';
 import * as Actions from 'constants/Actions';
 
 // Notice that this `Action` is NOT Redux or MobX action.

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
-import localize from 'hoc/localize';
+import localize from 'hocs/localize';
 
 @localize({
 	defaultProps: {

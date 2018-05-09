@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
-import connect from 'hoc/connect';
+import connect from 'hocs/connect';
 import PageContainer from 'components/PageContainer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';

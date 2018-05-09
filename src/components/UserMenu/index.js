@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import routerStore from 'stores/routerStore';
 import { Modal, Icon, Menu, Dropdown, Avatar } from 'antd';
-import localize from 'hoc/localize';
+import localize from 'hocs/localize';
 
 const { confirm } = Modal;
 const { Item } = Menu;

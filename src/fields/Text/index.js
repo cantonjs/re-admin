@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { Input } from 'components/Nested';
-import field from 'hoc/field';
+import field from 'hocs/field';
 
 @field
 export default class TextField extends Component {

@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
 import { TABLE } from 'utils/Issuers';
-import localize from 'hoc/localize';
-import withIssuer from 'hoc/withIssuer';
+import localize from 'hocs/localize';
+import withIssuer from 'hocs/withIssuer';
 import TableCell from './TableCell';
 import TableHeadCell from './TableHeadCell';
 

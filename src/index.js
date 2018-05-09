@@ -26,9 +26,9 @@ export Form from 'components/Nested/Form';
 export Submit from 'components/Nested/Submit';
 export Reset from 'components/Nested/Reset';
 
-export connect from 'hoc/connect';
-export withActions from 'hoc/withActions';
-export localize from 'hoc/localize';
-export field from 'hoc/field';
+export connect from 'hocs/connect';
+export withActions from 'hocs/withActions';
+export localize from 'hocs/localize';
+export field from 'hocs/field';
 
 export joinKeys from 'utils/joinKeys';

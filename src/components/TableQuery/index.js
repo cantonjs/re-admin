@@ -6,8 +6,8 @@ import { QUERIER } from 'utils/Issuers';
 import { Row, Col } from 'antd';
 import { Form, Submit, Reset } from 'components/Nested';
 import QueryItem from './QueryItem';
-import localize from 'hoc/localize';
-import withIssuer from 'hoc/withIssuer';
+import localize from 'hocs/localize';
+import withIssuer from 'hocs/withIssuer';
 import FormStore from 'stores/FormStore';
 
 const FooterContainer = ({ children }) => (

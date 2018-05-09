@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
-import localize from 'hoc/localize';
+import localize from 'hocs/localize';
 import { Checkbox } from 'antd';
 
 @localize({

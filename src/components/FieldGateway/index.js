@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import withIssuer from 'hoc/withIssuer';
+import withIssuer from 'hocs/withIssuer';
 import RendererContext from './RendererContext';
 
 @withIssuer()

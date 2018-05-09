@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import withModalStore from 'hoc/withModalStore';
+import withModalStore from 'hocs/withModalStore';
 import ModalProvider from 'components/ModalProvider';
 
 @withModalStore()

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import localize from 'hoc/localize';
+import localize from 'hocs/localize';
 import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 

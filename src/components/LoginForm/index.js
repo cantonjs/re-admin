@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
-import localize from 'hoc/localize';
+import localize from 'hocs/localize';
 import { Icon } from 'antd';
 import { Form, Input, Submit } from 'components/Nested';
 

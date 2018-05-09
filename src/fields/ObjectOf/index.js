@@ -1,6 +1,6 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
-import field from 'hoc/field';
+import field from 'hocs/field';
 import { Form } from 'components/Nested';
 import { Form as AntdForm } from 'antd';
 

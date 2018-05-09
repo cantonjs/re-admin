@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
-import { withModalStoreProvider } from 'hoc/withModalStore';
+import { withModalStoreProvider } from 'hocs/withModalStore';
 import { Modal } from 'antd';
-import withIssuer from 'hoc/withIssuer';
+import withIssuer from 'hocs/withIssuer';
 import { MODAL } from 'utils/Issuers';
 
 @withIssuer({ issuer: MODAL })

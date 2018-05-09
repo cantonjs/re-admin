@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'antd';
 import { TOOLBAR } from 'utils/Issuers';
-import withIssuer from 'hoc/withIssuer';
+import withIssuer from 'hocs/withIssuer';
 
 const { Group } = Button;
 

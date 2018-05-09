@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import withAppConfig from 'hoc/withAppConfig';
-import field from 'hoc/field';
+import withAppConfig from 'hocs/withAppConfig';
+import field from 'hocs/field';
 import ensureFileList from 'utils/ensureFileList';
 import { Button, Icon } from 'antd';
 import { Upload } from 'components/Nested';

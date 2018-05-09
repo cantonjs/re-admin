@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styles from './styles';
 import { observer } from 'mobx-react';
 import { REF } from 'constants/Actions';
-import withModalStore from 'hoc/withModalStore';
+import withModalStore from 'hocs/withModalStore';
 import createComponent from 'components/Nested/createComponent';
 import { Input, Icon } from 'antd';
 

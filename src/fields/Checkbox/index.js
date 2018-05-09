@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox } from 'components/Nested';
-import field from 'hoc/field';
+import field from 'hocs/field';
 
 @field
 export default class CheckboxField extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import hoist, { extractRef } from 'hoc/hoist';
+import hoist, { extractRef } from 'hocs/hoist';
 import { observer } from 'mobx-react';
 import ModalStore from 'stores/ModalStore';
 import { omitBy, isEqual } from 'lodash';
