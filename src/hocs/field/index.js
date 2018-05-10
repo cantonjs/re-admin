@@ -10,6 +10,12 @@ import withModalStore from 'hocs/withModalStore';
 import hoist, { extractRef } from 'hocs/hoist';
 
 export default function field(WrappedComponent) {
+	const defaultProps = {
+		disabled: false,
+		sortable: false,
+		...WrappedComponent.defaultProps,
+	};
+
 	@hoist(WrappedComponent)
 	@withStore()
 	@withIssuer()
@@ -37,11 +43,7 @@ export default function field(WrappedComponent) {
 			modalStore: PropTypes.object.isRequired,
 		};
 
-		static defaultProps = {
-			disabled: false,
-			sortable: false,
-			...WrappedComponent.defaultProps,
-		};
+		static defaultProps = defaultProps;
 
 		static contextTypes = {
 			getParentValue: PropTypes.func,
@@ -90,6 +92,10 @@ export default function field(WrappedComponent) {
 			);
 		}
 	}
+
+	// because schema component doesn't really render,
+	// so HOCs won't able to setup default props from WrappedComponents
+	WithField.defaultProps = defaultProps;
 
 	return WithField;
 }
