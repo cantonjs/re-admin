@@ -7,11 +7,11 @@ import { omitBy, isEqual } from 'lodash';
 import ModalStore from 'stores/ModalStore';
 import routerStore from 'stores/routerStore';
 
-export default function connect(options = {}) {
+export default function withTable(options = {}) {
 	const { syncLocation, useCache } = options;
 	const router = syncLocation ? routerStore : {};
 
-	return function createConnectComponent(WrappedComponent) {
+	return function createWithTableComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
 		@withStoreProvider({ useCache })
 		@observer

@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import joinKeys from 'utils/joinKeys';
 import { REF } from 'utils/Issuers';
 import { isFunction } from 'lodash';
-import connect from 'hocs/connect';
+import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
 import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 
+@withTable()
 @withStore({ prop: 'contextStore' })
 @withIssuer({ issuer: REF })
-@connect()
 export default class RefModal extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,

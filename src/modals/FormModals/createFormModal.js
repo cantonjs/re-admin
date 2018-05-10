@@ -3,7 +3,7 @@ import { createRef } from 'create-react-ref';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import warning from 'warning';
-import connect from 'hocs/connect';
+import withTable from 'hocs/withTable';
 import styles from './styles';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
@@ -16,7 +16,7 @@ import { CREATER } from 'utils/Issuers';
 import FormStore from 'stores/FormStore';
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
-	@connect()
+	@withTable()
 	@withStore({ prop: 'contextStore' })
 	@withIssuer({ issuer: issuerText })
 	@observer

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import panelsStore from 'stores/panelsStore';
-import connect from 'hocs/connect';
+import withTable from 'hocs/withTable';
 import PageContainer from 'components/PageContainer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
@@ -47,5 +47,5 @@ DataTableView.defaultProps = {
 	toolbar: DefaultToolbar,
 };
 
-const connectHoc = connect({ syncLocation: true, useCache: true });
-export default connectHoc(observer(DataTableView));
+const withTableHoc = withTable({ syncLocation: true, useCache: true });
+export default withTableHoc(observer(DataTableView));
