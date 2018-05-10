@@ -15,39 +15,32 @@ export default function connect(options = {}) {
 		@hoist(WrappedComponent)
 		@withStoreProvider({ useCache })
 		@observer
-		class ConnectStore extends Component {
+		class WithTable extends Component {
 			static propTypes = {
 				table: PropTypes.string,
 				store: PropTypes.object,
 			};
 
-			// TODO:
-			// static contextTypes = {
-			// 	store: PropTypes.object,
-			// };
+			// DEPRECATED
+			static childContextTypes = {
+				store: PropTypes.object,
+			};
 
-			// static childContextTypes = {
-			// 	store: PropTypes.object,
-			// };
-
-			// getChildContext() {
-			// 	const { state: { store }, context } = this;
-			// 	return {
-			// 		store: store || (context && context.store),
-			// 	};
-			// }
+			// DEPRECATED
+			getChildContext() {
+				return {
+					store: this.props.store,
+				};
+			}
 
 			constructor(props, context) {
 				super(props, context);
-				const { store } = props;
+				const { store, table } = props;
+				const { history } = router;
 				if (store) {
 					this._removeQueryListener = store.addQueryListener(router);
 				}
-			}
-
-			componentWillMount() {
-				const { history } = router;
-				if (this.props.table && history) {
+				if (table && history) {
 					this._unlistenHistory = history.listen((location, prevLocation) => {
 						if (location.pathname === prevLocation.pathname) {
 							const { getOmitPaths } = ModalStore;
@@ -85,6 +78,6 @@ export default function connect(options = {}) {
 			}
 		}
 
-		return ConnectStore;
+		return WithTable;
 	};
 }

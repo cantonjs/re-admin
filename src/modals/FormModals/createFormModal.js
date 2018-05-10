@@ -16,9 +16,9 @@ import { CREATER } from 'utils/Issuers';
 import FormStore from 'stores/FormStore';
 
 export default function createFormModal(defaultTitle, issuerText, displayName) {
+	@connect()
 	@withStore({ prop: 'contextStore' })
 	@withIssuer({ issuer: issuerText })
-	@connect()
 	@observer
 	class FormModalView extends Component {
 		static displayName = displayName;

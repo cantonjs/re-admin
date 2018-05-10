@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hocs/hoist';
 import StoreContext from './StoreContext';
+import withStore from './withStore';
 
 export default function withStoreProvider(options = {}) {
 	const { useCache, prop = 'store' } = options;
 	return function createStoreProviderComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
+		@withStore({ prop: 'parentStore' })
 		class WithStoreProvider extends Component {
 			static propTypes = {
 				table: PropTypes.string,
+				parentStore: PropTypes.object,
 			};
 
 			static contextTypes = {
@@ -18,12 +21,12 @@ export default function withStoreProvider(options = {}) {
 
 			constructor(props, context) {
 				super(props, context);
-				const { table } = props;
+				const { table, parentStore } = props;
 				const state = {};
-				if (table) {
-					const store = this._getStore(table);
-					state[prop] = store;
-				}
+				let store;
+				if (table) store = this._getStore(table);
+				else if (parentStore) store = parentStore;
+				state[prop] = store;
 				this.state = state;
 			}
 
@@ -41,7 +44,7 @@ export default function withStoreProvider(options = {}) {
 			}
 
 			render() {
-				const { state, props } = this;
+				const { state, props: { parentStore, ...props } } = this;
 				return (
 					<StoreContext.Provider value={state[prop]}>
 						<WrappedComponent {...extractRef(props)} {...state} />
