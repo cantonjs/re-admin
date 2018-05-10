@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getAppConfig, configShape } from './utils';
 import moment from 'moment';
-import localeStore from 'stores/localeStore';
+import LocaleStores from 'stores/LocaleStores';
 import AdminContext from 'containers/AdminContext';
 import { LocaleProvider } from 'antd';
 import 'moment/locale/zh-cn';
@@ -19,7 +19,7 @@ export default class Admin extends Component {
 
 	componentWillMount() {
 		const { locale } = (this._config = getAppConfig(this.props));
-		if (locale) localeStore.set(locale);
+		if (locale) LocaleStores.setLocale(locale);
 	}
 
 	componentWillReceiveProps(props) {

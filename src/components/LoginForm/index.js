@@ -60,14 +60,14 @@ export default class LoginForm extends Component {
 					required
 					name="username"
 					prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-					placeholder={localeStore.usernamePlaceholder}
+					placeholder={localeStore.data.usernamePlaceholder}
 				/>
 				<Input
 					required
 					name="password"
 					type="password"
 					prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-					placeholder={localeStore.passwordPlaceholder}
+					placeholder={localeStore.data.passwordPlaceholder}
 				/>
 				<Submit
 					type="primary"
@@ -75,7 +75,7 @@ export default class LoginForm extends Component {
 					wrapperStyle={styles.buttonWrapper}
 					disabled={!isValid}
 				>
-					{localeStore.login}
+					{localeStore.data.login}
 				</Submit>
 			</Form>
 		);

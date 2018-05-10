@@ -8,14 +8,7 @@ import ConfirmButton from 'components/ConfirmButton';
 
 @withIssuer()
 @withStore()
-@localize('RemoveButton', {
-	defaultProps: {
-		label: 'label',
-		multiLabel: 'multiLabel',
-		title: 'title',
-		content: 'content',
-	},
-})
+@localize('RemoveButton')
 export default class RemoveButton extends Component {
 	static propTypes = {
 		localeStore: PropTypes.object.isRequired,
@@ -40,7 +33,7 @@ export default class RemoveButton extends Component {
 			<ConfirmButton
 				onOk={this._handleOk}
 				{...styleTypes}
-				{...other}
+				{...localeStore.localize(other)}
 				minSelected={1}
 			/>
 		);

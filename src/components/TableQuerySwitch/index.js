@@ -7,16 +7,13 @@ import localize from 'hocs/localize';
 import { Checkbox } from 'antd';
 
 @withStore()
-@localize('TableQuerySwitch', {
-	defaultProps: {
-		children: 'label',
-	},
-})
+@localize('TableQuerySwitch')
 @observer
 export default class TableQuerySwitch extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 		store: PropTypes.object.isRequired,
+		localeStore: PropTypes.object.isRequired,
 	};
 
 	_handleToggle = (ev) => {
@@ -24,11 +21,11 @@ export default class TableQuerySwitch extends Component {
 	};
 
 	render() {
-		const { store: { queryFieldsCount }, children } = this.props;
+		const { store: { queryFieldsCount }, children, localeStore } = this.props;
 		if (!queryFieldsCount) return null;
 		return (
 			<Checkbox checked={panelsStore.isShowQuery} onChange={this._handleToggle}>
-				{children}
+				{localeStore.localizeProp(children, 'label')}
 			</Checkbox>
 		);
 	}

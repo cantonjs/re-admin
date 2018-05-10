@@ -27,11 +27,7 @@ const styles = {
 };
 
 @field
-@localize('ArrayOf', {
-	defaultProps: {
-		addButtonLabel: 'addButtonLabel',
-	},
-})
+@localize('ArrayOf')
 export default class ArrayOf extends Component {
 	static propTypes = {
 		name: PropTypes.string,
@@ -40,6 +36,7 @@ export default class ArrayOf extends Component {
 		wrapperStyle: PropTypes.object,
 		defaultItemValue: PropTypes.any,
 		addButtonLabel: PropTypes.node,
+		localeStore: PropTypes.object.isRequired,
 	};
 
 	static defaultProps = {
@@ -68,6 +65,7 @@ export default class ArrayOf extends Component {
 			name,
 			addButtonLabel,
 			wrapperStyle,
+			localeStore,
 			...other
 		} = this.props;
 
@@ -93,7 +91,8 @@ export default class ArrayOf extends Component {
 							onClick={this._handleAdd}
 							style={styles.button}
 						>
-							<Icon type="plus" /> {addButtonLabel}
+							<Icon type="plus" />{' '}
+							{localeStore.localizeProp(addButtonLabel, 'addButtonLabel')}
 						</Button>
 					</Item>
 				)}

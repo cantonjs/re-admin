@@ -7,9 +7,9 @@ import { isString } from 'lodash';
 import deprecated from 'utils/deprecated';
 import showError from 'utils/showError';
 import warning from 'warning';
-import localeStore from 'stores/localeStore';
+import LocaleStores from 'stores/LocaleStores';
 
-const locale = localeStore.requests;
+const locale = LocaleStores.ensure('requests');
 
 const verifyAndSaveAccessToken = (authRes = {}) => {
 	const { accessToken, expiresIn, expiresInMilliseconds } = authRes;
@@ -61,7 +61,7 @@ class AuthStore {
 			isOk = true;
 		} catch (err) {
 			this.accessToken = null;
-			showError(locale.invalidToken, err);
+			showError(locale.data.invalidToken, err);
 		}
 		this.isFetching = false;
 		return isOk;
@@ -82,10 +82,10 @@ class AuthStore {
 			this.accessToken = authRes.accessToken;
 
 			isOk = true;
-			message.success(locale.loginSuccess);
+			message.success(locale.data.loginSuccess);
 		} catch (err) {
 			this.accessToken = null;
-			showError(locale.loginFailed, err);
+			showError(locale.data.loginFailed, err);
 		}
 		return isOk;
 	}

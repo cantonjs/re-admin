@@ -4,11 +4,7 @@ import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 import localize from 'hocs/localize';
 
-@localize('CreateButton', {
-	defaultProps: {
-		label: 'label',
-	},
-})
+@localize('CreateButton')
 export default class CreateButton extends Component {
 	static propTypes = {
 		localeStore: PropTypes.object.isRequired,
@@ -23,9 +19,10 @@ export default class CreateButton extends Component {
 	};
 
 	_handleClick = (ev, refs) => {
+		const { props } = this;
 		const { openCreaterModal, getSelectedKeysString, getData } = refs;
-		const { label, title, table, save } = this.props;
-		const getTitle = title || label;
+		const { title, label, table, save, localeStore } = props;
+		const getTitle = title || localeStore.localizeProp(label, 'label');
 		const options = {
 			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
 			save,
@@ -40,6 +37,11 @@ export default class CreateButton extends Component {
 
 	render() {
 		const { title, table, save, localeStore, ...other } = this.props;
-		return <ContextButton onClick={this._handleClick} {...other} />;
+		return (
+			<ContextButton
+				onClick={this._handleClick}
+				{...localeStore.localize(other)}
+			/>
+		);
 	}
 }

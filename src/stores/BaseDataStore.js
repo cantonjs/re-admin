@@ -1,11 +1,11 @@
 import { computed } from 'mobx';
 import { isFunction, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
-import localeStore from 'stores/localeStore';
+import LocaleStores from 'stores/LocaleStores';
 import warning from 'warning';
 import Table from 'schemas/Table';
 
-const locale = localeStore.requests;
+const locale = LocaleStores.ensure('requests');
 
 export default class BaseDataStore {
 	@computed
@@ -89,7 +89,7 @@ export default class BaseDataStore {
 	async fetch(options = {}) {
 		await this.request({
 			requestFn: 'fetch',
-			errorTitle: locale.fetchFailed,
+			errorTitle: locale.data.fetchFailed,
 			...options,
 			refresh: false,
 		});
@@ -99,7 +99,7 @@ export default class BaseDataStore {
 		await this.request({
 			method: 'POST',
 			body: this.config.mapOnSave(options.body, 'create'),
-			errorTitle: locale.createFailed,
+			errorTitle: locale.data.createFailed,
 			...options,
 			refresh: true,
 		});
@@ -109,7 +109,7 @@ export default class BaseDataStore {
 		await this.request({
 			method: 'PUT',
 			body: this.config.mapOnSave(options.body, 'update'),
-			errorTitle: locale.updateFailed,
+			errorTitle: locale.data.updateFailed,
 			...options,
 			refresh: true,
 		});
@@ -118,7 +118,7 @@ export default class BaseDataStore {
 	async remove(options = {}) {
 		await this.request({
 			method: 'DELETE',
-			errorTitle: locale.removeFailed,
+			errorTitle: locale.data.removeFailed,
 			...options,
 			refresh: true,
 		});
@@ -126,7 +126,7 @@ export default class BaseDataStore {
 
 	async request(options = {}) {
 		const {
-			errorTitle = locale.failed,
+			errorTitle = locale.data.failed,
 			refresh = false,
 			throwError = false,
 			...requestOptions

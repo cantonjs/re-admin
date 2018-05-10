@@ -21,7 +21,7 @@ export default class UserMenu extends Component {
 
 	_handleClick = (ev) => {
 		ev.preventDefault();
-		const { confirmSignOut, signOut } = this.props.localeStore;
+		const { confirmSignOut, signOut } = this.props.localeStore.data;
 		confirm({
 			title: confirmSignOut,
 			onOk: () => {
@@ -40,7 +40,7 @@ export default class UserMenu extends Component {
 					<Menu>
 						<Item>
 							<a rel="noopener noreferrer" onClick={this._handleClick} href="#">
-								<Icon type="logout" /> {localeStore.signOut}
+								<Icon type="logout" /> {localeStore.data.signOut}
 							</a>
 						</Item>
 					</Menu>

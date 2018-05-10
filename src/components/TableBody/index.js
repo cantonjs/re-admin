@@ -130,7 +130,7 @@ export default class TableBody extends Component {
 
 				<div style={styles.footer}>
 					<p style={styles.total}>
-						{localeStore.total}: {total || 0}
+						{localeStore.data.total}: {total || 0}
 					</p>
 
 					<Pagination

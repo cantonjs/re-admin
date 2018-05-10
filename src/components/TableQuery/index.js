@@ -104,8 +104,8 @@ export default class TableQuery extends Component {
 				{!!footer && <FooterContainer>{footer}</FooterContainer>}
 				{!footer && (
 					<FooterContainer>
-						<Submit type="primary">{localeStore.search}</Submit>
-						<Reset>{localeStore.reset}</Reset>
+						<Submit type="primary">{localeStore.data.search}</Submit>
+						<Reset>{localeStore.data.reset}</Reset>
 					</FooterContainer>
 				)}
 			</Form>
