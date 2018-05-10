@@ -7,7 +7,7 @@ import localize from 'hocs/localize';
 import { Checkbox } from 'antd';
 
 @withStore()
-@localize({
+@localize('TableQuerySwitch', {
 	defaultProps: {
 		children: 'label',
 	},

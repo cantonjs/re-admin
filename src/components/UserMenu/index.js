@@ -8,9 +8,10 @@ import localize from 'hocs/localize';
 const { confirm } = Modal;
 const { Item } = Menu;
 
-@localize()
+@localize('UserMenu')
 export default class UserMenu extends Component {
 	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
 		style: PropTypes.object,
 	};
 
@@ -20,7 +21,7 @@ export default class UserMenu extends Component {
 
 	_handleClick = (ev) => {
 		ev.preventDefault();
-		const { confirmSignOut, signOut } = this.locale;
+		const { confirmSignOut, signOut } = this.props.localeStore;
 		confirm({
 			title: confirmSignOut,
 			onOk: () => {
@@ -32,14 +33,14 @@ export default class UserMenu extends Component {
 	};
 
 	render() {
-		const { style } = this.props;
+		const { style, localeStore } = this.props;
 		return (
 			<Dropdown
 				overlay={
 					<Menu>
 						<Item>
 							<a rel="noopener noreferrer" onClick={this._handleClick} href="#">
-								<Icon type="logout" /> {this.locale.signOut}
+								<Icon type="logout" /> {localeStore.signOut}
 							</a>
 						</Item>
 					</Menu>

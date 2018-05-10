@@ -8,7 +8,7 @@ import ConfirmButton from 'components/ConfirmButton';
 
 @withIssuer()
 @withStore()
-@localize({
+@localize('RemoveButton', {
 	defaultProps: {
 		label: 'label',
 		multiLabel: 'multiLabel',
@@ -18,6 +18,7 @@ import ConfirmButton from 'components/ConfirmButton';
 })
 export default class RemoveButton extends Component {
 	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
 		label: PropTypes.stringOrFunc,
 		multiLabel: PropTypes.stringOrFunc,
 		title: PropTypes.stringOrFunc,
@@ -31,7 +32,7 @@ export default class RemoveButton extends Component {
 	};
 
 	render() {
-		const { issuers, ...other } = this.props;
+		const { issuers, localeStore, ...other } = this.props;
 		const isInToolbar = issuers.has(TOOLBAR);
 		const styleTypes = {};
 		if (isInToolbar) styleTypes.type = 'danger';

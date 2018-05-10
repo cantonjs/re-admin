@@ -4,31 +4,28 @@ import warning from 'warning';
 import localeStore from 'stores/localeStore';
 import hoist, { extractRef } from 'hocs/hoist';
 
-export default function localize(options = {}) {
-	const {
-		defaultProps,
-		localeAttrName = 'locale',
-		component: localeComponent,
-	} = options;
+export default function localize(name, options = {}) {
+	const { defaultProps, prop = 'localeStore' } = options;
 	return function createLocalizedComponent(WrappedComponent) {
-		const { displayName } = WrappedComponent;
-		const localeComponentName = localeComponent || displayName;
-		const store = localeStore[localeComponentName];
+		const store = localeStore[name];
+		const storeProps = {};
 		const hasLocale = !!store;
+		warning(store, `locale component "${name}" not found`);
+		if (store) storeProps[prop] = store;
 
-		if (hasLocale) {
-			const locale = Object.keys(store).reduce((acc, key) => {
-				return Object.defineProperty(acc, key, {
-					enumerable: true,
-					get() {
-						return localeStore[localeComponentName][key];
-					},
-				});
-			}, {});
-			WrappedComponent.prototype[localeAttrName] = locale;
-		} else {
-			warning(false, `locale component "${localeComponentName}" not found`);
-		}
+		// if (hasLocale) {
+		// 	const locale = Object.keys(store).reduce((acc, key) => {
+		// 		return Object.defineProperty(acc, key, {
+		// 			enumerable: true,
+		// 			get() {
+		// 				return localeStore[name][key];
+		// 			},
+		// 		});
+		// 	}, {});
+		// 	WrappedComponent.prototype[localeAttrName] = locale;
+		// } else {
+		// 	warning(false, `locale component "${name}" not found`);
+		// }
 
 		const getDefaultLocaleProps = function getDefaultLocaleProps() {
 			if (!hasLocale || !defaultProps) {
@@ -36,7 +33,7 @@ export default function localize(options = {}) {
 			}
 			return Object.keys(defaultProps).reduce((acc, prop) => {
 				const key = defaultProps[prop];
-				acc[prop] = localeStore[localeComponentName][key];
+				acc[prop] = localeStore[name][key];
 				return acc;
 			}, {});
 		};
@@ -51,6 +48,7 @@ export default function localize(options = {}) {
 					<WrappedComponent
 						{...getDefaultLocaleProps()}
 						{...extractRef(this.props)}
+						{...storeProps}
 					/>
 				);
 			}

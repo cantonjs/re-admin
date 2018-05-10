@@ -32,10 +32,11 @@ const components = {
 };
 
 @withIssuer({ issuer: TABLE })
-@localize()
+@localize('TableBody')
 @observer
 export default class TableBody extends Component {
 	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
 		store: PropTypes.shape({
 			columns: PropTypes.array.isRequired,
 			dataSource: PropTypes.array,
@@ -84,7 +85,7 @@ export default class TableBody extends Component {
 	};
 
 	render() {
-		const { props: { store, selectionType }, locale } = this;
+		const { props: { store, selectionType, localeStore } } = this;
 		const {
 			columns,
 			dataSource,
@@ -129,7 +130,7 @@ export default class TableBody extends Component {
 
 				<div style={styles.footer}>
 					<p style={styles.total}>
-						{locale.total}: {total || 0}
+						{localeStore.total}: {total || 0}
 					</p>
 
 					<Pagination

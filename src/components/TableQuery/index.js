@@ -23,10 +23,11 @@ FooterContainer.propTypes = {
 };
 
 @withIssuer({ issuer: QUERIER })
-@localize()
+@localize('TableQuery')
 @observer
 export default class TableQuery extends Component {
 	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
 		store: PropTypes.object,
 		children: PropTypes.node,
 		header: PropTypes.node,
@@ -83,7 +84,9 @@ export default class TableQuery extends Component {
 	}
 
 	render() {
-		const { props: { header, footer, children, hidden, store }, locale } = this;
+		const {
+			props: { header, footer, children, hidden, store, localeStore },
+		} = this;
 		const shouldHide =
 			hidden ||
 			((!children || !Children.count(children)) &&
@@ -101,8 +104,8 @@ export default class TableQuery extends Component {
 				{!!footer && <FooterContainer>{footer}</FooterContainer>}
 				{!footer && (
 					<FooterContainer>
-						<Submit type="primary">{locale.search}</Submit>
-						<Reset>{locale.reset}</Reset>
+						<Submit type="primary">{localeStore.search}</Submit>
+						<Reset>{localeStore.reset}</Reset>
 					</FooterContainer>
 				)}
 			</Form>

@@ -1,83 +1,70 @@
 {
 	"env": {
 		"development": {
-			"presets": [
-				"es2015",
-				"stage-0-without-async",
-			],
-			"plugins": [
-				"transform-decorators-legacy",
-			],
+			"presets": ["es2015", "stage-0-without-async"],
+			"plugins": ["transform-decorators-legacy"]
 		},
 		"docs": {
-			"presets": [
-				"react",
-				["es2015", { "modules": false }],
-				"stage-0",
-			],
+			"presets": ["react", ["es2015", { "modules": false }], "stage-0"],
 			"plugins": [
 				"react-hot-loader/babel",
 				"transform-decorators-legacy",
 				"transform-runtime",
 				"lodash",
-				"set-react-class-displayname",
-				["import", {
-					"libraryName": "antd",
-					"style": true,
-				}],
-			],
+				[
+					"import",
+					{
+						"libraryName": "antd",
+						"style": true
+					}
+				]
+			]
 		},
 		"umd": {
-			"presets": [
-				"react",
-				["es2015", { "modules": false }],
-				"stage-0",
-			],
-			"plugins": [
-				"transform-decorators-legacy",
-				"lodash",
-				"set-react-class-displayname",
-			],
+			"presets": ["react", ["es2015", { "modules": false }], "stage-0"],
+			"plugins": ["transform-decorators-legacy", "lodash"]
 		},
 		"es": {
-			"presets": [
-				"react",
-				["es2015", { "modules": false }],
-				"stage-0",
-			],
+			"presets": ["react", ["es2015", { "modules": false }], "stage-0"],
 			"plugins": [
-				["module-resolver", {
-					"root": [ "./src" ],
-				}],
+				[
+					"module-resolver",
+					{
+						"root": ["./src"]
+					}
+				],
 				"dev-expression",
 				"transform-decorators-legacy",
 				"lodash",
-				"set-react-class-displayname",
-				["import", {
-					"libraryName": "antd",
-					"style": true,
-				}],
-			],
+				[
+					"import",
+					{
+						"libraryName": "antd",
+						"style": true
+					}
+				]
+			]
 		},
 		"cjs": {
-			"presets": [
-				"react",
-				"es2015",
-				"stage-0",
-			],
+			"presets": ["react", "es2015", "stage-0"],
 			"plugins": [
-				["module-resolver", {
-					"root": [ "./src" ],
-				}],
+				[
+					"module-resolver",
+					{
+						"root": ["./src"]
+					}
+				],
 				"dev-expression",
 				"transform-decorators-legacy",
 				"lodash",
-				"set-react-class-displayname",
-				["import", {
-					"libraryName": "antd",
-					"style": true,
-				}],
-			],
-		},
-	},
+				[
+					"import",
+					{
+						"libraryName": "antd",
+						"style": true
+					}
+				]
+			]
+		}
+	}
 }

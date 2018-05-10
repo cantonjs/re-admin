@@ -6,13 +6,14 @@ import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 
 @withStore()
-@localize({
+@localize('RefButton', {
 	defaultProps: {
 		label: 'label',
 	},
 })
 export default class RefButton extends Component {
 	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
 		table: PropTypes.string.isRequired,
 		title: PropTypes.stringOrFunc,
 		fetch: PropTypes.string,
@@ -37,7 +38,9 @@ export default class RefButton extends Component {
 	};
 
 	render() {
-		const { props: { title, table, fetch, save, noQuery, ...other } } = this;
+		const {
+			props: { title, table, fetch, save, noQuery, localeStore, ...other },
+		} = this;
 		return <ContextButton {...other} onClick={this._handleClick} />;
 	}
 }

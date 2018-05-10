@@ -3,7 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
 import localize from 'hocs/localize';
 
-@localize({
+@localize('UpdateButton', {
 	defaultProps: {
 		label: 'label',
 		multiLabel: 'multiLabel',
@@ -11,6 +11,7 @@ import localize from 'hocs/localize';
 })
 export default class UpdateButton extends Component {
 	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
 		names: PropTypes.array,
 		label: PropTypes.stringOrFunc,
 		multiLabel: PropTypes.stringOrFunc,
@@ -26,8 +27,7 @@ export default class UpdateButton extends Component {
 	};
 
 	render() {
-		const { props: { names, ...other } } = this;
-
+		const { props: { names, localeStore, ...other } } = this;
 		return (
 			<ContextButton {...other} onClick={this._handleClick} minSelected={1} />
 		);

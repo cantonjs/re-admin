@@ -4,13 +4,14 @@ import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 import localize from 'hocs/localize';
 
-@localize({
+@localize('CreateButton', {
 	defaultProps: {
 		label: 'label',
 	},
 })
 export default class CreateButton extends Component {
 	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
 		table: PropTypes.string,
 		label: PropTypes.stringOrFunc,
 		title: PropTypes.stringOrFunc,
@@ -38,7 +39,7 @@ export default class CreateButton extends Component {
 	};
 
 	render() {
-		const { title, table, save, ...other } = this.props;
+		const { title, table, save, localeStore, ...other } = this.props;
 		return <ContextButton onClick={this._handleClick} {...other} />;
 	}
 }

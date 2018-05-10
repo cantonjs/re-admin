@@ -49,8 +49,6 @@ export default function field(WrappedComponent) {
 
 		constructor(props, context) {
 			super(props, context);
-			console.log('props', props.store);
-
 			this._state = new State(props, context);
 		}
 

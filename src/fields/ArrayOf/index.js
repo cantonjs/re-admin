@@ -27,7 +27,7 @@ const styles = {
 };
 
 @field
-@localize({
+@localize('ArrayOf', {
 	defaultProps: {
 		addButtonLabel: 'addButtonLabel',
 	},

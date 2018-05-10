@@ -7,9 +7,13 @@ import localize from 'hocs/localize';
 import { Icon } from 'antd';
 import { Form, Input, Submit } from 'components/Nested';
 
-@localize()
+@localize('LoginForm')
 @observer
 export default class LoginForm extends Component {
+	static propTypes = {
+		localeStore: PropTypes.object.isRequired,
+	};
+
 	static contextTypes = {
 		appConfig: PropTypes.object,
 		authStore: PropTypes.object,
@@ -44,7 +48,7 @@ export default class LoginForm extends Component {
 	};
 
 	render() {
-		const { state: { isValid }, props, locale } = this;
+		const { state: { isValid }, props: { localeStore, ...props } } = this;
 		return (
 			<Form
 				onSubmit={this._handleSubmit}
@@ -56,14 +60,14 @@ export default class LoginForm extends Component {
 					required
 					name="username"
 					prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-					placeholder={locale.usernamePlaceholder}
+					placeholder={localeStore.usernamePlaceholder}
 				/>
 				<Input
 					required
 					name="password"
 					type="password"
 					prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-					placeholder={locale.passwordPlaceholder}
+					placeholder={localeStore.passwordPlaceholder}
 				/>
 				<Submit
 					type="primary"
@@ -71,7 +75,7 @@ export default class LoginForm extends Component {
 					wrapperStyle={styles.buttonWrapper}
 					disabled={!isValid}
 				>
-					{locale.login}
+					{localeStore.login}
 				</Submit>
 			</Form>
 		);

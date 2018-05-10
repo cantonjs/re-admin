@@ -5,7 +5,8 @@ const ActionLabel = function ActionLabel(props) {
 	return <span {...props} />;
 };
 
-export default localize({
+ActionLabel.displayName = 'ActionLabel';
+
+export default localize('ActionsField', {
 	defaultProps: { children: 'label' },
-	component: 'ActionsField',
 })(ActionLabel);
