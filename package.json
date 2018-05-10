@@ -54,7 +54,6 @@
 		"react-document-title": "^2.0.3",
 		"react-nested-form": "^0.0.0-22",
 		"react-router-mobx": "^1.2.1",
-		"react-title-component": "^1.0.1",
 		"tiny-querystring": "^0.0.2",
 		"warning": "^3.0.0"
 	},
