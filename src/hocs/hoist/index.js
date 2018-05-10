@@ -6,6 +6,10 @@ const isStatelessComponent = function isStatelessComponent(component) {
 	return !('render' in component.prototype);
 };
 
+const getDisplayName = function getDisplayName(component) {
+	return component.displayName || component.name;
+};
+
 export default function hoist(WrappedComponent, options = {}) {
 	const { displayName } = options;
 	return function createHoistedComponent(TargetComponent) {
@@ -17,6 +21,7 @@ export default function hoist(WrappedComponent, options = {}) {
 			HoistedComponent = forwardRef((props, ref) => (
 				<TargetComponent {...props} forwardedRef={ref} />
 			));
+			HoistedComponent.displayName = getDisplayName(TargetComponent);
 			HoistedComponent.defaultProps = TargetComponent.defaultProps;
 		}
 
@@ -27,10 +32,9 @@ export default function hoist(WrappedComponent, options = {}) {
 		if (displayName) {
 			HoistedComponent.displayName = displayName;
 		} else {
-			const originalDisplayName =
-				WrappedComponent.displayName || WrappedComponent.name;
-			const finalName = `${HoistedComponent.name}(${originalDisplayName})`;
-			HoistedComponent.displayName = finalName;
+			const originalDisplayName = getDisplayName(WrappedComponent);
+			const prefix = getDisplayName(HoistedComponent);
+			HoistedComponent.displayName = `${prefix}(${originalDisplayName})`;
 		}
 		return HoistedComponent;
 	};
