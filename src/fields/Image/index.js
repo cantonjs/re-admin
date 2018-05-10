@@ -53,9 +53,11 @@ export default class ImageField extends Component {
 		previewImage: '',
 	};
 
-	componentWillMount() {
-		const { strategy, imagePath, requireAccessToken } = this.props;
-		const { authStore, appConfig } = this.context;
+	constructor(props, context) {
+		super(props, context);
+
+		const { strategy, imagePath, requireAccessToken } = props;
+		const { authStore, appConfig } = context;
 		const { accessTokenName } = appConfig.api;
 
 		if (isObject(strategy)) {

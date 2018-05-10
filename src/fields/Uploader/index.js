@@ -34,9 +34,10 @@ export default class Uploader extends Component {
 		fileList: ensureFileList(this.props.getValue()),
 	};
 
-	componentWillMount() {
-		const { authStore, appConfig } = this.context;
-		const { filePath, requireAccessToken } = this.props;
+	constructor(props, context) {
+		super(props, context);
+		const { authStore, appConfig } = context;
+		const { filePath, requireAccessToken } = props;
 		const { accessTokenName } = appConfig.api;
 
 		// TODO: should suppport `accessToken` in header

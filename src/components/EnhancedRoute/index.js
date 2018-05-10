@@ -20,7 +20,7 @@ export default function EnhancedRoute({
 }
 
 EnhancedRoute.propTypes = {
-	component: PropTypes.func.isRequired,
+	component: PropTypes.any.isRequired,
 	exact: PropTypes.any,
 	strict: PropTypes.any,
 	path: PropTypes.any,

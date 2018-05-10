@@ -37,8 +37,9 @@ export default class RefModal extends Component {
 		width: 800,
 	};
 
-	componentWillMount() {
-		const { props: { fetch, store: refStore }, props } = this;
+	constructor(props, context) {
+		super(props, context);
+		const { fetch, store: refStore } = props;
 		isFunction(fetch) ? fetch(props) : refStore.call(fetch, props);
 	}
 

@@ -17,8 +17,9 @@ export default class Admin extends Component {
 		children: PropTypes.node,
 	};
 
-	componentWillMount() {
-		const { locale } = (this._config = getAppConfig(this.props));
+	constructor(props) {
+		super(props);
+		const { locale } = (this._config = getAppConfig(props));
 		if (locale) LocaleStores.setLocale(locale);
 	}
 

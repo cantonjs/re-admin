@@ -26,8 +26,9 @@ export default class Navi extends Component {
 		appConfig: PropTypes.object,
 	};
 
-	componentWillMount() {
-		const { menus } = this.context.appConfig.navigator;
+	constructor(props, context) {
+		super(props);
+		const { menus } = context.appConfig.navigator;
 		const { location } = routerStore;
 		this._keysStore = new KeysStore(menus, location);
 	}

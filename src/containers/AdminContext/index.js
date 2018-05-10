@@ -35,8 +35,9 @@ export default class AdminContext extends Component {
 		};
 	}
 
-	componentWillMount() {
-		this._appConfig = observable(this.props.appConfig);
+	constructor(props) {
+		super(props);
+		this._appConfig = observable(props.appConfig);
 		authStore.set(this._appConfig);
 		storesDispatcher.init(this._appConfig, authStore);
 	}

@@ -23,8 +23,9 @@ export default function withActions(WrappedComponent) {
 			tableRowKey: PropTypes.string,
 		};
 
-		componentWillMount() {
-			const { tableRowKey } = this.context;
+		constructor(props, context) {
+			super(props, context);
+			const { tableRowKey } = context;
 			if (tableRowKey) {
 				this._selectedKeys = [tableRowKey];
 			}

@@ -12,8 +12,9 @@ export default class ModalConsumer extends Component {
 		modalStore: PropTypes.object.isRequired,
 	};
 
-	componentWillMount() {
-		const { children, modalStore, ...other } = this.props;
+	constructor(props) {
+		super(props);
+		const { children, modalStore, ...other } = props;
 		modalStore.setModalProps(other);
 	}
 

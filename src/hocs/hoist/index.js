@@ -2,8 +2,8 @@ import React from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 import { forwardRef } from 'create-react-ref';
 
-const isStatelessComponent = function isStatelessComponent(component) {
-	return !('render' in component.prototype);
+const notStatelessComponent = function notStatelessComponent(component) {
+	return component && component.prototype && 'render' in component.prototype;
 };
 
 const getDisplayName = function getDisplayName(component) {
@@ -15,8 +15,8 @@ export default function hoist(WrappedComponent, options = {}) {
 	return function createHoistedComponent(TargetComponent) {
 		let HoistedComponent = TargetComponent;
 		if (
-			!isStatelessComponent(TargetComponent) &&
-			!isStatelessComponent(WrappedComponent)
+			notStatelessComponent(TargetComponent) &&
+			notStatelessComponent(WrappedComponent)
 		) {
 			HoistedComponent = forwardRef((props, ref) => (
 				<TargetComponent {...props} forwardedRef={ref} />
