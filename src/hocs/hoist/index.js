@@ -1,9 +1,12 @@
 import React from 'react';
 import { forwardRef } from 'utils/reactPolyfill';
 import hoistStatics from 'hoist-non-react-statics';
+import { isFunction } from 'lodash';
 
-const notStatelessComponent = function notStatelessComponent(component) {
-	return component && component.prototype && 'render' in component.prototype;
+const isStatelessComponent = function isStatelessComponent(component) {
+	return (
+		!component || (isFunction(component) && !('render' in component.prototype))
+	);
 };
 
 const getDisplayName = function getDisplayName(component) {
@@ -15,8 +18,8 @@ export default function hoist(WrappedComponent, options = {}) {
 	return function createHoistedComponent(TargetComponent) {
 		let HoistedComponent = TargetComponent;
 		if (
-			notStatelessComponent(TargetComponent) &&
-			notStatelessComponent(WrappedComponent)
+			!isStatelessComponent(TargetComponent) &&
+			!isStatelessComponent(WrappedComponent)
 		) {
 			HoistedComponent = forwardRef((props, ref) => (
 				<TargetComponent {...props} forwardedRef={ref} />
@@ -27,7 +30,7 @@ export default function hoist(WrappedComponent, options = {}) {
 
 		if (WrappedComponent) {
 			HoistedComponent.WrappedComponent = WrappedComponent;
-			hoistStatics(HoistedComponent, WrappedComponent);
+			hoistStatics(HoistedComponent, WrappedComponent, { render: true });
 		}
 		if (displayName) {
 			HoistedComponent.displayName = displayName;
