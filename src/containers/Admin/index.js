@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import { getAppConfig, configShape } from './utils';
 import moment from 'moment';
@@ -10,6 +11,7 @@ import 'moment/locale/zh-cn';
 // TODO: should be able to custom
 moment.locale('zh-cn');
 
+@polyfill
 export default class Admin extends Component {
 	static propTypes = {
 		...configShape,
@@ -17,23 +19,25 @@ export default class Admin extends Component {
 		children: PropTypes.node,
 	};
 
-	constructor(props) {
-		super(props);
-		const { locale } = (this._config = getAppConfig(props));
-		if (locale) LocaleStores.setLocale(locale);
+	static getDerivedStateFromProps(nextProps) {
+		return { config: getAppConfig(nextProps) };
 	}
 
-	componentWillReceiveProps(props) {
-		this._config = getAppConfig(props);
-		this.forceUpdate();
+	constructor(props) {
+		super(props);
+
+		const config = getAppConfig(props);
+		const { locale } = config;
+		if (locale) LocaleStores.setLocale(locale);
+		this.state = { config };
 	}
 
 	_renderContext() {
-		return <AdminContext appConfig={this._config} />;
+		return <AdminContext appConfig={this.state.config} />;
 	}
 
 	render() {
-		const { locale } = this._config;
+		const { locale } = this.state.config;
 		if (locale) {
 			return (
 				<LocaleProvider locale={locale.antd}>

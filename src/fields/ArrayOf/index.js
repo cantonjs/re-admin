@@ -1,5 +1,5 @@
 import React, { Component, Children, cloneElement } from 'react';
-import { createRef } from 'create-react-ref';
+import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import field from 'hocs/field';
 import { Form, Button, Icon } from 'antd';

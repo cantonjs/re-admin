@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import createReactContext from 'create-react-context';
+import { createContext } from 'utils/reactPolyfill';
 import hoist, { extractRef } from 'hocs/hoist';
 
-const IssuerContext = createReactContext(new Set());
+const IssuerContext = createContext(new Set());
 
 const extendIssuers = (issuers, issuer) => {
 	const newIssuers = new Set(issuers);

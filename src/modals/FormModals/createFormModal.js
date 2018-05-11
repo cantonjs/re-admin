@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createRef } from 'create-react-ref';
+import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import warning from 'warning';

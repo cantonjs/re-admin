@@ -1,9 +1,10 @@
-
 import React, { Component, Children } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import { Select } from 'components/Nested';
 import Text from 'fields/Text';
 
+@polyfill
 export default class SelectField extends Component {
 	static propTypes = {
 		children: PropTypes.node,
@@ -20,33 +21,33 @@ export default class SelectField extends Component {
 
 	static minWidth = 96;
 
-	state = {
-		style: {
-			minWidth: SelectField.minWidth,
-			...this.props.style,
-		},
-	};
-
-	componentWillReceiveProps({ style }) {
-		if (this.props.style !== style) {
-			this.setState({
+	static getDerivedStateFromProps({ style }, { prevStyle }) {
+		return style === prevStyle ?
+			null :
+			{
+				prevStyle: style,
 				style: {
 					minWidth: SelectField.minWidth,
 					...style,
 				},
-			});
-		}
+			};
+	}
+
+	constructor(props) {
+		super(props);
+
+		const prevStyle = props.style;
+		this.state = {
+			style: {
+				minWidth: SelectField.minWidth,
+				...prevStyle,
+			},
+			prevStyle,
+		};
 	}
 
 	render() {
-		const { props, state } = this;
-
-		return (
-			<Text
-				{...props}
-				{...state}
-				component={Select}
-			/>
-		);
+		const { props, state: { prevStyle, ...styleProps } } = this;
+		return <Text {...props} {...styleProps} component={Select} />;
 	}
 }

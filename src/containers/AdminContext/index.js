@@ -42,7 +42,7 @@ export default class AdminContext extends Component {
 		storesDispatcher.init(this._appConfig, authStore);
 	}
 
-	componentWillReceiveProps({ appConfig }) {
+	componentDidUpdate({ appConfig }) {
 		Object.assign(this._appConfig, appConfig);
 		authStore.set(this._appConfig);
 	}

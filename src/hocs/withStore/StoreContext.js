@@ -1,3 +1,3 @@
-import createReactContext from 'create-react-context';
+import { createContext } from 'utils/reactPolyfill';
 
-export default createReactContext();
+export default createContext();

@@ -1,5 +1,6 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import styles from './styles';
 import { observer } from 'mobx-react';
 import { REF } from 'constants/Actions';
@@ -9,6 +10,7 @@ import { Input, Icon } from 'antd';
 
 @withModalStore()
 @observer
+@polyfill
 class RefSelector extends Component {
 	static propTypes = {
 		table: PropTypes.string.isRequired,
@@ -30,15 +32,13 @@ class RefSelector extends Component {
 		width: '80%',
 	};
 
+	static getDerivedStateFromProps({ value }, prevState) {
+		return value !== prevState.value ? { value } : null;
+	}
+
 	state = {
 		value: this.props.value,
 	};
-
-	componentWillReceiveProps({ value }) {
-		if (this.props.value !== value) {
-			this.setState({ value });
-		}
-	}
 
 	_handleClick = (ev) => {
 		const {

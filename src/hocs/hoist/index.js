@@ -1,6 +1,6 @@
 import React from 'react';
+import { forwardRef } from 'utils/reactPolyfill';
 import hoistStatics from 'hoist-non-react-statics';
-import { forwardRef } from 'create-react-ref';
 
 const notStatelessComponent = function notStatelessComponent(component) {
 	return component && component.prototype && 'render' in component.prototype;

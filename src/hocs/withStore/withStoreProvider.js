@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hocs/hoist';
 import StoreContext from './StoreContext';
@@ -9,6 +10,7 @@ export default function withStoreProvider(options = {}) {
 	return function createStoreProviderComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
 		@withStore({ prop: 'parentStore' })
+		@polyfill
 		class WithStoreProvider extends Component {
 			static propTypes = {
 				table: PropTypes.string,
@@ -19,10 +21,18 @@ export default function withStoreProvider(options = {}) {
 				storesDispatcher: PropTypes.object.isRequired,
 			};
 
+			static getDerivedStateFromProps({ table }, prevState) {
+				return prevState.table && prevState.table !== table ?
+					{
+						[prop]: prevState.getStore(table),
+					} :
+					null;
+			}
+
 			constructor(props, context) {
 				super(props, context);
 				const { table, parentStore } = props;
-				const state = {};
+				const state = { table, getStore: this._getStore };
 				let store;
 				if (table) store = this._getStore(table);
 				else if (parentStore) store = parentStore;
@@ -30,24 +40,17 @@ export default function withStoreProvider(options = {}) {
 				this.state = state;
 			}
 
-			componentWillReceiveProps({ table }) {
-				if (this.props.table && this.props.table !== table) {
-					this.setState({
-						[prop]: this._getStore(table),
-					});
-				}
-			}
-
-			_getStore(table) {
+			_getStore = (table) => {
 				const { context: { storesDispatcher } } = this;
 				return storesDispatcher.ensureStore(table, { useCache });
-			}
+			};
 
 			render() {
 				const { state, props: { parentStore, ...props } } = this;
+				const newProps = { [prop]: state[prop] };
 				return (
 					<StoreContext.Provider value={state[prop]}>
-						<WrappedComponent {...extractRef(props)} {...state} />
+						<WrappedComponent {...extractRef(props)} {...newProps} />
 					</StoreContext.Provider>
 				);
 			}
