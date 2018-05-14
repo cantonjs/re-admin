@@ -12,31 +12,33 @@ export default class CreateButton extends Component {
 		label: PropTypes.stringOrFunc,
 		title: PropTypes.stringOrFunc,
 		save: PropTypes.string,
+		noRouter: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		save: 'create',
+		noRouter: false,
 	};
 
 	_handleClick = (ev, refs) => {
 		const { props } = this;
 		const { openCreaterModal, getSelectedKeysString, getData } = refs;
-		const { title, label, table, save, localeStore } = props;
+		const { title, label, table, save, localeStore, noRouter } = props;
 		const getTitle = title || localeStore.localizeProp(label, 'label');
-		const options = {
+		const params = {
 			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
 			save,
 		};
 		if (table) {
-			options.keys = getSelectedKeysString();
-			options.table = table;
+			params.keys = getSelectedKeysString();
+			params.table = table;
 		}
 		ev.preventDefault();
-		openCreaterModal(options);
+		openCreaterModal(params, { router: !noRouter });
 	};
 
 	render() {
-		const { title, table, save, localeStore, ...other } = this.props;
+		const { title, table, save, localeStore, noRouter, ...other } = this.props;
 		return (
 			<ContextButton
 				onClick={this._handleClick}

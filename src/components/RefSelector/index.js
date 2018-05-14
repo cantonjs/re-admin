@@ -50,7 +50,7 @@ class RefSelector extends Component {
 			...other
 		} = this.props;
 		ev.preventDefault();
-		modalStore.setState({
+		modalStore.open({
 			keys: '',
 			save({ refKeys, refStore }) {
 				onChange(refKeys[0], refStore);

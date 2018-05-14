@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import hoist, { extractRef } from 'hocs/hoist';
 import ModalStoreContext from './ModalStoreContext';
 
-export default function withModalStore() {
+export default function withModalStore(options = {}) {
+	const { prop = 'modalStore' } = options;
 	return function createModalStoreComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
 		class WithModalStore extends Component {
@@ -13,12 +14,15 @@ export default function withModalStore() {
 			render() {
 				return (
 					<ModalStoreContext.Consumer>
-						{(modalStore) => (
-							<WrappedComponent
-								{...extractRef(this.props)}
-								modalStore={modalStore}
-							/>
-						)}
+						{(modalStore) => {
+							const modalStoreProp = { [prop]: modalStore };
+							return (
+								<WrappedComponent
+									{...extractRef(this.props)}
+									{...modalStoreProp}
+								/>
+							);
+						}}
 					</ModalStoreContext.Consumer>
 				);
 			}

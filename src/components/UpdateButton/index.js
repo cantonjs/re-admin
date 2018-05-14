@@ -10,19 +10,22 @@ export default class UpdateButton extends Component {
 		names: PropTypes.array,
 		label: PropTypes.stringOrFunc,
 		multiLabel: PropTypes.stringOrFunc,
+		noRouter: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		names: [],
+		noRouter: false,
 	};
 
 	_handleClick = (ev, { openUpdaterModal }) => {
 		ev.preventDefault();
-		openUpdaterModal({ select: this.props.names });
+		const { names, noRouter } = this.props;
+		openUpdaterModal({ select: names }, { router: !noRouter });
 	};
 
 	render() {
-		const { props: { names, localeStore, ...other } } = this;
+		const { props: { names, localeStore, noRouter, ...other } } = this;
 		return (
 			<ContextButton
 				{...localeStore.localize(other)}

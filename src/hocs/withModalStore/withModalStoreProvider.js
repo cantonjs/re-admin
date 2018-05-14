@@ -4,29 +4,35 @@ import hoist, { extractRef } from 'hocs/hoist';
 import routerStore from 'stores/routerStore';
 import ModalStore from 'stores/ModalStore';
 import ModalStoreContext from './ModalStoreContext';
+import withModalStore from './withModalStore';
 
 export default function withModalStoreProvider() {
 	return function createModalStoreProviderComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
+		@withModalStore({ prop: 'parentModalStore' })
 		class WithModalStoreProvider extends Component {
 			static propTypes = {
+				parentModalStore: PropTypes.object,
 				modalStore: PropTypes.object,
-				syncLocation: PropTypes.bool,
 			};
 
-			static defaultProps = {
-				...WrappedComponent.defaultProps,
-				syncLocation: false,
-			};
+			constructor(props) {
+				super(props);
 
-			modalStore = new ModalStore(
-				this.props.modalStore,
-				this.props.syncLocation && routerStore
-			);
+				const { parentModalStore, modalStore } = props;
+				this.modalStore = new ModalStore(
+					modalStore,
+					parentModalStore && routerStore
+				);
+			}
+
+			componentWillUnmount() {
+				this.modalStore.destroy();
+			}
 
 			render() {
 				const { modalStore, props } = this;
-				const { modalStore: _, syncLocation, ...other } = props;
+				const { modalStore: _, parentModalStore, ...other } = props;
 				return (
 					<ModalStoreContext.Provider value={modalStore}>
 						<WrappedComponent {...extractRef(other)} modalStore={modalStore} />

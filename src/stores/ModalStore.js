@@ -1,15 +1,16 @@
-import { computed, observable, action } from 'mobx';
+import { computed, observable, action, observe, keys } from 'mobx';
 import { omitBy, reduce } from 'lodash';
+import Emitter from 'emit-lite';
 
-export default class ModalStore {
+export default class ModalStore extends Emitter {
 	static prefix = '__';
 
 	static getOmitPaths(val, key) {
 		return key.startsWith(ModalStore.prefix);
 	}
 
-	@observable modalProps = {};
 	@observable state = {};
+	@observable modalProps = {};
 
 	_prefix = '__';
 
@@ -24,21 +25,38 @@ export default class ModalStore {
 	}
 
 	constructor(parent, router) {
+		super();
+
 		this.parent = parent;
-		if (router) {
-			this._bindRouter(router);
-			this._router = router;
-		}
+		this._useRouter = false;
+		this._router = router;
+		this._bindRouter();
+
+		this._observeDisposer = observe(this, ({ name, newValue }) => {
+			if (name === 'state' && !keys(newValue).length) {
+				this.emit('close');
+			}
+		});
 	}
 
+	@action
+	destroy() {
+		this._observeDisposer();
+		this._historyDisposer && this._historyDisposer();
+		this.state = {};
+	}
+
+	@action
 	close() {
-		if (this._router) this._clearLocation();
+		if (this._useRouter && this._router) this._clearLocation();
 		else this.state = {};
 	}
 
 	@action
-	setState(state) {
-		if (this._router) this._setLocation(state);
+	open(state, options = {}) {
+		const { router = false } = options;
+		this._useRouter = router;
+		if (router && this._router) this._setLocation(state);
 		else this.state = state;
 	}
 
@@ -70,8 +88,10 @@ export default class ModalStore {
 		this.modalProps = props;
 	}
 
-	_bindRouter(router) {
-		if (this._router) return;
+	_bindRouter() {
+		const router = this._router;
+		if (!router) return;
+
 		const handleQueryChange = ({ query }) => {
 			const prefixLength = ModalStore.prefix.length;
 			this.state = reduce(
@@ -87,7 +107,8 @@ export default class ModalStore {
 			);
 		};
 
-		router.history.listen(handleQueryChange);
+		this._historyDisposer = router.history.listen(handleQueryChange);
+
 		handleQueryChange(router.location);
 
 		this._setLocation = (state) => {

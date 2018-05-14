@@ -40,28 +40,31 @@ export default function withActions(WrappedComponent) {
 			return joinKeys(this.getSelectedKeys());
 		};
 
-		open = (name, options) => {
-			this.props.modalStore.setState({
-				keys: joinKeys(this.getSelectedKeys()),
-				...options,
-				name,
-			});
+		open = (name, params, options) => {
+			this.props.modalStore.open(
+				{
+					keys: joinKeys(this.getSelectedKeys()),
+					...params,
+					name,
+				},
+				options
+			);
 		};
 
-		openCreaterModal = (options = {}) => {
-			options.keys = options.keys || '';
-			this.open(Actions.CREATE, options);
+		openCreaterModal = (params = {}, options) => {
+			params.keys = params.keys || '';
+			this.open(Actions.CREATE, params, options);
 		};
 
-		openUpdaterModal = (options = {}) => {
-			const { select, ...config } = options;
+		openUpdaterModal = (params = {}, options) => {
+			const { select, ...config } = params;
 			if (select && select.length) {
 				config.select = select.join(',');
 			}
-			this.open(Actions.UPDATE, config);
+			this.open(Actions.UPDATE, config, options);
 		};
 
-		openRefModal = (options = {}) => {
+		openRefModal = (params = {}, options) => {
 			const {
 				table,
 				title,
@@ -69,10 +72,10 @@ export default function withActions(WrappedComponent) {
 				fetch = 'fetch',
 				save = 'request',
 				width = 880,
-			} = options;
+			} = params;
 			const config = { table, title, fetch, save, width };
 			if (noQuery) config.noQuery = '✓';
-			this.open(Actions.REF, config);
+			this.open(Actions.REF, config, options);
 		};
 
 		_getData = () => {

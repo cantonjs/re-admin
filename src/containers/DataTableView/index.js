@@ -22,7 +22,7 @@ function DataTableView({
 
 	return (
 		<PageContainer title={title}>
-			<ModalProvider syncLocation>
+			<ModalProvider>
 				{Header && <Header store={store} title={title} />}
 				<TableQuery store={store} hidden={!panelsStore.isShowQuery} />
 				<Toolbar />
