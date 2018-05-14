@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { REF } from 'constants/Actions';
 import withModalStore from 'hocs/withModalStore';
 import createComponent from 'components/Nested/createComponent';
-import { Input, Icon } from 'antd';
+import { Input, Icon, Button } from 'antd';
 
 @withModalStore()
 @observer
@@ -77,13 +77,17 @@ class RefSelector extends Component {
 				style={{ ...styles.button, ...style }}
 				placeholder={placeholder}
 				value={value}
-				size="large"
+				size="default"
 				onChange={this._handleChange}
 				onKeyPress={onKeyPress}
-				addonAfter={
-					<a href="#" onClick={this._handleClick}>
+				className="ant-input-search ant-input-search-enter-button"
+				suffix={
+					<Button
+						className="ant-input-search-button"
+						onClick={this._handleClick}
+					>
 						<Icon type="bars" />
-					</a>
+					</Button>
 				}
 			/>
 		);
