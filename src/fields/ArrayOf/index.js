@@ -1,3 +1,4 @@
+import styles from './styles';
 import React, { Component, Children, cloneElement } from 'react';
 import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
@@ -7,24 +8,6 @@ import { ArrayOf as NestArrayOf } from 'react-nested-form';
 import localize from 'hocs/localize';
 
 const { Item } = Form;
-
-const styles = {
-	item: {
-		padding: 12,
-		margin: '12px 0',
-		position: 'relative',
-		border: '1px dashed #dedede',
-		backgroundColor: '#f4f4f4',
-	},
-	icon: {
-		position: 'absolute',
-		right: 12,
-		top: 16,
-	},
-	button: {
-		width: '60%',
-	},
-};
 
 @field
 @localize('ArrayOf')
