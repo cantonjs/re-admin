@@ -60,8 +60,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 				const { props } = this;
 				const store = props.store || props.contextStore;
 				const { keys, save } = props;
-				const path = store ? `/${store.pathname}` : '';
-				const url = joinKeys(keys) + path;
+				const url = joinKeys(keys);
 				const method = save || (issuerText === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
 				this.modalRef.current.close();
