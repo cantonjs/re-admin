@@ -1,4 +1,0 @@
-/* eslint-disable */
-import antd from 'antd/lib/locale-provider/zh_TW';
-const locale = {"ActionsField":{"label":"操作"},"CreateButton":{"label":"創建"},"ClearSortButton":{"label":"重置排序"},"TableBody":{"total":"總"},"UpdateButton":{"label":"更新","multiLabel":"批量更新"},"LoginForm":{"login":"登錄","passwordPlaceholder":"密碼","usernamePlaceholder":"用戶"},"TableQuerySwitch":{"label":"搜索"},"TableQuery":{"reset":"重啟","resetOrder":"重置排序","search":"搜索"},"RefButton":{"label":"參考"},"ArrayOf":{"addButtonLabel":"新增項目"},"requests":{"failed":"失敗","loginFailed":"登錄失敗","removeFailed":"刪除失敗","createFailed":"創建失敗","updateFailed":"更新失敗","invalidToken":"身份驗證令牌無效","fetchFailed":"加載失敗","loginSuccess":"登錄成功"},"UserMenu":{"signOut":"登出","confirmSignOut":"你確定要退出嗎？"},"RemoveButton":{"label":"去掉","multiLabel":"批量刪除","content":"此操作無法撤消！","title":"你絕對肯定要刪除？"}};
-export default { language: 'zh_TW', ...locale, antd };

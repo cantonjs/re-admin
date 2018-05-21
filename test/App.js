@@ -18,7 +18,7 @@ import {
 	CreateButton,
 	ContextButton,
 } from '../src';
-import locale from '../src/locales/en_US';
+import locale from '../locales/en_US';
 import { Icon } from 'antd';
 import testTable from './tables/test';
 import barTable from './tables/bar';

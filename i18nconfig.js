@@ -37,9 +37,12 @@ module.exports = {
 	transformOutput(output, { langOutput }) {
 		const outputStr = JSON.stringify(output);
 		return `/* eslint-disable */
-import antd from 'antd/lib/locale-provider/${langOutput}';
+'use strict';
+var antd = require('antd/lib/locale-provider/${langOutput}');
 const locale = ${outputStr};
-export default { language: '${langOutput}', ...locale, antd };
+locale.antd = antd;
+locale.language = '${langOutput}';
+module.exports = locale;
 `;
 	},
 };
