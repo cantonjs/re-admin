@@ -21,6 +21,7 @@ export default class CreateButton extends Component {
 	};
 
 	_handleClick = (ev, refs) => {
+		ev.preventDefault();
 		const { props } = this;
 		const { openCreaterModal, getSelectedKeysString, getData } = refs;
 		const { title, label, table, save, localeStore, noRouter } = props;
@@ -33,7 +34,6 @@ export default class CreateButton extends Component {
 			params.keys = getSelectedKeysString();
 			params.table = table;
 		}
-		ev.preventDefault();
 		openCreaterModal(params, { router: !noRouter });
 	};
 
