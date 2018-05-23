@@ -45,6 +45,7 @@ export default class TableBody extends Component {
 			size: PropTypes.number.isRequired,
 			setSelectedKeys: PropTypes.func.isRequired,
 			query: PropTypes.object.isRequired,
+			config: PropTypes.object.isRequired,
 		}),
 		selectionType: PropTypes.oneOf(['checkbox', 'radio']),
 	};
@@ -96,6 +97,7 @@ export default class TableBody extends Component {
 			uniqueKey,
 			maxSelections,
 			query,
+			config,
 		} = store;
 
 		const current = +query.page || 1;
@@ -125,7 +127,7 @@ export default class TableBody extends Component {
 					pagination={false}
 					components={components}
 					onChange={this._handleChange}
-					size="middle"
+					size={config.viewSize}
 				/>
 
 				<div style={styles.footer}>

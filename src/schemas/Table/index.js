@@ -21,6 +21,7 @@ TableSchema.propTypes = {
 	uniqueKey: PropTypes.string,
 	maxSelections: PropTypes.number,
 	extend: PropTypes.object,
+	viewSize: PropTypes.string,
 };
 
 TableSchema.defaultProps = {
@@ -30,6 +31,7 @@ TableSchema.defaultProps = {
 	uniqueKey: '_id',
 	maxSelections: -1,
 	extend: {},
+	viewSize: 'middle',
 };
 
 TableSchema.configuration = {
