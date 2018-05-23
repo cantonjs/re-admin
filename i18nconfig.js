@@ -31,8 +31,16 @@ module.exports = {
 		{ input: 'ru', output: 'ru_RU' },
 		{ input: 'uk', output: 'uk_UA' },
 		{ input: 'vi', output: 'vi_VN' },
-		{ input: 'zh-cn', output: 'zh_CN' },
-		{ input: 'zh-tw', output: 'zh_TW' },
+		{
+			input: 'zh-cn',
+			output: 'zh_CN',
+			dict: { Reset: '重置', Remove: '删除' },
+		},
+		{
+			input: 'zh-tw',
+			output: 'zh_TW',
+			dict: { Reset: '重置', Remove: '删除' },
+		},
 	],
 	transformOutput(output, { langOutput }) {
 		const outputStr = JSON.stringify(output);
