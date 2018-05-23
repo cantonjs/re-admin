@@ -18,14 +18,24 @@ export default class RemoveButton extends Component {
 		content: PropTypes.stringOrFunc,
 		issuers: PropTypes.instanceOf(Set).isRequired,
 		store: PropTypes.object.isRequired,
+		method: PropTypes.string,
+	};
+
+	static defaultProps = {
+		method: 'remove',
 	};
 
 	_handleOk = ({ getSelectedKeysString }) => {
-		this.props.store.remove({ url: getSelectedKeysString() });
+		const { store, method } = this.props;
+		const selectedKeys = getSelectedKeysString();
+		store.call(method, {
+			keys: selectedKeys,
+			url: selectedKeys,
+		});
 	};
 
 	render() {
-		const { issuers, localeStore, ...other } = this.props;
+		const { issuers, localeStore, method, ...other } = this.props;
 		const isInToolbar = issuers.has(TOOLBAR);
 		const styleTypes = {};
 		if (isInToolbar) styleTypes.type = 'danger';

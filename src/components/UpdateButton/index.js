@@ -49,7 +49,15 @@ export default class UpdateButton extends Component {
 	};
 
 	render() {
-		const { props: { names, localeStore, noRouter, ...other } } = this;
+		const {
+			title,
+			table,
+			save,
+			names,
+			localeStore,
+			noRouter,
+			...other
+		} = this.props;
 		return (
 			<ContextButton
 				{...localeStore.localize(other)}

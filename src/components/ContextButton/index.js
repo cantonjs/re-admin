@@ -20,9 +20,9 @@ export default class ContextButton extends Component {
 		component: PropTypes.component,
 		minSelected: PropTypes.number,
 		maxSelected: PropTypes.number,
-		onClick: PropTypes.func,
 		method: PropTypes.string,
 		issuers: PropTypes.instanceOf(Set).isRequired,
+		onClick: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -57,6 +57,7 @@ export default class ContextButton extends Component {
 				minSelected,
 				maxSelected,
 				issuers,
+				method,
 				...other
 			},
 		} = this;
