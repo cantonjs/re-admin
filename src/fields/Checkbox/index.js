@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from 'components/Nested';
+import { Checkbox } from 'components/Form';
 import field from 'hocs/field';
 
 @field
@@ -22,13 +22,6 @@ export default class CheckboxField extends Component {
 		const { props: { getValue, ...other } } = this;
 		const value = getValue();
 
-		return (
-			<Checkbox
-				dataType="boolean"
-				{...other}
-				checked={!!value}
-				defaultChecked={!!value}
-			/>
-		);
+		return <Checkbox format="boolean" {...other} defaultChecked={!!value} />;
 	}
 }

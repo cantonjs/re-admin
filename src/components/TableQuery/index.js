@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { QUERIER } from 'utils/Issuers';
 import { Row, Col } from 'antd';
-import { Form, Submit, Reset } from 'components/Nested';
+import { Form, Submit, Reset } from 'components/Form';
 import QueryItem from './QueryItem';
 import localize from 'hocs/localize';
 import withIssuer from 'hocs/withIssuer';

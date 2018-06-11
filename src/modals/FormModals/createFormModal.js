@@ -8,7 +8,7 @@ import styles from './styles';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
 import { Spin } from 'antd';
-import { Form } from 'components/Nested';
+import { Form } from 'components/Form';
 import ModalConsumer from 'components/ModalConsumer';
 import FormItem from './FormItem';
 import joinKeys from 'utils/joinKeys';

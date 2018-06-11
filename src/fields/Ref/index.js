@@ -16,6 +16,6 @@ export default class RefField extends Component {
 
 		const value = getValue();
 
-		return <RefSelector {...other} defaultValue={value} value={value} />;
+		return <RefSelector {...other} defaultValue={value} />;
 	}
 }

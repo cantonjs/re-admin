@@ -54,7 +54,7 @@ export default (
 
 		<DatePicker
 			name="createdAt"
-			dataType="date"
+			format="date"
 			label="Date Created"
 			disabled
 			inQuery={(props) => <RangePicker {...props} />}
@@ -106,7 +106,7 @@ export default (
 		<Text
 			name="num"
 			label="Number"
-			dataType="integer"
+			format="integer"
 			value={32}
 			sortable
 			inTable
@@ -123,12 +123,12 @@ export default (
 		<Slider
 			name="gpa"
 			label="GPA"
-			dataType="integer"
+			format="integer"
 			inForm={(props, { Component, record }) =>
 				record.fav > 1 ? <Component {...props} /> : null
 			}
 		/>
-		<Text name="birthday" label="Birthday" dataType="date" inForm />
+		<Text name="birthday" label="Birthday" format="date" inForm />
 
 		<Checkbox
 			name="check"

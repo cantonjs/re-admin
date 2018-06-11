@@ -2,7 +2,7 @@ import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { Icon, Modal } from 'antd';
-import { Upload } from 'components/Nested';
+import { Upload } from 'components/Form';
 import withAppConfig from 'hocs/withAppConfig';
 import field from 'hocs/field';
 import ensureFileList from 'utils/ensureFileList';

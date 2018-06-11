@@ -4,7 +4,7 @@ import withAppConfig from 'hocs/withAppConfig';
 import field from 'hocs/field';
 import ensureFileList from 'utils/ensureFileList';
 import { Button, Icon } from 'antd';
-import { Upload } from 'components/Nested';
+import { Upload } from 'components/Form';
 
 @field
 @withAppConfig(({ upload }) => ({

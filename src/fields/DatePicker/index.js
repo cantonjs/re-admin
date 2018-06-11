@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DatePicker } from 'components/Nested';
-import Text from 'fields/Text';
+import { DatePicker } from 'components/Form';
+import field from 'hocs/field';
 import moment from 'moment';
 import { isString, isObject, isFunction } from 'lodash';
 
@@ -24,15 +24,8 @@ const buildInDefaultProps = {
 	},
 };
 
-export default function DatePickerField(props) {
-	return (
-		<Text
-			dataType="date"
-			{...buildInDefaultProps}
-			{...props}
-			component={DatePicker}
-		/>
-	);
+function DatePickerField(props) {
+	return <DatePicker format="date" {...props} {...buildInDefaultProps} />;
 }
 
 /* eslint-disable react/prop-types */
@@ -47,3 +40,5 @@ DatePickerField.propTypes = {
 DatePickerField.defaultProps = {
 	dateFormat: 'YYYY-MM-DD',
 };
+
+export default field(DatePickerField);

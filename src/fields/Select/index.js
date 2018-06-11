@@ -1,7 +1,7 @@
 import React, { Component, Children } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
-import { Select } from 'components/Nested';
+import { Select } from 'components/Form';
 import Text from 'fields/Text';
 
 @polyfill

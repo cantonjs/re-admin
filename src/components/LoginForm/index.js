@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 import localize from 'hocs/localize';
 import { Icon } from 'antd';
-import { Form, Input, Submit } from 'components/Nested';
+import { Form, Input, Submit } from 'components/Form';
 
 @localize('LoginForm')
 @observer
@@ -19,7 +19,7 @@ export default class LoginForm extends Component {
 		authStore: PropTypes.object,
 	};
 
-	state = { isValid: false };
+	state = { isValid: true };
 
 	async _submit(data) {
 		const {

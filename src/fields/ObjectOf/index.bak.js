@@ -1,9 +1,8 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
 import field from 'hocs/field';
-import { ObjectOf as FormObjectOf } from 'react-form-mobx';
+import { Form } from 'components/Form';
 import { Form as AntdForm } from 'antd';
-import { createRef } from 'utils/reactPolyfill';
 
 const { Item } = AntdForm;
 
@@ -17,6 +16,7 @@ export default class ObjectOf extends Component {
 	static propTypes = {
 		name: PropTypes.string,
 		children: PropTypes.node,
+		getValue: PropTypes.func.isRequired,
 		required: PropTypes.bool,
 		label: PropTypes.node,
 		labelCol: PropTypes.object,
@@ -33,17 +33,15 @@ export default class ObjectOf extends Component {
 		return JSON.stringify(text);
 	}
 
-	_ref = createRef();
-
 	getChildContext() {
 		return {
-			// TODO:
-			getParentValue: () => this._ref.getValue(),
+			getParentValue: () => this.props.getValue(),
 		};
 	}
 
 	render() {
 		const {
+			getValue,
 			children,
 			label,
 			labelCol,
@@ -66,11 +64,11 @@ export default class ObjectOf extends Component {
 				// help={errorMessage}
 				style={wrapperStyle}
 			>
-				<FormObjectOf layout="vertical" {...other} ref={this._ref}>
+				<Form layout="vertical" defaultValue={getValue()} {...other}>
 					{Children.map(children, (child) =>
 						cloneElement(child, formItemLayout)
 					)}
-				</FormObjectOf>
+				</Form>
 			</Item>
 		);
 	}

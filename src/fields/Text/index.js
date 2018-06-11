@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { Input } from 'components/Nested';
+import { Input } from 'components/Form';
 import field from 'hocs/field';
 
 @field
@@ -16,9 +16,7 @@ export default class TextField extends Component {
 
 	render() {
 		const { props: { getValue, component: Comp, ...other } } = this;
-
 		const value = getValue();
-
-		return <Comp {...other} defaultValue={value} value={value} />;
+		return <Comp {...other} defaultValue={value} />;
 	}
 }

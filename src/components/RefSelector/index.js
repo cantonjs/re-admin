@@ -5,7 +5,7 @@ import styles from './styles';
 import { observer } from 'mobx-react';
 import { REF } from 'constants/Actions';
 import withModalStore from 'hocs/withModalStore';
-import createComponent from 'components/Nested/createComponent';
+import createComponent from 'components/Form/createComponent';
 import { Input, Icon, Button } from 'antd';
 
 @withModalStore()
@@ -96,10 +96,7 @@ class RefSelector extends Component {
 
 export default createComponent(RefSelector, {
 	displayName: 'NestRefSelector',
-	onChange(val) {
+	getValueFromChangeEvent(val) {
 		return val;
-	},
-	render(props, originalProps, Component) {
-		return <Component {...props} label={originalProps.label} />;
 	},
 });

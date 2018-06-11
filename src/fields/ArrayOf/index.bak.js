@@ -1,9 +1,10 @@
 import styles from './styles';
 import React, { Component, Children, cloneElement } from 'react';
+import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import field from 'hocs/field';
 import { Form, Button, Icon } from 'antd';
-import { ArrayOf as FormArrayOf } from 'react-form-mobx';
+import { ArrayOf as NestArrayOf } from 'react-nested-form';
 import localize from 'hocs/localize';
 
 const { Item } = Form;
@@ -14,22 +15,35 @@ export default class ArrayOf extends Component {
 	static propTypes = {
 		name: PropTypes.string,
 		children: PropTypes.node,
+		getValue: PropTypes.func.isRequired,
 		wrapperStyle: PropTypes.object,
+		defaultItemValue: PropTypes.any,
 		addButtonLabel: PropTypes.node,
 		localeStore: PropTypes.object.isRequired,
+	};
+
+	static defaultProps = {
+		defaultItemValue: '',
 	};
 
 	static renderTable(props, { text = [] }) {
 		return text.join(',');
 	}
 
-	_createRemoveHandler = (remove, name) => (ev) => {
+	_ref = createRef();
+
+	_handleAdd = () => {
+		this._ref.current.push(this.props.defaultItemValue);
+	};
+
+	_handleRemove = (ev, key) => {
 		ev.preventDefault();
-		remove(name);
+		this._ref.current.dropByKey(key);
 	};
 
 	render() {
 		const {
+			getValue,
 			children,
 			name,
 			addButtonLabel,
@@ -41,24 +55,31 @@ export default class ArrayOf extends Component {
 		const child = Children.only(children);
 
 		return (
-			<FormArrayOf name={name}>
-				{(names, { push, remove }) => (
+			<NestArrayOf
+				name={name}
+				value={this.props.getValue() || []}
+				ref={this._ref}
+				render={(items) => (
 					<Item {...other} style={wrapperStyle}>
-						{names.map((name) => (
-							<div style={styles.item} key={name}>
-								{cloneElement(child, { name })}
-								<a href="#" onClick={this._createRemoveHandler(remove, name)}>
+						{items.map(({ value, name, key }) => (
+							<div style={styles.item} key={key}>
+								{cloneElement(child, { name, value, key })}
+								<a href="#" onClick={(ev) => this._handleRemove(ev, key)}>
 									<Icon style={styles.icon} type="minus-circle-o" />
 								</a>
 							</div>
 						))}
-						<Button type="dashed" onClick={push} style={styles.button}>
+						<Button
+							type="dashed"
+							onClick={this._handleAdd}
+							style={styles.button}
+						>
 							<Icon type="plus" />{' '}
 							{localeStore.localizeProp(addButtonLabel, 'addButtonLabel')}
 						</Button>
 					</Item>
 				)}
-			</FormArrayOf>
+			/>
 		);
 	}
 }
