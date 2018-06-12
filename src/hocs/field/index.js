@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import styles from './styles';
 import PropTypes from 'prop-types';
-import State from './State';
-import { QUERIER } from 'utils/Issuers';
+import { computed } from 'mobx';
 import { observer } from 'mobx-react';
+import { UPDATER, QUERIER } from 'utils/Issuers';
+import routerStore from 'stores/routerStore';
+import { isUndefined } from 'lodash';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
 import withModalStore from 'hocs/withModalStore';
@@ -49,17 +50,28 @@ export default function field(WrappedComponent) {
 			getParentValue: PropTypes.func,
 		};
 
-		constructor(props, context) {
-			super(props, context);
-			this._state = new State(props, context);
+		constructor(props) {
+			super(props);
+
+			const { issuers } = props;
+			this._isUpdater = issuers && issuers.has(UPDATER);
+			this._isQuerier = issuers && issuers.has(QUERIER);
 		}
 
-		getValue = () => {
-			return this._state.value;
-		};
+		@computed
+		get _shouldShow() {
+			const { props: { name, modalStore }, _isUpdater } = this;
+			if (_isUpdater) {
+				if (!modalStore || !modalStore.parent) return false;
+				const { select } = modalStore.parent.state;
+				if (!select) return true;
+				else if (select.split(',').indexOf(name) < 0) return false;
+			}
+			return true;
+		}
 
 		render() {
-			if (!this._state.shouldShow) {
+			if (!this._shouldShow) {
 				return null;
 			}
 
@@ -83,11 +95,9 @@ export default function field(WrappedComponent) {
 
 			return (
 				<WrappedComponent
-					wrapperStyle={styles.container}
 					{...extractRef(other)}
 					required={required && !isInQuery}
 					disabled={disabled && !isInQuery}
-					getValue={this.getValue}
 				/>
 			);
 		}

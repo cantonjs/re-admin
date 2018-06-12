@@ -82,7 +82,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 					<Form
 						ref={this.formRef}
 						onSubmit={this._handleSubmit}
-						onChange={this._handleChange}
+						// onChange={this._handleChange}
 					>
 						{isFetching && (
 							<div style={styles.spinContainer}>

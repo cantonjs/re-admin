@@ -25,7 +25,14 @@ const buildInDefaultProps = {
 };
 
 function DatePickerField(props) {
-	return <DatePicker format="date" {...props} {...buildInDefaultProps} />;
+	return (
+		<DatePicker
+			format="date"
+			defaultValue={undefined}
+			{...props}
+			{...buildInDefaultProps}
+		/>
+	);
 }
 
 /* eslint-disable react/prop-types */

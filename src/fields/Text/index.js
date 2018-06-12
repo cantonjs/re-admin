@@ -7,7 +7,6 @@ import field from 'hocs/field';
 export default class TextField extends Component {
 	static propTypes = {
 		component: PropTypes.component,
-		getValue: PropTypes.func.isRequired,
 	};
 
 	static defaultProps = {
@@ -15,8 +14,7 @@ export default class TextField extends Component {
 	};
 
 	render() {
-		const { props: { getValue, component: Comp, ...other } } = this;
-		const value = getValue();
-		return <Comp {...other} defaultValue={value} />;
+		const { props: { component: Comp, ...other } } = this;
+		return <Comp {...other} />;
 	}
 }

@@ -7,7 +7,6 @@ import field from 'hocs/field';
 export default class CheckboxField extends Component {
 	static propTypes = {
 		renderToString: PropTypes.func,
-		getValue: PropTypes.func.isRequired,
 	};
 
 	static renderTable({ renderToString }, { value }) {
@@ -19,9 +18,6 @@ export default class CheckboxField extends Component {
 	}
 
 	render() {
-		const { props: { getValue, ...other } } = this;
-		const value = getValue();
-
-		return <Checkbox format="boolean" {...other} defaultChecked={!!value} />;
+		return <Checkbox format="boolean" {...this.props} />;
 	}
 }

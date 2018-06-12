@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Demon } from 'react-form-mobx';
 import { Form } from 'antd';
 
 const { Item } = Form;
+
+const defaultStyle = {
+	marginBottom: 12,
+};
 
 export default function createComponent(Comp, options = {}) {
 	const {
@@ -12,7 +16,7 @@ export default function createComponent(Comp, options = {}) {
 		...otherOptions
 	} = options;
 
-	return class FormElement extends Component {
+	return class FormElement extends PureComponent {
 		static propTypes = {
 			required: PropTypes.bool,
 			label: PropTypes.node,
@@ -24,6 +28,32 @@ export default function createComponent(Comp, options = {}) {
 
 		static displayName = displayName;
 
+		static getDrivedStateFromProps({ wrapperStyle }, state) {
+			if (wrapperStyle !== state.wrapperStyle) {
+				return {
+					wrapperStyle,
+					style: {
+						...defaultStyle,
+						...wrapperStyle,
+					},
+				};
+			}
+			return null;
+		}
+
+		constructor(props) {
+			super(props);
+
+			const { wrapperStyle } = props;
+			this.state = {
+				wrapperStyle,
+				style: {
+					...defaultStyle,
+					...wrapperStyle,
+				},
+			};
+		}
+
 		render() {
 			const {
 				label,
@@ -33,6 +63,7 @@ export default function createComponent(Comp, options = {}) {
 				wrapperStyle,
 				...props
 			} = this.props;
+			const { style } = this.state;
 
 			return (
 				<Demon forwardedProps={props} {...otherOptions}>
@@ -43,9 +74,9 @@ export default function createComponent(Comp, options = {}) {
 							wrapperCol={wrapperCol}
 							colon={colon}
 							required={props.required}
-							validateStatus={isInvalid ? 'error' : 'success'}
+							validateStatus={isTouched && isInvalid ? 'error' : 'success'}
 							help={isTouched && isInvalid ? errorMessage : ''}
-							style={wrapperStyle}
+							style={style}
 						>
 							<Comp {...forwardedProps} />
 						</Item>

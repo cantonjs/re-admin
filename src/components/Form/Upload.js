@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'prop-types';
 import { Demon } from 'react-form-mobx';
 import { Form, Upload as AntdUpload } from 'antd';
 
 const { Item } = Form;
 
-export default class Upload extends Component {
+export default class Upload extends PureComponent {
 	static propTypes = {
 		required: PropTypes.bool,
 		label: PropTypes.node,
@@ -17,10 +18,24 @@ export default class Upload extends Component {
 		mapFileList: PropTypes.any,
 	};
 
+	demonRef = createRef();
+
 	_getValueFromChangeEvent = ({ fileList }) => {
 		const { mapFileList } = this.props;
 		return mapFileList ? mapFileList(fileList) : fileList;
 	};
+
+	getValue() {
+		return this.demonRef.current.getValue();
+	}
+
+	setValue() {
+		return this.demonRef.current.setValue();
+	}
+
+	setPristineValue() {
+		return this.demonRef.current.setPristineValue();
+	}
 
 	render() {
 		const {
@@ -38,6 +53,7 @@ export default class Upload extends Component {
 			<Demon
 				forwardedProps={props}
 				getValueFromChangeEvent={this._getValueFromChangeEvent}
+				ref={this.demonRef}
 			>
 				{(forwardedProps, { isInvalid, isTouched, errorMessage }) => (
 					<Item

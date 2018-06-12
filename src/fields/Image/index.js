@@ -1,6 +1,8 @@
 import styles from './styles';
 import React, { Component } from 'react';
+import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
+import { observable, action } from 'mobx';
 import { Icon, Modal } from 'antd';
 import { Upload } from 'components/Form';
 import withAppConfig from 'hocs/withAppConfig';
@@ -22,7 +24,6 @@ export default class ImageField extends Component {
 		max: PropTypes.number,
 		render: PropTypes.func,
 		strategy: PropTypes.stringOrObject,
-		getValue: PropTypes.func.isRequired,
 		thumbStyle: PropTypes.object,
 		strategies: PropTypes.any,
 		imagePath: PropTypes.string,
@@ -45,13 +46,18 @@ export default class ImageField extends Component {
 		return <ImageTableCell {...props} url={text} />;
 	}
 
-	_strategy = this.props;
+	uploadRef = createRef();
 
-	state = {
-		fileList: ensureFileList(this.props.getValue()),
-		previewVisible: false,
-		previewImage: '',
-	};
+	componentDidMount() {
+		const value = this.uploadRef.current.getValue();
+		this.setState({
+			fileList: ensureFileList(value),
+		});
+	}
+
+	@observable fileList = [];
+	@observable previewVisible = false;
+	@observable previewImage = '';
 
 	constructor(props, context) {
 		super(props, context);
@@ -79,25 +85,32 @@ export default class ImageField extends Component {
 		this._uploadPath = imagePath + search;
 	}
 
+	@action
 	_handleCloseModal = () => {
-		this.setState({ previewVisible: false });
+		this.previewVisible = false;
 	};
 
+	@action
 	_handlePreview = (file) => {
-		this.setState({
-			previewImage: file.url || file.thumbUrl,
-			previewVisible: true,
-		});
+		this.previewImage = file.url || file.thumbUrl;
+		this.previewVisible = true;
 	};
 
+	@action
 	_handleChange = ({ fileList }) => {
-		this.setState({ fileList });
+		this.fileList = fileList;
+	};
+
+	_handleRemove = (file) => {
+		console.log('remove', file, this.fileList);
 	};
 
 	render() {
 		const {
-			props: { max, strategy, getValue, thumbStyle, ...other },
-			state: { previewVisible, previewImage, fileList },
+			props: { max, strategy, thumbStyle, ...other },
+			previewVisible,
+			previewImage,
+			fileList,
 			_customRequest,
 			_uploadPath,
 		} = this;
@@ -112,7 +125,6 @@ export default class ImageField extends Component {
 			<div>
 				<Upload
 					{...other}
-					defaultValue={getValue()}
 					style={styles.container}
 					customRequest={_customRequest}
 					action={_uploadPath}
@@ -120,8 +132,10 @@ export default class ImageField extends Component {
 					fileList={fileList}
 					onPreview={this._handlePreview}
 					onChange={this._handleChange}
+					onRemove={this._handleRemove}
 					multi={max > 1}
 					noFieldDecorator
+					ref={this.uploadRef}
 				>
 					{fileList.length < max ? uploadButton : null}
 				</Upload>

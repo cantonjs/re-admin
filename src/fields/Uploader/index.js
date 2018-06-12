@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'prop-types';
 import withAppConfig from 'hocs/withAppConfig';
 import field from 'hocs/field';
@@ -15,7 +16,6 @@ import { Upload } from 'components/Form';
 export default class Uploader extends Component {
 	static propTypes = {
 		max: PropTypes.number,
-		getValue: PropTypes.func.isRequired,
 		requireAccessToken: PropTypes.bool,
 		filePath: PropTypes.string,
 		mapFileList: PropTypes.func, // required by `Upload` component
@@ -31,8 +31,10 @@ export default class Uploader extends Component {
 	};
 
 	state = {
-		fileList: ensureFileList(this.props.getValue()),
+		fileList: [],
 	};
+
+	uploadRef = createRef();
 
 	constructor(props, context) {
 		super(props, context);
@@ -47,8 +49,19 @@ export default class Uploader extends Component {
 		this._uploadPath = filePath + search;
 	}
 
+	componentDidMount() {
+		const value = this.uploadRef.current.getValue();
+		this.setState({
+			fileList: ensureFileList(value),
+		});
+	}
+
 	_handleChange = ({ fileList }) => {
 		this.setState({ fileList });
+	};
+
+	_handleRemove = (...args) => {
+		console.log('remove', args);
 	};
 
 	render() {
@@ -58,7 +71,6 @@ export default class Uploader extends Component {
 				filePath,
 
 				max,
-				getValue,
 				...other
 			},
 			state: { fileList },
@@ -74,12 +86,13 @@ export default class Uploader extends Component {
 		return (
 			<Upload
 				{...other}
-				defaultValue={getValue()}
 				action={_uploadPath}
 				fileList={fileList}
 				onChange={this._handleChange}
 				multi={max > 1}
 				noFieldDecorator
+				onRemove={this._handleRemove}
+				ref={this.uploadRef}
 			>
 				{fileList.length < max ? uploadButton : null}
 			</Upload>

@@ -33,12 +33,12 @@ export default class ObjectOf extends Component {
 		return JSON.stringify(text);
 	}
 
-	_ref = createRef();
+	objRef = createRef();
 
 	getChildContext() {
 		return {
 			// TODO:
-			getParentValue: () => this._ref.getValue(),
+			getParentValue: () => this.objRef.current.getValue(),
 		};
 	}
 
@@ -66,7 +66,7 @@ export default class ObjectOf extends Component {
 				// help={errorMessage}
 				style={wrapperStyle}
 			>
-				<FormObjectOf layout="vertical" {...other} ref={this._ref}>
+				<FormObjectOf layout="vertical" {...other} ref={this.objRef}>
 					{Children.map(children, (child) =>
 						cloneElement(child, formItemLayout)
 					)}
