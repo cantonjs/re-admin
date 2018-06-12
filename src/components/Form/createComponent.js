@@ -35,57 +35,23 @@ export default function createComponent(Comp, options = {}) {
 			} = this.props;
 
 			return (
-				<Demon
-					forwardedProps={{
-						...defaultProps,
-						...props,
-					}}
-					{...otherOptions}
-				>
-					{(forwardedProps, { isInvalid, isTouched, errorMessage }) => {
-						if (displayName === 'RangePicker') {
-							console.log(
-								'RangePicker',
-								forwardedProps.value,
-								typeof forwardedProps.value
-							);
-						}
-						return (
-							<Item
-								label={label}
-								labelCol={labelCol}
-								wrapperCol={wrapperCol}
-								colon={colon}
-								required={props.required}
-								validateStatus={isInvalid ? 'error' : 'success'}
-								help={isTouched && isInvalid ? errorMessage : ''}
-								style={wrapperStyle}
-							>
-								<Comp {...forwardedProps} />
-							</Item>
-						);
-					}}
+				<Demon forwardedProps={props} {...otherOptions}>
+					{(forwardedProps, { isInvalid, isTouched, errorMessage }) => (
+						<Item
+							label={label}
+							labelCol={labelCol}
+							wrapperCol={wrapperCol}
+							colon={colon}
+							required={props.required}
+							validateStatus={isInvalid ? 'error' : 'success'}
+							help={isTouched && isInvalid ? errorMessage : ''}
+							style={wrapperStyle}
+						>
+							<Comp {...forwardedProps} />
+						</Item>
+					)}
 				</Demon>
 			);
-
-			// return (
-			// 	<Demon forwardedProps={props} {...otherOptions}>
-			// 		{(forwardedProps, { isInvalid, isTouched, errorMessage }) => (
-			// 			<Item
-			// 				label={label}
-			// 				labelCol={labelCol}
-			// 				wrapperCol={wrapperCol}
-			// 				colon={colon}
-			// 				required={props.required}
-			// 				validateStatus={isInvalid ? 'error' : 'success'}
-			// 				help={isTouched && isInvalid ? errorMessage : ''}
-			// 				style={wrapperStyle}
-			// 			>
-			// 				<Comp {...forwardedProps} />
-			// 			</Item>
-			// 		)}
-			// 	</Demon>
-			// );
 		}
 	};
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { RangePicker } from 'components/Form';
 import moment from 'moment';
 import field from 'hocs/field';
+import { formatHelper } from 'react-form-mobx';
 import { isString, isObject, isFunction, isUndefined } from 'lodash';
 
 const rangeInputFilter = (range) =>
@@ -27,17 +28,21 @@ const rangeOutputFilter = (range) => {
 	return output;
 };
 
+const formatFunc = function formatFunc(val) {
+	return val.filter(Boolean).map((date) => formatHelper.date(date));
+};
+
 const buildInDefaultProps = {
+	preFormat(val) {
+		if (isString(val)) return val.split(',');
+		return val;
+	},
 	inputFilter(value = '') {
 		if (isFunction(value.map)) {
 			return rangeInputFilter(value);
 		} else if (isFunction(value.split)) {
 			const [v0, v1] = value.split(',');
-
-			// TODO:
-			return;
-
-			return [v0 ? moment(v0) : undefined, v1 ? moment(v1) : undefined];
+			return v0 && v1 ? [moment(v0), moment(v1)] : undefined;
 		}
 		return [undefined, undefined];
 	},
@@ -65,10 +70,10 @@ const shouldIgnore = (value, pristineValue) =>
 function RangePickerField(props) {
 	return (
 		<RangePicker
-			format="date"
 			{...buildInDefaultProps}
 			{...props}
 			shouldIgnore={shouldIgnore}
+			formatFunc={formatFunc}
 		/>
 	);
 }

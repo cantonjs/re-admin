@@ -23,9 +23,9 @@ export TableQuerySwitch from 'components/TableQuerySwitch';
 export TableQuery from 'components/TableQuery';
 export TableBody from 'components/TableBody';
 
-export Form from 'components/Nested/Form';
-export Submit from 'components/Nested/Submit';
-export Reset from 'components/Nested/Reset';
+export Form from 'components/Form/Form';
+export Submit from 'components/Form/Submit';
+export Reset from 'components/Form/Reset';
 
 export withTable from 'hocs/withTable';
 export withStore from 'hocs/withStore';
