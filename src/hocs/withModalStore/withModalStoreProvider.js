@@ -22,7 +22,7 @@ export default function withModalStoreProvider() {
 				const { parentModalStore, modalStore } = props;
 				this.modalStore = new ModalStore(
 					modalStore,
-					parentModalStore && routerStore
+					!parentModalStore && routerStore
 				);
 			}
 
