@@ -1,3 +1,4 @@
+import styles from './styles';
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
 import field from 'hocs/field';
@@ -23,9 +24,15 @@ export default class ObjectOf extends Component {
 		wrapperCol: PropTypes.object,
 		colon: PropTypes.bool,
 		wrapperStyle: PropTypes.object,
+		prefixCls: PropTypes.string,
+	};
+
+	static defaultProps = {
+		prefixCls: 'ant-form',
 	};
 
 	static childContextTypes = {
+		vertical: PropTypes.bool,
 		getParentValue: PropTypes.func,
 	};
 
@@ -37,6 +44,8 @@ export default class ObjectOf extends Component {
 
 	getChildContext() {
 		return {
+			vertical: true,
+
 			// TODO:
 			getParentValue: () => this.objRef.current.getValue(),
 		};
@@ -51,6 +60,7 @@ export default class ObjectOf extends Component {
 			colon,
 			required,
 			wrapperStyle,
+			prefixCls,
 
 			...other
 		} = this.props;
@@ -66,10 +76,12 @@ export default class ObjectOf extends Component {
 				// help={errorMessage}
 				style={wrapperStyle}
 			>
-				<FormObjectOf layout="vertical" {...other} ref={this.objRef}>
-					{Children.map(children, (child) =>
-						cloneElement(child, formItemLayout)
-					)}
+				<FormObjectOf {...other} ref={this.objRef}>
+					<div className={`${prefixCls}-vertical`} style={styles.main}>
+						{Children.map(children, (child) =>
+							cloneElement(child, formItemLayout)
+						)}
+					</div>
 				</FormObjectOf>
 			</Item>
 		);
