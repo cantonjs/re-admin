@@ -59,4 +59,7 @@ export const RangePicker = createComponent(AntdRangePicker, {
 export const Checkbox = createComponent(AntdCheckbox, {
 	displayName: 'Checkbox',
 	checkable: true,
+	getCheckedFromChangeEvent({ target }) {
+		return target.checked;
+	},
 });
