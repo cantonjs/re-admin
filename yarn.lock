@@ -6484,9 +6484,9 @@ react-dom@^16.3.2:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-form-mobx@^0.4.0:
-  version "0.4.0"
-  resolved "http://registry.npm.taobao.org/react-form-mobx/download/react-form-mobx-0.4.0.tgz#1425d99d7b8d03814d1e97bc016bb1cdde9e7ab0"
+react-form-mobx@^0.6.1:
+  version "0.6.1"
+  resolved "http://registry.npm.taobao.org/react-form-mobx/download/react-form-mobx-0.6.1.tgz#42aa9a2cd977c228dcd01896b9a95fabfbfe3fb3"
   dependencies:
     create-react-context "^0.2.2"
     prop-types "^15.5.7"
