@@ -44,10 +44,6 @@ export default function field(WrappedComponent) {
 
 		static defaultProps = defaultProps;
 
-		static contextTypes = {
-			getParentValue: PropTypes.func,
-		};
-
 		constructor(props) {
 			super(props);
 

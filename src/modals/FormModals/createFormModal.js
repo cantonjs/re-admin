@@ -64,8 +64,8 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			}
 		};
 
-		_handleChange = (state) => {
-			this.formStore.setState(state);
+		_handleChange = ({ value }) => {
+			this.formStore.setState(value);
 		};
 
 		_handleSubmit = (body, { isInvalid }) => {
@@ -100,7 +100,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 						ref={this.formRef}
 						value={_dataValue}
 						onSubmit={this._handleSubmit}
-						// onChange={this._handleChange}
+						onChange={this._handleChange}
 					>
 						{isFetching && (
 							<div style={styles.spinContainer}>

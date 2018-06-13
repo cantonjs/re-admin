@@ -33,7 +33,6 @@ export default class ObjectOf extends Component {
 
 	static childContextTypes = {
 		vertical: PropTypes.bool,
-		getParentValue: PropTypes.func,
 	};
 
 	static renderTable(props, { text = {} }) {
@@ -45,12 +44,6 @@ export default class ObjectOf extends Component {
 	getChildContext() {
 		return {
 			vertical: true,
-
-			// TODO:
-			getParentValue: () => {
-				const { current } = this.objRef;
-				return current && current.getValue();
-			},
 		};
 	}
 

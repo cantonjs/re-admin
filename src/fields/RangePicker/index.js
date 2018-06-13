@@ -3,7 +3,7 @@ import { RangePicker } from 'components/Form';
 import moment from 'moment';
 import field from 'hocs/field';
 import { formatHelper } from 'react-form-mobx';
-import { isString, isObject, isFunction, isUndefined } from 'lodash';
+import { isString, isObject, isFunction } from 'lodash';
 
 const rangeInputFilter = (range) =>
 	range.map((val) => {
@@ -54,27 +54,9 @@ const buildInDefaultProps = {
 	},
 };
 
-const isEmpty = (val) => {
-	if (!val) {
-		return true;
-	}
-	if (isFunction(val.every)) {
-		return val.every((item) => isUndefined(item));
-	}
-	return false;
-};
-
-const shouldIgnore = (value, pristineValue) =>
-	isEmpty(value) && isEmpty(pristineValue);
-
 function RangePickerField(props) {
 	return (
-		<RangePicker
-			{...buildInDefaultProps}
-			{...props}
-			shouldIgnore={shouldIgnore}
-			formatFunc={formatFunc}
-		/>
+		<RangePicker {...buildInDefaultProps} {...props} formatFunc={formatFunc} />
 	);
 }
 
