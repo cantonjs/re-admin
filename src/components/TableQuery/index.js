@@ -94,6 +94,7 @@ export default class TableQuery extends Component {
 		return (
 			<Form
 				style={styles.container(shouldHide && styles.hidden)}
+				value={store.query}
 				onSubmit={this._handleSearch}
 				onReset={this._handleReset}
 				onChange={this._handleChange}

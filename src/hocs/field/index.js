@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { UPDATER, QUERIER } from 'utils/Issuers';
-import routerStore from 'stores/routerStore';
-import { isUndefined } from 'lodash';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
 import withModalStore from 'hocs/withModalStore';
@@ -82,22 +80,20 @@ export default function field(WrappedComponent) {
 					issuers,
 
 					value,
-					defaultValue,
 					unique,
 					sortable,
 					modalStore,
 
 					...other
 				},
+				_isQuerier,
 			} = this;
-
-			const isInQuery = issuers.has(QUERIER);
 
 			return (
 				<WrappedComponent
 					{...extractRef(other)}
-					required={required && !isInQuery}
-					disabled={disabled && !isInQuery}
+					required={required && !_isQuerier}
+					disabled={disabled && !_isQuerier}
 				/>
 			);
 		}

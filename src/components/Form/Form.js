@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'prop-types';
 import { Form } from 'react-form-mobx';
 
@@ -18,6 +19,8 @@ export default class FormView extends Component {
 		vertical: PropTypes.bool,
 	};
 
+	formRef = createRef();
+
 	getChildContext() {
 		const { layout } = this.props;
 		return {
@@ -26,18 +29,20 @@ export default class FormView extends Component {
 	}
 
 	submit(...args) {
-		this.form.submit(...args);
+		this.formRef.current.submit(...args);
 	}
 
 	reset(...args) {
-		this.form.reset(...args);
+		this.formRef.current.reset(...args);
 	}
 
 	clear(...args) {
-		this.form.clear(...args);
+		this.formRef.current.clear(...args);
 	}
 
-	_saveForm = (form) => (this.form = form);
+	getValidState() {
+		return this.formRef.current.getValidState();
+	}
 
 	render() {
 		const {
@@ -58,7 +63,7 @@ export default class FormView extends Component {
 		const customClassName = className ? ` ${className}` : '';
 		return (
 			<Form
-				ref={this._saveForm}
+				ref={this.formRef}
 				className={`${prefixCls}-${layout}` + customClassName}
 				{...other}
 			/>

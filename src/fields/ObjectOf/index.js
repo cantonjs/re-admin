@@ -47,7 +47,10 @@ export default class ObjectOf extends Component {
 			vertical: true,
 
 			// TODO:
-			getParentValue: () => this.objRef.current.getValue(),
+			getParentValue: () => {
+				const { current } = this.objRef;
+				return current && current.getValue();
+			},
 		};
 	}
 

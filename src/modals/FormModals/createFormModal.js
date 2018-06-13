@@ -42,13 +42,26 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		modalRef = createRef();
 		formStore = new FormStore();
 
+		constructor(props) {
+			super(props);
+
+			const { store, keys } = props;
+			const selectedKeys = (keys || '').split(',');
+			this._dataValue =
+				issuerText === CREATER ? {} : store.getData(selectedKeys[0]);
+		}
+
 		_handleOk = (ev) => {
-			if (!this.formRef.current) return;
+			const form = this.formRef.current;
+			if (!form) return;
 			ev.preventDefault();
-			const { props } = this;
-			const store = props.store || props.contextStore;
-			this.formRef.current.submit();
-			store.setSelectedKeys([]);
+			const { isValid } = form.getValidState();
+			if (isValid) {
+				const { props } = this;
+				const store = props.store || props.contextStore;
+				form.submit();
+				store.setSelectedKeys([]);
+			}
 		};
 
 		_handleChange = (state) => {
@@ -70,7 +83,11 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		};
 
 		render() {
-			const { props: { store, contextStore, title, width }, formStore } = this;
+			const {
+				props: { store, contextStore, title, width },
+				formStore,
+				_dataValue,
+			} = this;
 			const { isFetching, renderers } = store || contextStore;
 			return (
 				<ModalConsumer
@@ -81,6 +98,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 				>
 					<Form
 						ref={this.formRef}
+						value={_dataValue}
 						onSubmit={this._handleSubmit}
 						// onChange={this._handleChange}
 					>
