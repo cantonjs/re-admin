@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'prop-types';
+import { observable, action } from 'mobx';
+import { observer } from 'mobx-react';
 import withAppConfig from 'hocs/withAppConfig';
 import field from 'hocs/field';
 import ensureFileList from 'utils/ensureFileList';
@@ -13,6 +15,7 @@ import { Upload } from 'components/Form';
 	mapFileList: upload.mapFileList,
 	filePath: upload.filePath,
 }))
+@observer
 export default class Uploader extends Component {
 	static propTypes = {
 		max: PropTypes.number,
@@ -30,11 +33,7 @@ export default class Uploader extends Component {
 		appConfig: PropTypes.object.isRequired,
 	};
 
-	state = {
-		fileList: [],
-	};
-
-	uploadRef = createRef();
+	@observable fileList = [];
 
 	constructor(props, context) {
 		super(props, context);
@@ -47,21 +46,24 @@ export default class Uploader extends Component {
 			`?${accessTokenName}=${authStore.accessToken}` :
 			'';
 		this._uploadPath = filePath + search;
+		this.uploadRef = createRef();
 	}
 
 	componentDidMount() {
 		const value = this.uploadRef.current.getValue();
-		this.setState({
-			fileList: ensureFileList(value),
-		});
+		this.fileList = ensureFileList(value);
 	}
 
+	@action
 	_handleChange = ({ fileList }) => {
-		this.setState({ fileList });
+		this.fileList = fileList;
 	};
 
-	_handleRemove = (...args) => {
-		console.log('remove', args);
+	@action
+	_handleRemove = (file) => {
+		const index = this.fileList.findIndex(({ id }) => id === file.id);
+		const shouldRemove = index > -1;
+		if (shouldRemove) this.fileList.splice(index, 1);
 	};
 
 	render() {
@@ -73,8 +75,8 @@ export default class Uploader extends Component {
 				max,
 				...other
 			},
-			state: { fileList },
 			_uploadPath,
+			fileList,
 		} = this;
 
 		const uploadButton = (

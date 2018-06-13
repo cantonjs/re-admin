@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import { observable, action } from 'mobx';
+import { observer } from 'mobx-react';
 import { Icon, Modal } from 'antd';
 import { Upload } from 'components/Form';
 import withAppConfig from 'hocs/withAppConfig';
@@ -19,6 +20,7 @@ import warning from 'warning';
 	mapFileList: upload.mapFileList,
 	imagePath: upload.imagePath,
 }))
+@observer
 export default class ImageField extends Component {
 	static propTypes = {
 		max: PropTypes.number,
@@ -44,15 +46,6 @@ export default class ImageField extends Component {
 
 	static renderTable(props, { text }) {
 		return <ImageTableCell {...props} url={text} />;
-	}
-
-	uploadRef = createRef();
-
-	componentDidMount() {
-		const value = this.uploadRef.current.getValue();
-		this.setState({
-			fileList: ensureFileList(value),
-		});
 	}
 
 	@observable fileList = [];
@@ -83,6 +76,12 @@ export default class ImageField extends Component {
 			`?${accessTokenName}=${authStore.accessToken}` :
 			'';
 		this._uploadPath = imagePath + search;
+		this.uploadRef = createRef();
+	}
+
+	componentDidMount() {
+		const value = this.uploadRef.current.getValue();
+		this.fileList = ensureFileList(value);
 	}
 
 	@action
@@ -101,8 +100,11 @@ export default class ImageField extends Component {
 		this.fileList = fileList;
 	};
 
+	@action
 	_handleRemove = (file) => {
-		console.log('remove', file, this.fileList);
+		const index = this.fileList.findIndex(({ id }) => id === file.id);
+		const shouldRemove = index > -1;
+		if (shouldRemove) this.fileList.splice(index, 1);
 	};
 
 	render() {
