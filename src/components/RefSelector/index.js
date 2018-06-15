@@ -95,7 +95,7 @@ class RefSelector extends Component {
 }
 
 export default createComponent(RefSelector, {
-	displayName: 'NestRefSelector',
+	displayName: 'RefSelector',
 	getValueFromChangeEvent(val) {
 		return val;
 	},
