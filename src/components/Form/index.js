@@ -41,6 +41,10 @@ export const DatePicker = createComponent(AntdDatePicker, {
 	defaultProps: {
 		defaultValue: undefined,
 	},
+	mapForwardedProps(props) {
+		const { dateFormat, ...other } = props;
+		return { ...other, format: dateFormat };
+	},
 	getValueFromChangeEvent(value) {
 		return value;
 	},

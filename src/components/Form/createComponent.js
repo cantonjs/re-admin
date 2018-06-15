@@ -13,6 +13,7 @@ export default function createComponent(Comp, options = {}) {
 	const {
 		displayName = 'InputElement',
 		defaultProps,
+		mapForwardedProps = (props) => props,
 		...otherOptions
 	} = options;
 
@@ -78,7 +79,7 @@ export default function createComponent(Comp, options = {}) {
 							help={isTouched && isInvalid ? errorMessage : ''}
 							style={style}
 						>
-							<Comp {...forwardedProps} />
+							<Comp {...mapForwardedProps(forwardedProps)} />
 						</Item>
 					)}
 				</Demon>
