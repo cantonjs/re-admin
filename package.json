@@ -47,7 +47,7 @@
 		"create-react-ref": "^0.1.0",
 		"emit-lite": "^2.0.0",
 		"empty-functions": "^1.0.2",
-		"fetch-extra": "^0.0.0",
+		"fetch-extra": "^1.0.0-0",
 		"history": "4.x",
 		"hoist-non-react-statics": "^2.5.0",
 		"lodash": "^4.17.4",

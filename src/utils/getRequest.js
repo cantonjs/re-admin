@@ -1,4 +1,4 @@
-import { RequestExtra } from 'fetch-extra';
+import { Request } from 'fetch-extra';
 
 let request;
 
@@ -18,7 +18,7 @@ export default function getRequest(config) {
 		},
 	} = config;
 
-	return (request = new RequestExtra({
+	return (request = new Request({
 		timeout,
 		url: baseURL,
 		type: 'json',
