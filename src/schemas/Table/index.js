@@ -46,7 +46,6 @@ TableSchema.configuration = {
 
 		let uniqueKey;
 
-		const queryRenderers = [];
 		const renderers = [];
 
 		children.forEach((child, index) => {
@@ -122,7 +121,6 @@ TableSchema.configuration = {
 		const table = {
 			...other,
 			api: parseAPIPath(api || name),
-			queryRenderers,
 			renderers,
 		};
 

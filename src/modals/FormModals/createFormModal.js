@@ -45,10 +45,10 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 		constructor(props) {
 			super(props);
 
-			const { store, keys } = props;
-			const selectedKeys = (keys || '').split(',');
-			this._dataValue =
-				issuerText === CREATER ? {} : store.getData(selectedKeys[0]);
+			const selectedKeys = (props.keys || '').split(',');
+			this._selectedKey = selectedKeys[0];
+			this._isCreater = issuerText === CREATER;
+			if (this._isCreater) this._createrValue = {};
 		}
 
 		_handleOk = (ev) => {
@@ -86,9 +86,11 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 			const {
 				props: { store, contextStore, title, width },
 				formStore,
-				_dataValue,
+				_isCreater,
+				_selectedKey,
 			} = this;
 			const { isFetching, renderers } = store || contextStore;
+
 			return (
 				<ModalConsumer
 					title={title}
@@ -98,7 +100,9 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 				>
 					<Form
 						ref={this.formRef}
-						value={_dataValue}
+						value={
+							_isCreater ? this._createrValue : store.getData(_selectedKey)
+						}
 						onSubmit={this._handleSubmit}
 						onChange={this._handleChange}
 					>
