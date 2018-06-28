@@ -28,7 +28,6 @@ export default class ModalStore extends Emitter {
 		super();
 
 		this.parent = parent;
-		this._useRouter = false;
 		this._router = router;
 		this._bindRouter();
 
@@ -48,15 +47,13 @@ export default class ModalStore extends Emitter {
 
 	@action
 	close() {
-		if (this._useRouter && this._router) this._clearLocation();
-		else this.state = {};
+		if (this._router) this._clearLocation();
+		this.state = {};
 	}
 
 	@action
 	open(state, options = {}) {
-		const { router = false } = options;
-		this._useRouter = router;
-		if (router && this._router) this._setLocation(state);
+		if (options.router && this._router) this._setLocation(state);
 		else this.state = state;
 	}
 
