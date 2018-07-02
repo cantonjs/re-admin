@@ -90,7 +90,6 @@ export default class DataListStore extends BaseDataStore {
 		const { api } = config;
 
 		this.size = +appConfig.api.count;
-		this.extends = {};
 
 		if (api) {
 			this.uniqueKey = config.uniqueKey;
