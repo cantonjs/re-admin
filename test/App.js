@@ -1,4 +1,5 @@
 import 'antd/dist/antd.less';
+import 'react-quill/dist/quill.snow.css';
 import './reset.less';
 import React, { Component } from 'react';
 import {

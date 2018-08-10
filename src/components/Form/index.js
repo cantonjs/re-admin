@@ -17,6 +17,7 @@ export Submit from './Submit';
 export Reset from './Reset';
 export Clear from './Clear';
 export Upload from './Upload';
+export Editor from './Editor';
 
 export const Input = createComponent(AntdInput, {
 	displayName: 'Input',

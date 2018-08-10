@@ -128,6 +128,7 @@ export default (env = {}) => {
 			react: 'React',
 			'react-dom': 'ReactDom',
 			'react-router-dom': 'ReactRouterDOM',
+			'react-quill': 'ReactQuill',
 			mobx: 'mobx',
 			'mobx-react': 'mobxReact',
 			antd: 'antd',
