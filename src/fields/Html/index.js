@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Editor } from 'components/Form';
+import { Editor, Input } from 'components/Form';
 import Text from 'fields/Text';
 
-export default function EditorField({ style, ...props }) {
+function HtmlField({ style, ...props }) {
 	return (
 		<Text
 			{...props}
@@ -18,6 +18,12 @@ export default function EditorField({ style, ...props }) {
 	);
 }
 
-EditorField.propTypes = {
+HtmlField.propTypes = {
 	style: PropTypes.object,
 };
+
+HtmlField.renderQuery = function renderTable(props) {
+	return <Text {...props} component={Input} />;
+};
+
+export default HtmlField;
