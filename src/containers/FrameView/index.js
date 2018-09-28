@@ -7,7 +7,8 @@ import authStore from 'stores/authStore';
 import routerStore from 'stores/routerStore';
 import { observer } from 'mobx-react';
 import Sidebar from 'components/Sidebar';
-import { Spin, Layout } from 'antd';
+import { Layout } from 'antd';
+import SpinBox from 'components/SpinBox';
 import FrameHeader from 'components/FrameHeader';
 import Breadcrumb from 'components/Breadcrumb';
 
@@ -38,9 +39,7 @@ export default class FrameView extends Component {
 	render() {
 		if (authStore.isFetching || !authStore.accessToken) {
 			return (
-				<Layout style={styles.spinContainer}>
-					<Spin delay={800} />
-				</Layout>
+				<SpinBox delay={800} style={styles.spinContainer} component={Layout} />
 			);
 		}
 

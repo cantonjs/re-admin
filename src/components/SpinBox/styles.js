@@ -1,6 +1,6 @@
 export default {
-	spinContainer: {
+	container: {
 		textAlign: 'center',
-		padding: 40,
+		padding: 80,
 	},
 };

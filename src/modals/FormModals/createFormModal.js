@@ -4,13 +4,12 @@ import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import warning from 'warning';
 import withTable from 'hocs/withTable';
-import styles from './styles';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
-import { Spin } from 'antd';
 import { Form } from 'components/Form';
 import ModalConsumer from 'components/ModalConsumer';
-import FormItem from './FormItem';
+import FormItem from 'components/FormItem';
+import SpinBox from 'components/SpinBox';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
 import FormStore from 'stores/FormStore';
@@ -106,11 +105,7 @@ export default function createFormModal(defaultTitle, issuerText, displayName) {
 						onSubmit={this._handleSubmit}
 						onChange={this._handleChange}
 					>
-						{isFetching && (
-							<div style={styles.spinContainer}>
-								<Spin />
-							</div>
-						)}
+						{isFetching && <SpinBox />}
 						{!isFetching &&
 							renderers.map(({ renderForm }, index) => (
 								<FormItem

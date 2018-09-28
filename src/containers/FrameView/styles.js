@@ -10,8 +10,6 @@ export default {
 	spinContainer: {
 		minHeight: '100vh',
 		display: 'block',
-		textAlign: 'center',
-		padding: 80,
 	},
 	header: {
 		background: '#fff',
