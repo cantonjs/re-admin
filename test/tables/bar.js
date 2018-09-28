@@ -14,7 +14,7 @@ export default (
 			inTable
 		/>
 
-		<Html name="article" label="文章" inQuery inTable inForm />
+		<Html name="article" label="Article" inQuery inTable inForm />
 
 		<Image name="avatar" label="Avatar" width={60} inForm inTable />
 	</Table>

@@ -23,6 +23,7 @@ import locale from '../locales/en_US';
 import { Icon } from 'antd';
 import testTable from './tables/test';
 import barTable from './tables/bar';
+import articleTable from './tables/article';
 import FooModal from './modals/Foo';
 import Login from './components/Login';
 
@@ -47,6 +48,14 @@ export default class App extends Component {
 						table="test"
 						path="/table"
 						pageTitle="Testing Table"
+					/>
+					<Menu
+						icon="file-text"
+						title="Articles"
+						table="article"
+						path="/articles"
+						pageTitle="Articles"
+						detailPath=":_id"
 					/>
 					<Menu icon="picture" title="Sub Menu">
 						<Menu icon="bulb" title="2.1" path="/404" exact />
@@ -122,6 +131,7 @@ export default class App extends Component {
 
 				{testTable}
 				{barTable}
+				{articleTable}
 
 				<Footer>
 					<a
