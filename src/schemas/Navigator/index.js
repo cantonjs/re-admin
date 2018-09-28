@@ -1,10 +1,11 @@
 import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { pick } from 'lodash';
+import { pick, flatMap } from 'lodash';
 import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
 import DataTableView from 'containers/DataTableView';
+import FormView from 'containers/FormView';
 import NotFoundView from 'containers/NotFoundView';
 import Route from 'components/EnhancedRoute';
 
@@ -21,6 +22,7 @@ NavigatorSchema.propTypes = {
 	login: PropTypes.component,
 	frame: PropTypes.component,
 	dataTable: PropTypes.component,
+	form: PropTypes.component,
 	notFound: PropTypes.component,
 };
 
@@ -33,6 +35,7 @@ NavigatorSchema.defaultProps = {
 	login: LoginView,
 	frame: FrameView,
 	dataTable: DataTableView,
+	form: FormView,
 	notFound: NotFoundView,
 };
 
@@ -42,7 +45,7 @@ NavigatorSchema.configuration = {
 	pipe({ children, ...other }) {
 		Object.assign(this, other);
 
-		const { dataTable, index: welcome, notFound, noBreadcrumb } = this;
+		const { dataTable, form, index: welcome, notFound, noBreadcrumb } = this;
 		const breadcrumbNameMap = {};
 
 		const sidebarChildren = [];
@@ -100,19 +103,32 @@ NavigatorSchema.configuration = {
 		};
 
 		const getRoutes = function getRoutes(menus) {
-			if (!menus || !menus.length) {
-				return [];
-			}
+			if (!menus || !menus.length) return [];
 
-			return menus.map(({ children, ...route }, index) => {
+			return flatMap(menus, ({ children, ...route }, index) => {
 				const props = { key: index, ...route };
 				if (children) {
 					return getRoutes(children);
 				} else {
+					const routes = [];
+					const { table, path, detailPath, detailComponent } = props;
+
 					if (!props.component && !props.render) {
-						props.component = props.table ? dataTable : notFound;
+						props.component = table ? dataTable : notFound;
 					}
-					return <Route {...props} />;
+
+					if (table && detailPath) {
+						const pathUpdate = `${path}/update/${detailPath}`;
+						const pathCreate = `${path}/create/${detailPath}`;
+						const component = detailComponent || form;
+						routes.push(
+							<Route {...props} path={pathUpdate} component={component} />,
+							<Route {...props} path={pathCreate} component={component} />
+						);
+					}
+
+					routes.push(<Route {...props} exact />);
+					return routes;
 				}
 			});
 		};

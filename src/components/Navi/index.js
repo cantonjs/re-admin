@@ -72,14 +72,20 @@ export default class Navi extends Component {
 	}
 
 	_renderMenu(menuList) {
-		if (!menuList) {
-			return;
-		}
+		if (!menuList) return;
 
 		const { itemStyle } = this.props;
-		return menuList.map(
-			(menu) =>
-				menu.children && menu.children.length ? (
+		return menuList
+			.map((menu) => {
+				if (!menu.children) {
+					return !menu.menuKey ? null : (
+						<MenuItem key={menu.menuKey} path={menu.path} style={itemStyle}>
+							{menu.icon && <Icon type={menu.icon} />}
+							{this._renderLink(menu)}
+						</MenuItem>
+					);
+				}
+				return (
 					<SubMenu
 						key={menu.menuKey}
 						title={
@@ -91,13 +97,9 @@ export default class Navi extends Component {
 					>
 						{this._renderMenu(menu.children)}
 					</SubMenu>
-				) : (
-					<MenuItem key={menu.menuKey} path={menu.path} style={itemStyle}>
-						{menu.icon && <Icon type={menu.icon} />}
-						{this._renderLink(menu)}
-					</MenuItem>
-				)
-		);
+				);
+			})
+			.filter(Boolean);
 	}
 
 	render() {
