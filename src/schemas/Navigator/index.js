@@ -5,9 +5,12 @@ import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
 import DataTableView from 'containers/DataTableView';
-import FormView from 'containers/FormView';
 import NotFoundView from 'containers/NotFoundView';
 import Route from 'components/EnhancedRoute';
+import {
+	CreaterFormDetailView,
+	UpdaterFormDetailView,
+} from 'containers/FormDetailViews';
 
 export default function NavigatorSchema() {
 	return <noscript />;
@@ -22,7 +25,8 @@ NavigatorSchema.propTypes = {
 	login: PropTypes.component,
 	frame: PropTypes.component,
 	dataTable: PropTypes.component,
-	form: PropTypes.component,
+	dataUpdater: PropTypes.component,
+	dataCreater: PropTypes.component,
 	notFound: PropTypes.component,
 };
 
@@ -35,7 +39,8 @@ NavigatorSchema.defaultProps = {
 	login: LoginView,
 	frame: FrameView,
 	dataTable: DataTableView,
-	form: FormView,
+	dataUpdater: CreaterFormDetailView,
+	dataCreater: UpdaterFormDetailView,
 	notFound: NotFoundView,
 };
 
@@ -45,7 +50,14 @@ NavigatorSchema.configuration = {
 	pipe({ children, ...other }) {
 		Object.assign(this, other);
 
-		const { dataTable, form, index: welcome, notFound, noBreadcrumb } = this;
+		const {
+			dataTable,
+			dataUpdater,
+			dataCreater,
+			index: welcome,
+			notFound,
+			noBreadcrumb,
+		} = this;
 		const breadcrumbNameMap = {};
 
 		const sidebarChildren = [];
@@ -119,11 +131,10 @@ NavigatorSchema.configuration = {
 
 					if (table && detailPath) {
 						const pathUpdate = `${path}/update/${detailPath}`;
-						const pathCreate = `${path}/create/${detailPath}`;
-						const component = detailComponent || form;
+						const pathCreate = `${path}/create/`;
 						routes.push(
-							<Route {...props} path={pathUpdate} component={component} />,
-							<Route {...props} path={pathCreate} component={component} />
+							<Route {...props} path={pathUpdate} component={dataUpdater} />,
+							<Route {...props} path={pathCreate} component={dataCreater} />
 						);
 					}
 

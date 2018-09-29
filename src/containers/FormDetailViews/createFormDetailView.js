@@ -6,20 +6,21 @@ import warning from 'warning';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
-import { Form } from 'components/Form';
-import ModalConsumer from 'components/ModalConsumer';
+import { Form, Submit } from 'components/Form';
 import FormItem from 'components/FormItem';
 import SpinBox from 'components/SpinBox';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
 import FormStore from 'stores/FormStore';
+import ModalProvider from 'components/ModalProvider';
+import PageContainer from 'components/PageContainer';
 
-export default function createFormModal(defaultTitle, issuer, displayName) {
+export default function createFormDetailView(title, issuer, displayName) {
 	@withTable()
 	@withStore({ prop: 'contextStore' })
 	@withIssuer({ issuer })
 	@observer
-	class FormModalView extends Component {
+	class FormDetailView extends Component {
 		static displayName = displayName;
 
 		static propTypes = {
@@ -29,39 +30,22 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			keys: PropTypes.string,
 			save: PropTypes.string,
 			title: PropTypes.node,
-			width: PropTypes.stringOrNumber,
 		};
 
 		static defaultProps = {
-			title: defaultTitle,
-			width: 800,
+			title,
 		};
 
 		formRef = createRef();
-		modalRef = createRef();
 		formStore = new FormStore();
 
 		constructor(props) {
 			super(props);
-
 			const selectedKeys = (props.keys || '').split(',');
 			this._selectedKey = selectedKeys[0];
 			this._isCreater = issuer === CREATER;
 			if (this._isCreater) this._createrValue = {};
 		}
-
-		_handleOk = (ev) => {
-			const form = this.formRef.current;
-			if (!form) return;
-			ev.preventDefault();
-			const { isValid } = form.getValidState();
-			if (isValid) {
-				const { props } = this;
-				const store = props.store || props.contextStore;
-				form.submit();
-				store.setSelectedKeys([]);
-			}
-		};
 
 		_handleChange = ({ value }) => {
 			this.formStore.setState(value);
@@ -75,7 +59,6 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 				const url = joinKeys(keys);
 				const method = save || (issuer === CREATER ? 'create' : 'update');
 				store.call(method, { ...props, url, body });
-				this.modalRef.current.close();
 			} else if (__DEV__) {
 				warning(false, 'INVALID');
 			}
@@ -83,7 +66,7 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 
 		render() {
 			const {
-				props: { store, contextStore, title, width },
+				props: { store, contextStore, title },
 				formStore,
 				_isCreater,
 				_selectedKey,
@@ -91,34 +74,35 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			const { isFetching, renderers } = store || contextStore;
 
 			return (
-				<ModalConsumer
-					title={title}
-					width={width}
-					onOk={this._handleOk}
-					ref={this.modalRef}
-				>
-					<Form
-						ref={this.formRef}
-						value={
-							_isCreater ? this._createrValue : store.getData(_selectedKey)
-						}
-						onSubmit={this._handleSubmit}
-						onChange={this._handleChange}
-					>
-						{isFetching && <SpinBox />}
-						{!isFetching &&
-							renderers.map(({ renderForm }, index) => (
-								<FormItem
-									renderForm={renderForm}
-									formStore={formStore}
-									key={index}
-								/>
-							))}
-					</Form>
-				</ModalConsumer>
+				<PageContainer title={title}>
+					<ModalProvider>
+						<div>
+							<h1>{title}</h1>
+							<Form
+								ref={this.formRef}
+								value={
+									_isCreater ? this._createrValue : store.getData(_selectedKey)
+								}
+								onSubmit={this._handleSubmit}
+								onChange={this._handleChange}
+							>
+								{isFetching && <SpinBox />}
+								{!isFetching &&
+									renderers.map(({ renderForm }, index) => (
+										<FormItem
+											renderForm={renderForm}
+											formStore={formStore}
+											key={index}
+										/>
+									))}
+								<Submit>Save</Submit>
+							</Form>
+						</div>
+					</ModalProvider>
+				</PageContainer>
 			);
 		}
 	}
 
-	return FormModalView;
+	return FormDetailView;
 }

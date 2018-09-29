@@ -3,6 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
 import { isFunction } from 'lodash';
 import localize from 'hocs/localize';
+import routerStore from 'stores/routerStore';
 
 @localize('CreateButton')
 export default class CreateButton extends Component {
@@ -23,18 +24,21 @@ export default class CreateButton extends Component {
 	_handleClick = (ev, refs) => {
 		ev.preventDefault();
 		const { props } = this;
-		const { openCreaterModal, getSelectedKeysString, getData } = refs;
+		const { openCreaterModal, getSelectedKeysString, getData, store } = refs;
 		const { title, label, table, save, localeStore, noRouter } = props;
 		const getTitle = title || localeStore.localizeProp(label, 'label');
 		const params = {
 			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
 			save,
 		};
+
 		if (table) {
 			params.keys = getSelectedKeysString();
 			params.table = table;
 		}
-		openCreaterModal(params, { router: !noRouter });
+
+		routerStore.push('/articles/create/');
+		// openCreaterModal(params, { router: !noRouter });
 	};
 
 	render() {
