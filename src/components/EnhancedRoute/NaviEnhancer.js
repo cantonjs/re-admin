@@ -1,8 +1,8 @@
-import { Component, Children } from 'react';
+import { PureComponent, Children } from 'react';
 import PropTypes from 'prop-types';
 import naviStore from 'stores/naviStore';
 
-export default class NaviEnhancer extends Component {
+export default class NaviEnhancer extends PureComponent {
 	static propTypes = {
 		children: PropTypes.node.isRequired,
 		menuKey: PropTypes.string,
@@ -11,10 +11,6 @@ export default class NaviEnhancer extends Component {
 	constructor(props) {
 		super(props);
 		naviStore.select(this.props.menuKey);
-	}
-
-	shouldComponentUpdate() {
-		return false;
 	}
 
 	render() {
