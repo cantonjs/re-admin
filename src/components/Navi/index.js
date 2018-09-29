@@ -1,10 +1,11 @@
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 import panelsStore from 'stores/panelsStore';
-import KeysStore from './KeysStore';
+import naviStore from 'stores/naviStore';
 import { Link } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 
@@ -30,11 +31,11 @@ export default class Navi extends Component {
 		super(props);
 		const { menus } = context.appConfig.navigator;
 		const { location } = routerStore;
-		this._keysStore = new KeysStore(menus, location);
+		this._navi = naviStore.init(menus, location);
 	}
 
 	componentWillUnmount() {
-		this._keysStore.disposer();
+		this._navi.disposer();
 	}
 
 	_handleClick = ({ item }) => {
@@ -44,7 +45,7 @@ export default class Navi extends Component {
 	};
 
 	_handleOpenChange = (openKeys) => {
-		this._keysStore.openKeys = openKeys;
+		this._navi.openKeys = openKeys;
 	};
 
 	_renderLink({ title, path, isInternalPath }) {
@@ -103,13 +104,16 @@ export default class Navi extends Component {
 	}
 
 	render() {
-		const { _keysStore, props: { menu, top, itemStyle, ...other } } = this;
+		const {
+			_navi: { openKeys, selectedKeys },
+			props: { menu, top, itemStyle, ...other },
+		} = this;
 		return (
 			<Menu
 				mode={top ? 'horizontal' : 'inline'}
 				theme={top ? 'light' : 'dark'}
-				selectedKeys={_keysStore.selectedKeys}
-				openKeys={_keysStore.openKeys}
+				selectedKeys={__DEV__ ? toJS(selectedKeys) : selectedKeys}
+				openKeys={openKeys}
 				onClick={this._handleClick}
 				onOpenChange={this._handleOpenChange}
 				{...other}

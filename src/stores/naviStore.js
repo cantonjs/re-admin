@@ -1,12 +1,15 @@
-import { isObservableArray, computed, autorun, observable, toJS } from 'mobx';
+import {
+	isObservableArray,
+	computed,
+	autorun,
+	observable,
+	action,
+	toJS,
+} from 'mobx';
 
-export default class KeysStore {
-	@computed
-	get selectedKeys() {
-		return [this._location.pathname];
-	}
-
+class NaviStore {
 	@observable _openKeys = [];
+	@observable selectedKeys = [];
 
 	@computed
 	get openKeys() {
@@ -16,17 +19,23 @@ export default class KeysStore {
 		this._openKeys = openKeys;
 	}
 
-	constructor(menus, location) {
+	@action
+	select(key) {
+		this.selectedKeys = [key];
+	}
+
+	init(menuArray, location) {
 		this._location = location;
+		this._menuArray = menuArray;
 
 		this.disposer = autorun(() => {
 			const { pathname } = this._location;
-			const findMenuTree = (menus, paths) => {
-				if (!menus) {
+			const findMenuTree = (menuArray, paths) => {
+				if (!menuArray) {
 					return;
 				}
-				if (Array.isArray(menus) || isObservableArray(menus)) {
-					for (const menu of menus) {
+				if (Array.isArray(menuArray) || isObservableArray(menuArray)) {
+					for (const menu of menuArray) {
 						if (menu.path === pathname) {
 							return paths;
 						}
@@ -41,7 +50,11 @@ export default class KeysStore {
 				}
 			};
 
-			this._openKeys = findMenuTree(menus, []);
+			this._openKeys = findMenuTree(menuArray, []);
 		});
+
+		return this;
 	}
 }
+
+export default new NaviStore();
