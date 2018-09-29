@@ -130,11 +130,17 @@ NavigatorSchema.configuration = {
 					}
 
 					if (table && detailPath) {
-						const pathUpdate = `${path}/update/${detailPath}`;
-						const pathCreate = `${path}/create/`;
 						routes.push(
-							<Route {...props} path={pathUpdate} component={dataUpdater} />,
-							<Route {...props} path={pathCreate} component={dataCreater} />
+							<Route
+								{...props}
+								path={`${path}/update/${detailPath}`}
+								component={detailComponent || dataUpdater}
+							/>,
+							<Route
+								{...props}
+								path={`${path}/create/`}
+								component={detailComponent || dataCreater}
+							/>
 						);
 					}
 
