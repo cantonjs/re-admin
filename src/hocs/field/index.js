@@ -38,7 +38,7 @@ export default function field(WrappedComponent) {
 			// provided by `withIssuer()`
 			issuers: PropTypes.instanceOf(Set).isRequired,
 
-			// provided by `withIssuer()`
+			// provided by `withModalStore()`
 			modalStore: PropTypes.object.isRequired,
 		};
 
