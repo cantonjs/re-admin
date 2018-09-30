@@ -5,6 +5,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 import authStore from 'stores/authStore';
+import AppConfigContext from 'contexts/AppConfig';
 import storesDispatcher from './storesDispatcher';
 import { Router } from 'react-router-mobx';
 import DocumentTitle from 'react-document-title';
@@ -54,28 +55,30 @@ export default class AdminContext extends Component {
 			navigator: { frame: Frame, login: Login, basename, ...otherNaviProps },
 		} = this.props.appConfig;
 		return (
-			<DocumentTitle title={title}>
-				<Router
-					component={BrowserRouter}
-					basename={basename}
-					routerStore={routerStore}
-				>
-					<div style={styles.container}>
-						<Switch>
-							<Route path="/login" component={Login} />
-							<Route
-								render={({ location }) => (
-									<Frame
-										locKey={location.key}
-										footer={footer}
-										{...otherNaviProps}
-									/>
-								)}
-							/>
-						</Switch>
-					</div>
-				</Router>
-			</DocumentTitle>
+			<AppConfigContext.Provider value={this._appConfig}>
+				<DocumentTitle title={title}>
+					<Router
+						component={BrowserRouter}
+						basename={basename}
+						routerStore={routerStore}
+					>
+						<div style={styles.container}>
+							<Switch>
+								<Route path="/login" component={Login} />
+								<Route
+									render={({ location }) => (
+										<Frame
+											locKey={location.key}
+											footer={footer}
+											{...otherNaviProps}
+										/>
+									)}
+								/>
+							</Switch>
+						</div>
+					</Router>
+				</DocumentTitle>
+			</AppConfigContext.Provider>
 		);
 	}
 }

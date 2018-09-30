@@ -1,25 +1,33 @@
 import React from 'react';
 import PropTypes from 'utils/PropTypes';
+import AppConfigContext from 'contexts/AppConfig';
 
-export default function AppTitle(
-	{ style, fontSize, color, textAlign, ...other },
-	context
-) {
+export default function AppTitle({
+	style,
+	fontSize,
+	color,
+	textAlign,
+	...other
+}) {
 	return (
-		<h1
-			{...other}
-			style={{
-				margin: 0,
-				overflow: 'hidden',
-				textOverflow: 'ellipsis',
-				fontSize,
-				textAlign,
-				color,
-				...style,
-			}}
-		>
-			{context.appConfig.title}
-		</h1>
+		<AppConfigContext.Consumer>
+			{(appConfig) => (
+				<h1
+					{...other}
+					style={{
+						margin: 0,
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						fontSize,
+						textAlign,
+						color,
+						...style,
+					}}
+				>
+					{appConfig.title}
+				</h1>
+			)}
+		</AppConfigContext.Consumer>
 	);
 }
 
@@ -34,8 +42,4 @@ AppTitle.defaultProps = {
 	fontSize: 20,
 	textAlign: 'center',
 	color: 'inherit',
-};
-
-AppTitle.contextTypes = {
-	appConfig: PropTypes.object,
 };
