@@ -10,7 +10,6 @@ export default (
 
 		<DatePicker
 			name="createdAt"
-			format="date"
 			label="Date Created"
 			disabled
 			inQuery={(props) => <RangePicker {...props} />}
