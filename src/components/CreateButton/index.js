@@ -3,7 +3,6 @@ import PropTypes from 'utils/PropTypes';
 import { isFunction } from 'lodash';
 import localize from 'hocs/localize';
 import routerStore from 'stores/routerStore';
-import NaviContext from 'contexts/Navi';
 import ContextButton from 'components/ContextButton';
 
 @localize('CreateButton')
@@ -38,15 +37,11 @@ export default class CreateButton extends Component {
 			params.table = table;
 		}
 
-		if (this.naviContext) {
-			console.log('naviContext', this.naviContext);
-		}
 		routerStore.push('/articles/create/');
 		// openCreaterModal(params, { router: !noRouter });
 	};
 
-	_renderChildren = (naviContext) => {
-		this.naviContext = naviContext;
+	render() {
 		const { title, table, save, localeStore, noRouter, ...other } = this.props;
 		return (
 			<ContextButton
@@ -54,9 +49,5 @@ export default class CreateButton extends Component {
 				{...localeStore.localize(other)}
 			/>
 		);
-	};
-
-	render() {
-		return <NaviContext>{this._renderChildren}</NaviContext>;
 	}
 }

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import panelsStore from 'stores/panelsStore';
 import authStore from 'stores/authStore';
 import routerStore from 'stores/routerStore';
+import naviStore from 'stores/naviStore';
 import { observer } from 'mobx-react';
 import Sidebar from 'components/Sidebar';
 import { Layout } from 'antd';
@@ -20,6 +21,18 @@ export default class FrameView extends Component {
 		routes: PropTypes.node.isRequired,
 		footer: PropTypes.node,
 	};
+
+	static contextTypes = {
+		appConfig: PropTypes.object,
+	};
+
+	constructor(props, context) {
+		super(props, context);
+
+		const { menus } = context.appConfig.navigator;
+		const { location } = routerStore;
+		naviStore.init(menus, location);
+	}
 
 	componentDidMount() {
 		this._requestAuth();

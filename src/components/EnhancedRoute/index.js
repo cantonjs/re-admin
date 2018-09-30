@@ -5,15 +5,14 @@ import NaviEnhancer from './NaviEnhancer';
 
 export default function EnhancedRoute(props) {
 	const { component: Component, exact, strict, ...other } = props;
-	const { path, menuKey } = other;
-	const keyProps = menuKey ? { key: menuKey } : {};
+	const { path } = other;
 	return (
 		<Route
 			path={path}
 			exact={exact}
 			strict={strict}
 			render={(matchProps) => (
-				<NaviEnhancer {...other} path={path} {...keyProps}>
+				<NaviEnhancer {...other} path={path} key={path}>
 					<Component {...matchProps} />
 				</NaviEnhancer>
 			)}

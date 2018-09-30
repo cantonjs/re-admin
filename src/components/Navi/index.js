@@ -23,19 +23,8 @@ export default class Navi extends Component {
 		top: false,
 	};
 
-	static contextTypes = {
-		appConfig: PropTypes.object,
-	};
-
-	constructor(props, context) {
-		super(props);
-		const { menus } = context.appConfig.navigator;
-		const { location } = routerStore;
-		this._navi = naviStore.init(menus, location);
-	}
-
 	componentWillUnmount() {
-		this._navi.disposer();
+		naviStore.disposer();
 	}
 
 	_handleClick = ({ item }) => {
@@ -45,7 +34,7 @@ export default class Navi extends Component {
 	};
 
 	_handleOpenChange = (openKeys) => {
-		this._navi.openKeys = openKeys;
+		naviStore.openKeys = openKeys;
 	};
 
 	_renderLink({ title, path, isInternalPath }) {
@@ -104,10 +93,8 @@ export default class Navi extends Component {
 	}
 
 	render() {
-		const {
-			_navi: { openKeys, selectedKeys },
-			props: { menu, top, itemStyle, ...other },
-		} = this;
+		const { props: { menu, top, itemStyle, ...other } } = this;
+		const { openKeys, selectedKeys } = naviStore;
 		return (
 			<Menu
 				mode={top ? 'horizontal' : 'inline'}

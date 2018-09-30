@@ -9,7 +9,10 @@ import {
 
 class NaviStore {
 	@observable _openKeys = [];
-	@observable selectedKeys = [];
+	@observable
+	state = {
+		menuKey: '',
+	};
 
 	@computed
 	get openKeys() {
@@ -19,9 +22,14 @@ class NaviStore {
 		this._openKeys = openKeys;
 	}
 
+	@computed
+	get selectedKeys() {
+		return [this.state.menuKey];
+	}
+
 	@action
-	select(key) {
-		this.selectedKeys = [key];
+	setState(state) {
+		this.state = state;
 	}
 
 	init(menuArray, location) {

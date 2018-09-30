@@ -1,7 +1,6 @@
-import React, { PureComponent, cloneElement } from 'react';
+import { PureComponent, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import naviStore from 'stores/naviStore';
-import NaviContext from 'contexts/Navi';
 
 export default class NaviEnhancer extends PureComponent {
 	static propTypes = {
@@ -11,15 +10,12 @@ export default class NaviEnhancer extends PureComponent {
 
 	constructor(props) {
 		super(props);
-		naviStore.select(this.props.menuKey);
+		const { children, ...other } = props;
+		naviStore.setState(other);
 	}
 
 	render() {
 		const { children, ...other } = this.props;
-		return (
-			<NaviContext.Provider value={other}>
-				{cloneElement(children, other)}
-			</NaviContext.Provider>
-		);
+		return cloneElement(children, other);
 	}
 }

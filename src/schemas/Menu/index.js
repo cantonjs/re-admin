@@ -6,7 +6,9 @@ export default function MenuSchema() {
 }
 
 MenuSchema.propTypes = {
-	title: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired, // menu title
+	pageTitle: PropTypes.string, // page title, will use `title` fallback
+	breadcrumbTitle: PropTypes.string, // breadcrumb title, will use `pageTitle` fallback
 	icon: PropTypes.string,
 	path: PropTypes.string,
 	table: PropTypes.string,

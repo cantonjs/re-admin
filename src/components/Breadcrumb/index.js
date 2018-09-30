@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import routerStore from 'stores/routerStore';
-import { map } from 'lodash';
+import naviStore from 'stores/naviStore';
 import { Breadcrumb as AntdBreadcrumb, Icon } from 'antd';
-import { Link, matchPath } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const { Item } = AntdBreadcrumb;
 
@@ -14,32 +13,28 @@ export default class Breadcrumb extends Component {
 		appConfig: PropTypes.object,
 	};
 
-	_renderItems(breadcrumbNameMap) {
-		const { pathname } = routerStore.location;
-		const items = map(breadcrumbNameMap, ({ routeProps, title }) => {
-			if (matchPath(pathname, routeProps)) {
-				return { title, path: routeProps.path };
-			}
-		});
-		const max = items.length - 1;
-		return items.filter(Boolean).map(({ title, path }, index) => {
-			if (index >= max) {
-				return (
-					<Item key={title}>
-						<Link to={path}>{title}</Link>
+	_renderItems() {
+		const getBreadcrumbItem = (state = {}, items = []) => {
+			const { breadcrumbTitle, path, breadcrumbParent } = state;
+			if (breadcrumbTitle && path) {
+				items.unshift(
+					<Item key={path}>
+						{items.length ? (
+							<Link to={path}>{breadcrumbTitle}</Link>
+						) : (
+							breadcrumbTitle
+						)}
 					</Item>
 				);
+				return getBreadcrumbItem(breadcrumbParent, items);
 			}
-			return <Item key={title}>{title}</Item>;
-		});
+			return items;
+		};
+		return getBreadcrumbItem(naviStore.state);
 	}
 
 	render() {
-		const {
-			noBreadcrumb,
-			noHomeBreadcrumb,
-			breadcrumbNameMap,
-		} = this.context.appConfig.navigator;
+		const { noBreadcrumb, noHomeBreadcrumb } = this.context.appConfig.navigator;
 		if (noBreadcrumb) {
 			return null;
 		}
@@ -52,7 +47,7 @@ export default class Breadcrumb extends Component {
 						</Link>
 					</Item>
 				)}
-				{this._renderItems(breadcrumbNameMap)}
+				{this._renderItems()}
 			</AntdBreadcrumb>
 		);
 	}

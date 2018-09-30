@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { pick, flatMap } from 'lodash';
+import { flatMap } from 'lodash';
 import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
@@ -58,7 +58,6 @@ NavigatorSchema.configuration = {
 			notFound,
 			noBreadcrumb,
 		} = this;
-		const breadcrumbNameMap = {};
 
 		const sidebarChildren = [];
 		const topChildren = [];
@@ -83,20 +82,9 @@ NavigatorSchema.configuration = {
 						props.path = (rootPath + props.path).replace(/\/\//, '/');
 						nextRootPath = props.path;
 
-						const { title: menuTitle, pageTitle } = props;
-						const title = pageTitle || menuTitle;
-						if (
-							!noBreadcrumb &&
-							title &&
-							(props.table || props.component || props.render)
-						) {
-							// console.log('breadcrumb', props.path, props.title);
-
-							breadcrumbNameMap[props.path] = {
-								title,
-								routeProps: pick(props, ['path', 'exact', 'strict']),
-							};
-						}
+						const { title: menuTitle, pageTitle, breadcrumbTitle } = props;
+						props.pageTitle = pageTitle || menuTitle;
+						props.breadcrumbTitle = breadcrumbTitle || props.pageTitle;
 					}
 
 					props.menuKey = props.path;
@@ -121,25 +109,31 @@ NavigatorSchema.configuration = {
 
 			return flatMap(menus, ({ children, ...route }, index) => {
 				const props = { key: index, ...route };
+
 				if (children) {
 					return getRoutes(children);
 				} else {
 					const routes = [];
-					const { table, path } = props;
+					const { table, path, breadcrumbTitle } = props;
 
 					if (!props.component && !props.render) {
 						props.component = table ? dataTable : notFound;
 					}
 
 					if (table) {
+						const breadcrumbParent = { path, breadcrumbTitle };
 						routes.push(
 							<Route
 								{...props}
+								breadcrumbTitle="update"
+								breadcrumbParent={breadcrumbParent}
 								path={`${path}/update/:key`}
 								component={dataUpdater}
 							/>,
 							<Route
 								{...props}
+								breadcrumbTitle="create"
+								breadcrumbParent={breadcrumbParent}
 								path={`${path}/create/`}
 								component={dataCreater}
 							/>
@@ -168,12 +162,6 @@ NavigatorSchema.configuration = {
 		this.menus = sidebarMenu;
 		this.topMenu = topMenu;
 		this.routes = routes;
-		this.breadcrumbNameMap = Object.keys(breadcrumbNameMap)
-			.sort((a, b) => getSlashesLength(a) - getSlashesLength(b))
-			.reduce((acc, key) => {
-				acc[key] = breadcrumbNameMap[key];
-				return acc;
-			}, {});
 		return this;
 	},
 };
