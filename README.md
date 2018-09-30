@@ -1,6 +1,6 @@
 # re-admin
 
-[WIP] Declarative UI and logics for admin client. Built on top of
+[WIP] Declarative UI, routes, and API for web admin client. Built on top of
 [React](https://reactjs.org/), [AntDesign](https://ant.design) and
 [MobX](https://mobx.js.org/index.html)
 

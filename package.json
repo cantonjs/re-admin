@@ -1,7 +1,7 @@
 {
   "name": "re-admin",
   "version": "0.15.2",
-  "description": "Declarative UI and logics for admin client",
+  "description": "Declarative UI, routes, and API for web admin client",
   "repository": "cantonjs/re-admin",
   "scripts": {
     "start": "cross-env PORT=3000 run-p host client",
