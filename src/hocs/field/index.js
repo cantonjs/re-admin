@@ -56,7 +56,7 @@ export default function field(WrappedComponent) {
 		get _shouldShow() {
 			const { props: { name, modalStore }, _isUpdater } = this;
 			if (_isUpdater) {
-				if (!modalStore || !modalStore.parent) return false;
+				if (!modalStore || !modalStore.parent) return true;
 				const { select } = modalStore.parent.state;
 				if (!select) return true;
 				else if (select.split(',').indexOf(name) < 0) return false;
@@ -65,9 +65,7 @@ export default function field(WrappedComponent) {
 		}
 
 		render() {
-			if (!this._shouldShow) {
-				return null;
-			}
+			if (!this._shouldShow) return null;
 
 			const {
 				props: {

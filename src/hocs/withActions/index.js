@@ -5,11 +5,15 @@ import hoist, { extractRef } from 'hocs/hoist';
 import joinKeys from 'utils/joinKeys';
 import withModalStore from 'hocs/withModalStore';
 import withStore from 'hocs/withStore';
+import withIssuer from 'hocs/withIssuer';
+import { MODAL } from 'utils/Issuers';
 import * as Actions from 'constants/Actions';
+import routerStore from 'stores/routerStore';
 
 // Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
 	@hoist(WrappedComponent)
+	@withIssuer()
 	@withStore()
 	@withModalStore()
 	@observer
@@ -17,6 +21,7 @@ export default function withActions(WrappedComponent) {
 		static propTypes = {
 			modalStore: PropTypes.object.isRequired,
 			store: PropTypes.object.isRequired,
+			issuers: PropTypes.instanceOf(Set).isRequired,
 		};
 
 		static contextTypes = {
@@ -40,15 +45,26 @@ export default function withActions(WrappedComponent) {
 			return joinKeys(this.getSelectedKeys());
 		};
 
-		open = (name, params, options) => {
-			this.props.modalStore.open(
-				{
-					keys: joinKeys(this.getSelectedKeys()),
-					...params,
-					name,
-				},
-				options
-			);
+		open = (name, params = {}, options) => {
+			const { modalStore, issuers } = this.props;
+			const keys = joinKeys(this.getSelectedKeys());
+			if (
+				(name === Actions.CREATE || name === Actions.UPDATE) &&
+				!issuers.has(MODAL)
+			) {
+				const path =
+					params.path || (Actions.UPDATE ? `/update/${keys}` : '/create');
+				routerStore.location.pathname += path;
+			} else {
+				modalStore.open(
+					{
+						keys,
+						...params,
+						name,
+					},
+					options
+				);
+			}
 		};
 
 		openCreaterModal = (params = {}, options) => {

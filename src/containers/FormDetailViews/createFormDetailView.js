@@ -26,6 +26,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		static propTypes = {
 			contextStore: PropTypes.object.isRequired,
+			computedMatch: PropTypes.object.isRequired,
 			store: PropTypes.object,
 			table: PropTypes.string,
 			keys: PropTypes.string,
@@ -47,7 +48,8 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		constructor(props) {
 			super(props);
-			const selectedKeys = (props.keys || '').split(',');
+
+			const selectedKeys = (props.computedMatch.params.key || '').split(',');
 			this._selectedKey = selectedKeys[0];
 			this._isCreater = issuer === CREATER;
 			if (this._isCreater) this._createrValue = {};
