@@ -85,6 +85,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 								}
 								onSubmit={this._handleSubmit}
 								onChange={this._handleChange}
+								layout="vertical"
 							>
 								{isFetching && <SpinBox />}
 								{!isFetching &&
