@@ -90,6 +90,8 @@ NavigatorSchema.configuration = {
 							title &&
 							(props.table || props.component || props.render)
 						) {
+							// console.log('breadcrumb', props.path, props.title);
+
 							breadcrumbNameMap[props.path] = {
 								title,
 								routeProps: pick(props, ['path', 'exact', 'strict']),
@@ -158,7 +160,7 @@ NavigatorSchema.configuration = {
 		const topMenu = getMenu(topChildren);
 		const userRoutes = [...getRoutes(sidebarMenu), ...getRoutes(topMenu)];
 		const routes = [
-			<Route key="_index" exact path="/" component={welcome} />,
+			<Route key="_index" exact path="/" menuKey="/" component={welcome} />,
 			...userRoutes,
 			<Route key="_notFound" component={notFound} />,
 		];

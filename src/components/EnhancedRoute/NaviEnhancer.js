@@ -6,12 +6,12 @@ import NaviContext from 'contexts/Navi';
 export default class NaviEnhancer extends PureComponent {
 	static propTypes = {
 		children: PropTypes.node.isRequired,
-		naviKey: PropTypes.string,
+		menuKey: PropTypes.string,
 	};
 
 	constructor(props) {
 		super(props);
-		naviStore.select(this.props.naviKey);
+		naviStore.select(this.props.menuKey);
 	}
 
 	render() {
