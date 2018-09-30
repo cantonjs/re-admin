@@ -123,23 +123,23 @@ NavigatorSchema.configuration = {
 					return getRoutes(children);
 				} else {
 					const routes = [];
-					const { table, path, detailPath, detailComponent } = props;
+					const { table, path } = props;
 
 					if (!props.component && !props.render) {
 						props.component = table ? dataTable : notFound;
 					}
 
-					if (table && detailPath) {
+					if (table) {
 						routes.push(
 							<Route
 								{...props}
-								path={`${path}/update/${detailPath}`}
-								component={detailComponent || dataUpdater}
+								path={`${path}/update/:key`}
+								component={dataUpdater}
 							/>,
 							<Route
 								{...props}
 								path={`${path}/create/`}
-								component={detailComponent || dataCreater}
+								component={dataCreater}
 							/>
 						);
 					}

@@ -3,23 +3,24 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import NaviEnhancer from './NaviEnhancer';
 
-export default function EnhancedRoute({
-	component: Component,
-	exact,
-	strict,
-	path,
-	menuKey,
-	...other
-}) {
-	const key = menuKey || path || '*';
+export default function EnhancedRoute(props) {
+	const {
+		component: Component,
+		exact,
+		strict,
+		path,
+		menuKey,
+		...other
+	} = props;
+	const naviKey = menuKey || path || '*';
 	return (
 		<Route
 			path={path}
 			exact={exact}
 			strict={strict}
 			render={(matchProps) => (
-				<NaviEnhancer menuKey={key} key={key}>
-					<Component {...matchProps} {...other} />
+				<NaviEnhancer {...other} path={path} naviKey={naviKey} key={naviKey}>
+					<Component {...matchProps} />
 				</NaviEnhancer>
 			)}
 		/>

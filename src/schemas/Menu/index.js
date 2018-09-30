@@ -11,8 +11,6 @@ MenuSchema.propTypes = {
 	path: PropTypes.string,
 	table: PropTypes.string,
 	top: PropTypes.bool,
-	detailPath: PropTypes.string,
-	detailComponent: PropTypes.component,
 	children: PropTypes.node,
 	component: PropTypes.component,
 	header: PropTypes.component,
