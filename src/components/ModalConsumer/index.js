@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import withModalStore from 'hocs/withModalStore';
+import withIssuer from 'hocs/withIssuer';
+import { MODAL } from 'utils/Issuers';
 import ModalProvider from 'components/ModalProvider';
 
+@withIssuer({ issuer: MODAL })
 @withModalStore()
 @observer
 export default class ModalConsumer extends Component {

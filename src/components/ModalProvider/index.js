@@ -3,10 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import { withModalStoreProvider } from 'hocs/withModalStore';
 import { Modal } from 'antd';
-import withIssuer from 'hocs/withIssuer';
-import { MODAL } from 'utils/Issuers';
 
-@withIssuer({ issuer: MODAL })
 @withModalStoreProvider()
 @observer
 export default class ModalProvider extends Component {
