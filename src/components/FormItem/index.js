@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { cloneElement } from 'react';
+import React, { cloneElement } from 'react';
 import { observer } from 'mobx-react';
+import FormLayoutContext from 'contexts/FormLayout';
 
 const formItemLayout = {
 	labelCol: {
@@ -15,7 +16,16 @@ const formItemLayout = {
 
 const FormItem = function FormItem({ renderForm, formStore }) {
 	const children = renderForm(formStore);
-	return children ? cloneElement(children, formItemLayout) : null;
+	if (!children) return null;
+	return (
+		<FormLayoutContext.Consumer>
+			{(layout) =>
+				layout === 'horizontal' ?
+					cloneElement(children, formItemLayout) :
+					children
+			}
+		</FormLayoutContext.Consumer>
+	);
 };
 
 FormItem.propTypes = {

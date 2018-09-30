@@ -39,8 +39,8 @@ NavigatorSchema.defaultProps = {
 	login: LoginView,
 	frame: FrameView,
 	dataTable: DataTableView,
-	dataUpdater: CreaterFormDetailView,
-	dataCreater: UpdaterFormDetailView,
+	dataUpdater: UpdaterFormDetailView,
+	dataCreater: CreaterFormDetailView,
 	notFound: NotFoundView,
 };
 

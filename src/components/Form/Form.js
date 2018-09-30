@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createRef } from 'utils/reactPolyfill';
+import FormLayoutContext from 'contexts/FormLayout';
 import PropTypes from 'prop-types';
 import { Form } from 'react-form-mobx';
 
@@ -62,11 +63,13 @@ export default class FormView extends Component {
 		} = this.props;
 		const customClassName = className ? ` ${className}` : '';
 		return (
-			<Form
-				ref={this.formRef}
-				className={`${prefixCls}-${layout}` + customClassName}
-				{...other}
-			/>
+			<FormLayoutContext.Provider value={layout}>
+				<Form
+					ref={this.formRef}
+					className={`${prefixCls}-${layout}` + customClassName}
+					{...other}
+				/>
+			</FormLayoutContext.Provider>
 		);
 	}
 }
