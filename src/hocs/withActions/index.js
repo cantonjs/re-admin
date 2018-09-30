@@ -7,7 +7,7 @@ import withModalStore from 'hocs/withModalStore';
 import withStore from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
 import { MODAL } from 'utils/Issuers';
-import * as Actions from 'constants/Actions';
+import { UPDATE, CREATE, REF } from 'constants/Actions';
 import routerStore from 'stores/routerStore';
 
 // Notice that this `Action` is NOT Redux or MobX action.
@@ -48,12 +48,9 @@ export default function withActions(WrappedComponent) {
 		open = (name, params = {}, options) => {
 			const { modalStore, issuers } = this.props;
 			const keys = joinKeys(this.getSelectedKeys());
-			if (
-				(name === Actions.CREATE || name === Actions.UPDATE) &&
-				!issuers.has(MODAL)
-			) {
+			if ((name === CREATE || name === UPDATE) && !issuers.has(MODAL)) {
 				const path =
-					params.path || (Actions.UPDATE ? `/update/${keys}` : '/create');
+					params.path || (name === UPDATE ? `/update/${keys}` : '/create');
 				routerStore.location.pathname += path;
 			} else {
 				modalStore.open(
@@ -69,7 +66,7 @@ export default function withActions(WrappedComponent) {
 
 		openCreaterModal = (params = {}, options) => {
 			params.keys = params.keys || '';
-			this.open(Actions.CREATE, params, options);
+			this.open(CREATE, params, options);
 		};
 
 		openUpdaterModal = (params = {}, options) => {
@@ -77,7 +74,7 @@ export default function withActions(WrappedComponent) {
 			if (select && select.length) {
 				config.select = select.join(',');
 			}
-			this.open(Actions.UPDATE, config, options);
+			this.open(UPDATE, config, options);
 		};
 
 		openRefModal = (params = {}, options) => {
@@ -91,7 +88,7 @@ export default function withActions(WrappedComponent) {
 			} = params;
 			const config = { table, title, fetch, save, width };
 			if (noQuery) config.noQuery = '✓';
-			this.open(Actions.REF, config, options);
+			this.open(REF, config, options);
 		};
 
 		_getData = () => {
