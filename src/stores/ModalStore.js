@@ -29,6 +29,8 @@ export default class ModalStore extends Emitter {
 
 		this.parent = parent;
 		this._router = router;
+
+		// TODO: deprecated
 		this._bindRouter();
 
 		this._observeDisposer = observe(this, ({ name, newValue }) => {
