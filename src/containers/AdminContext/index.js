@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 import authStore from 'stores/authStore';
 import AppConfigContext from 'contexts/AppConfig';
-import storesDispatcher from './storesDispatcher';
+import dispatcherStore from 'stores/dispatcherStore';
 import { Router } from 'react-router-mobx';
 import DocumentTitle from 'react-document-title';
 
@@ -25,14 +25,12 @@ export default class AdminContext extends Component {
 	static childContextTypes = {
 		appConfig: PropTypes.object,
 		authStore: PropTypes.object,
-		storesDispatcher: PropTypes.object,
 	};
 
 	getChildContext() {
 		return {
 			appConfig: this._appConfig,
 			authStore,
-			storesDispatcher,
 		};
 	}
 
@@ -40,7 +38,7 @@ export default class AdminContext extends Component {
 		super(props);
 		this._appConfig = observable(props.appConfig);
 		authStore.set(this._appConfig);
-		storesDispatcher.init(this._appConfig, authStore);
+		dispatcherStore.init(this._appConfig, authStore);
 	}
 
 	componentDidUpdate({ appConfig }) {

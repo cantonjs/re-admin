@@ -3,7 +3,7 @@ import getRequest from 'utils/getRequest';
 import DataListStore from 'stores/DataListStore';
 import DataDetailStore from 'stores/DataDetailStore';
 
-class StoresDispatcher {
+class DispatcherStore {
 	init(appConfig, authStore) {
 		this.appConfig = appConfig;
 		this.authStore = authStore;
@@ -43,4 +43,4 @@ class StoresDispatcher {
 	}
 }
 
-export default new StoresDispatcher();
+export default new DispatcherStore();

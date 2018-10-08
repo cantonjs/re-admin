@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hocs/hoist';
 import StoreContext from './StoreContext';
 import withStore from './withStore';
+import dispatcherStore from 'stores/dispatcherStore';
 
 export default function withStoreProvider(options = {}) {
 	const { useCache, prop = 'store' } = options;
@@ -15,10 +16,6 @@ export default function withStoreProvider(options = {}) {
 			static propTypes = {
 				table: PropTypes.string,
 				parentStore: PropTypes.object,
-			};
-
-			static contextTypes = {
-				storesDispatcher: PropTypes.object.isRequired,
 			};
 
 			static getDerivedStateFromProps({ table }, prevState) {
@@ -41,8 +38,7 @@ export default function withStoreProvider(options = {}) {
 			}
 
 			_getStore = (table) => {
-				const { context: { storesDispatcher } } = this;
-				return storesDispatcher.ensureStore(table, { useCache });
+				return dispatcherStore.ensureStore(table, { useCache });
 			};
 
 			render() {
