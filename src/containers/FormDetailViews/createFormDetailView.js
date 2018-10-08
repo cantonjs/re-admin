@@ -17,7 +17,7 @@ import ModalProvider from 'components/ModalProvider';
 import PageContainer from 'components/PageContainer';
 
 export default function createFormDetailView(title, issuer, displayName) {
-	@withTable()
+	@withTable({ syncLocation: true, useCache: true })
 	@withStore({ prop: 'contextStore' })
 	@withIssuer({ issuer })
 	@observer
@@ -29,7 +29,6 @@ export default function createFormDetailView(title, issuer, displayName) {
 			computedMatch: PropTypes.object.isRequired,
 			store: PropTypes.object,
 			table: PropTypes.string,
-			keys: PropTypes.string,
 			save: PropTypes.string,
 			title: PropTypes.node,
 		};
@@ -69,8 +68,9 @@ export default function createFormDetailView(title, issuer, displayName) {
 				this.setState({ isSubmitting: true });
 				const { props } = this;
 				const store = props.store || props.contextStore;
-				const { keys, save } = props;
-				const url = joinKeys(keys);
+				const { computedMatch, save } = props;
+				const selectedKeys = (computedMatch.params.key || '').split(',');
+				const url = joinKeys(selectedKeys);
 				const method = save || (issuer === CREATER ? 'create' : 'update');
 				await store.call(method, { ...props, url, body, refresh: false });
 				this.setState({ isSubmitting: false });
