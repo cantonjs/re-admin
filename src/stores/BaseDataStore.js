@@ -100,8 +100,8 @@ export default class BaseDataStore {
 			method: 'POST',
 			body: this.config.mapOnSave(options.body, 'create'),
 			errorTitle: locale.data.createFailed,
-			...options,
 			refresh: true,
+			...options,
 		});
 	}
 
@@ -110,8 +110,8 @@ export default class BaseDataStore {
 			method: 'PUT',
 			body: this.config.mapOnSave(options.body, 'update'),
 			errorTitle: locale.data.updateFailed,
-			...options,
 			refresh: true,
+			...options,
 		});
 	}
 
@@ -119,8 +119,8 @@ export default class BaseDataStore {
 		await this.request({
 			method: 'DELETE',
 			errorTitle: locale.data.removeFailed,
-			...options,
 			refresh: true,
+			...options,
 		});
 	}
 
