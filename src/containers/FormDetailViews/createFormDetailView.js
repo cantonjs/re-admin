@@ -72,11 +72,21 @@ export default function createFormDetailView(title, issuer, displayName) {
 				const selectedKeys = (computedMatch.params.key || '').split(',');
 				const url = joinKeys(selectedKeys);
 				const method = save || (issuer === CREATER ? 'create' : 'update');
-				await store.call(method, { ...props, url, body, refresh: false });
-				this.setState({ isSubmitting: false });
+				try {
+					await store.call(method, {
+						...props,
+						url,
+						body,
+						refresh: false,
+						throwError: true,
+					});
+					this.setState({ isSubmitting: false });
 
-				// TODO: should add locale support
-				message.info('Success!');
+					// TODO: should add locale support
+					message.info('Success!');
+				} catch (err) {
+					message.error('Failed!');
+				}
 			} else if (__DEV__) {
 				warning(false, 'INVALID');
 			}

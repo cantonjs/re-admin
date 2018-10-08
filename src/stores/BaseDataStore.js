@@ -140,9 +140,10 @@ export default class BaseDataStore {
 		} catch (err) {
 			if (throwError) {
 				throw err;
+			} else {
+				console.error(errorTitle, err);
+				showError(errorTitle, err);
 			}
-			console.error(errorTitle, err);
-			showError(errorTitle, err);
 		}
 	}
 }
