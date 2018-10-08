@@ -131,8 +131,13 @@ export default function createFormDetailView(title, issuer, displayName) {
 											key={index}
 										/>
 									))}
-								<Submit disabled={isPristine || !isValid || isSubmitting}>
-									{isSubmitting ? 'Loading...' : 'Save'}
+								<Submit
+									disabled={isPristine || !isValid || isSubmitting}
+									type="primary"
+									size="large"
+									loading={isSubmitting}
+								>
+									Save
 								</Submit>
 							</Form>
 						</div>
