@@ -40,6 +40,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 		state = {
 			isValid: true,
 			isSubmitting: false,
+			isPristine: true,
 		};
 
 		formRef = createRef();
@@ -55,6 +56,9 @@ export default function createFormDetailView(title, issuer, displayName) {
 		}
 
 		_handleChange = ({ value }) => {
+			if (this.state.isPristine) {
+				this.setState({ isPristine: false });
+			}
 			this.formStore.setState(value);
 		};
 
@@ -80,11 +84,12 @@ export default function createFormDetailView(title, issuer, displayName) {
 						refresh: false,
 						throwError: true,
 					});
-					this.setState({ isSubmitting: false });
+					this.setState({ isSubmitting: false, isPristine: true });
 
 					// TODO: should add locale support
 					message.info('Success!');
 				} catch (err) {
+					this.setState({ isSubmitting: false });
 					message.error('Failed!');
 				}
 			} else if (__DEV__) {
@@ -95,7 +100,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 		render() {
 			const {
 				props: { store, contextStore, title },
-				state: { isValid, isSubmitting },
+				state: { isValid, isSubmitting, isPristine },
 				formStore,
 				_isCreater,
 				_selectedKey,
@@ -126,7 +131,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 											key={index}
 										/>
 									))}
-								<Submit disabled={!isValid || isSubmitting}>
+								<Submit disabled={isPristine || !isValid || isSubmitting}>
 									{isSubmitting ? 'Loading...' : 'Save'}
 								</Submit>
 							</Form>
