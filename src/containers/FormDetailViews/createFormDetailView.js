@@ -17,7 +17,7 @@ import ModalProvider from 'components/ModalProvider';
 import PageContainer from 'components/PageContainer';
 
 export default function createFormDetailView(title, issuer, displayName) {
-	@withTable({ syncLocation: true, useCache: true })
+	@withTable({ syncLocation: true })
 	@withStore({ prop: 'contextStore' })
 	@withIssuer({ issuer })
 	@observer

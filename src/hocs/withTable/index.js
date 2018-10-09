@@ -57,9 +57,6 @@ export default function withTable(options = {}) {
 			componentDidMount() {
 				const { location } = router;
 
-				console.log('table props', this.props.table);
-				console.log('location', location);
-
 				if (this.props.table && location) {
 					const { getOmitPaths } = ModalStore;
 					const query = omitBy(location.query, getOmitPaths);
