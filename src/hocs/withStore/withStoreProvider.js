@@ -7,7 +7,7 @@ import withStore from './withStore';
 import dispatcherStore from 'stores/dispatcherStore';
 
 export default function withStoreProvider(options = {}) {
-	const { useCache, prop = 'store' } = options;
+	const { useCache, router, prop = 'store' } = options;
 	return function createStoreProviderComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
 		@withStore({ prop: 'parentStore' })
@@ -37,8 +37,13 @@ export default function withStoreProvider(options = {}) {
 				this.state = state;
 			}
 
+			componentWillUnmount() {
+				const store = this.state[prop];
+				store && store.destroy();
+			}
+
 			_getStore = (table) => {
-				return dispatcherStore.ensureStore(table, { useCache });
+				return dispatcherStore.ensureStore(table, { useCache, router });
 			};
 
 			render() {

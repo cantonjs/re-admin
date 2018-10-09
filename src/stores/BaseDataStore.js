@@ -1,4 +1,4 @@
-import { computed } from 'mobx';
+import { computed, observable, action, observe } from 'mobx';
 import { isFunction, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
 import LocaleStores from 'stores/LocaleStores';
@@ -8,6 +8,8 @@ import Table from 'schemas/Table';
 const locale = LocaleStores.ensure('requests');
 
 export default class BaseDataStore {
+	@observable query = {};
+
 	@computed
 	get config() {
 		const name = this.name;
@@ -27,11 +29,21 @@ export default class BaseDataStore {
 			authStore,
 			config: customConfig,
 			baseRequest,
+			router,
 		} = options;
 		this.name = name;
 		this._customConfig = customConfig;
 		this.appConfig = appConfig;
 		this.extends = {};
+
+		if (router) {
+			const { location } = router;
+			this.router = router;
+			this.query = location.query;
+			this._queryDisposer = observe(location, 'query', ({ newValue }) => {
+				this.query = newValue;
+			});
+		}
 
 		const { extend, api } = this.config;
 		const { accessTokenLocation, accessTokenName } = appConfig.api;
@@ -60,6 +72,16 @@ export default class BaseDataStore {
 			this.baseRequest = baseRequest;
 		}
 		this.performRequest = this.baseRequest.fetch.bind(this.baseRequest);
+	}
+
+	@action
+	setQuery(query) {
+		if (this.router) this.router.location.query = query;
+		else this.query = query;
+	}
+
+	observeQuery(handler) {
+		return observe(this, 'query', handler);
 	}
 
 	extend(extensions) {
@@ -145,5 +167,9 @@ export default class BaseDataStore {
 				showError(errorTitle, err);
 			}
 		}
+	}
+
+	destroy() {
+		this._queryDisposer && this._queryDisposer();
 	}
 }

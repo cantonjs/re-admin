@@ -1,4 +1,4 @@
-import { autorun, action, observable, computed, toJS } from 'mobx';
+import { action, observable, computed, toJS } from 'mobx';
 import { isUndefined, omitBy } from 'lodash';
 import ModalStore from 'stores/ModalStore';
 import BaseDataStore from 'stores/BaseDataStore';
@@ -7,7 +7,6 @@ import parseColumn from 'utils/parseColumn';
 export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
 	@observable selectedKeys = [];
-	@observable query = {};
 	@observable queryFieldsCount = 0;
 
 	collections = observable.map();
@@ -110,43 +109,11 @@ export default class DataListStore extends BaseDataStore {
 		}
 	}
 
-	addQueryListener(routerStore) {
-		if (routerStore && routerStore.location) {
-			this.query = routerStore.location.query;
-			this._routerStore = routerStore;
-		}
-		this._hasBoundQueryListener = false;
-		const disposer = autorun(() => {
-			if (this.query && !this._hasBoundQueryListener) {
-				this._hasBoundQueryListener = true;
-			} else {
-				// fetch trick
-				setTimeout(() => {
-					this.fetch({ query: this.query });
-				});
-			}
-		});
-		return function removeQueryListener() {
-			this._routerStore = null;
-			return disposer();
-		};
-	}
-
-	async setQuery(query) {
-		if (this._routerStore) {
-			this._routerStore.location.query = query;
-		} else {
-			this.query = query;
-		}
-	}
-
 	async fetch(options = {}) {
 		const { query, method, url, body, headers } = options;
 		const { cacheKey } = this;
 
-		if (this.collections.has(cacheKey)) {
-			return this;
-		}
+		if (this.collections.has(cacheKey)) return this;
 
 		this.isFetching = true;
 

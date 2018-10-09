@@ -15,12 +15,19 @@ class DispatcherStore {
 	}
 
 	ensureStore(name, options = {}) {
-		const { type = 'list', config, useCache } = options;
+		const { type = 'list', config, useCache, router } = options;
 
 		const createStore = () => {
 			const { appConfig, authStore, baseRequest } = this;
 			const Store = type === 'list' ? DataListStore : DataDetailStore;
-			return new Store({ name, appConfig, authStore, baseRequest, config });
+			return new Store({
+				name,
+				appConfig,
+				authStore,
+				baseRequest,
+				config,
+				router,
+			});
 		};
 
 		if (!~['list', 'detail'].indexOf(type)) {
