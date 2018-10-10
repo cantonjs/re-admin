@@ -1,3 +1,4 @@
+import styles from './styles';
 import React, { Component } from 'react';
 import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
@@ -110,7 +111,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 			return (
 				<PageContainer title={title}>
 					<ModalProvider>
-						<div>
+						<div style={styles.container}>
 							<h1>{title}</h1>
 							<Form
 								ref={this.formRef}
