@@ -17,6 +17,7 @@ MenuSchema.propTypes = {
 	component: PropTypes.component,
 	header: PropTypes.component,
 	footer: PropTypes.component,
+	toolbar: PropTypes.component,
 };
 
 MenuSchema.defaultProps = {
