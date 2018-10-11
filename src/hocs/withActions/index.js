@@ -6,7 +6,7 @@ import joinKeys from 'utils/joinKeys';
 import withModalStore from 'hocs/withModalStore';
 import withStore from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
-import { MODAL } from 'utils/Issuers';
+import { MODAL, TOOLBAR } from 'utils/Issuers';
 import { UPDATE, CREATE, REF } from 'constants/Actions';
 import routerStore from 'stores/routerStore';
 
@@ -48,7 +48,11 @@ export default function withActions(WrappedComponent) {
 		open = (name, params = {}, options) => {
 			const { modalStore, issuers } = this.props;
 			const keys = joinKeys(this.getSelectedKeys());
-			if ((name === CREATE || name === UPDATE) && !issuers.has(MODAL)) {
+			if (
+				(name === CREATE || name === UPDATE) &&
+				issuers.has(TOOLBAR) &&
+				!issuers.has(MODAL)
+			) {
 				const path =
 					params.path || (name === UPDATE ? `/update/${keys}` : '/create');
 				routerStore.location.pathname += path;
