@@ -103,7 +103,7 @@ export default class BaseDataStore {
 			return this[method].apply(this, args);
 		} else {
 			throw new Error(
-				`Method "${method}" not found in table store "${this.name}"`
+				`Method "${method}" is not found in table store "${this.name}"`
 			);
 		}
 	}
