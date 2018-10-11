@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { propTypes as MobxPropTypes } from 'mobx-react';
+import warning from 'warning';
 
 const warned = {};
 
@@ -20,10 +21,12 @@ export default {
 		return function validate(props, propName, componentName, ...rest) {
 			if (props[propName] != null) {
 				// eslint-disable-next-line max-len
-				const message = `"${propName}" property of "${componentName}" has been deprecated. ${explanation}`;
+				let message = `"${propName}" property of "${componentName}" has been deprecated.`;
+				if (explanation) message += ` ${explanation}`;
 
 				if (!warned[message]) {
 					warned[message] = true;
+					warning(false, message);
 				}
 			}
 
