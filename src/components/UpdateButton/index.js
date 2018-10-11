@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import ContextButton from 'components/ContextButton';
-import { isFunction, isEmpty } from 'lodash';
+import { isFunction } from 'lodash';
 import localize from 'hocs/localize';
+import ContextButton from 'components/ContextButton';
 
 @localize('UpdateButton')
 export default class UpdateButton extends Component {
@@ -12,21 +12,13 @@ export default class UpdateButton extends Component {
 		title: PropTypes.stringOrFunc,
 		label: PropTypes.stringOrFunc,
 		multiLabel: PropTypes.stringOrFunc,
-		modalParams: PropTypes.object,
-		names: PropTypes.deprecated(
-			PropTypes.array,
-			'Please use "modalParams" instead'
-		),
-		save: PropTypes.deprecated(
-			PropTypes.string,
-			'Please use "modalParams" instead'
-		),
+		names: PropTypes.array,
+		save: PropTypes.string,
 	};
 
 	static defaultProps = {
 		names: [],
 		save: 'update',
-		modalParams: {},
 	};
 
 	_getModalParams(options, refs, localeStore) {
@@ -47,10 +39,9 @@ export default class UpdateButton extends Component {
 
 	_handleClick = (ev, refs) => {
 		ev.preventDefault();
-		const { props: { modalParams, localeStore }, props } = this;
+		const { props: { localeStore }, props } = this;
 		const { openUpdaterModal } = refs;
-		const options = isEmpty(modalParams) ? props : modalParams;
-		const params = this._getModalParams(options, refs, localeStore);
+		const params = this._getModalParams(props, refs, localeStore);
 		openUpdaterModal(params);
 	};
 
