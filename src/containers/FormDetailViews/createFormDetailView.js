@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
+import warning from 'warning';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
@@ -86,6 +87,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 			} catch (err) {
 				this.setState({ isSubmitting: false });
 				message.error('Failed!');
+				warning(false, err.message);
 			}
 		};
 

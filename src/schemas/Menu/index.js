@@ -18,6 +18,8 @@ MenuSchema.propTypes = {
 	header: PropTypes.component,
 	footer: PropTypes.component,
 	toolbar: PropTypes.component,
+	updaterParams: PropTypes.object,
+	createrParams: PropTypes.object,
 };
 
 MenuSchema.defaultProps = {
