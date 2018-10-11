@@ -2,17 +2,13 @@ import React, { Component } from 'react';
 import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
-import warning from 'warning';
+import joinKeys from 'utils/joinKeys';
+import { CREATER } from 'utils/Issuers';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
-import { Form } from 'components/Form';
 import ModalConsumer from 'components/ModalConsumer';
-import FormItem from 'components/FormItem';
-import SpinBox from 'components/SpinBox';
-import joinKeys from 'utils/joinKeys';
-import { CREATER } from 'utils/Issuers';
-import FormStore from 'stores/FormStore';
+import FormBody from 'components/FormBody';
 
 export default function createFormModal(defaultTitle, issuer, displayName) {
 	@withTable()
@@ -39,7 +35,6 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 
 		formRef = createRef();
 		modalRef = createRef();
-		formStore = new FormStore();
 
 		constructor(props) {
 			super(props);
@@ -63,33 +58,22 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			}
 		};
 
-		_handleChange = ({ value }) => {
-			this.formStore.setState(value);
-		};
-
-		_handleSubmit = (body, { isInvalid }) => {
-			if (!isInvalid) {
-				const { props } = this;
-				const store = props.store || props.contextStore;
-				const { keys, save } = props;
-				const url = joinKeys(keys);
-				const method = save || (issuer === CREATER ? 'create' : 'update');
-				store.call(method, { ...props, url, body });
-				this.modalRef.current.close();
-			} else if (__DEV__) {
-				warning(false, 'INVALID');
-			}
+		_handleSubmit = (body) => {
+			const { props } = this;
+			const store = props.store || props.contextStore;
+			const { keys, save } = props;
+			const url = joinKeys(keys);
+			const method = save || (issuer === CREATER ? 'create' : 'update');
+			store.call(method, { ...props, url, body });
+			this.modalRef.current.close();
 		};
 
 		render() {
 			const {
 				props: { store, contextStore, title, width },
-				formStore,
 				_isCreater,
 				_selectedKey,
 			} = this;
-			const { isFetching, renderers } = store || contextStore;
-
 			return (
 				<ModalConsumer
 					title={title}
@@ -97,24 +81,14 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 					onOk={this._handleOk}
 					ref={this.modalRef}
 				>
-					<Form
-						ref={this.formRef}
+					<FormBody
 						value={
 							_isCreater ? this._createrValue : store.getData(_selectedKey)
 						}
+						formRef={this.formRef}
+						store={store || contextStore}
 						onSubmit={this._handleSubmit}
-						onChange={this._handleChange}
-					>
-						{isFetching && <SpinBox />}
-						{!isFetching &&
-							renderers.map(({ renderForm }, index) => (
-								<FormItem
-									renderForm={renderForm}
-									formStore={formStore}
-									key={index}
-								/>
-							))}
-					</Form>
+					/>
 				</ModalConsumer>
 			);
 		}
