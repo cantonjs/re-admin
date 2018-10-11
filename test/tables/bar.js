@@ -2,7 +2,15 @@ import React from 'react';
 import { Table, Text, Image, Html } from '../../src';
 
 export default (
-	<Table name="bar" api={{ pathname: 'bar', query: { count: 2 } }}>
+	<Table
+		name="bar"
+		api={{ pathname: 'bar', query: { count: 2 } }}
+		extend={{
+			customMethod(requestOptions) {
+				console.log(requestOptions);
+			},
+		}}
+	>
 		<Text
 			name="id"
 			label="ID"

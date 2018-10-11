@@ -6,7 +6,7 @@ export default (
 		<Text name="id" label="ID" placeholder="ID" disabled unique inQuery />
 
 		<Text name="desc" label="Title" inTable inForm />
-		<Html name="article" label="Article" inForm />
+		<Html name="article" label="Article" style={{ height: 480 }} inForm />
 
 		<DatePicker
 			name="createdAt"

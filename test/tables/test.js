@@ -21,14 +21,7 @@ import {
 } from '../../src';
 
 export default (
-	<Table
-		name="test"
-		extend={{
-			customMethod(requestOptions) {
-				console.log(requestOptions);
-			},
-		}}
-	>
+	<Table name="test">
 		<Text name="id" label="ID" placeholder="ID" disabled unique inQuery />
 
 		<Text
@@ -145,7 +138,7 @@ export default (
 			<CreateButton table="bar" label="Create Bar" />
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
-			<RefButton table="bar" noQuery />
+			<RefButton table="bar" noQuery save="customMethod" />
 		</Actions>
 	</Table>
 );
