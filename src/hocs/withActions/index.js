@@ -110,6 +110,7 @@ export default function withActions(WrappedComponent) {
 						selectedKeys: this._selectedKeys || store.selectedKeys,
 						getSelectedKeysString: this.getSelectedKeysString,
 						getData: this._getData,
+						issuers: props.issuers,
 					}}
 				/>
 			);
