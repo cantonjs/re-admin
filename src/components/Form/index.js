@@ -23,6 +23,10 @@ export const Input = createComponent(AntdInput, {
 	displayName: 'Input',
 });
 
+export const TextArea = createComponent(AntdInput.TextArea, {
+	displayName: 'TextArea',
+});
+
 export const Slider = createComponent(AntdSlider, {
 	displayName: 'Slider',
 	getValueFromChangeEvent(value) {
