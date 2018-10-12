@@ -5,26 +5,54 @@ import EditorContext from 'contexts/Editor';
 import Quill from 'react-quill';
 import EditorToolbar from 'components/EditorToolbar';
 
+const formats = [
+	'align',
+	'background',
+	'blockquote',
+	'bold',
+	'code-block',
+	'color',
+	'direction',
+	'font',
+	'header',
+	'image',
+	'indent',
+	'italic',
+	'link',
+	'list',
+	'script',
+	'size',
+	'strike',
+	'underline',
+	'video',
+];
+
 class QuillEditorEnhancer extends Component {
 	static propTypes = {
 		toolbar: PropTypes.node,
 		modules: PropTypes.object,
+		formats: PropTypes.array,
+		transformFormats: PropTypes.func,
 		innerRef: PropTypes.func,
 	};
 
 	static defaultProps = {
 		modules: {},
 		toolbar: <EditorToolbar />,
+		formats,
 	};
+
+	static defaultFormats = formats;
 
 	constructor(props) {
 		super(props);
 
-		const { modules } = props;
+		const { modules, formats, transformFormats } = props;
 		modules.toolbar = {
 			container: '.editor-toolbar',
 			...modules.toolbar,
 		};
+		this.formats = transformFormats ? transformFormats(formats) : formats;
 		this.modules = modules;
 		this.reactQuillRef = { getEditor: () => null };
 		this.editorContext = { getEditor: () => this.reactQuillRef.getEditor() };
@@ -38,15 +66,21 @@ class QuillEditorEnhancer extends Component {
 
 	render() {
 		const {
-			props: { toolbar, innerRef, ...other },
+			props: { toolbar, innerRef, transformFormats, ...other },
 			modules,
+			formats,
 			editorContext,
 		} = this;
 		return (
 			<EditorContext.Provider value={editorContext}>
 				<div>
 					{toolbar}
-					<Quill {...other} modules={modules} ref={this.saveRef} />
+					<Quill
+						{...other}
+						modules={modules}
+						formats={formats}
+						ref={this.saveRef}
+					/>
 				</div>
 			</EditorContext.Provider>
 		);
