@@ -15,28 +15,6 @@ const modules = {
 	},
 };
 
-const formats = [
-	'align',
-	'background',
-	'blockquote',
-	'bold',
-	'code-block',
-	'color',
-	'direction',
-	'font',
-	'header',
-	'image',
-	'indent',
-	'italic',
-	'link',
-	'list',
-	'script',
-	'size',
-	'strike',
-	'underline',
-	'video',
-];
-
 export default (
 	<Table name="article" api={{ pathname: 'test' }}>
 		<Text name="id" label="ID" placeholder="ID" disabled unique inQuery />
@@ -52,7 +30,6 @@ export default (
 					</EditorToolbar>
 				),
 				modules,
-				formats,
 				style: { height: 480 },
 			}}
 			inForm
