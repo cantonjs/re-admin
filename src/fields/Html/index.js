@@ -10,8 +10,8 @@ function HtmlField({ style, editorProps, ...props }) {
 			{...editorProps}
 			component={Editor}
 			style={{
-				paddingBottom: 57,
-				height: 200,
+				marginTop: -1,
+				height: 360,
 				lineHeight: 'initial',
 				...style,
 				...editorProps.style,

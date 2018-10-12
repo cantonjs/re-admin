@@ -23,6 +23,9 @@ export TableQuerySwitch from 'components/TableQuerySwitch';
 export TableQuery from 'components/TableQuery';
 export TableBody from 'components/TableBody';
 
+export EditorToolbar from 'components/EditorToolbar';
+export EditorButton from 'components/EditorButton';
+
 export Form from 'components/Form/Form';
 export Submit from 'components/Form/Submit';
 export Reset from 'components/Form/Reset';
