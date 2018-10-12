@@ -1,38 +1,40 @@
 import React from 'react';
-import { Table, Text, DatePicker, RangePicker, Html } from '../../src';
-import CustomEditorToolbar from '../components/CustomEditorToolbar';
-
-function insertStart() {
-	const cursorPosition = this.quill.getSelection().index;
-	this.quill.insertText(cursorPosition, '★');
-	this.quill.setSelection(cursorPosition + 1);
-}
+import {
+	Table,
+	Text,
+	DatePicker,
+	RangePicker,
+	Html,
+	EditorToolbar,
+} from '../../src';
+import CustomEditorButton from '../components/CustomEditorButton';
 
 const modules = {
-	toolbar: {
-		container: '#toolbar',
-		handlers: { insertStart },
-	},
 	clipboard: {
 		matchVisual: false,
 	},
 };
 
 const formats = [
-	'header',
-	'font',
-	'size',
-	'bold',
-	'italic',
-	'underline',
-	'strike',
+	'align',
+	'background',
 	'blockquote',
-	'list',
-	'bullet',
-	'indent',
-	'link',
-	'image',
+	'bold',
+	'code-block',
 	'color',
+	'direction',
+	'font',
+	'header',
+	'image',
+	'indent',
+	'italic',
+	'link',
+	'list',
+	'script',
+	'size',
+	'strike',
+	'underline',
+	'video',
 ];
 
 export default (
@@ -44,7 +46,11 @@ export default (
 			name="article"
 			label="Article"
 			editorProps={{
-				fragment: <CustomEditorToolbar />,
+				toolbar: (
+					<EditorToolbar>
+						<CustomEditorButton />
+					</EditorToolbar>
+				),
 				modules,
 				formats,
 				style: { height: 480 },
