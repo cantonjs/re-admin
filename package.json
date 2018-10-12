@@ -1,6 +1,6 @@
 {
   "name": "re-admin",
-  "version": "0.16.0-beta.0",
+  "version": "0.16.0-beta.1",
   "description": "Declarative UI, routes, and API for web admin client",
   "repository": "cantonjs/re-admin",
   "scripts": {
