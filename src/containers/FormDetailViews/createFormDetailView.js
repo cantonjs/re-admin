@@ -30,6 +30,8 @@ export default function createFormDetailView(title, issuer, displayName) {
 			table: PropTypes.string,
 			save: PropTypes.string,
 			title: PropTypes.node,
+			header: PropTypes.func,
+			footer: PropTypes.func,
 		};
 
 		static defaultProps = {
@@ -93,23 +95,34 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		render() {
 			const {
-				props: { store, contextStore, title },
+				props: {
+					store: currentStore,
+					contextStore,
+					title,
+					header: Header,
+					footer: Footer,
+				},
 				state: { isValid, isSubmitting, isPristine },
 				_isCreater,
 				_selectedKey,
 			} = this;
+			const store = currentStore || contextStore;
 			return (
 				<PageContainer title={title}>
 					<ModalProvider>
 						<div style={styles.container}>
-							<h1>{title}</h1>
+							{Header ? (
+								<Header title={title} store={store} />
+							) : (
+								<h1>{title}</h1>
+							)}
 
 							<FormBody
 								ref={this.formRef}
 								value={
 									_isCreater ? this._createrValue : store.getData(_selectedKey)
 								}
-								store={store || contextStore}
+								store={store}
 								onSubmit={this._handleSubmit}
 								onChange={this._handleChange}
 								onValidChange={this._handleValidChange}
@@ -125,6 +138,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 									</Submit>
 								}
 							/>
+							{Footer && <Footer store={store} />}
 						</div>
 					</ModalProvider>
 				</PageContainer>
