@@ -1,30 +1,14 @@
 import React, { Component } from 'react';
-import { Table as TableComp, Pagination } from 'antd';
+import { Table as TableComp } from 'antd';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
 import { TABLE } from 'utils/Issuers';
-import localize from 'hocs/localize';
 import withIssuer from 'hocs/withIssuer';
 import TableCell from './TableCell';
 import TableHeadCell from './TableHeadCell';
-
-const styles = {
-	footer: {
-		overflow: 'hidden',
-	},
-	total: {
-		marginTop: 28,
-		float: 'left',
-		color: '#888',
-	},
-	pagination: {
-		marginTop: 20,
-		float: 'right',
-		textAlign: 'right',
-	},
-};
+import TableFooter from './TableFooter';
 
 const components = {
 	header: { cell: TableHeadCell },
@@ -32,11 +16,9 @@ const components = {
 };
 
 @withIssuer({ issuer: TABLE })
-@localize('TableBody')
 @observer
 export default class TableBody extends Component {
 	static propTypes = {
-		localeStore: PropTypes.object.isRequired,
 		store: PropTypes.shape({
 			columns: PropTypes.array.isRequired,
 			dataSource: PropTypes.array,
@@ -62,11 +44,6 @@ export default class TableBody extends Component {
 		this.props.store.setSelectedKeys(selectedRowKeys);
 	};
 
-	_handlePageChange = (page) => {
-		const { store } = this.props;
-		store.setQuery({ ...store.query, page });
-	};
-
 	_handleChange = (pagination, filters, sorter) => {
 		const {
 			context: {
@@ -86,21 +63,16 @@ export default class TableBody extends Component {
 	};
 
 	render() {
-		const { props: { store, selectionType, localeStore } } = this;
+		const { props: { store, selectionType } } = this;
 		const {
 			columns,
 			dataSource,
 			isFetching,
-			total,
-			size,
 			selectedKeys,
 			uniqueKey,
 			maxSelections,
-			query,
 			config,
 		} = store;
-
-		const current = +query.page || 1;
 
 		const rowSelection = maxSelections ?
 			{
@@ -129,20 +101,7 @@ export default class TableBody extends Component {
 					onChange={this._handleChange}
 					size={config.viewSize}
 				/>
-
-				<div style={styles.footer}>
-					<p style={styles.total}>
-						{localeStore.data.total}: {total || 0}
-					</p>
-
-					<Pagination
-						style={styles.pagination}
-						current={current}
-						total={total}
-						onChange={this._handlePageChange}
-						defaultPageSize={size}
-					/>
-				</div>
+				<TableFooter store={store} />
 			</div>
 		);
 	}
