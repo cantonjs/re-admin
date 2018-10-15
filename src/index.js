@@ -38,3 +38,4 @@ export localize from 'hocs/localize';
 export field from 'hocs/field';
 
 export joinKeys from 'utils/joinKeys';
+export getDefaultEditorFormats from 'utils/getDefaultEditorFormats';
