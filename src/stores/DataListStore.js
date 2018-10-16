@@ -1,11 +1,11 @@
-import { action, observable, computed, toJS } from 'mobx';
+import { action, observable, computed, runInAction, toJS } from 'mobx';
 import { isUndefined, omitBy } from 'lodash';
-import ModalStore from 'stores/ModalStore';
 import BaseDataStore from 'stores/BaseDataStore';
 import parseColumn from 'utils/parseColumn';
 
 export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
+	@observable nextCursor = '';
 	@observable selectedKeys = [];
 	@observable queryFieldsCount = 0;
 
@@ -14,11 +14,14 @@ export default class DataListStore extends BaseDataStore {
 
 	@computed
 	get cacheKey() {
+		console.log('toJS(this.query)', this.query);
 		return JSON.stringify(toJS(this.query));
 	}
 
 	@computed
 	get collection() {
+		console.log('this.collections.keys()', [...this.collections.keys()]);
+
 		return this.collections.get(this.cacheKey);
 	}
 
@@ -92,6 +95,8 @@ export default class DataListStore extends BaseDataStore {
 
 		if (api) {
 			this.uniqueKey = config.uniqueKey;
+			this.useCursor = config.useCursor;
+
 			const count = +api.query.count;
 			const hasCount = !!count;
 
@@ -109,27 +114,28 @@ export default class DataListStore extends BaseDataStore {
 		}
 	}
 
+	@action
 	async fetch(options = {}) {
-		const { query, method, url, body, headers } = options;
-		const { cacheKey } = this;
+		const { query: queryOptions, method, url, body, headers } = options;
+		const { cacheKey, useCursor } = this;
 
 		if (this.collections.has(cacheKey)) return this;
 
 		this.isFetching = true;
+		const query = { count: this.size, ...queryOptions };
+		if (useCursor) {
+			if (this.nextCursor) query.cursor = this.nextCursor;
+		} else {
+			const page = (queryOptions && queryOptions.page) || 1;
+			query.page = page < 1 ? 1 : page;
+		}
 
 		const fetchOptions = {
 			method,
 			url,
 			body,
 			headers,
-			query: {
-				count: this.size,
-				...omitBy(query, ModalStore.getOmitPaths),
-				page: (function () {
-					const p = (query && query.page) || 1;
-					return p < 1 ? 1 : p;
-				})(),
-			},
+			query,
 		};
 
 		const res = await this.request({
@@ -138,7 +144,7 @@ export default class DataListStore extends BaseDataStore {
 		});
 
 		const requestRes = await this.config.mapOnFetchResponse(res);
-		const { total, list = [] } = requestRes || {};
+		const { total, list = [], nextCursor } = requestRes || {};
 
 		const collection = list.map((data, index) => {
 			data.key = this.uniqueKey ? data[this.uniqueKey] : index;
@@ -147,7 +153,11 @@ export default class DataListStore extends BaseDataStore {
 
 		this.collections.set(cacheKey, collection);
 		this.totals.set(cacheKey, total);
-		this.isFetching = false;
+
+		runInAction(() => {
+			if (useCursor) this.nextCursor = nextCursor;
+			this.isFetching = false;
+		});
 		return this;
 	}
 

@@ -22,6 +22,7 @@ TableSchema.propTypes = {
 	maxSelections: PropTypes.number,
 	extend: PropTypes.object,
 	viewSize: PropTypes.string,
+	useCursor: PropTypes.bool,
 };
 
 TableSchema.defaultProps = {
@@ -32,6 +33,7 @@ TableSchema.defaultProps = {
 	maxSelections: -1,
 	extend: {},
 	viewSize: 'middle',
+	useCursor: false,
 };
 
 TableSchema.configuration = {

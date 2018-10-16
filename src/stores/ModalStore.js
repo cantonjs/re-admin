@@ -5,6 +5,7 @@ import Emitter from 'emit-lite';
 export default class ModalStore extends Emitter {
 	static prefix = '__';
 
+	// TODO: deprecated
 	static getOmitPaths(val, key) {
 		return key.startsWith(ModalStore.prefix);
 	}

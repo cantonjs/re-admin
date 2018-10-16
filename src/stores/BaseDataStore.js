@@ -75,8 +75,9 @@ export default class BaseDataStore {
 	}
 
 	@action
-	setQuery(query) {
-		if (this.router) this.router.location.query = query;
+	setQuery(query, options = {}) {
+		const { noRouter } = options;
+		if (!noRouter && this.router) this.router.location.query = query;
 		else this.query = query;
 	}
 

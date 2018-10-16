@@ -1,24 +1,9 @@
+import styles from './styles';
 import React, { Component } from 'react';
-import { Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import localize from 'hocs/localize';
-
-const styles = {
-	footer: {
-		overflow: 'hidden',
-	},
-	total: {
-		marginTop: 28,
-		float: 'left',
-		color: '#888',
-	},
-	pagination: {
-		marginTop: 20,
-		float: 'right',
-		textAlign: 'right',
-	},
-};
+import Pagination from 'components/Pagination';
 
 @localize('TableBody')
 @observer
@@ -32,9 +17,13 @@ export default class TableFooter extends Component {
 		}),
 	};
 
-	_handlePageChange = (page) => {
+	_handlePageChange = (parameter) => {
 		const { store } = this.props;
-		store.setQuery({ ...store.query, page });
+		const { useCursor } = store;
+		const query = { ...store.query };
+		if (useCursor) query.cursor = parameter;
+		else query.page = parameter;
+		store.setQuery(query, { noRouter: useCursor });
 	};
 
 	render() {
@@ -46,12 +35,12 @@ export default class TableFooter extends Component {
 				<p style={styles.total}>
 					{localeStore.data.total}: {total || 0}
 				</p>
-
 				<Pagination
 					style={styles.pagination}
 					current={current}
 					total={total}
 					pageSize={size}
+					store={store}
 					onChange={this._handlePageChange}
 				/>
 			</div>
