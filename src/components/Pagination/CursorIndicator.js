@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { observable, computed, action } from 'mobx';
 import { observer } from 'mobx-react';
 
 @observer
@@ -16,42 +15,31 @@ export default class CursorIndicator extends Component {
 		className: '',
 	};
 
-	@observable cursors = [null];
-	@observable cursorIndex = 0;
-
-	@computed
-	get cursor() {
-		return this.cursors[this.cursorIndex];
-	}
-
-	@computed
-	get prevCursor() {
-		return this.cursors[this.cursorIndex - 1];
-	}
-
 	_handleClickPrev = () => {
-		const { props: { onChange, store: { isFetching } }, prevCursor } = this;
+		const { props: { onChange, store } } = this;
+		const { isFetching, prevCursor } = store;
 		if (!isFetching && prevCursor !== undefined && onChange) {
-			this.cursorIndex--;
-			this.cursors.pop();
 			onChange(prevCursor);
+			store.decreaseCursorIndex();
 		}
 	};
 
-	@action
 	_handleClickNext = () => {
-		const { props: { onChange, store: { nextCursor, isFetching } } } = this;
+		const { props: { onChange, store } } = this;
+		const { isFetching, nextCursor } = store;
 		if (!isFetching && nextCursor && onChange) {
-			this.cursorIndex++;
-			this.cursors.push(nextCursor);
 			onChange(nextCursor);
+			store.increaseCursorIndex();
 		}
 	};
 
 	render() {
 		const {
-			props: { style, className, store: { nextCursor, isFetching } },
-			prevCursor,
+			props: {
+				style,
+				className,
+				store: { prevCursor, nextCursor, isFetching },
+			},
 		} = this;
 		const prevClassName =
 			prevCursor !== undefined && !isFetching ? '' : 'ant-pagination-disabled';

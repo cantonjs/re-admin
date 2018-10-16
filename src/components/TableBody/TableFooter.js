@@ -21,8 +21,12 @@ export default class TableFooter extends Component {
 		const { store } = this.props;
 		const { useCursor } = store;
 		const query = { ...store.query };
-		if (useCursor) query.cursor = parameter;
-		else query.page = parameter;
+		if (useCursor) {
+			if (parameter) query.cursor = parameter;
+			else delete query.cursor;
+		} else {
+			query.page = parameter;
+		}
 		store.setQuery(query, { noRouter: useCursor });
 	};
 

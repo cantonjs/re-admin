@@ -5,9 +5,11 @@ import parseColumn from 'utils/parseColumn';
 
 export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
-	@observable nextCursor = '';
 	@observable selectedKeys = [];
 	@observable queryFieldsCount = 0;
+
+	@observable cursors = [null];
+	@observable cursorIndex = 0;
 
 	collections = observable.map();
 	totals = observable.map();
@@ -63,6 +65,19 @@ export default class DataListStore extends BaseDataStore {
 			}
 			return column;
 		});
+	}
+
+	@computed
+	get prevCursor() {
+		const prevIndex = this.cursorIndex - 1;
+		return prevIndex < 0 ? undefined : this.cursors[prevIndex];
+	}
+
+	@computed
+	get nextCursor() {
+		const { cursors, cursorIndex } = this;
+		const nextIndex = cursorIndex + 1;
+		return nextIndex >= cursors.length ? undefined : cursors[nextIndex];
 	}
 
 	get maxSelections() {
@@ -148,7 +163,7 @@ export default class DataListStore extends BaseDataStore {
 		this.totals.set(cacheKey, total);
 
 		runInAction(() => {
-			if (useCursor) this.nextCursor = nextCursor;
+			if (useCursor) this.cursors.push(nextCursor);
 			this.isFetching = false;
 		});
 		return this;
@@ -158,13 +173,30 @@ export default class DataListStore extends BaseDataStore {
 	refresh() {
 		this.collections.clear();
 		this.totals.clear();
+		this.resetCursors();
 		this.fetch({ query: this.query });
 		this.selectedKeys = [];
 	}
 
 	@action
+	decreaseCursorIndex() {
+		return --this.cursorIndex;
+	}
+
+	@action
+	increaseCursorIndex() {
+		return ++this.cursorIndex;
+	}
+
+	@action
 	increaseQueryFieldsCount() {
 		this.queryFieldsCount++;
+	}
+
+	@action
+	resetCursors() {
+		this.cursors = [null];
+		this.cursorIndex = 0;
 	}
 
 	@action
