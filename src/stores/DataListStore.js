@@ -173,7 +173,6 @@ export default class DataListStore extends BaseDataStore {
 	refresh() {
 		this.collections.clear();
 		this.totals.clear();
-		this.resetCursors();
 		this.fetch({ query: this.query });
 		this.selectedKeys = [];
 	}
@@ -194,9 +193,23 @@ export default class DataListStore extends BaseDataStore {
 	}
 
 	@action
-	resetCursors() {
-		this.cursors = [null];
-		this.cursorIndex = 0;
+	setQuery(query) {
+		if (this.useCursor) {
+			this.cursorIndex = 0;
+			this.cursors = [null];
+			if (query.cursor) delete query.cursor;
+			this.query = query;
+		} else {
+			super.setQuery(query);
+		}
+	}
+
+	@action
+	setQueryWithCursor(query) {
+		if (!query.cursor && query.hasOwnProperty('cursor')) {
+			delete query.cursor;
+		}
+		this.query = query;
 	}
 
 	@action

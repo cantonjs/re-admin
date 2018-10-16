@@ -36,6 +36,7 @@ export default function withTable(options = {}) {
 					this._disposer = store.observeQuery(({ newValue }) => {
 						store.fetch({ query: newValue });
 					});
+					// FIXME: should fix when routes changed
 					if (syncLocation) store.query = routerStore.location.query;
 				}
 			}
