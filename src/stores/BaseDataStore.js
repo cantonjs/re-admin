@@ -115,7 +115,6 @@ export default class BaseDataStore {
 
 	async fetch(options = {}) {
 		await this.request({
-			requestFn: 'fetch',
 			errorTitle: locale.data.fetchFailed,
 			...options,
 			refresh: false,
