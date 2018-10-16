@@ -92,6 +92,22 @@ router
 		testDB = testDB.filter((data) => !keysArr.includes(data.id));
 		ctx.body = { ok: true };
 	})
+	.get('/api/article', verify, async (ctx) => {
+		const { cursor, count } = ctx.request.query;
+		const size = +count;
+		const index = cursor ? testDB.findIndex((item) => item.id === cursor) : 0;
+		if (index < 0) {
+			ctx.body = { list: [], nextCursor: null };
+		} else {
+			const nextCursorIndex = index + size;
+			const nextCursor =
+				nextCursorIndex >= testDB.length ? null : testDB[nextCursorIndex].id;
+			ctx.body = {
+				list: testDB.slice(index, index + size),
+				nextCursor,
+			};
+		}
+	})
 	.get('/api/bar', verify, async (ctx) => {
 		const { page, count, id } = ctx.request.query;
 		const start = (page - 1) * +count;

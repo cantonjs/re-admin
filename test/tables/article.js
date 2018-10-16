@@ -16,7 +16,7 @@ const modules = {
 };
 
 export default (
-	<Table name="article" api={{ pathname: 'test' }}>
+	<Table name="article" useCursor>
 		<Text name="id" label="ID" placeholder="ID" disabled unique inQuery />
 
 		<Text name="desc" label="Title" inTable inForm />
