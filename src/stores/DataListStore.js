@@ -1,4 +1,4 @@
-import { action, observable, computed, runInAction, toJS } from 'mobx';
+import { action, observable, computed, runInAction } from 'mobx';
 import { isUndefined, omitBy } from 'lodash';
 import BaseDataStore from 'stores/BaseDataStore';
 import parseColumn from 'utils/parseColumn';
@@ -13,26 +13,14 @@ export default class DataListStore extends BaseDataStore {
 	totals = observable.map();
 
 	@computed
-	get cacheKey() {
-		console.log('toJS(this.query)', this.query);
-		return JSON.stringify(toJS(this.query));
-	}
-
-	@computed
 	get collection() {
-		console.log('this.collections.keys()', [...this.collections.keys()]);
-
-		return this.collections.get(this.cacheKey);
+		const { cacheKey } = this;
+		return this.collections.get(cacheKey);
 	}
 
 	@computed
 	get total() {
 		return this.totals.get(this.cacheKey) || 0;
-	}
-
-	@computed
-	get dataSource() {
-		return toJS(this.collection);
 	}
 
 	@computed
@@ -119,12 +107,17 @@ export default class DataListStore extends BaseDataStore {
 		const { query: queryOptions, method, url, body, headers } = options;
 		const { cacheKey, useCursor } = this;
 
-		if (this.collections.has(cacheKey)) return this;
+		if (
+			this.collections.has(cacheKey) &&
+			this.collections.get(cacheKey).length
+		) {
+			return this;
+		}
 
 		this.isFetching = true;
 		const query = { count: this.size, ...queryOptions };
 		if (useCursor) {
-			if (this.nextCursor) query.cursor = this.nextCursor;
+			if (query.cursor === null) delete query.cursor;
 		} else {
 			const page = (queryOptions && queryOptions.page) || 1;
 			query.page = page < 1 ? 1 : page;

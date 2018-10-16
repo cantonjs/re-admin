@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table as TableComp } from 'antd';
-import PropTypes from 'prop-types';
+import PropTypes from 'utils/PropTypes';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
@@ -20,7 +21,7 @@ export default class TableView extends Component {
 	static propTypes = {
 		store: PropTypes.shape({
 			columns: PropTypes.array.isRequired,
-			dataSource: PropTypes.array,
+			collection: PropTypes.array,
 			isFetching: PropTypes.bool.isRequired,
 			total: PropTypes.number.isRequired,
 			size: PropTypes.number.isRequired,
@@ -65,7 +66,7 @@ export default class TableView extends Component {
 		const { props: { store, selectionType } } = this;
 		const {
 			columns,
-			dataSource,
+			collection,
 			isFetching,
 			selectedKeys,
 			uniqueKey,
@@ -91,7 +92,7 @@ export default class TableView extends Component {
 			<TableComp
 				rowSelection={rowSelection}
 				columns={columns}
-				dataSource={dataSource}
+				dataSource={toJS(collection)}
 				loading={isFetching}
 				pagination={false}
 				components={components}

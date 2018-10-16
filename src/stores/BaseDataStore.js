@@ -1,4 +1,4 @@
-import { computed, observable, action, observe } from 'mobx';
+import { computed, observable, action, runInAction, observe } from 'mobx';
 import { isFunction, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
 import LocaleStores from 'stores/LocaleStores';
@@ -9,6 +9,12 @@ const locale = LocaleStores.ensure('requests');
 
 export default class BaseDataStore {
 	@observable query = {};
+	@observable _memoryQuery = {};
+
+	@computed
+	get cacheKey() {
+		return JSON.stringify(this.query);
+	}
 
 	@computed
 	get config() {
@@ -39,11 +45,14 @@ export default class BaseDataStore {
 		if (router) {
 			const { location } = router;
 			this.router = router;
-			this.query = location.query;
 			this._queryDisposer = observe(location, 'query', ({ newValue }) => {
-				this.query = newValue;
+				runInAction(() => (this.query = newValue));
 			});
 		}
+
+		this._queryDisposer = observe(this, '_memoryQuery', ({ newValue }) => {
+			runInAction(() => (this.query = newValue));
+		});
 
 		const { extend, api } = this.config;
 		const { accessTokenLocation, accessTokenName } = appConfig.api;
@@ -78,7 +87,7 @@ export default class BaseDataStore {
 	setQuery(query, options = {}) {
 		const { noRouter } = options;
 		if (!noRouter && this.router) this.router.location.query = query;
-		else this.query = query;
+		else this._memoryQuery = query;
 	}
 
 	observeQuery(handler) {
