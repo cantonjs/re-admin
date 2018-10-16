@@ -22,7 +22,7 @@ export default class DataListStore extends BaseDataStore {
 
 	@computed
 	get total() {
-		return this.totals.get(this.cacheKey) || 0;
+		return this.totals.get(this.cacheKey);
 	}
 
 	@computed
@@ -160,7 +160,7 @@ export default class DataListStore extends BaseDataStore {
 		});
 
 		this.collections.set(cacheKey, collection);
-		this.totals.set(cacheKey, total);
+		if (!isUndefined(total)) this.totals.set(cacheKey, total);
 
 		runInAction(() => {
 			if (useCursor) this.cursors.push(nextCursor);

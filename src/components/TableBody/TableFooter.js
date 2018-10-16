@@ -11,7 +11,7 @@ export default class TableFooter extends Component {
 	static propTypes = {
 		localeStore: PropTypes.object.isRequired,
 		store: PropTypes.shape({
-			total: PropTypes.number.isRequired,
+			total: PropTypes.number,
 			size: PropTypes.number.isRequired,
 			query: PropTypes.object.isRequired,
 		}),
@@ -36,9 +36,11 @@ export default class TableFooter extends Component {
 		const current = +query.page || 1;
 		return (
 			<div style={styles.footer}>
-				<p style={styles.total}>
-					{localeStore.data.total}: {total || 0}
-				</p>
+				{(total || total === 0) && (
+					<p style={styles.total}>
+						{localeStore.data.total}: {total}
+					</p>
+				)}
 				<Pagination
 					style={styles.pagination}
 					current={current}

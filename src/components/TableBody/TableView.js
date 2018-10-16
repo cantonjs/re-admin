@@ -23,7 +23,6 @@ export default class TableView extends Component {
 			columns: PropTypes.array.isRequired,
 			collection: PropTypes.array,
 			isFetching: PropTypes.bool.isRequired,
-			total: PropTypes.number.isRequired,
 			size: PropTypes.number.isRequired,
 			setSelectedKeys: PropTypes.func.isRequired,
 			query: PropTypes.object.isRequired,
