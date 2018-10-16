@@ -9,7 +9,6 @@ const locale = LocaleStores.ensure('requests');
 
 export default class BaseDataStore {
 	@observable query = {};
-	@observable _memoryQuery = {};
 
 	@computed
 	get cacheKey() {
@@ -50,10 +49,6 @@ export default class BaseDataStore {
 			});
 		}
 
-		this._queryDisposer = observe(this, '_memoryQuery', ({ newValue }) => {
-			runInAction(() => (this.query = newValue));
-		});
-
 		const { extend, api } = this.config;
 		const { accessTokenLocation, accessTokenName } = appConfig.api;
 		const fetchAuthTransformerName =
@@ -87,7 +82,7 @@ export default class BaseDataStore {
 	setQuery(query, options = {}) {
 		const { noRouter } = options;
 		if (!noRouter && this.router) this.router.location.query = query;
-		else this._memoryQuery = query;
+		else this.query = query;
 	}
 
 	observeQuery(handler) {
