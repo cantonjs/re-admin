@@ -170,6 +170,13 @@ export default class DataListStore extends BaseDataStore {
 	}
 
 	@action
+	clearCollections() {
+		this.collections.clear();
+		this.totals.clear();
+		this.selectedKeys = [];
+	}
+
+	@action
 	refresh() {
 		this.collections.clear();
 		this.totals.clear();
