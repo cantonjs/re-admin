@@ -108,6 +108,22 @@ router
 			};
 		}
 	})
+	.put('/api/article/:keys', verify, async (ctx) => {
+		const { request: { body }, params: { keys } } = ctx;
+		const keysArr = keys.split(',');
+		for (const data of testDB) {
+			if (keysArr.includes(data.id)) {
+				Object.assign(data, body, { id: data.id });
+			}
+		}
+		ctx.body = { ok: true };
+	})
+	.delete('/api/article/:keys', verify, async (ctx) => {
+		const { keys } = ctx.params;
+		const keysArr = keys.split(',');
+		testDB = testDB.filter((data) => !keysArr.includes(data.id));
+		ctx.body = { ok: true };
+	})
 	.get('/api/bar', verify, async (ctx) => {
 		const { page, count, id } = ctx.request.query;
 		const start = (page - 1) * +count;
