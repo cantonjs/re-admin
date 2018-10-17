@@ -9,10 +9,12 @@ function HtmlField({ style, editorProps, ...props }) {
 			{...props}
 			{...editorProps}
 			component={Editor}
+			containerStyle={{
+				lineHeight: 'initial',
+			}}
 			style={{
 				marginTop: -1,
 				height: 360,
-				lineHeight: 'initial',
 				...style,
 				...editorProps.style,
 			}}

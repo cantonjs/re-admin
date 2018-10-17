@@ -10,6 +10,8 @@ const formats = getDefaultEditorFormats();
 
 class QuillEditorEnhancer extends Component {
 	static propTypes = {
+		containerStyle: PropTypes.object,
+		containerClassName: PropTypes.string,
 		toolbar: PropTypes.node,
 		modules: PropTypes.object,
 		formats: PropTypes.array,
@@ -43,13 +45,20 @@ class QuillEditorEnhancer extends Component {
 
 	render() {
 		const {
-			props: { toolbar, innerRef, formats, ...other },
+			props: {
+				containerClassName,
+				containerStyle,
+				toolbar,
+				innerRef,
+				formats,
+				...other
+			},
 			modules,
 			editorContext,
 		} = this;
 		return (
 			<EditorContext.Provider value={editorContext}>
-				<div>
+				<div className={containerClassName} style={containerStyle}>
 					{toolbar}
 					<Quill
 						{...other}
