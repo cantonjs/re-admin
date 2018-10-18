@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Table as TableComp } from 'antd';
 import PropTypes from 'utils/PropTypes';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -7,6 +6,8 @@ import { isEmpty } from 'lodash';
 import clearSortedInfo from 'utils/clearSortedInfo';
 import { TABLE } from 'utils/Issuers';
 import withIssuer from 'hocs/withIssuer';
+import TableContext from './TableContext';
+import { Table as AntdTable } from 'antd';
 import TableCell from './TableCell';
 import TableHeadCell from './TableHeadCell';
 
@@ -25,6 +26,7 @@ export default class TableView extends Component {
 			isFetching: PropTypes.bool.isRequired,
 			size: PropTypes.number.isRequired,
 			setSelectedKeys: PropTypes.func.isRequired,
+			toggleSelectedKey: PropTypes.func.isRequired,
 			query: PropTypes.object.isRequired,
 			config: PropTypes.object.isRequired,
 		}),
@@ -37,6 +39,18 @@ export default class TableView extends Component {
 
 	static contextTypes = {
 		appConfig: PropTypes.object.isRequired,
+	};
+
+	constructor(props) {
+		super(props);
+
+		this.tableContext = { toggleSelectedKey: this._toggleSelectedKey };
+	}
+
+	_toggleSelectedKey = (selectedRowKey) => {
+		if (this.props.selectionType === 'radio') {
+			this.props.store.toggleSelectedKey(selectedRowKey);
+		}
 	};
 
 	_handleSelectChange = (selectedRowKeys) => {
@@ -88,16 +102,18 @@ export default class TableView extends Component {
 			undefined;
 
 		return (
-			<TableComp
-				rowSelection={rowSelection}
-				columns={columns}
-				dataSource={toJS(collection)}
-				loading={isFetching}
-				pagination={false}
-				components={components}
-				onChange={this._handleChange}
-				size={config.viewSize}
-			/>
+			<TableContext.Provider value={this.tableContext}>
+				<AntdTable
+					rowSelection={rowSelection}
+					columns={columns}
+					dataSource={toJS(collection)}
+					loading={isFetching}
+					pagination={false}
+					components={components}
+					onChange={this._handleChange}
+					size={config.viewSize}
+				/>
+			</TableContext.Provider>
 		);
 	}
 }

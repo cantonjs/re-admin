@@ -224,10 +224,21 @@ export default class DataListStore extends BaseDataStore {
 		this.queryFieldsCount--;
 	}
 
+	@action
 	setSelectedKeys(selectedKeys = []) {
 		this.selectedKeys = selectedKeys;
 	}
 
+	@action
+	toggleSelectedKey(key) {
+		if (this.selectedKeys.length && this.selectedKeys[0] === key) {
+			this.selectedKeys = [];
+		} else {
+			this.selectedKeys = [key];
+		}
+	}
+
+	@action
 	clearSelectedKeys() {
 		this.selectedKeys = [];
 	}
