@@ -44,6 +44,8 @@ export default class ImageField extends Component {
 
 	static resizeMode = resizeMode;
 
+	static BLANK_IMAGE = ImageTableCell.BLANK_IMAGE;
+
 	static renderTable(props, { text }) {
 		return <ImageTableCell {...props} url={text} />;
 	}

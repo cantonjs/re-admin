@@ -10,6 +10,9 @@ export default (
 				console.log(requestOptions);
 				return requestOptions.refStore.getData().desc;
 			},
+			getAvatar({ refStore }) {
+				return refStore.getData().avatar;
+			},
 		}}
 	>
 		<Text

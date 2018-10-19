@@ -26,6 +26,7 @@ class RefSelector extends Component {
 		label: PropTypes.node,
 		width: PropTypes.stringOrNumber,
 		modalStore: PropTypes.object.isRequired,
+		render: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -52,6 +53,7 @@ class RefSelector extends Component {
 				onChange,
 				modalStore,
 				save,
+				render,
 				...other
 			},
 		} = this;
@@ -90,7 +92,20 @@ class RefSelector extends Component {
 		this.props.onChange(value);
 	};
 
-	render() {
+	_render() {
+		const { props: { render, style, ...props }, state: { value } } = this;
+		return (
+			<a
+				onClick={this._handleClick}
+				href="#"
+				style={{ ...styles.button, ...style }}
+			>
+				{render(value, props)}
+			</a>
+		);
+	}
+
+	_renderInput() {
 		const {
 			props: { placeholder, style, onKeyPress },
 			state: { value },
@@ -115,6 +130,11 @@ class RefSelector extends Component {
 				}
 			/>
 		);
+	}
+
+	render() {
+		const { render } = this.props;
+		return render ? this._render() : this._renderInput();
 	}
 }
 

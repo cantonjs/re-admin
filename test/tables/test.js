@@ -46,6 +46,23 @@ export default (
 			inQuery
 		/>
 
+		<Ref
+			name="refImage"
+			table="bar"
+			placeholder="Ref Image"
+			label="Reference Image"
+			save="getAvatar"
+			noQuery
+			render={(src) => (
+				<img
+					src={src || Image.BLANK_IMAGE}
+					style={{ width: 104, height: 104, border: '1px solid #f4f4f4' }}
+				/>
+			)}
+			inForm
+			inQuery
+		/>
+
 		<DatePicker
 			name="createdAt"
 			format="date"

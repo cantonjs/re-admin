@@ -5,7 +5,7 @@ import { Modal } from 'antd';
 import resizeMode from './resizeMode';
 import { returnsArgument } from 'empty-functions';
 
-const defaultBlankImage =
+const BLANK_IMAGE =
 	'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 export default class ImageTableCell extends Component {
@@ -17,8 +17,10 @@ export default class ImageTableCell extends Component {
 		thumbStyle: PropTypes.object,
 	};
 
+	static BLANK_IMAGE = BLANK_IMAGE;
+
 	static defaultProps = {
-		url: defaultBlankImage,
+		url: BLANK_IMAGE,
 		thumbWidth: 64,
 		thumbHeight: 64,
 		resizeMode: 'fill',
