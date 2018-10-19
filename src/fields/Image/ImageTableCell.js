@@ -1,10 +1,12 @@
-
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { Modal } from 'antd';
 import resizeMode from './resizeMode';
 import { returnsArgument } from 'empty-functions';
+
+const defaultBlankImage =
+	'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 export default class ImageTableCell extends Component {
 	static propTypes = {
@@ -16,6 +18,7 @@ export default class ImageTableCell extends Component {
 	};
 
 	static defaultProps = {
+		url: defaultBlankImage,
 		thumbWidth: 64,
 		thumbHeight: 64,
 		resizeMode: 'fill',

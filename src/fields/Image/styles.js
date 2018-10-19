@@ -26,6 +26,6 @@ export default {
 		width: '100%',
 	},
 	thumb: {
-		backgroundColor: '#eee',
+		boxShadow: '0 0 0 1px #eee',
 	},
 };
