@@ -8,6 +8,7 @@ export default (
 		extend={{
 			customMethod(requestOptions) {
 				console.log(requestOptions);
+				return requestOptions.refStore.getData().desc;
 			},
 		}}
 	>

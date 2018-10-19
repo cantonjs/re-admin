@@ -1,4 +1,3 @@
-
 export default {
 	container: {
 		minHeight: 104,

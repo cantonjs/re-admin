@@ -41,6 +41,7 @@ export default (
 			placeholder="reference"
 			label="Reference"
 			noQuery
+			save="customMethod"
 			inForm
 			inQuery
 		/>
@@ -55,7 +56,7 @@ export default (
 			inForm
 		/>
 
-		<Image name="avatar" label="Avatar" width={60} inTable inForm />
+		<Image name="avatar" label="Avatar" inTable inForm />
 
 		<Text
 			name="desc"
@@ -106,7 +107,7 @@ export default (
 			inForm
 		/>
 
-		<Uploader name="file" label="File" inForm />
+		{/* <Uploader name="file" label="File" inForm /> */}
 
 		<Select name="fav" label="Favs" inForm value="2">
 			<Option value="1">Eating</Option>

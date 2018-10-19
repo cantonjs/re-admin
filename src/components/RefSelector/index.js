@@ -2,6 +2,8 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import styles from './styles';
+import { isFunction } from 'lodash';
+import joinKeys from 'utils/joinKeys';
 import { observer } from 'mobx-react';
 import { REF } from 'constants/Actions';
 import withModalStore from 'hocs/withModalStore';
@@ -42,18 +44,40 @@ class RefSelector extends Component {
 
 	_handleClick = (ev) => {
 		const {
-			placeholder,
-			style,
-			onKeyPress,
-			onChange,
-			modalStore,
-			...other
-		} = this.props;
+			props,
+			props: {
+				placeholder,
+				style,
+				onKeyPress,
+				onChange,
+				modalStore,
+				save,
+				...other
+			},
+		} = this;
 		ev.preventDefault();
 		modalStore.open({
 			keys: '',
-			save({ refKeys, refStore }) {
-				onChange(refKeys[0], refStore);
+			async save({ refKeys, refStore }) {
+				let val;
+				if (save) {
+					const { pathname } = refStore;
+					const url = joinKeys(refKeys) + `/${pathname}/` + joinKeys(refKeys);
+					const options = {
+						method: 'POST',
+						url,
+						...props,
+						keys: '',
+						refKeys,
+						refStore,
+					};
+					val = await (isFunction(save) ?
+						save(options) :
+						refStore.call(save, options));
+				} else {
+					val = refKeys[0];
+				}
+				onChange(val, refStore);
 			},
 			...other,
 			name: REF,
