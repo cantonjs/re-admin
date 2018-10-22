@@ -245,7 +245,7 @@ export default class DataListStore extends BaseDataStore {
 
 	getData(key) {
 		const { collection, uniqueKey, selectedKeys } = this;
-		if (isUndefined(key)) {
+		if (isUndefined(key) && selectedKeys.length) {
 			key = selectedKeys[0];
 		}
 		if (isUndefined(key) || !collection) {
