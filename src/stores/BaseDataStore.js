@@ -9,6 +9,7 @@ const locale = LocaleStores.ensure('requests');
 
 export default class BaseDataStore {
 	@observable query = {};
+	@observable selectedKeys = [];
 
 	@computed
 	get cacheKey() {
@@ -25,6 +26,10 @@ export default class BaseDataStore {
 			...table,
 			...this._customConfig,
 		};
+	}
+
+	get renderers() {
+		return this.config.renderers;
 	}
 
 	constructor(options = {}) {

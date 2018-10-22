@@ -5,7 +5,6 @@ import parseColumn from 'utils/parseColumn';
 
 export default class DataListStore extends BaseDataStore {
 	@observable isFetching = false;
-	@observable selectedKeys = [];
 	@observable queryFieldsCount = 0;
 
 	@observable cursors = [null];
@@ -82,10 +81,6 @@ export default class DataListStore extends BaseDataStore {
 
 	get maxSelections() {
 		return this.config.maxSelections;
-	}
-
-	get renderers() {
-		return this.config.renderers;
 	}
 
 	constructor(options) {

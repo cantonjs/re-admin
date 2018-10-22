@@ -6,11 +6,15 @@ import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 
 export default function withTable(options = {}) {
-	const { syncLocation, useCache } = options;
+	const { syncLocation, useCache, type } = options;
 
 	return function createWithTableComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
-		@withStoreProvider({ useCache, router: syncLocation ? routerStore : null })
+		@withStoreProvider({
+			useCache,
+			router: syncLocation ? routerStore : null,
+			type,
+		})
 		@observer
 		class WithTable extends Component {
 			static propTypes = {

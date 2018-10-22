@@ -28,7 +28,6 @@ export default class DataTableView extends Component {
 
 	constructor(props) {
 		super(props);
-
 		props.store.clearCollections();
 	}
 

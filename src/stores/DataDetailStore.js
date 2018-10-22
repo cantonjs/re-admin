@@ -1,6 +1,7 @@
-import { observable, computed, toJS } from 'mobx';
+import { observable, computed, action, runInAction, toJS } from 'mobx';
 import { omitBy, isUndefined } from 'lodash';
 import BaseDataStore from 'stores/BaseDataStore';
+import joinKeys from 'utils/joinKeys';
 
 export default class DataDetailStore extends BaseDataStore {
 	@observable isFetching = false;
@@ -16,10 +17,18 @@ export default class DataDetailStore extends BaseDataStore {
 		return this.cache.get(this.cacheKey);
 	}
 
+	@action
 	async fetch(options = {}) {
-		const { query = {}, method, url, body, headers } = options;
+		const {
+			query = {},
+			method,
+			url = joinKeys(this.selectedKeys),
+			body,
+			headers,
+		} = options;
 
-		if (this.cache.has(url)) {
+		const { cacheKey } = this;
+		if (this.cache.has(cacheKey)) {
 			return this;
 		}
 
@@ -34,14 +43,25 @@ export default class DataDetailStore extends BaseDataStore {
 		};
 		const res = await this.request(omitBy(fetchOptions, isUndefined));
 		const data = await this.config.mapOnFetchOneResponse(res);
-		this.cache.set(url, data);
-
-		this.isFetching = false;
+		runInAction(() => {
+			this.cache.set(cacheKey, data);
+			this.isFetching = false;
+		});
 		return this;
 	}
 
+	@action
+	setSelectedKeys(keys) {
+		this.selectedKeys = keys;
+	}
+
+	@action
 	refresh() {
 		this.cache.clear();
 		this.fetch();
+	}
+
+	getData() {
+		return this.data;
 	}
 }
