@@ -18,6 +18,7 @@ import {
 	RemoveButton,
 	UpdateButton,
 	RefButton,
+	Toolbar,
 } from '../../src';
 
 export default (
@@ -53,6 +54,7 @@ export default (
 			label="Reference Image"
 			save="getAvatar"
 			noQuery
+			toolbar={<Toolbar left={<CreateButton />} />}
 			render={(src) => (
 				<img
 					src={src || Image.BLANK_IMAGE}
@@ -60,7 +62,6 @@ export default (
 				/>
 			)}
 			inForm
-			inQuery
 		/>
 
 		<DatePicker
@@ -124,7 +125,7 @@ export default (
 			inForm
 		/>
 
-		{/* <Uploader name="file" label="File" inForm /> */}
+		<Uploader name="file" label="File" inForm />
 
 		<Select name="fav" label="Favs" inForm value="2">
 			<Option value="1">Eating</Option>
@@ -156,7 +157,7 @@ export default (
 			<CreateButton table="bar" label="Create Bar" />
 			<RemoveButton />
 			<UpdateButton names={['name', 'avatar']} />
-			<RefButton table="bar" noQuery save="customMethod" />
+			<RefButton table="bar" noQuery save="customMethod" toolbar />
 		</Actions>
 	</Table>
 );

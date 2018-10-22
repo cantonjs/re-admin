@@ -9,6 +9,7 @@ import withStore from 'hocs/withStore';
 import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
+import DefaultToolbar from 'components/DefaultToolbar';
 
 @withTable()
 @withStore({ prop: 'contextStore' })
@@ -26,6 +27,7 @@ export default class RefModal extends Component {
 		width: PropTypes.stringOrNumber,
 		header: PropTypes.component,
 		footer: PropTypes.component,
+		toolbar: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
 		modalFooter: PropTypes.component,
 	};
 
@@ -35,6 +37,7 @@ export default class RefModal extends Component {
 		noQuery: false,
 		title: 'Reference',
 		width: 800,
+		toolbar: false,
 	};
 
 	constructor(props, context) {
@@ -55,6 +58,12 @@ export default class RefModal extends Component {
 		isFunction(save) ? save(options) : contextStore.call(save, options);
 	};
 
+	_renderToolbar() {
+		const { toolbar } = this.props;
+		if (!toolbar) return null;
+		return toolbar === true ? <DefaultToolbar /> : toolbar;
+	}
+
 	render() {
 		const {
 			noQuery,
@@ -74,6 +83,7 @@ export default class RefModal extends Component {
 			>
 				{Header && <Header store={store} />}
 				{!noQuery && <TableQuery store={store} />}
+				{this._renderToolbar()}
 				<TableBody store={store} selectionType="radio" />
 				{Footer && <Footer store={store} />}
 			</ModalConsumer>

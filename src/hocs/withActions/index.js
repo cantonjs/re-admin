@@ -83,14 +83,13 @@ export default function withActions(WrappedComponent) {
 
 		openRefModal = (params = {}, options) => {
 			const {
-				table,
-				title,
 				noQuery,
 				fetch = 'fetch',
 				save = 'request',
 				width = 880,
+				...other
 			} = params;
-			const config = { table, title, fetch, save, width };
+			const config = { fetch, save, width, ...other };
 			if (noQuery) config.noQuery = '✓';
 			this.open(REF, config, options);
 		};
