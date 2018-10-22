@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CREATER } from 'utils/Issuers';
 import hoist, { extractRef } from 'hocs/hoist';
 import { withStoreProvider } from 'hocs/withStore';
+import withIssuer from 'hocs/withIssuer';
 import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
 
@@ -9,6 +11,7 @@ export default function withTable(options = {}) {
 	const { syncLocation, useCache, type } = options;
 
 	return function createWithTableComponent(WrappedComponent) {
+		@withIssuer()
 		@hoist(WrappedComponent)
 		@withStoreProvider({
 			useCache,
@@ -20,6 +23,7 @@ export default function withTable(options = {}) {
 			static propTypes = {
 				table: PropTypes.string,
 				store: PropTypes.object,
+				issuers: PropTypes.instanceOf(Set).isRequired,
 			};
 
 			// DEPRECATED
@@ -35,10 +39,12 @@ export default function withTable(options = {}) {
 			}
 
 			componentDidMount() {
-				const { table, store } = this.props;
+				const { table, store, issuers } = this.props;
 				if (table && store) {
 					this._disposer = store.observeQuery(({ newValue }) => {
-						store.fetch({ query: newValue });
+						if (!issuers.has(CREATER)) {
+							store.fetch({ query: newValue });
+						}
 					});
 					if (syncLocation) store.query = routerStore.location.query;
 				}

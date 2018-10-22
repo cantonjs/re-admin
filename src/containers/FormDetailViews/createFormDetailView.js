@@ -16,9 +16,9 @@ import ModalProvider from 'components/ModalProvider';
 import PageContainer from 'components/PageContainer';
 
 export default function createFormDetailView(title, issuer, displayName) {
+	@withIssuer({ issuer })
 	@withTable({ syncLocation: true, type: 'detail' })
 	@withStore({ prop: 'contextStore' })
-	@withIssuer({ issuer })
 	@observer
 	class FormDetailView extends Component {
 		static displayName = displayName;
@@ -52,9 +52,9 @@ export default function createFormDetailView(title, issuer, displayName) {
 			const { store: currentStore, contextStore } = props;
 			const store = currentStore || contextStore;
 			const selectedKeys = (props.computedMatch.params.key || '').split(',');
-			store.setSelectedKeys(selectedKeys);
 			this._isCreater = issuer === CREATER;
 			if (this._isCreater) this._createrValue = {};
+			else store.setSelectedKeys(selectedKeys);
 		}
 
 		_handleChange = () => {
