@@ -49,8 +49,10 @@ export default function createFormDetailView(title, issuer, displayName) {
 		constructor(props) {
 			super(props);
 
+			const { store: currentStore, contextStore } = props;
+			const store = currentStore || contextStore;
 			const selectedKeys = (props.computedMatch.params.key || '').split(',');
-			this._selectedKey = selectedKeys[0];
+			store.setSelectedKeys(selectedKeys);
 			this._isCreater = issuer === CREATER;
 			if (this._isCreater) this._createrValue = {};
 		}
@@ -104,7 +106,6 @@ export default function createFormDetailView(title, issuer, displayName) {
 				},
 				state: { isValid, isSubmitting, isPristine },
 				_isCreater,
-				_selectedKey,
 			} = this;
 			const store = currentStore || contextStore;
 			return (
@@ -119,9 +120,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 							<FormBody
 								ref={this.formRef}
-								value={
-									_isCreater ? this._createrValue : store.getData(_selectedKey)
-								}
+								value={_isCreater ? this._createrValue : store.getData()}
 								store={store}
 								onSubmit={this._handleSubmit}
 								onChange={this._handleChange}
