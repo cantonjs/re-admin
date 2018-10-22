@@ -57,6 +57,19 @@ router
 			};
 		}
 	})
+	.get('/api/test/:key', verify, async (ctx) => {
+		const { key } = ctx.params;
+		const data = testDB.find(({ id }) => id === key);
+		if (data) ctx.body = data;
+		else ctx.status = 404;
+	})
+	.put('/api/test/:key', verify, async (ctx) => {
+		const { body } = ctx.request;
+		const { key } = ctx.params;
+		const data = testDB.find(({ id }) => id === key);
+		if (data) ctx.body = Object.assign(data, body);
+		else ctx.status = 404;
+	})
 	.get('/api/test', verify, async (ctx) => {
 		const { page, count, id, check } = ctx.request.query;
 		const start = (page - 1) * +count;
@@ -76,21 +89,17 @@ router
 		testDB.unshift(body);
 		ctx.body = body;
 	})
-	.put('/api/test/:keys', verify, async (ctx) => {
-		const { request: { body }, params: { keys } } = ctx;
-		const keysArr = keys.split(',');
-		for (const data of testDB) {
-			if (keysArr.includes(data.id)) {
-				Object.assign(data, body, { id: data.id });
-			}
-		}
-		ctx.body = { ok: true };
-	})
 	.delete('/api/test/:keys', verify, async (ctx) => {
 		const { keys } = ctx.params;
 		const keysArr = keys.split(',');
 		testDB = testDB.filter((data) => !keysArr.includes(data.id));
 		ctx.body = { ok: true };
+	})
+	.get('/api/article/:key', verify, async (ctx) => {
+		const { key } = ctx.params;
+		const data = testDB.find(({ id }) => id === key);
+		if (data) ctx.body = data;
+		else ctx.status = 404;
 	})
 	.get('/api/article', verify, async (ctx) => {
 		const { cursor, count } = ctx.request.query;
