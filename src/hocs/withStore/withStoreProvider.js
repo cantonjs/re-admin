@@ -39,11 +39,13 @@ export default function withStoreProvider(options = {}) {
 
 			componentWillUnmount() {
 				const store = this.state[prop];
-				store && store.destroy();
+				store && store.unmount();
 			}
 
 			_getStore = (table) => {
-				return dispatcherStore.ensureStore(table, { useCache, router });
+				const store = dispatcherStore.ensureStore(table, { useCache, router });
+				store.mount();
+				return store;
 			};
 
 			render() {

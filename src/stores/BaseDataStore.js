@@ -40,14 +40,7 @@ export default class BaseDataStore {
 		this._customConfig = customConfig;
 		this.appConfig = appConfig;
 		this.extends = {};
-
-		if (router) {
-			const { location } = router;
-			this.router = router;
-			this._queryDisposer = observe(location, 'query', ({ newValue }) => {
-				runInAction(() => (this.query = newValue));
-			});
-		}
+		this.router = router;
 
 		const { extend, api } = this.config;
 		const { accessTokenLocation, accessTokenName } = appConfig.api;
@@ -76,6 +69,16 @@ export default class BaseDataStore {
 			this.baseRequest = baseRequest;
 		}
 		this.performRequest = this.baseRequest.fetch.bind(this.baseRequest);
+	}
+
+	mount() {
+		const { router } = this;
+		if (router) {
+			const { location } = router;
+			this._queryDisposer = observe(location, 'query', ({ newValue }) => {
+				runInAction(() => (this.query = newValue));
+			});
+		}
 	}
 
 	@action
@@ -172,7 +175,7 @@ export default class BaseDataStore {
 		}
 	}
 
-	destroy() {
+	unmount() {
 		this._queryDisposer && this._queryDisposer();
 	}
 }

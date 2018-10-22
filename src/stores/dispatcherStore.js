@@ -38,7 +38,9 @@ class DispatcherStore {
 		const stores = this.stores[type];
 		if (useCache) {
 			if (stores.has(name)) {
-				return stores.get(name);
+				const store = stores.get(name);
+				store.mount();
+				return store;
 			} else {
 				const store = createStore();
 				stores.set(name, store);
