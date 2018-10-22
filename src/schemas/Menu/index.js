@@ -20,8 +20,10 @@ MenuSchema.propTypes = {
 	toolbar: PropTypes.component,
 	updaterParams: PropTypes.object,
 	createrParams: PropTypes.object,
+	useDetail: PropTypes.bool,
 };
 
 MenuSchema.defaultProps = {
 	top: false,
+	useDetail: false,
 };

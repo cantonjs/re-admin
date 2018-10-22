@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
+import { Observer } from 'mobx-react';
+import PageContext from 'contexts/PageContext';
 import hoist, { extractRef } from 'hocs/hoist';
 import joinKeys from 'utils/joinKeys';
 import withModalStore from 'hocs/withModalStore';
@@ -16,7 +17,6 @@ export default function withActions(WrappedComponent) {
 	@withIssuer()
 	@withStore()
 	@withModalStore()
-	@observer
 	class WithActions extends Component {
 		static propTypes = {
 			modalStore: PropTypes.object.isRequired,
@@ -46,9 +46,12 @@ export default function withActions(WrappedComponent) {
 		};
 
 		open = (name, params = {}, options) => {
-			const { modalStore, issuers } = this.props;
+			const { pageContext, props } = this;
+			const { modalStore, issuers } = props;
 			const keys = joinKeys(this.getSelectedKeys());
 			if (
+				pageContext &&
+				pageContext.useDetail &&
 				(name === CREATE || name === UPDATE) &&
 				issuers.has(TOOLBAR) &&
 				!issuers.has(MODAL)
@@ -99,7 +102,7 @@ export default function withActions(WrappedComponent) {
 			return this.props.store.getData(selectedKeys[0]);
 		};
 
-		render() {
+		_renderInObserver = () => {
 			const { props: { modalStore, store, ...props } } = this;
 			return (
 				<WrappedComponent
@@ -116,6 +119,17 @@ export default function withActions(WrappedComponent) {
 						issuers: props.issuers,
 					}}
 				/>
+			);
+		};
+
+		_renderInPageContext = (pageContext) => {
+			this.pageContext = pageContext;
+			return <Observer>{this._renderInObserver}</Observer>;
+		};
+
+		render() {
+			return (
+				<PageContext.Consumer>{this._renderInPageContext}</PageContext.Consumer>
 			);
 		}
 	}

@@ -7,7 +7,6 @@ export DataListStore from 'stores/DataListStore';
 export DataDetailStore from 'stores/DataDetailStore';
 
 export Admin from 'containers/Admin';
-export PageContainer from 'components/PageContainer';
 export ModalProvider from 'components/ModalProvider';
 export ModalConsumer from 'components/ModalConsumer';
 export AppTitle from 'components/AppTitle';

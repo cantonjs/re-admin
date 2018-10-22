@@ -1,11 +1,16 @@
-import { PureComponent, cloneElement } from 'react';
+import React, { PureComponent, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import naviStore from 'stores/naviStore';
+import PageContext from 'contexts/PageContext';
+import AppConfigContext from 'contexts/AppConfig';
+import DocumentTitle from 'react-document-title';
 
 export default class NaviEnhancer extends PureComponent {
 	static propTypes = {
 		children: PropTypes.node.isRequired,
-		menuKey: PropTypes.string,
+		title: PropTypes.string,
+		pageTitle: PropTypes.string,
+		table: PropTypes.string,
 	};
 
 	constructor(props) {
@@ -14,8 +19,26 @@ export default class NaviEnhancer extends PureComponent {
 		naviStore.setState(other);
 	}
 
+	_renderInAppConfigContext = (appConfig) => {
+		const { props, props: { children, ...other } } = this;
+		const { title: appTitle } = appConfig;
+		const pageTitle = props.pageTitle || props.title || props.table;
+		const title = pageTitle ? `${pageTitle} | ${appTitle}` : appTitle;
+
+		return (
+			<DocumentTitle title={title}>
+				<PageContext.Provider value={props}>
+					{cloneElement(children, other)}
+				</PageContext.Provider>
+			</DocumentTitle>
+		);
+	};
+
 	render() {
-		const { children, ...other } = this.props;
-		return cloneElement(children, other);
+		return (
+			<AppConfigContext.Consumer>
+				{this._renderInAppConfigContext}
+			</AppConfigContext.Consumer>
+		);
 	}
 }

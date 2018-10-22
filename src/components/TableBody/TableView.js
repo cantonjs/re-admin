@@ -86,6 +86,7 @@ export default class TableView extends Component {
 			maxSelections,
 			config,
 		} = store;
+
 		const rowSelection = maxSelections ?
 			{
 				type: selectionType,

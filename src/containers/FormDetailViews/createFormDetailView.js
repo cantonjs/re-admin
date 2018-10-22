@@ -13,7 +13,6 @@ import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
 import { message } from 'antd';
 import ModalProvider from 'components/ModalProvider';
-import PageContainer from 'components/PageContainer';
 
 export default function createFormDetailView(title, issuer, displayName) {
 	@withIssuer({ issuer })
@@ -27,7 +26,6 @@ export default function createFormDetailView(title, issuer, displayName) {
 			contextStore: PropTypes.object.isRequired,
 			computedMatch: PropTypes.object.isRequired,
 			store: PropTypes.object,
-			table: PropTypes.string,
 			save: PropTypes.string,
 			title: PropTypes.node,
 			header: PropTypes.func,
@@ -100,7 +98,6 @@ export default function createFormDetailView(title, issuer, displayName) {
 				props: {
 					store: currentStore,
 					contextStore,
-					title,
 					header: Header,
 					footer: Footer,
 				},
@@ -109,38 +106,32 @@ export default function createFormDetailView(title, issuer, displayName) {
 			} = this;
 			const store = currentStore || contextStore;
 			return (
-				<PageContainer title={title}>
-					<ModalProvider>
-						<div style={styles.container}>
-							{Header ? (
-								<Header title={title} store={store} />
-							) : (
-								<h1>{title}</h1>
-							)}
+				<ModalProvider>
+					<div style={styles.container}>
+						{Header ? <Header title={title} store={store} /> : <h1>{title}</h1>}
 
-							<FormBody
-								ref={this.formRef}
-								value={_isCreater ? this._createrValue : store.getData()}
-								store={store}
-								onSubmit={this._handleSubmit}
-								onChange={this._handleChange}
-								onValidChange={this._handleValidChange}
-								layout="vertical"
-								footer={
-									<Submit
-										disabled={isPristine || !isValid || isSubmitting}
-										type="primary"
-										size="large"
-										loading={isSubmitting}
-									>
-										Save
-									</Submit>
-								}
-							/>
-							{Footer && <Footer store={store} />}
-						</div>
-					</ModalProvider>
-				</PageContainer>
+						<FormBody
+							ref={this.formRef}
+							value={_isCreater ? this._createrValue : store.getData()}
+							store={store}
+							onSubmit={this._handleSubmit}
+							onChange={this._handleChange}
+							onValidChange={this._handleValidChange}
+							layout="vertical"
+							footer={
+								<Submit
+									disabled={isPristine || !isValid || isSubmitting}
+									type="primary"
+									size="large"
+									loading={isSubmitting}
+								>
+									Save
+								</Submit>
+							}
+						/>
+						{Footer && <Footer store={store} />}
+					</div>
+				</ModalProvider>
 			);
 		}
 	}

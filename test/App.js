@@ -55,6 +55,7 @@ export default class App extends Component {
 						table="article"
 						path="/articles"
 						pageTitle="Articles"
+						useDetail
 					/>
 					<Menu icon="picture" title="Sub Menu">
 						<Menu icon="bulb" title="2.1" path="/404" exact />
