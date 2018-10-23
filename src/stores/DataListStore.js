@@ -117,11 +117,9 @@ export default class DataListStore extends BaseDataStore {
 		const { query: queryOptions, method, url, body, headers } = options;
 		const { cacheKey, useCursor } = this;
 
-		if (
-			this.collections.has(cacheKey) &&
-			this.collections.get(cacheKey).length
-		) {
-			return this;
+		if (this.collections.has(cacheKey)) {
+			const collection = this.collections.get(cacheKey);
+			if (collection.length) return collection;
 		}
 
 		this.isFetching = true;
@@ -161,7 +159,7 @@ export default class DataListStore extends BaseDataStore {
 			if (useCursor) this.cursors.push(nextCursor);
 			this.isFetching = false;
 		});
-		return this;
+		return collection;
 	}
 
 	@action

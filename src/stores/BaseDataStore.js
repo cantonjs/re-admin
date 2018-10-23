@@ -121,7 +121,7 @@ export default class BaseDataStore {
 	}
 
 	async fetch(options = {}) {
-		await this.request({
+		return this.request({
 			errorTitle: locale.data.fetchFailed,
 			...options,
 			refresh: false,
@@ -129,7 +129,7 @@ export default class BaseDataStore {
 	}
 
 	async create(options = {}) {
-		await this.request({
+		return this.request({
 			method: 'POST',
 			body: this.config.mapOnSave(options.body, 'create'),
 			errorTitle: locale.data.createFailed,
@@ -139,7 +139,7 @@ export default class BaseDataStore {
 	}
 
 	async update(options = {}) {
-		await this.request({
+		return this.request({
 			method: 'PUT',
 			body: this.config.mapOnSave(options.body, 'update'),
 			errorTitle: locale.data.updateFailed,
@@ -149,7 +149,7 @@ export default class BaseDataStore {
 	}
 
 	async remove(options = {}) {
-		await this.request({
+		return this.request({
 			method: 'DELETE',
 			errorTitle: locale.data.removeFailed,
 			refresh: true,

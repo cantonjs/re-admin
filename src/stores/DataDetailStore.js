@@ -29,7 +29,7 @@ export default class DataDetailStore extends BaseDataStore {
 
 		const { cacheKey } = this;
 		if (this.cache.has(cacheKey)) {
-			return this;
+			return this.cache.get(cacheKey);
 		}
 
 		this.isFetching = true;
@@ -47,7 +47,7 @@ export default class DataDetailStore extends BaseDataStore {
 			this.cache.set(cacheKey, data);
 			this.isFetching = false;
 		});
-		return this;
+		return data;
 	}
 
 	@action
