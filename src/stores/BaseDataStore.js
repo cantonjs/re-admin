@@ -162,6 +162,14 @@ export default class BaseDataStore {
 			errorTitle = locale.data.failed,
 			refresh = false,
 			throwError = false,
+
+			/* ignore starts */
+			footer,
+			header,
+			toolbar,
+			title,
+			/* ignore ends */
+
 			...requestOptions
 		} = options;
 		try {
