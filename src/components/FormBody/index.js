@@ -8,7 +8,7 @@ import SpinBox from 'components/SpinBox';
 import FormStore from 'stores/FormStore';
 
 @observer
-export default class FormBody extends Component {
+class FormBody extends Component {
 	static propTypes = {
 		store: PropTypes.object.isRequired,
 		value: PropTypes.any,
@@ -38,10 +38,9 @@ export default class FormBody extends Component {
 
 	render() {
 		const {
-			props: { store, value, formRef, footer, ...other },
+			props: { store: { renderers }, value, formRef, footer, ...other },
 			formStore,
 		} = this;
-		const { isFetching, renderers } = store;
 		return (
 			<Form
 				{...other}
@@ -50,17 +49,24 @@ export default class FormBody extends Component {
 				onSubmit={this._handleSubmit}
 				onChange={this._handleChange}
 			>
-				{isFetching && <SpinBox />}
-				{!isFetching &&
-					renderers.map(({ renderForm }, index) => (
-						<FormItem
-							renderForm={renderForm}
-							formStore={formStore}
-							key={index}
-						/>
-					))}
+				{renderers.map(({ renderForm }, index) => (
+					<FormItem renderForm={renderForm} formStore={formStore} key={index} />
+				))}
 				{footer}
 			</Form>
 		);
 	}
 }
+
+function FormBodyWrapper(props) {
+	const { store, value } = props;
+	if (store.isFetching || value === undefined) return <SpinBox />;
+	return <FormBody {...props} />;
+}
+
+FormBodyWrapper.propTypes = {
+	store: PropTypes.object,
+	value: PropTypes.any,
+};
+
+export default observer(FormBodyWrapper);
