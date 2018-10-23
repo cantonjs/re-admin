@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import PageContext from 'contexts/PageContext';
 import hoist, { extractRef } from 'hocs/hoist';
 import joinKeys from 'utils/joinKeys';
@@ -17,11 +17,13 @@ export default function withActions(WrappedComponent) {
 	@withIssuer()
 	@withStore()
 	@withModalStore()
+	@observer
 	class WithActions extends Component {
 		static propTypes = {
 			modalStore: PropTypes.object.isRequired,
 			store: PropTypes.object.isRequired,
 			issuers: PropTypes.instanceOf(Set).isRequired,
+			pageContext: PropTypes.object.isRequired,
 		};
 
 		static contextTypes = {
@@ -46,8 +48,7 @@ export default function withActions(WrappedComponent) {
 		};
 
 		open = (name, params = {}, options) => {
-			const { pageContext, props } = this;
-			const { modalStore, issuers } = props;
+			const { pageContext, modalStore, issuers } = this.props;
 			const keys = joinKeys(this.getSelectedKeys());
 			if (
 				pageContext &&
@@ -102,8 +103,8 @@ export default function withActions(WrappedComponent) {
 			return this.props.store.getData(selectedKeys[0]);
 		};
 
-		_renderInObserver = () => {
-			const { props: { modalStore, store, ...props } } = this;
+		render() {
+			const { props: { modalStore, store, pageContext, ...props } } = this;
 			return (
 				<WrappedComponent
 					{...extractRef(props)}
@@ -120,11 +121,12 @@ export default function withActions(WrappedComponent) {
 					}}
 				/>
 			);
-		};
+		}
+	}
 
+	class WithActionsWrapper extends PureComponent {
 		_renderInPageContext = (pageContext) => {
-			this.pageContext = pageContext;
-			return <Observer>{this._renderInObserver}</Observer>;
+			return <WithActions {...this.props} pageContext={pageContext} />;
 		};
 
 		render() {
@@ -134,5 +136,5 @@ export default function withActions(WrappedComponent) {
 		}
 	}
 
-	return WithActions;
+	return WithActionsWrapper;
 }
