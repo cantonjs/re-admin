@@ -32,7 +32,10 @@ export default function withStoreProvider(options = {}) {
 				const state = { table, getStore: this._getStore };
 				let store;
 				if (table) store = this._getStore(table);
-				else if (parentStore) store = parentStore;
+				if (parentStore) {
+					if (store) store.parent = parentStore;
+					else store = parentStore;
+				}
 				state[prop] = store;
 				this.state = state;
 			}
