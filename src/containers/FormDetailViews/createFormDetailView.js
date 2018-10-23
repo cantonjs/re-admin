@@ -4,6 +4,7 @@ import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import warning from 'warning';
+import routerStore from 'stores/routerStore';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
@@ -73,9 +74,9 @@ export default function createFormDetailView(title, issuer, displayName) {
 			const { computedMatch, save } = props;
 			const selectedKeys = (computedMatch.params.key || '').split(',');
 			const url = joinKeys(selectedKeys);
-			const method = save || (issuer === CREATER ? 'create' : 'update');
+			const method = save || (this._isCreater ? 'create' : 'update');
 			try {
-				await store.call(method, {
+				const responseData = await store.call(method, {
 					...props,
 					url,
 					body,
@@ -86,12 +87,27 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 				// TODO: should add locale support
 				message.info('Success!');
+
+				if (this._isCreater) {
+					this._redirectToUpdate(store, responseData);
+				}
 			} catch (err) {
 				this.setState({ isSubmitting: false });
 				message.error('Failed!');
 				warning(false, err.message);
 			}
 		};
+
+		_redirectToUpdate(store, responseData) {
+			const { pathname, search } = routerStore.location;
+			const { uniqueKey } = store.config;
+			if (uniqueKey && responseData && responseData[uniqueKey]) {
+				const key = responseData[uniqueKey];
+				const newPathname = pathname.replace(/create$/, `update/${key}`);
+				const path = newPathname + search;
+				routerStore.replace(path);
+			}
+		}
 
 		render() {
 			const {
