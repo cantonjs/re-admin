@@ -1,4 +1,11 @@
-import { computed, observable, action, runInAction, observe } from 'mobx';
+import {
+	computed,
+	observable,
+	action,
+	runInAction,
+	observe,
+	extendObservable,
+} from 'mobx';
 import { isFunction, reduce, assign } from 'lodash';
 import showError from 'utils/showError';
 import LocaleStores from 'stores/LocaleStores';
@@ -97,14 +104,17 @@ export default class BaseDataStore {
 	}
 
 	extend(extensions) {
+		const extendProps = {};
 		this.extends = reduce(
 			extensions,
-			(ext, fn, key) => {
-				ext[key] = fn.bind(this);
+			(ext, val, key) => {
+				if (isFunction(val)) ext[key] = val.bind(this);
+				else extendProps[key] = val;
 				return ext;
 			},
 			this.extends
 		);
+		extendObservable(this, extendProps);
 		return this;
 	}
 
