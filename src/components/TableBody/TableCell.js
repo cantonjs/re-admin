@@ -10,8 +10,10 @@ export default class TableCell extends Component {
 	};
 
 	_handleClick = () => {
-		const { record } = this.props.store;
-		this.tableContext.toggleSelectedKey(record.key);
+		const { store } = this.props;
+		if (store && store.record) {
+			this.tableContext.toggleSelectedKey(store.record.key);
+		}
 	};
 
 	_renderChildren(children, other) {
