@@ -91,7 +91,7 @@ export default class Uploader extends Component {
 				action={_uploadPath}
 				fileList={fileList}
 				onChange={this._handleChange}
-				multi={max > 1}
+				multiple={max > 1}
 				noFieldDecorator
 				onRemove={this._handleRemove}
 				ref={this.uploadRef}
