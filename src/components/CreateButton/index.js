@@ -11,7 +11,7 @@ export default class CreateButton extends Component {
 		table: PropTypes.string,
 		label: PropTypes.stringOrFunc,
 		title: PropTypes.stringOrFunc,
-		save: PropTypes.string,
+		save: PropTypes.stringOrFunc,
 	};
 
 	static defaultProps = {

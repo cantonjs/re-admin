@@ -13,7 +13,7 @@ export default class UpdateButton extends Component {
 		label: PropTypes.stringOrFunc,
 		multiLabel: PropTypes.stringOrFunc,
 		names: PropTypes.array,
-		save: PropTypes.string,
+		save: PropTypes.stringOrFunc,
 	};
 
 	static defaultProps = {

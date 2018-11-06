@@ -50,6 +50,7 @@ export default function withActions(WrappedComponent) {
 		open = (name, params = {}, options) => {
 			const { pageContext, modalStore, issuers } = this.props;
 			const keys = joinKeys(this.getSelectedKeys());
+
 			if (
 				pageContext &&
 				pageContext.useDetail &&
@@ -69,12 +70,13 @@ export default function withActions(WrappedComponent) {
 					},
 					options
 				);
+				return modalStore.close.bind(modalStore);
 			}
 		};
 
 		openCreaterModal = (params = {}, options) => {
 			params.keys = params.keys || '';
-			this.open(CREATE, params, options);
+			return this.open(CREATE, params, options);
 		};
 
 		openUpdaterModal = (params = {}, options) => {
@@ -82,7 +84,7 @@ export default function withActions(WrappedComponent) {
 			if (select && select.length) {
 				config.select = select.join(',');
 			}
-			this.open(UPDATE, config, options);
+			return this.open(UPDATE, config, options);
 		};
 
 		openRefModal = (params = {}, options) => {
@@ -95,7 +97,7 @@ export default function withActions(WrappedComponent) {
 			} = params;
 			const config = { fetch, save, width, ...other };
 			if (noQuery) config.noQuery = '✓';
-			this.open(REF, config, options);
+			return this.open(REF, config, options);
 		};
 
 		_getData = () => {

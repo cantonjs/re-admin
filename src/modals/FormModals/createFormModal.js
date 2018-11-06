@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
-import { observer } from 'mobx-react';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
+import { isFunction } from 'lodash';
+import { observer } from 'mobx-react';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
@@ -23,7 +24,7 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			store: PropTypes.object,
 			table: PropTypes.string,
 			keys: PropTypes.string,
-			save: PropTypes.string,
+			save: PropTypes.stringOrFunc,
 			title: PropTypes.node,
 			width: PropTypes.stringOrNumber,
 		};
@@ -64,7 +65,8 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			const { keys, save } = props;
 			const url = joinKeys(keys);
 			const method = save || (issuer === CREATER ? 'create' : 'update');
-			store.call(method, { ...props, url, body });
+			const options = { ...props, url, body };
+			isFunction(method) ? method(options) : store.call(method, options);
 			this.modalRef.current.close();
 		};
 
