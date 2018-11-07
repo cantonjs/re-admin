@@ -45,6 +45,7 @@ export default function withTable(options = {}) {
 						if (!issuers.has(CREATER)) {
 							store.fetch({ query: newValue });
 						}
+						store.clearSelectedKeys();
 					});
 					if (syncLocation) store.query = routerStore.location.query;
 				}
