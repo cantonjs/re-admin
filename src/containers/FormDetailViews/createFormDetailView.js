@@ -25,7 +25,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		static propTypes = {
 			contextStore: PropTypes.object.isRequired,
-			computedMatch: PropTypes.object.isRequired,
+			match: PropTypes.object.isRequired,
 			store: PropTypes.object,
 			save: PropTypes.string,
 			title: PropTypes.node,
@@ -50,7 +50,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 			const { store: currentStore, contextStore } = props;
 			const store = currentStore || contextStore;
-			const selectedKeys = (props.computedMatch.params.key || '').split(',');
+			const selectedKeys = (props.match.params.key || '').split(',');
 			this._isCreater = issuer === CREATER;
 			if (this._isCreater) this._createrValue = {};
 			else store.setSelectedKeys(selectedKeys);
