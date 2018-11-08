@@ -1,5 +1,6 @@
 import React, { PureComponent, cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import invariant from 'tiny-invariant';
 import naviStore from 'stores/naviStore';
 import PageContext from 'contexts/PageContext';
 import AppConfigContext from 'contexts/AppConfig';
@@ -20,6 +21,11 @@ export default class NaviEnhancer extends PureComponent {
 	}
 
 	_renderInAppConfigContext = (appConfig) => {
+		invariant(
+			appConfig,
+			'You should not use <EnhancedRoute> outside <AppContext>'
+		);
+
 		const { props, props: { children, ...other } } = this;
 		const { title: appTitle } = appConfig;
 		const pageTitle = props.pageTitle || props.title || props.table;

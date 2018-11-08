@@ -1,15 +1,16 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import PageContext from 'contexts/PageContext';
-import hoist, { extractRef } from 'hocs/hoist';
+import { MODAL, TOOLBAR } from 'utils/Issuers';
+import { UPDATE, CREATE, REF } from 'constants/Actions';
+import invariant from 'tiny-invariant';
 import joinKeys from 'utils/joinKeys';
+import hoist, { extractRef } from 'hocs/hoist';
 import withModalStore from 'hocs/withModalStore';
 import withStore from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
-import { MODAL, TOOLBAR } from 'utils/Issuers';
-import { UPDATE, CREATE, REF } from 'constants/Actions';
 import routerStore from 'stores/routerStore';
+import PageContext from 'contexts/PageContext';
 
 // Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
@@ -128,6 +129,10 @@ export default function withActions(WrappedComponent) {
 
 	class WithActionsWrapper extends PureComponent {
 		_renderInPageContext = (pageContext) => {
+			invariant(
+				pageContext,
+				'You should not use `withActions` outside <EnhancedRoute>'
+			);
 			return <WithActions {...this.props} pageContext={pageContext} />;
 		};
 

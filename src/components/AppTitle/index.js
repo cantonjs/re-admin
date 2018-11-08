@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'utils/PropTypes';
+import invariant from 'tiny-invariant';
 import AppConfigContext from 'contexts/AppConfig';
 
 export default function AppTitle({
@@ -11,22 +12,28 @@ export default function AppTitle({
 }) {
 	return (
 		<AppConfigContext.Consumer>
-			{(appConfig) => (
-				<h1
-					{...other}
-					style={{
-						margin: 0,
-						overflow: 'hidden',
-						textOverflow: 'ellipsis',
-						fontSize,
-						textAlign,
-						color,
-						...style,
-					}}
-				>
-					{appConfig.title}
-				</h1>
-			)}
+			{(appConfig) => {
+				invariant(
+					appConfig,
+					'You should not use <AppTitle> outside <AppContext>'
+				);
+				return (
+					<h1
+						{...other}
+						style={{
+							margin: 0,
+							overflow: 'hidden',
+							textOverflow: 'ellipsis',
+							fontSize,
+							textAlign,
+							color,
+							...style,
+						}}
+					>
+						{appConfig.title}
+					</h1>
+				);
+			}}
 		</AppConfigContext.Consumer>
 	);
 }
