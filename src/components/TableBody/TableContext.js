@@ -1,3 +1,6 @@
 import { createContext } from 'utils/reactPolyfill';
 
-export default createContext();
+const context = createContext();
+context.displayName = 'TableContext';
+
+export default context;

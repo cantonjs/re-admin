@@ -3,6 +3,7 @@ import { createContext } from 'utils/reactPolyfill';
 import hoist, { extractRef } from 'hocs/hoist';
 
 const IssuerContext = createContext(new Set());
+IssuerContext.displayName = 'IssuerContext';
 
 const extendIssuers = (issuers, issuer) => {
 	const newIssuers = new Set(issuers);
