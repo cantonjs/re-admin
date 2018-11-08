@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CREATER } from 'utils/Issuers';
+import { isFunction } from 'lodash';
 import hoist, { extractRef } from 'hocs/hoist';
 import { withStoreProvider } from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
@@ -45,7 +46,7 @@ export default function withTable(options = {}) {
 						if (!issuers.has(CREATER)) {
 							store.fetch({ query: newValue });
 						}
-						store.clearSelectedKeys();
+						if (isFunction(store.clearSelectedKeys)) store.clearSelectedKeys();
 					});
 					if (syncLocation) store.query = routerStore.location.query;
 				}
