@@ -57,6 +57,7 @@
     "react-form-mobx": "^1.0.0-1",
     "react-lifecycles-compat": "^3.0.3",
     "react-router-mobx": "^1.2.2",
+    "tiny-invariant": "^1.0.3",
     "tiny-querystring": "^0.0.2",
     "warning": "^3.0.0"
   },
