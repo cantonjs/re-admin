@@ -74,7 +74,7 @@ export default class Actions {
 	};
 
 	ref = (modalParams) => {
-		return this.dispatch(UPDATE, {
+		return this.dispatch(REF, {
 			fetch: 'fetch',
 			save: 'request',
 			width: 880,
