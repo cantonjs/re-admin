@@ -11,6 +11,7 @@ import withStore from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
 import routerStore from 'stores/routerStore';
 import PageContext from 'contexts/PageContext';
+import TableRowKeyContext from 'contexts/TableRowKey';
 
 // Notice that this `Action` is NOT Redux or MobX action.
 export default function withActions(WrappedComponent) {
@@ -25,22 +26,17 @@ export default function withActions(WrappedComponent) {
 			store: PropTypes.object.isRequired,
 			issuers: PropTypes.instanceOf(Set).isRequired,
 			pageContext: PropTypes.object.isRequired,
-		};
-
-		static contextTypes = {
 			tableRowKey: PropTypes.string,
 		};
 
-		constructor(props, context) {
-			super(props, context);
-			const { tableRowKey } = context;
-			if (tableRowKey) {
-				this._selectedKeys = [tableRowKey];
-			}
+		constructor(props) {
+			super(props);
+			const { tableRowKey } = props;
+			if (tableRowKey) this._selectedKeys = [tableRowKey];
 		}
 
 		getSelectedKeys() {
-			const { context: { tableRowKey }, props: { store } } = this;
+			const { store, tableRowKey } = this.props;
 			return tableRowKey ? [tableRowKey] : store.selectedKeys;
 		}
 
@@ -107,7 +103,13 @@ export default function withActions(WrappedComponent) {
 		};
 
 		render() {
-			const { props: { modalStore, store, pageContext, ...props } } = this;
+			const {
+				modalStore,
+				store,
+				pageContext,
+				tableRowKey,
+				...props
+			} = this.props;
 			return (
 				<WrappedComponent
 					{...extractRef(props)}
@@ -133,7 +135,17 @@ export default function withActions(WrappedComponent) {
 				pageContext,
 				'You should not use `withActions` outside <EnhancedRoute>'
 			);
-			return <WithActions {...this.props} pageContext={pageContext} />;
+			return (
+				<TableRowKeyContext.Consumer>
+					{(tableRowKey) => (
+						<WithActions
+							{...this.props}
+							pageContext={pageContext}
+							tableRowKey={tableRowKey}
+						/>
+					)}
+				</TableRowKeyContext.Consumer>
+			);
 		};
 
 		render() {

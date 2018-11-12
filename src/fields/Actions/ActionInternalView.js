@@ -2,6 +2,7 @@ import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { isFunction } from 'lodash';
 import withStore from 'hocs/withStore';
+import TableRowKeyContext from 'contexts/TableRowKey';
 
 @withStore()
 export default class ActionInternalView extends Component {
@@ -11,18 +12,7 @@ export default class ActionInternalView extends Component {
 		store: PropTypes.object.isRequired,
 	};
 
-	static childContextTypes = {
-		tableRowKey: PropTypes.string,
-	};
-
-	getChildContext() {
-		return {
-			tableRowKey: this.props.tableRowKey,
-		};
-	}
-
-	_renderChildren() {
-		const { props: { children, tableRowKey, store } } = this;
+	_renderChildren({ children, tableRowKey, store }) {
 		const list = isFunction(children) ?
 			children(store.getData(tableRowKey)) :
 			children;
@@ -38,6 +28,11 @@ export default class ActionInternalView extends Component {
 	}
 
 	render() {
-		return <div>{this._renderChildren()}</div>;
+		const { tableRowKey, ...restProps } = this.props;
+		return (
+			<TableRowKeyContext.Provider value={tableRowKey}>
+				<div>{this._renderChildren(restProps)}</div>
+			</TableRowKeyContext.Provider>
+		);
 	}
 }
