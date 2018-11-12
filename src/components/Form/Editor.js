@@ -33,13 +33,16 @@ class QuillEditorEnhancer extends Component {
 			...modules.toolbar,
 		};
 		this.modules = modules;
-		this.reactQuillRef = { getEditor: () => null };
-		this.editorContext = { getEditor: () => this.reactQuillRef.getEditor() };
 	}
+
+	state = {
+		editor: {},
+	};
 
 	saveRef = (ref) => {
 		const { innerRef } = this.props;
 		this.reactQuillRef = ref;
+		if (this.state.editor !== ref) this.setState({ editor: ref });
 		if (innerRef) innerRef(ref);
 	};
 
@@ -53,11 +56,11 @@ class QuillEditorEnhancer extends Component {
 				formats,
 				...other
 			},
+			state: { editor },
 			modules,
-			editorContext,
 		} = this;
 		return (
-			<EditorContext.Provider value={editorContext}>
+			<EditorContext.Provider value={editor}>
 				<div className={containerClassName} style={containerStyle}>
 					{toolbar}
 					<Quill

@@ -1,7 +1,8 @@
 import React from 'react';
 import { EditorButton } from '../../src';
 
-function insertStart(ev, quill) {
+function insertStart(ev, actions, editorContext) {
+	const quill = editorContext.getEditor();
 	const cursorPosition = quill.getSelection(true).index;
 	quill.insertText(cursorPosition, '★');
 	quill.setSelection(cursorPosition + 1);

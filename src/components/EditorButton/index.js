@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import EditorContext from 'contexts/Editor';
+import withActions from 'hocs/withActions';
 
+@withActions
 export default class EditorButton extends Component {
 	static propTypes = {
 		children: PropTypes.node,
 		onClick: PropTypes.func,
+		actions: PropTypes.object,
 	};
 
 	_handleClick = (ev) => {
-		const { onClick } = this.props;
+		const { onClick, actions } = this.props;
 		if (onClick) {
-			onClick(ev, this.editorContext.getEditor());
+			onClick(ev, actions, this.editorContext);
 		}
 	};
 
