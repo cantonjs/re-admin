@@ -1,6 +1,7 @@
 import { MODAL, TOOLBAR } from 'utils/Issuers';
 import { UPDATE, CREATE, REF } from 'constants/Actions';
 import joinKeys from 'utils/joinKeys';
+import deprecated from 'utils/deprecated';
 import routerStore from 'stores/routerStore';
 
 export default class Actions {
@@ -72,68 +73,41 @@ export default class Actions {
 		return this.dispatch(UPDATE, modalParams);
 	};
 
-	ref = (params = {}) => {
-		const { modal = {}, ...otherParams } = params;
+	ref = (modalParams) => {
 		return this.dispatch(UPDATE, {
 			fetch: 'fetch',
 			save: 'request',
-			...otherParams,
-			modal: {
-				width: 880,
-				...modal,
-			},
+			width: 880,
+			...modalParams,
 		});
 	};
 
-	open = (name, params = {}, options) => {
-		const { pageContext, modalStore, issuers } = this.props;
+	open = deprecated((name, params = {}) => {
+		const { modalStore } = this.props;
 		const keys = this.selectedKeysString;
+		modalStore.open({
+			keys,
+			...params,
+			name,
+		});
+		return modalStore.close.bind(modalStore);
+	}, '`open()` is deprecated, please use dispatch() instead');
 
-		if (
-			pageContext.useDetail &&
-			(name === CREATE || name === UPDATE) &&
-			issuers.has(TOOLBAR) &&
-			!issuers.has(MODAL)
-		) {
-			const path =
-				params.path || (name === UPDATE ? `/update/${keys}` : '/create');
-			routerStore.location.pathname += path;
-		} else {
-			modalStore.open(
-				{
-					keys,
-					...params,
-					name,
-				},
-				options
-			);
-			return modalStore.close.bind(modalStore);
-		}
-	};
+	openCreaterModal = deprecated((params = {}) => {
+		return this.open(CREATE, params);
+	}, '`openCreaterModal()` is deprecated, please use create() instead');
 
-	openCreaterModal = (params = {}, options) => {
-		params.keys = params.keys || '';
-		return this.open(CREATE, params, options);
-	};
-
-	openUpdaterModal = (params = {}, options) => {
-		const { select, ...config } = params;
+	openUpdaterModal = deprecated((params = {}) => {
+		const { select, ...otherParams } = params;
 		if (select && select.length) {
-			config.select = select.join(',');
+			otherParams.select = select.join(',');
 		}
-		return this.open(UPDATE, config, options);
-	};
+		return this.open(UPDATE, otherParams);
+	}, '`openUpdaterModal()` is deprecated, please use update() instead');
 
-	openRefModal = (params = {}, options) => {
-		const {
-			noQuery,
-			fetch = 'fetch',
-			save = 'request',
-			width = 880,
-			...other
-		} = params;
+	openRefModal = deprecated((params = {}) => {
+		const { fetch = 'fetch', save = 'request', width = 880, ...other } = params;
 		const config = { fetch, save, width, ...other };
-		if (noQuery) config.noQuery = '✓';
-		return this.open(REF, config, options);
-	};
+		return this.open(REF, config);
+	}, '`openRefModal()` is deprecated, please use ref() instead');
 }
