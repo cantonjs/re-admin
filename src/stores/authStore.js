@@ -36,11 +36,10 @@ class AuthStore {
 		this._request = getRequest(config).clone(this._config.basePath);
 	}
 
-	// TODO: Deprecated
-	getAccessToken() {
-		deprecated('getAccessToken()', 'accessToken');
-		return this.accessToken;
-	}
+	getAccessToken = deprecated(
+		() => this.accessToken,
+		'`getAccessToken()` is deprecated, please use `accessToken` instead'
+	);
 
 	async auth() {
 		this.isFetching = true;

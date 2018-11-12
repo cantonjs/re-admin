@@ -1,15 +1,13 @@
 import warning from 'warning';
 
-const cache = new Set();
+const cache = new WeakSet();
 
-export default function deprecated(name, replacement, message) {
-	if (cache.has(name)) {
-		return;
-	}
-	cache.add(name);
-	warning(
-		false,
-		message ||
-			`"${name}" has been deprecated, please use "${replacement}" instead.`
-	);
+export default function deprecated(fn, message) {
+	return (...args) => {
+		if (!cache.has(fn)) {
+			cache.add(fn);
+			warning(false, message || `${fn.name} is deprecated.`);
+		}
+		return fn(...args);
+	};
 }
