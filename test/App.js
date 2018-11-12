@@ -71,11 +71,10 @@ export default class App extends Component {
 											left={<CreateButton />}
 											right={
 												<ContextButton
-													onClick={(ev, { open }) => {
+													onClick={(ev, { dispatch }) => {
 														ev.preventDefault();
-														open('custom', {
+														dispatch('custom', {
 															title: 'My Custom Modal',
-															useLocation: true,
 														});
 													}}
 													label="Custom Modale"
