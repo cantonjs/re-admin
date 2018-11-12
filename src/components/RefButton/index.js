@@ -23,11 +23,12 @@ export default class RefButton extends Component {
 		noQuery: false,
 	};
 
-	_handleClick = (ev, { openRefModal, getData }) => {
+	_handleClick = (ev, actions) => {
+		ev.preventDefault();
+		const { ref, getData } = actions;
 		const { props: { title, label, localeStore, ...other } } = this;
 		const getTitle = title || localeStore.localizeProp(label, 'label');
-		ev.preventDefault();
-		openRefModal({
+		ref({
 			...other,
 			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
 		});

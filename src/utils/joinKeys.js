@@ -3,12 +3,8 @@ import { isString, isArray } from 'lodash';
 import warning from 'warning';
 
 export default function joinKeys(keys, type = 'CSV') {
-	if (!keys) {
-		return '';
-	}
-	if (isString(keys)) {
-		return keys;
-	}
+	if (!keys) return '';
+	if (isString(keys)) return keys;
 
 	if (type === 'CSV') {
 		if (isArray(keys) || isObservableArray(keys)) {

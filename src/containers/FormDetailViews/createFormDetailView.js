@@ -4,6 +4,7 @@ import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import warning from 'warning';
+import { isFunction } from 'lodash';
 import routerStore from 'stores/routerStore';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
@@ -16,6 +17,8 @@ import { message } from 'antd';
 import ModalProvider from 'components/ModalProvider';
 
 export default function createFormDetailView(title, issuer, displayName) {
+	const isCreater = issuer === CREATER;
+
 	@withIssuer({ issuer })
 	@withTable({ syncLocation: true, type: 'detail' })
 	@withStore({ prop: 'contextStore' })
@@ -27,7 +30,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 			contextStore: PropTypes.object.isRequired,
 			match: PropTypes.object.isRequired,
 			store: PropTypes.object,
-			save: PropTypes.string,
+			save: PropTypes.stringOrFunc,
 			title: PropTypes.node,
 			header: PropTypes.func,
 			footer: PropTypes.func,
@@ -35,6 +38,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		static defaultProps = {
 			title,
+			save: isCreater ? 'create' : 'save',
 		};
 
 		state = {
@@ -51,8 +55,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 			const { store: currentStore, contextStore } = props;
 			const store = currentStore || contextStore;
 			const selectedKeys = (props.match.params.key || '').split(',');
-			this._isCreater = issuer === CREATER;
-			if (this._isCreater) this._createrValue = {};
+			if (isCreater) this._createrValue = {};
 			else store.setSelectedKeys(selectedKeys);
 		}
 
@@ -71,24 +74,26 @@ export default function createFormDetailView(title, issuer, displayName) {
 			this.setState({ isSubmitting: true });
 			const { props } = this;
 			const store = props.store || props.contextStore;
-			const { computedMatch, save } = props;
-			const selectedKeys = (computedMatch.params.key || '').split(',');
+			const { match, save } = props;
+			const selectedKeys = (match.params.key || '').split(',');
 			const url = joinKeys(selectedKeys);
-			const method = save || (this._isCreater ? 'create' : 'update');
 			try {
-				const responseData = await store.call(method, {
+				const reqParams = {
 					...props,
 					url,
 					body,
 					refresh: false,
 					throwError: true,
-				});
+				};
+				const responseData = (await isFunction(save)) ?
+					save(reqParams) :
+					store.call(save, reqParams);
 				this.setState({ isSubmitting: false, isPristine: true });
 
 				// TODO: should add locale support
 				message.info('Success!');
 
-				if (this._isCreater) {
+				if (isCreater) {
 					this._redirectToUpdate(store, responseData);
 				}
 			} catch (err) {
@@ -118,7 +123,6 @@ export default function createFormDetailView(title, issuer, displayName) {
 					footer: Footer,
 				},
 				state: { isValid, isSubmitting, isPristine },
-				_isCreater,
 			} = this;
 			const store = currentStore || contextStore;
 			return (
@@ -128,7 +132,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 						<FormBody
 							ref={this.formRef}
-							value={_isCreater ? this._createrValue : store.getData()}
+							value={isCreater ? this._createrValue : store.getData()}
 							store={store}
 							onSubmit={this._handleSubmit}
 							onChange={this._handleChange}

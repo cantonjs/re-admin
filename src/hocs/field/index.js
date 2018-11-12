@@ -57,9 +57,9 @@ export default function field(WrappedComponent) {
 			const { props: { name, modalStore }, _isUpdater } = this;
 			if (_isUpdater) {
 				if (!modalStore || !modalStore.parent) return true;
-				const { select } = modalStore.parent.state;
-				if (!select) return true;
-				else if (select.split(',').indexOf(name) < 0) return false;
+				const { names } = modalStore.parent.state;
+				if (!names || !names.length) return true;
+				else if (names.indexOf(name) < 0) return false;
 			}
 			return true;
 		}

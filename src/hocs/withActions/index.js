@@ -1,15 +1,12 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { MODAL, TOOLBAR } from 'utils/Issuers';
-import { UPDATE, CREATE, REF } from 'constants/Actions';
+import Actions from './Actions';
 import invariant from 'tiny-invariant';
-import joinKeys from 'utils/joinKeys';
 import hoist, { extractRef } from 'hocs/hoist';
 import withModalStore from 'hocs/withModalStore';
 import withStore from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
-import routerStore from 'stores/routerStore';
 import PageContext from 'contexts/PageContext';
 import TableRowKeyContext from 'contexts/TableRowKey';
 
@@ -27,132 +24,53 @@ export default function withActions(WrappedComponent) {
 			issuers: PropTypes.instanceOf(Set).isRequired,
 			pageContext: PropTypes.object.isRequired,
 			tableRowKey: PropTypes.string,
+			enforceModal: PropTypes.bool,
 		};
 
-		constructor(props) {
-			super(props);
-			const { tableRowKey } = props;
-			if (tableRowKey) this._selectedKeys = [tableRowKey];
-		}
-
-		getSelectedKeys() {
-			const { store, tableRowKey } = this.props;
-			return tableRowKey ? [tableRowKey] : store.selectedKeys;
-		}
-
-		getSelectedKeysString = () => {
-			return joinKeys(this.getSelectedKeys());
+		static defaultProps = {
+			enforceModal: false,
 		};
 
-		open = (name, params = {}, options) => {
-			const { pageContext, modalStore, issuers } = this.props;
-			const keys = joinKeys(this.getSelectedKeys());
-
-			if (
-				pageContext &&
-				pageContext.useDetail &&
-				(name === CREATE || name === UPDATE) &&
-				issuers.has(TOOLBAR) &&
-				!issuers.has(MODAL)
-			) {
-				const path =
-					params.path || (name === UPDATE ? `/update/${keys}` : '/create');
-				routerStore.location.pathname += path;
-			} else {
-				modalStore.open(
-					{
-						keys,
-						...params,
-						name,
-					},
-					options
-				);
-				return modalStore.close.bind(modalStore);
-			}
-		};
-
-		openCreaterModal = (params = {}, options) => {
-			params.keys = params.keys || '';
-			return this.open(CREATE, params, options);
-		};
-
-		openUpdaterModal = (params = {}, options) => {
-			const { select, ...config } = params;
-			if (select && select.length) {
-				config.select = select.join(',');
-			}
-			return this.open(UPDATE, config, options);
-		};
-
-		openRefModal = (params = {}, options) => {
-			const {
-				noQuery,
-				fetch = 'fetch',
-				save = 'request',
-				width = 880,
-				...other
-			} = params;
-			const config = { fetch, save, width, ...other };
-			if (noQuery) config.noQuery = '✓';
-			return this.open(REF, config, options);
-		};
-
-		_getData = () => {
-			const selectedKeys = this.getSelectedKeys();
-			return this.props.store.getData(selectedKeys[0]);
-		};
+		actions = new Actions(this);
 
 		render() {
 			const {
-				modalStore,
-				store,
-				pageContext,
-				tableRowKey,
-				...props
-			} = this.props;
-			return (
-				<WrappedComponent
-					{...extractRef(props)}
-					actions={{
-						store,
-						open: this.open,
-						openCreaterModal: this.openCreaterModal,
-						openUpdaterModal: this.openUpdaterModal,
-						openRefModal: this.openRefModal,
-						selectedKeys: this._selectedKeys || store.selectedKeys,
-						getSelectedKeysString: this.getSelectedKeysString,
-						getData: this._getData,
-						issuers: props.issuers,
-					}}
-				/>
-			);
+				props: {
+					modalStore,
+					store,
+					pageContext,
+					tableRowKey,
+					enforceModal,
+					...props
+				},
+				actions,
+			} = this;
+			return <WrappedComponent {...extractRef(props)} actions={actions} />;
 		}
 	}
 
-	class WithActionsWrapper extends PureComponent {
-		_renderInPageContext = (pageContext) => {
-			invariant(
-				pageContext,
-				'You should not use `withActions` outside <EnhancedRoute>'
-			);
-			return (
-				<TableRowKeyContext.Consumer>
-					{(tableRowKey) => (
-						<WithActions
-							{...this.props}
-							pageContext={pageContext}
-							tableRowKey={tableRowKey}
-						/>
-					)}
-				</TableRowKeyContext.Consumer>
-			);
-		};
-
-		render() {
-			return (
-				<PageContext.Consumer>{this._renderInPageContext}</PageContext.Consumer>
-			);
-		}
+	function WithActionsWrapper(props) {
+		return (
+			<PageContext.Consumer>
+				{(pageContext) => {
+					invariant(
+						pageContext,
+						'You should not use `withActions` outside <EnhancedRoute>'
+					);
+					return (
+						<TableRowKeyContext.Consumer>
+							{(tableRowKey) => (
+								<WithActions
+									{...props}
+									pageContext={pageContext}
+									tableRowKey={tableRowKey}
+								/>
+							)}
+						</TableRowKeyContext.Consumer>
+					);
+				}}
+			</PageContext.Consumer>
+		);
 	}
 
 	return WithActionsWrapper;

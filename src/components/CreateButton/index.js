@@ -14,25 +14,21 @@ export default class CreateButton extends Component {
 		save: PropTypes.stringOrFunc,
 	};
 
-	static defaultProps = {
-		save: 'create',
-	};
-
-	_handleClick = (ev, refs) => {
+	_handleClick = (ev, actions) => {
 		ev.preventDefault();
 		const { props } = this;
-		const { openCreaterModal, getSelectedKeysString, getData } = refs;
+		const { create, getData } = actions;
 		const { title, label, table, save, localeStore } = props;
-		const getTitle = title || localeStore.localizeProp(label, 'label');
-		const params = {
-			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
-			save,
-		};
-		if (table) {
-			params.keys = getSelectedKeysString();
-			params.table = table;
-		}
-		openCreaterModal(params);
+
+		if (save || title || table) {
+			const getTitle = title || localeStore.localizeProp(label, 'label');
+			const params = {
+				title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
+				save,
+			};
+			if (table) params.table = table;
+			create(params);
+		} else create();
 	};
 
 	render() {

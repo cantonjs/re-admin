@@ -16,33 +16,27 @@ export default class UpdateButton extends Component {
 		save: PropTypes.stringOrFunc,
 	};
 
-	static defaultProps = {
-		names: [],
-		save: 'update',
-	};
-
-	_getModalParams(options, refs, localeStore) {
+	_getModalParams(options, actions, localeStore) {
 		const { names, title, label, table, save } = options;
-		const { getSelectedKeysString, getData } = refs;
-		const getTitle = title || localeStore.localizeProp(label, 'label');
-		const params = {
-			title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
-			save,
-			select: names,
-		};
-		if (table) {
-			params.keys = getSelectedKeysString();
-			params.table = table;
+		const { getData } = actions;
+		if (save || title || table || names) {
+			const getTitle = title || localeStore.localizeProp(label, 'label');
+			const params = {
+				title: isFunction(getTitle) ? getTitle(getData()) : getTitle,
+				save,
+				names,
+			};
+			if (table) params.table = table;
+			return params;
 		}
-		return params;
 	}
 
-	_handleClick = (ev, refs) => {
+	_handleClick = (ev, actions) => {
 		ev.preventDefault();
 		const { props: { localeStore }, props } = this;
-		const { openUpdaterModal } = refs;
-		const params = this._getModalParams(props, refs, localeStore);
-		openUpdaterModal(params);
+		const { update } = actions;
+		const params = this._getModalParams(props, actions, localeStore);
+		params ? update(params) : update();
 	};
 
 	render() {

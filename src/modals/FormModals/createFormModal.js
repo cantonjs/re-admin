@@ -12,6 +12,8 @@ import ModalConsumer from 'components/ModalConsumer';
 import FormBody from 'components/FormBody';
 
 export default function createFormModal(defaultTitle, issuer, displayName) {
+	const isCreater = issuer === CREATER;
+
 	@withTable()
 	@withStore({ prop: 'contextStore' })
 	@withIssuer({ issuer })
@@ -32,6 +34,7 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 		static defaultProps = {
 			title: defaultTitle,
 			width: 800,
+			save: isCreater ? 'create' : 'update',
 		};
 
 		formRef = createRef();
@@ -42,8 +45,7 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 
 			const selectedKeys = (props.keys || '').split(',');
 			this._selectedKey = selectedKeys[0];
-			this._isCreater = issuer === CREATER;
-			if (this._isCreater) this._createrValue = {};
+			if (isCreater) this._createrValue = {};
 		}
 
 		_handleOk = (ev) => {
@@ -64,16 +66,14 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			const store = props.store || props.contextStore;
 			const { keys, save } = props;
 			const url = joinKeys(keys);
-			const method = save || (issuer === CREATER ? 'create' : 'update');
 			const options = { ...props, url, body };
-			isFunction(method) ? method(options) : store.call(method, options);
+			isFunction(save) ? save(options) : store.call(save, options);
 			this.modalRef.current.close();
 		};
 
 		render() {
 			const {
 				props: { store, contextStore, title, width },
-				_isCreater,
 				_selectedKey,
 			} = this;
 			return (
@@ -84,9 +84,7 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 					ref={this.modalRef}
 				>
 					<FormBody
-						value={
-							_isCreater ? this._createrValue : store.getData(_selectedKey)
-						}
+						value={isCreater ? this._createrValue : store.getData(_selectedKey)}
 						formRef={this.formRef}
 						store={store || contextStore}
 						onSubmit={this._handleSubmit}
