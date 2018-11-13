@@ -31,8 +31,8 @@ export default function createFormDetailView(title, issuer, displayName) {
 			store: PropTypes.object.isRequired,
 			save: PropTypes.stringOrFunc,
 			title: PropTypes.node,
-			header: PropTypes.func,
-			footer: PropTypes.func,
+			header: PropTypes.component,
+			footer: PropTypes.component,
 		};
 
 		static defaultProps = {
