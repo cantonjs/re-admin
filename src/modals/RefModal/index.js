@@ -10,6 +10,7 @@ import ModalConsumer from 'components/ModalConsumer';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import DefaultToolbar from 'components/DefaultToolbar';
+import QueryConnector from 'components/QueryConnector';
 
 @withStore({ prop: 'contextStore' })
 @withTable()
@@ -73,18 +74,20 @@ export default class RefModal extends Component {
 			modalFooter: ModalFooter,
 		} = this.props;
 		return (
-			<ModalConsumer
-				width={width}
-				title={title}
-				onOk={this._handleOk}
-				footer={ModalFooter && <ModalFooter store={store} />}
-			>
-				{Header && <Header store={store} />}
-				{!noQuery && <TableQuery store={store} />}
-				{this._renderToolbar()}
-				<TableBody store={store} selectionType="radio" />
-				{Footer && <Footer store={store} />}
-			</ModalConsumer>
+			<QueryConnector store={store}>
+				<ModalConsumer
+					width={width}
+					title={title}
+					onOk={this._handleOk}
+					footer={ModalFooter && <ModalFooter store={store} />}
+				>
+					{Header && <Header store={store} />}
+					{!noQuery && <TableQuery store={store} />}
+					{this._renderToolbar()}
+					<TableBody store={store} selectionType="radio" />
+					{Footer && <Footer store={store} />}
+				</ModalConsumer>
+			</QueryConnector>
 		);
 	}
 }

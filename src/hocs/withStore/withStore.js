@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import hoist, { extractRef } from 'hocs/hoist';
-import StoreContext from './StoreContext';
+import StoreContext from 'contexts/Store';
 
 export default function withStore(options = {}) {
 	const { prop = 'store' } = options;

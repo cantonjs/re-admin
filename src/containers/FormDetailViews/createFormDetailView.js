@@ -53,8 +53,12 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 			const { store, match } = props;
 			const selectedKeys = (match.params.key || '').split(',');
-			if (isCreater) this._createrValue = {};
-			else store.setSelectedKeys(selectedKeys);
+			if (isCreater) {
+				this._createrValue = {};
+			} else {
+				store.setSelectedKeys(selectedKeys);
+				store.fetch();
+			}
 		}
 
 		_handleChange = () => {

@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hocs/hoist';
-import StoreContext from './StoreContext';
+import StoreContext from 'contexts/Store';
 import withStore from './withStore';
 import dispatcherStore from 'stores/dispatcherStore';
 
 export default function withStoreProvider(options = {}) {
-	const { useCache, router, prop = 'store', type } = options;
+	const { useCache, router, prop = 'store', type, table } = options;
 	return function createStoreProviderComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
 		@withStore({ prop: 'parentStore' })
@@ -16,6 +16,10 @@ export default function withStoreProvider(options = {}) {
 			static propTypes = {
 				table: PropTypes.string,
 				parentStore: PropTypes.object,
+			};
+
+			static defaultProps = {
+				table,
 			};
 
 			static getDerivedStateFromProps({ table }, prevState) {

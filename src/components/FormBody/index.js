@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import warning from 'warning';
+import FormStore from 'stores/FormStore';
 import { Form } from 'components/Form';
 import FormItem from 'components/FormItem';
 import SpinBox from 'components/SpinBox';
-import FormStore from 'stores/FormStore';
 
 @observer
 class FormBody extends Component {
