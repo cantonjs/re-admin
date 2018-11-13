@@ -8,7 +8,13 @@ import dispatcherStore from 'stores/dispatcherStore';
 import routerStore from 'stores/routerStore';
 
 export default function withStoreProvider(options = {}) {
-	const { useCache, syncLocation, prop = 'store', type, table } = options;
+	const {
+		useCache,
+		syncLocation,
+		prop = 'store',
+		type,
+		table: tableOption,
+	} = options;
 	return function createStoreProviderComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
 		@withStore({ prop: 'parentStore' })
@@ -17,10 +23,6 @@ export default function withStoreProvider(options = {}) {
 			static propTypes = {
 				table: PropTypes.string,
 				parentStore: PropTypes.object,
-			};
-
-			static defaultProps = {
-				table,
 			};
 
 			static getDerivedStateFromProps({ table }, prevState) {
@@ -35,8 +37,9 @@ export default function withStoreProvider(options = {}) {
 				super(props, context);
 				const { table, parentStore } = props;
 				const state = { table, getStore: this._getStore };
+				const targetTable = tableOption || table;
 				let store;
-				if (table) store = this._getStore(table);
+				if (targetTable) store = this._getStore(targetTable);
 				if (parentStore) {
 					if (store) store.parent = parentStore;
 					else store = parentStore;
