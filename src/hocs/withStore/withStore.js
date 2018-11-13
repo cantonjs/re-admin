@@ -14,7 +14,7 @@ export default function withStore(options = {}) {
 						{(store) => {
 							const storeProps = { [prop]: store };
 							return (
-								<WrappedComponent {...extractRef(props)} {...storeProps} />
+								<WrappedComponent {...storeProps} {...extractRef(props)} />
 							);
 						}}
 					</StoreContext.Consumer>
