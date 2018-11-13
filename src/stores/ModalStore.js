@@ -1,14 +1,9 @@
-import { computed, observable, action, observe, keys } from 'mobx';
-import Emitter from 'emit-lite';
+import { computed, observable, action } from 'mobx';
 
-export default class ModalStore extends Emitter {
+export default class ModalStore {
 	@observable state = {};
+	@observable name = '';
 	@observable modalProps = {};
-
-	@computed
-	get name() {
-		return this.state.name;
-	}
 
 	@computed
 	get visible() {
@@ -16,29 +11,18 @@ export default class ModalStore extends Emitter {
 	}
 
 	constructor(parent) {
-		super();
-
 		this.parent = parent;
-		this._observeDisposer = observe(this, ({ name, newValue }) => {
-			if (name === 'state' && !keys(newValue).length) {
-				this.emit('close');
-			}
-		});
-	}
-
-	@action
-	destroy() {
-		this._observeDisposer();
-		this.state = {};
 	}
 
 	@action
 	close() {
+		this.name = '';
 		this.state = {};
 	}
 
 	@action
-	open(state) {
+	open(name, state) {
+		this.name = name;
 		this.state = state;
 	}
 

@@ -58,7 +58,7 @@ class RefSelector extends Component {
 			},
 		} = this;
 		ev.preventDefault();
-		modalStore.open({
+		modalStore.open(REF, {
 			keys: '',
 			async save({ refKeys, refStore }) {
 				let val;
@@ -82,7 +82,6 @@ class RefSelector extends Component {
 				onChange(val, refStore);
 			},
 			...other,
-			name: REF,
 		});
 	};
 

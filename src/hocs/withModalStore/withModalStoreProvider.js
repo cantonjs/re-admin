@@ -19,10 +19,6 @@ export default function withModalStoreProvider() {
 				this.modalStore = new ModalStore(modalStore);
 			}
 
-			componentWillUnmount() {
-				this.modalStore.destroy();
-			}
-
 			render() {
 				const { modalStore, props } = this;
 				const { modalStore: _, ...other } = props;

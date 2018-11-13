@@ -56,10 +56,9 @@ export default class Actions {
 			const path = name === UPDATE ? `/update/${keys}` : '/create';
 			routerStore.location.pathname += path;
 		} else {
-			modalStore.open({
+			modalStore.open(name, {
 				keys,
 				...modalParams,
-				name,
 			});
 			return modalStore.close.bind(modalStore);
 		}
@@ -85,10 +84,9 @@ export default class Actions {
 	open = deprecated((name, params = {}) => {
 		const { modalStore } = this.props;
 		const keys = this.selectedKeysString;
-		modalStore.open({
+		modalStore.open(name, {
 			keys,
 			...params,
-			name,
 		});
 		return modalStore.close.bind(modalStore);
 	}, '`open()` is deprecated, please use dispatch() instead');
