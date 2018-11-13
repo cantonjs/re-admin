@@ -11,8 +11,9 @@ import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import DefaultToolbar from 'components/DefaultToolbar';
 
-@withTable()
 @withStore({ prop: 'contextStore' })
+@withTable()
+@withStore()
 @withIssuer({ issuer: REF })
 export default class RefModal extends Component {
 	static propTypes = {
@@ -47,15 +48,12 @@ export default class RefModal extends Component {
 	}
 
 	_handleOk = () => {
-		const {
-			props,
-			props: { keys, save, store: refStore, contextStore },
-		} = this;
+		const { props, props: { keys, save, store: refStore } } = this;
 		const { pathname } = refStore;
 		const refKeys = refStore.selectedKeys;
 		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
 		const options = { method: 'POST', url, ...props, keys, refKeys, refStore };
-		isFunction(save) ? save(options) : contextStore.call(save, options);
+		isFunction(save) ? save(options) : refStore.call(save, options);
 	};
 
 	_renderToolbar() {
