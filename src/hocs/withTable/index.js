@@ -3,25 +3,14 @@ import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hocs/hoist';
 import { withStoreProvider } from 'hocs/withStore';
 import { observer } from 'mobx-react';
-import routerStore from 'stores/routerStore';
 
 export default function withTable(options = {}) {
-	const { syncLocation, useCache, type } = options;
-
+	const storePropName = options.prop || 'store';
 	return function createWithTableComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
-		@withStoreProvider({
-			useCache,
-			router: syncLocation ? routerStore : null,
-			type,
-		})
+		@withStoreProvider(options)
 		@observer
 		class WithTable extends Component {
-			static propTypes = {
-				table: PropTypes.string,
-				store: PropTypes.object,
-			};
-
 			// DEPRECATED
 			static childContextTypes = {
 				store: PropTypes.object,
@@ -30,8 +19,13 @@ export default function withTable(options = {}) {
 			// DEPRECATED
 			getChildContext() {
 				return {
-					store: this.props.store,
+					store: this.props[storePropName],
 				};
+			}
+
+			componentDidMount() {
+				const store = this.props[storePropName];
+				store.setupQuery();
 			}
 
 			render() {

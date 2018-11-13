@@ -17,7 +17,6 @@ export default class QueryConnector extends Component {
 				store.fetch({ query: newValue });
 				if (isFunction(store.clearSelectedKeys)) store.clearSelectedKeys();
 			});
-			if (store.router) store.query = store.router.location.query;
 		}
 	}
 

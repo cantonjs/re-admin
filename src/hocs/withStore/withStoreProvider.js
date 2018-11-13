@@ -5,9 +5,10 @@ import hoist, { extractRef } from 'hocs/hoist';
 import StoreContext from 'contexts/Store';
 import withStore from './withStore';
 import dispatcherStore from 'stores/dispatcherStore';
+import routerStore from 'stores/routerStore';
 
 export default function withStoreProvider(options = {}) {
-	const { useCache, router, prop = 'store', type, table } = options;
+	const { useCache, syncLocation, prop = 'store', type, table } = options;
 	return function createStoreProviderComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
 		@withStore({ prop: 'parentStore' })
@@ -52,7 +53,7 @@ export default function withStoreProvider(options = {}) {
 			_getStore = (table) => {
 				const store = dispatcherStore.ensureStore(table, {
 					useCache,
-					router,
+					router: syncLocation ? routerStore : null,
 					type,
 				});
 				store.mount();

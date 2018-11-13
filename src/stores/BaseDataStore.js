@@ -94,6 +94,11 @@ export default class BaseDataStore {
 	}
 
 	@action
+	setupQuery() {
+		if (this.router) this.query = this.router.location.query;
+	}
+
+	@action
 	setQuery(query) {
 		if (this.router) this.router.location.query = query;
 		else this.query = query;
