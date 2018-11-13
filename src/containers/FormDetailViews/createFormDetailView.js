@@ -21,15 +21,14 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 	@withIssuer({ issuer })
 	@withTable({ syncLocation: true, type: 'detail' })
-	@withStore({ prop: 'contextStore' })
+	@withStore()
 	@observer
 	class FormDetailView extends Component {
 		static displayName = displayName;
 
 		static propTypes = {
-			contextStore: PropTypes.object.isRequired,
 			match: PropTypes.object.isRequired,
-			store: PropTypes.object,
+			store: PropTypes.object.isRequired,
 			save: PropTypes.stringOrFunc,
 			title: PropTypes.node,
 			header: PropTypes.func,
@@ -52,9 +51,8 @@ export default function createFormDetailView(title, issuer, displayName) {
 		constructor(props) {
 			super(props);
 
-			const { store: currentStore, contextStore } = props;
-			const store = currentStore || contextStore;
-			const selectedKeys = (props.match.params.key || '').split(',');
+			const { store, match } = props;
+			const selectedKeys = (match.params.key || '').split(',');
 			if (isCreater) this._createrValue = {};
 			else store.setSelectedKeys(selectedKeys);
 		}
@@ -73,8 +71,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 		_handleSubmit = async (body) => {
 			this.setState({ isSubmitting: true });
 			const { props } = this;
-			const store = props.store || props.contextStore;
-			const { match, save } = props;
+			const { match, save, store } = props;
 			const selectedKeys = (match.params.key || '').split(',');
 			const url = joinKeys(selectedKeys);
 			try {
@@ -116,15 +113,9 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		render() {
 			const {
-				props: {
-					store: currentStore,
-					contextStore,
-					header: Header,
-					footer: Footer,
-				},
+				props: { store, header: Header, footer: Footer },
 				state: { isValid, isSubmitting, isPristine },
 			} = this;
-			const store = currentStore || contextStore;
 			return (
 				<ModalProvider>
 					<div style={styles.container}>
