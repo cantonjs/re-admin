@@ -42,9 +42,14 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 		constructor(props) {
 			super(props);
 
-			const selectedKeys = (props.keys || '').split(',');
+			const { keys, store } = props;
+			const selectedKeys = (keys || '').split(',');
 			this._selectedKey = selectedKeys[0];
 			if (isCreater) this._createrValue = {};
+			else {
+				store.setSelectedKeys(selectedKeys);
+				store.call('fetch');
+			}
 		}
 
 		_handleOk = (ev) => {

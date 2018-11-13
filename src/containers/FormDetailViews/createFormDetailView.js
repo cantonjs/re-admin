@@ -57,7 +57,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 				this._createrValue = {};
 			} else {
 				store.setSelectedKeys(selectedKeys);
-				store.fetch();
+				store.call('fetch');
 			}
 		}
 

@@ -14,7 +14,7 @@ export default class QueryConnector extends Component {
 		const { store } = props;
 		if (store) {
 			this._disposer = store.observeQuery(({ newValue }) => {
-				store.fetch({ query: newValue });
+				store.call('fetch', { query: newValue });
 				if (isFunction(store.clearSelectedKeys)) store.clearSelectedKeys();
 			});
 		}
