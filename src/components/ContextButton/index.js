@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
+import { observer } from 'mobx-react';
 import withActions from 'hocs/withActions';
 import withIssuer from 'hocs/withIssuer';
 import { Button } from 'antd';
@@ -9,6 +10,7 @@ import { isFunction } from 'lodash';
 
 @withIssuer()
 @withActions
+@observer
 export default class ContextButton extends Component {
 	static propTypes = {
 		children: PropTypes.nodeOrFunc,
