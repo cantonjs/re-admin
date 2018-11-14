@@ -37,7 +37,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		static defaultProps = {
 			title,
-			save: isCreater ? 'create' : 'save',
+			save: isCreater ? 'create' : 'update',
 		};
 
 		state = {
@@ -86,9 +86,9 @@ export default function createFormDetailView(title, issuer, displayName) {
 					refresh: false,
 					throwError: true,
 				};
-				const responseData = (await isFunction(save)) ?
-					save(reqParams) :
-					store.call(save, reqParams);
+				const responseData = isFunction(save) ?
+					await save(reqParams) :
+					await store.call(save, reqParams);
 				this.setState({ isSubmitting: false, isPristine: true });
 
 				// TODO: should add locale support
