@@ -22,6 +22,7 @@ export default function withStoreProvider(options = {}) {
 		class WithStoreProvider extends Component {
 			static propTypes = {
 				table: PropTypes.string,
+				store: PropTypes.object,
 				parentStore: PropTypes.object,
 			};
 
@@ -40,6 +41,7 @@ export default function withStoreProvider(options = {}) {
 				const targetTable = tableOption || table;
 				let store;
 				if (targetTable) store = this._getStore(targetTable);
+				else if (props.store) store = props.store;
 				if (parentStore) {
 					if (store) store.parent = parentStore;
 					else store = parentStore;

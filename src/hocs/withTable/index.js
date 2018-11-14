@@ -25,7 +25,7 @@ export default function withTable(options = {}) {
 
 			componentDidMount() {
 				const store = this.props[storePropName];
-				store.setupQuery();
+				store && store.setupQuery();
 			}
 
 			render() {
