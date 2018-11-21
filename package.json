@@ -45,7 +45,6 @@
     "cookie": "^0.3.1",
     "create-react-context": "^0.2.2",
     "create-react-ref": "^0.1.0",
-    "emit-lite": "^2.0.0",
     "empty-functions": "^1.0.2",
     "fetch-extra": "^1.0.0-0",
     "history": "4.x",
