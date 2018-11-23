@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DatePicker } from 'components/Form';
 import field from 'hocs/field';
 import moment from 'moment';
-import { isString, isObject, isFunction } from 'lodash';
+import { isString, isObject, isFunction } from 'utils/fp';
 
 const buildInDefaultProps = {
 	inputFilter(val) {

@@ -1,6 +1,6 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 import withStore from 'hocs/withStore';
 import TableRowKeyContext from 'contexts/TableRowKey';
 

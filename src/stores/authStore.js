@@ -3,7 +3,7 @@ import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
 import getRequest from 'utils/getRequest';
-import { isString } from 'lodash';
+import { isString } from 'utils/fp';
 import deprecated from 'utils/deprecated';
 import showError from 'utils/showError';
 import warning from 'warning';

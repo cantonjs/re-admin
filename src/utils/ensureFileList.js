@@ -1,5 +1,4 @@
-
-import { isString, isArray, trim } from 'lodash';
+import { isString, isArray, trim } from 'utils/fp';
 import { isObservableArray } from 'mobx';
 
 export default function ensureFileList(fileList = []) {
@@ -18,6 +17,5 @@ export default function ensureFileList(fileList = []) {
 			uid: -index,
 			url,
 			name: url,
-		}))
-	;
+		}));
 }

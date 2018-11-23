@@ -3,7 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import localize from 'hocs/localize';
 import withStore from 'hocs/withStore';
 import ContextButton from 'components/ContextButton';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 
 @withStore()
 @localize('RefButton')

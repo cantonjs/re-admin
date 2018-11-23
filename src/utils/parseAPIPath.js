@@ -1,5 +1,4 @@
-
-import { isString, isObject } from 'lodash';
+import { isString, isObject } from 'utils/fp';
 import { parse } from 'tiny-querystring';
 import { parsePath } from 'history';
 
@@ -28,6 +27,6 @@ export default function parseAPIPath(apiPath) {
 
 	throw new Error(
 		'`apiPath` should be string or object, but received',
-		typeof apiPath,
+		typeof apiPath
 	);
 }

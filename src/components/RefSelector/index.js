@@ -2,7 +2,7 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import styles from './styles';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 import joinKeys from 'utils/joinKeys';
 import { observer } from 'mobx-react';
 import { REF } from 'constants/Actions';

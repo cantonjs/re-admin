@@ -4,7 +4,7 @@ import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import warning from 'warning';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 import routerStore from 'stores/routerStore';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';

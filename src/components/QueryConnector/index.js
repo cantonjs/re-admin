@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 
 export default class QueryConnector extends Component {
 	static propTypes = {

@@ -1,5 +1,4 @@
 import router from './swRouter';
-import { random } from 'lodash';
 
 let total = 240;
 let testDB = new Array(total)
@@ -21,7 +20,7 @@ let testDB = new Array(total)
 			],
 		},
 		check: Math.random() > 0.5,
-		num: random(0, 100),
+		num: Math.floor(101 * Math.random(0)),
 		createdAt: new Date(
 			Date.now() - (total - index) * 1000 * 60 * 60 * 24
 		).toISOString(),

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ContextButton from 'components/ContextButton';
 import { Modal } from 'antd';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 
 export default class ConfirmButton extends Component {
 	static propTypes = {

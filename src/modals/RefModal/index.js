@@ -2,7 +2,7 @@ import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
 import joinKeys from 'utils/joinKeys';
 import { REF } from 'utils/Issuers';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';

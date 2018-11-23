@@ -6,7 +6,7 @@ import {
 	observe,
 	extendObservable,
 } from 'mobx';
-import { isFunction, reduce, assign } from 'lodash';
+import { isFunction, reduce, assign } from 'utils/fp';
 import showError from 'utils/showError';
 import LocaleStores from 'stores/LocaleStores';
 import warning from 'warning';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'utils/fp';
 import clearSortedInfo from 'utils/clearSortedInfo';
 import { TABLE } from 'utils/Issuers';
 import withIssuer from 'hocs/withIssuer';

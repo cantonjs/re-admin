@@ -1,5 +1,5 @@
 import { isObservableArray } from 'mobx';
-import { isString, isArray } from 'lodash';
+import { isString, isArray } from 'utils/fp';
 import warning from 'warning';
 
 export default function joinKeys(keys, type = 'CSV') {

@@ -1,5 +1,5 @@
 import { observable, computed, action, runInAction, toJS } from 'mobx';
-import { omitBy, isUndefined } from 'lodash';
+import { omitBy, isUndefined } from 'utils/fp';
 import BaseDataStore from 'stores/BaseDataStore';
 import joinKeys from 'utils/joinKeys';
 

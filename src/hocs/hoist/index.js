@@ -1,7 +1,7 @@
 import React from 'react';
 import { forwardRef } from 'utils/reactPolyfill';
 import hoistStatics from 'hoist-non-react-statics';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 
 const isStatelessComponent = function isStatelessComponent(component) {
 	return (

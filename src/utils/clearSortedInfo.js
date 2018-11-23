@@ -1,5 +1,5 @@
 import routerStore from 'stores/routerStore';
-import { omit } from 'lodash';
+import { omit } from 'utils/fp';
 
 export default function clearSortedInfo(appConfig) {
 	const { sortKey, orderKey } = appConfig.api;

@@ -1,5 +1,5 @@
 import { action, observable, computed, runInAction } from 'mobx';
-import { isUndefined, omitBy } from 'lodash';
+import { isUndefined, omitBy } from 'utils/fp';
 import BaseDataStore from 'stores/BaseDataStore';
 import parseColumn from 'utils/parseColumn';
 

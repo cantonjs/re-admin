@@ -1,6 +1,5 @@
-
 import cookie from 'cookie';
-import { defaults } from 'lodash';
+import { defaults } from 'utils/fp';
 
 export default {
 	set(name, value, options = {}) {

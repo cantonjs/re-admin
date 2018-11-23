@@ -6,7 +6,7 @@ import withIssuer from 'hocs/withIssuer';
 import { Button } from 'antd';
 import LinkButton from 'components/LinkButton';
 import { TABLE } from 'utils/Issuers';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 
 @withIssuer()
 @withActions

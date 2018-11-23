@@ -3,7 +3,7 @@ import { createRef } from 'utils/reactPolyfill';
 import PropTypes from 'utils/PropTypes';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 import { observer } from 'mobx-react';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';

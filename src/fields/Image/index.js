@@ -11,7 +11,7 @@ import field from 'hocs/field';
 import ensureFileList from 'utils/ensureFileList';
 import ImageTableCell from './ImageTableCell';
 import resizeMode from './resizeMode';
-import { isObject } from 'lodash';
+import { isObject } from 'utils/fp';
 import warning from 'warning';
 
 @field

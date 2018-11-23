@@ -4,7 +4,7 @@ import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { returnsArgument } from 'empty-functions';
 import parseAPIPath from 'utils/parseAPIPath';
-import { isFunction, isObject } from 'lodash';
+import { isFunction, isObject } from 'utils/fp';
 import FieldGateway from 'components/FieldGateway';
 import createRendererState from './createRendererState';
 

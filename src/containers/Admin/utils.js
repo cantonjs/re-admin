@@ -1,6 +1,6 @@
 import { isValidElement } from 'react';
 import jsxToPlainObject from 'utils/jsxToPlainObject';
-import { isUndefined, isObject, isFunction } from 'lodash';
+import { isUndefined, isObject, isFunction } from 'utils/fp';
 import warning from 'warning';
 import * as SchemaComponents from 'schemas';
 

@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 import PropTypes from 'utils/PropTypes';
-import { flatMap } from 'lodash';
+import { flatMap } from 'utils/fp';
 import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';

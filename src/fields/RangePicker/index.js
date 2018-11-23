@@ -3,7 +3,7 @@ import { RangePicker } from 'components/Form';
 import moment from 'moment';
 import field from 'hocs/field';
 import { formatHelper } from 'react-form-mobx';
-import { isString, isObject, isFunction, isUndefined } from 'lodash';
+import { isString, isObject, isFunction, isUndefined } from 'utils/fp';
 
 const rangeInputFilter = (range) =>
 	range.map((val) => {

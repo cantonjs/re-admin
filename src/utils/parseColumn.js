@@ -1,4 +1,4 @@
-import { isFunction } from 'lodash';
+import { isFunction } from 'utils/fp';
 
 export default function parseColumn(column) {
 	const { title, body, ...other } = column;

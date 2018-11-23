@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isObject } from 'lodash';
+import { isObject } from 'utils/fp';
 import warning from 'warning';
 import field from 'hocs/field';
 import withAppConfig from 'hocs/withAppConfig';
