@@ -29,5 +29,6 @@ export default class ModalStore {
 	@action
 	setModalProps(props) {
 		this.modalProps = props;
+		return this;
 	}
 }

@@ -3,6 +3,7 @@ import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
 import { withModalStoreProvider } from 'hocs/withModalStore';
 import { Modal } from 'antd';
+import ModalBlock from './ModalBlock';
 
 @withModalStoreProvider()
 @observer
@@ -15,10 +16,6 @@ export default class ModalProvider extends Component {
 
 	static defaultProps = {
 		component: 'div',
-	};
-
-	static contextTypes = {
-		appConfig: PropTypes.object.isRequired,
 	};
 
 	_close() {
@@ -38,12 +35,8 @@ export default class ModalProvider extends Component {
 	};
 
 	render() {
-		const {
-			context: { appConfig: { modals } },
-			props: { modalStore, children, component: Wrap, ...other },
-		} = this;
-		const { visible, modalProps, state, name } = modalStore;
-		const Comp = modals.get(name);
+		const { props: { modalStore, children, component: Wrap, ...other } } = this;
+		const { visible, modalProps } = modalStore;
 		return (
 			<Wrap {...other}>
 				{children}
@@ -54,7 +47,7 @@ export default class ModalProvider extends Component {
 					onOk={this._handleOk}
 					onCancel={this._handleCancel}
 				>
-					{visible && <Comp {...state} />}
+					{visible && <ModalBlock modalStore={modalStore} />}
 				</Modal>
 			</Wrap>
 		);

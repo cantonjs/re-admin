@@ -17,8 +17,16 @@ export default class ModalConsumer extends Component {
 
 	constructor(props) {
 		super(props);
-		const { children, modalStore, ...other } = props;
-		modalStore.setModalProps(other);
+		const { children, modalStore, ...restProps } = props;
+		modalStore.setModalProps(restProps);
+	}
+
+	componentDidUpdate(prevProps) {
+		const { props } = this;
+		if (prevProps !== props) {
+			const { modalStore, ...restProps } = props;
+			modalStore.setModalProps(restProps);
+		}
 	}
 
 	componentWillUnmount() {
