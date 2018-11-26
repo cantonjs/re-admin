@@ -35,13 +35,15 @@ export default class LocaleStore {
 	}
 
 	localize(props, exclude) {
-		return Object.keys(this.data).reduce((acc, key) => {
-			const propValue = props[key];
-			if (!exclude || !~exclude.indexOf(key)) {
-				acc[key] = propValue === undefined ? this.data[key] : propValue;
-			}
-			return acc;
-		}, {});
+		return Object.keys(this.data)
+			.concat(Object.keys(props))
+			.reduce((acc, key) => {
+				const propValue = props[key];
+				if (!exclude || !~exclude.indexOf(key)) {
+					acc[key] = propValue === undefined ? this.data[key] : propValue;
+				}
+				return acc;
+			}, {});
 	}
 
 	@action
