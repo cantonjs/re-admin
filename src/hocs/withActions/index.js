@@ -4,9 +4,9 @@ import { observer } from 'mobx-react';
 import Actions from './Actions';
 import invariant from 'tiny-invariant';
 import hoist, { extractRef } from 'hocs/hoist';
-import withModalStore from 'hocs/withModalStore';
 import withStore from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
+import ModalControllerContext from 'components/Modal/ModalControllerContext';
 import PageContext from 'contexts/PageContext';
 import TableRowKeyContext from 'contexts/TableRowKey';
 
@@ -15,11 +15,9 @@ export default function withActions(WrappedComponent) {
 	@hoist(WrappedComponent)
 	@withIssuer()
 	@withStore()
-	@withModalStore()
 	@observer
 	class WithActions extends Component {
 		static propTypes = {
-			modalStore: PropTypes.object.isRequired,
 			store: PropTypes.object.isRequired,
 			issuers: PropTypes.instanceOf(Set).isRequired,
 			pageContext: PropTypes.object.isRequired,
@@ -35,17 +33,19 @@ export default function withActions(WrappedComponent) {
 
 		render() {
 			const {
-				props: {
-					modalStore,
-					store,
-					pageContext,
-					tableRowKey,
-					enforceModal,
-					...props
-				},
+				props: { store, pageContext, tableRowKey, enforceModal, ...props },
 				actions,
 			} = this;
-			return <WrappedComponent {...extractRef(props)} actions={actions} />;
+			return (
+				<ModalControllerContext.Consumer>
+					{(modalController) => {
+						this.modalController = modalController;
+						return (
+							<WrappedComponent {...extractRef(props)} actions={actions} />
+						);
+					}}
+				</ModalControllerContext.Consumer>
+			);
 		}
 	}
 

@@ -6,7 +6,7 @@ import { isFunction } from 'utils/fp';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
-import ModalConsumer from 'components/ModalConsumer';
+import { ModalConsumer } from 'components/Modal';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import DefaultToolbar from 'components/DefaultToolbar';

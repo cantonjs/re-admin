@@ -1,6 +1,6 @@
 import { createContext } from 'utils/reactPolyfill';
 
 const context = createContext();
-context.displayName = 'ModalStoreContext';
+context.displayName = 'ModalPropsContext';
 
 export default context;

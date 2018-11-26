@@ -9,6 +9,10 @@ export default class Actions {
 		return this._reactInstance.props;
 	}
 
+	get modalController() {
+		return this._reactInstance.modalController;
+	}
+
 	get store() {
 		return this.props.store;
 	}
@@ -43,7 +47,10 @@ export default class Actions {
 	getData = () => this.store.getData(this.selectedKeysHead);
 
 	dispatch = (name, modalParams) => {
-		const { pageContext, modalStore, issuers, enforceModal } = this.props;
+		const {
+			modalController,
+			props: { pageContext, issuers, enforceModal },
+		} = this;
 		const keys = this.selectedKeysString;
 		if (
 			!enforceModal &&
@@ -56,11 +63,11 @@ export default class Actions {
 			const path = name === UPDATE ? `/update/${keys}` : '/create';
 			routerStore.location.pathname += path;
 		} else {
-			modalStore.open(name, {
+			modalController.open(name, {
 				keys,
 				...modalParams,
 			});
-			return modalStore.close.bind(modalStore);
+			return modalController.close.bind(modalController);
 		}
 	};
 
@@ -82,13 +89,13 @@ export default class Actions {
 	};
 
 	open = deprecated((name, params = {}) => {
-		const { modalStore } = this.props;
+		const { modalController } = this;
 		const keys = this.selectedKeysString;
-		modalStore.open(name, {
+		modalController.open(name, {
 			keys,
 			...params,
 		});
-		return modalStore.close.bind(modalStore);
+		return modalController.close.bind(modalController);
 	}, '`open()` is deprecated, please use dispatch() instead');
 
 	openCreaterModal = deprecated((params = {}) => {

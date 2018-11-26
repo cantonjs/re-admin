@@ -7,8 +7,7 @@ export DataListStore from 'stores/DataListStore';
 export DataDetailStore from 'stores/DataDetailStore';
 
 export Admin from 'containers/Admin';
-export ModalProvider from 'components/ModalProvider';
-export ModalConsumer from 'components/ModalConsumer';
+export * from 'components/Modal';
 export AppTitle from 'components/AppTitle';
 export LoginForm from 'components/LoginForm';
 export Toolbar from 'components/Toolbar';

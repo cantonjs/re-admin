@@ -6,11 +6,10 @@ import { isFunction } from 'utils/fp';
 import joinKeys from 'utils/joinKeys';
 import { observer } from 'mobx-react';
 import { REF } from 'constants/Actions';
-import withModalStore from 'hocs/withModalStore';
+import ModalControllerContext from 'components/Modal/ModalControllerContext';
 import createComponent from 'components/Form/createComponent';
 import { Input, Icon, Button } from 'antd';
 
-@withModalStore()
 @observer
 @polyfill
 class RefSelector extends Component {
@@ -25,7 +24,6 @@ class RefSelector extends Component {
 		style: PropTypes.object,
 		label: PropTypes.node,
 		width: PropTypes.stringOrNumber,
-		modalStore: PropTypes.object.isRequired,
 		render: PropTypes.func,
 	};
 
@@ -51,14 +49,14 @@ class RefSelector extends Component {
 				style,
 				onKeyPress,
 				onChange,
-				modalStore,
 				save,
 				render,
 				...other
 			},
+			modalController,
 		} = this;
 		ev.preventDefault();
-		modalStore.open(REF, {
+		modalController.open(REF, {
 			keys: '',
 			async save({ refKeys, refStore }) {
 				let val;
@@ -111,23 +109,30 @@ class RefSelector extends Component {
 		} = this;
 
 		return (
-			<Input
-				style={{ ...styles.button, ...style }}
-				placeholder={placeholder}
-				value={value}
-				size="default"
-				onChange={this._handleChange}
-				onKeyPress={onKeyPress}
-				className="ant-input-search ant-input-search-enter-button"
-				suffix={
-					<Button
-						className="ant-input-search-button"
-						onClick={this._handleClick}
-					>
-						<Icon type="bars" />
-					</Button>
-				}
-			/>
+			<ModalControllerContext.Consumer>
+				{(modalController) => {
+					this.modalController = modalController;
+					return (
+						<Input
+							style={{ ...styles.button, ...style }}
+							placeholder={placeholder}
+							value={value}
+							size="default"
+							onChange={this._handleChange}
+							onKeyPress={onKeyPress}
+							className="ant-input-search ant-input-search-enter-button"
+							suffix={
+								<Button
+									className="ant-input-search-button"
+									onClick={this._handleClick}
+								>
+									<Icon type="bars" />
+								</Button>
+							}
+						/>
+					);
+				}}
+			</ModalControllerContext.Consumer>
 		);
 	}
 

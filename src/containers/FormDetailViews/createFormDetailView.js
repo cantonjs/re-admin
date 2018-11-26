@@ -14,7 +14,7 @@ import FormBody from 'components/FormBody';
 import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
 import { message } from 'antd';
-import ModalProvider from 'components/ModalProvider';
+import { ModalProvider } from 'components/Modal';
 
 export default function createFormDetailView(title, issuer, displayName) {
 	const isCreater = issuer === CREATER;

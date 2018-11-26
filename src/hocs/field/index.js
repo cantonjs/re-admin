@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { UPDATER, QUERIER } from 'utils/Issuers';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
-import withModalStore from 'hocs/withModalStore';
 import hoist, { extractRef } from 'hocs/hoist';
+import ModalControllerContext from 'components/Modal/ModalControllerContext';
 
 export default function field(WrappedComponent) {
 	const defaultProps = {
@@ -18,7 +18,6 @@ export default function field(WrappedComponent) {
 	@hoist(WrappedComponent)
 	@withStore()
 	@withIssuer()
-	@withModalStore()
 	@observer
 	class WithField extends Component {
 		static propTypes = {
@@ -37,9 +36,6 @@ export default function field(WrappedComponent) {
 
 			// provided by `withIssuer()`
 			issuers: PropTypes.instanceOf(Set).isRequired,
-
-			// provided by `withModalStore()`
-			modalStore: PropTypes.object.isRequired,
 		};
 
 		static defaultProps = defaultProps;
@@ -54,10 +50,10 @@ export default function field(WrappedComponent) {
 
 		@computed
 		get _shouldShow() {
-			const { props: { name, modalStore }, _isUpdater } = this;
+			const { props: { name }, _isUpdater, modalController } = this;
 			if (_isUpdater) {
-				if (!modalStore || !modalStore.parent) return true;
-				const { names } = modalStore.parent.state;
+				if (!modalController || !modalController.parent) return true;
+				const { names } = modalController.parent.state;
 				if (!names || !names.length) return true;
 				else if (names.indexOf(name) < 0) return false;
 			}
@@ -76,7 +72,6 @@ export default function field(WrappedComponent) {
 					value,
 					unique,
 					sortable,
-					modalStore,
 
 					...other
 				},
@@ -84,11 +79,18 @@ export default function field(WrappedComponent) {
 			} = this;
 
 			return (
-				<WrappedComponent
-					{...extractRef(other)}
-					required={required && !_isQuerier}
-					disabled={disabled && !_isQuerier}
-				/>
+				<ModalControllerContext>
+					{(modalController) => {
+						this.modalController = modalController;
+						return (
+							<WrappedComponent
+								{...extractRef(other)}
+								required={required && !_isQuerier}
+								disabled={disabled && !_isQuerier}
+							/>
+						);
+					}}
+				</ModalControllerContext>
 			);
 		}
 	}

@@ -17,6 +17,7 @@ export default class RefButton extends Component {
 		noQuery: PropTypes.bool,
 		label: PropTypes.stringOrFunc,
 		store: PropTypes.object,
+		toolbar: PropTypes.any,
 	};
 
 	static defaultProps = {
@@ -36,7 +37,16 @@ export default class RefButton extends Component {
 
 	render() {
 		const {
-			props: { title, table, fetch, save, noQuery, localeStore, ...other },
+			props: {
+				title,
+				table,
+				fetch,
+				save,
+				noQuery,
+				localeStore,
+				toolbar,
+				...other
+			},
 		} = this;
 		return (
 			<ContextButton

@@ -6,7 +6,7 @@ import withTable from 'hocs/withTable';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import DefaultToolbar from 'components/DefaultToolbar';
-import ModalProvider from 'components/ModalProvider';
+import { ModalProvider } from 'components/Modal';
 
 @withTable({ syncLocation: true, useCache: true })
 @observer

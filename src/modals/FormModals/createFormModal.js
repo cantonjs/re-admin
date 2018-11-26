@@ -8,7 +8,7 @@ import { observer } from 'mobx-react';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
-import ModalConsumer from 'components/ModalConsumer';
+import { ModalConsumer } from 'components/Modal';
 import FormBody from 'components/FormBody';
 
 export default function createFormModal(defaultTitle, issuer, displayName) {
