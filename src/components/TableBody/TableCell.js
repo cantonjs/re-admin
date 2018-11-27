@@ -30,7 +30,13 @@ export default class TableCell extends Component {
 		if (!renderCell) return this._renderChildren(children, other);
 		return renderCell(
 			store,
-			(render) => (render ? this._renderChildren(render(), other) : null)
+			(render) =>
+				render ? (
+					this._renderChildren(render(), other)
+				) : (
+					<td style={{ padding: 0 }} />
+				)
+			// (render) => (render ? this._renderChildren(render(), other) : null)
 		);
 	};
 

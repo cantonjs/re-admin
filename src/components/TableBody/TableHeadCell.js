@@ -14,7 +14,7 @@ export default class TableHeadCell extends Component {
 		if (!renderCell) return <th {...other}>{children}</th>;
 		return renderCell(
 			{},
-			(render) => (render ? <th {...other}>{children}</th> : null)
+			(render) => (render ? <th {...other}>{children}</th> : <td />)
 		);
 	}
 }

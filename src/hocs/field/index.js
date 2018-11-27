@@ -25,6 +25,7 @@ export default function field(WrappedComponent) {
 			value: PropTypes.any,
 			defaultValue: PropTypes.any,
 			label: PropTypes.string,
+			tableColumnWidth: PropTypes.number,
 			labelCol: PropTypes.object,
 			wrapperCol: PropTypes.object,
 			required: PropTypes.bool,
@@ -72,6 +73,7 @@ export default function field(WrappedComponent) {
 					value,
 					unique,
 					sortable,
+					tableColumnWidth,
 
 					...other
 				},

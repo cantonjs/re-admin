@@ -46,24 +46,27 @@ export default class DataListStore extends BaseDataStore {
 	get columns() {
 		const { renderers } = this.config;
 		if (!renderers) return [];
-		return renderers.map(({ renderTable: renderCell, props }) => {
-			const column = parseColumn({
-				title: props.label,
-				key: props.name,
-				dataIndex: props.name,
-				headers: { renderCell },
-				body: (state) => ({
-					store: { text: state.value, ...state },
-					renderCell,
-				}),
+		return renderers
+			.filter(({ renderTable }) => renderTable)
+			.map(({ renderTable: renderCell, props }) => {
+				const column = parseColumn({
+					title: props.label,
+					key: props.name,
+					dataIndex: props.name,
+					width: props.tableColumnWidth || 'auto',
+					headers: { renderCell },
+					body: (state) => ({
+						store: { text: state.value, ...state },
+						renderCell,
+					}),
+				});
+				if (props.sortable) {
+					const { sortedKey, sortedOrder } = this;
+					column.sortOrder = props.name === sortedKey ? sortedOrder : false;
+					column.sorter = true;
+				}
+				return column;
 			});
-			if (props.sortable) {
-				const { sortedKey, sortedOrder } = this;
-				column.sortOrder = props.name === sortedKey ? sortedOrder : false;
-				column.sorter = true;
-			}
-			return column;
-		});
 	}
 
 	@computed
