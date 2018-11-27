@@ -26,9 +26,7 @@ export default class ModalConsumer extends Component {
 					<ModalPropsContext.Consumer>
 						{(modalProps) => {
 							this.modalController = modalController;
-
 							modalProps.set(restProps);
-							console.log('set props', modalProps);
 							return (
 								<ModalProvider modalController={modalController}>
 									{children}

@@ -1,5 +1,6 @@
 export * from './schemas';
 export * from './fields';
+export * from './components/Modal';
 
 export routerStore from 'stores/routerStore';
 export authStore from 'stores/authStore';
@@ -7,7 +8,6 @@ export DataListStore from 'stores/DataListStore';
 export DataDetailStore from 'stores/DataDetailStore';
 
 export Admin from 'containers/Admin';
-export * from 'components/Modal';
 export AppTitle from 'components/AppTitle';
 export LoginForm from 'components/LoginForm';
 export Toolbar from 'components/Toolbar';
