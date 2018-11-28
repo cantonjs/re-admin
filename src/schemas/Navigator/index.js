@@ -24,9 +24,9 @@ NavigatorSchema.propTypes = {
 	index: PropTypes.component,
 	login: PropTypes.component,
 	frame: PropTypes.component,
-	dataTable: PropTypes.component,
-	dataUpdater: PropTypes.component,
-	dataCreater: PropTypes.component,
+	tableComponent: PropTypes.component,
+	updaterComponent: PropTypes.component,
+	createrComponent: PropTypes.component,
 	notFound: PropTypes.component,
 };
 
@@ -38,9 +38,9 @@ NavigatorSchema.defaultProps = {
 	index: IndexView,
 	login: LoginView,
 	frame: FrameView,
-	dataTable: DataTableView,
-	dataUpdater: UpdaterFormDetailView,
-	dataCreater: CreaterFormDetailView,
+	tableComponent: DataTableView,
+	updaterComponent: UpdaterFormDetailView,
+	createrComponent: CreaterFormDetailView,
 	notFound: NotFoundView,
 };
 
@@ -51,9 +51,9 @@ NavigatorSchema.configuration = {
 		Object.assign(this, other);
 
 		const {
-			dataTable,
-			dataUpdater,
-			dataCreater,
+			tableComponent,
+			updaterComponent,
+			createrComponent,
 			index: welcome,
 			notFound,
 			noBreadcrumb,
@@ -117,7 +117,7 @@ NavigatorSchema.configuration = {
 					const { table, path, breadcrumbTitle } = props;
 
 					if (!props.component && !props.render) {
-						props.component = table ? dataTable : notFound;
+						props.component = table ? tableComponent : notFound;
 					}
 
 					if (table) {
@@ -126,19 +126,19 @@ NavigatorSchema.configuration = {
 						routes.push(
 							<Route
 								{...rest}
+								component={updaterComponent}
 								{...updaterParams}
 								breadcrumbTitle="update" // TODO: should add locale support
 								breadcrumbParent={breadcrumbParent}
 								path={`${path}/update/:key`}
-								component={dataUpdater}
 							/>,
 							<Route
 								{...rest}
+								component={createrComponent}
 								{...createrParams}
 								breadcrumbTitle="create" // TODO: should add locale support
 								breadcrumbParent={breadcrumbParent}
 								path={`${path}/create/`}
-								component={dataCreater}
 							/>
 						);
 					}
@@ -147,10 +147,6 @@ NavigatorSchema.configuration = {
 					return routes;
 				}
 			});
-		};
-
-		const getSlashesLength = function getSlashesLength(path) {
-			return (path.match(/\//g) || []).length;
 		};
 
 		const sidebarMenu = getMenu(sidebarChildren);
