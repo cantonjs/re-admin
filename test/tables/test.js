@@ -106,7 +106,6 @@ export default (
 		<Text
 			name="fee"
 			label="Fee"
-			required
 			inputFilter={(value) =>
 				/^\$/.test(value) ? value : '$' + (value / 100).toFixed(2)
 			}
