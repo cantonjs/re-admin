@@ -36,6 +36,10 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			save: isCreater ? 'create' : 'update',
 		};
 
+		state = {
+			isOk: false,
+		};
+
 		formRef = createRef();
 		modalRef = createRef();
 
@@ -43,10 +47,9 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			super(props);
 
 			const { keys, store } = props;
-			const selectedKeys = (keys || '').split(',');
-			this._selectedKey = selectedKeys[0];
 			if (isCreater) this._createrValue = {};
 			else {
+				const selectedKeys = (keys || '').split(',');
 				store.setSelectedKeys(selectedKeys);
 				store.call('fetch');
 			}
@@ -64,28 +67,36 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			}
 		};
 
-		_handleSubmit = (body) => {
+		_handleSubmit = (body, state, { selectedKeys }) => {
 			const { props } = this;
-			const { keys, save, store } = props;
-			const url = joinKeys(keys);
-			const options = { ...props, url, body };
+			const { save, store } = props;
+			const options = { ...props, url: selectedKeys, body };
 			isFunction(save) ? save(options) : store.call(save, options);
 			this.modalRef.current.close();
 		};
 
+		_handleStatusChange = (isOk) => {
+			if (this.state.isOk !== isOk) {
+				this.setState({ isOk });
+			}
+		};
+
 		render() {
-			const { props: { store, title, width }, _selectedKey } = this;
+			const { props: { store, title, width, keys }, state: { isOk } } = this;
 			return (
 				<ModalConsumer
 					title={title}
 					width={width}
+					okButtonProps={{ disabled: !isOk }}
 					onOk={this._handleOk}
 					ref={this.modalRef}
 				>
 					<FormBody
-						value={isCreater ? this._createrValue : store.getData(_selectedKey)}
+						value={isCreater ? this._createrValue : store.getData(keys)}
 						formRef={this.formRef}
 						store={store}
+						selectedKeys={joinKeys(keys)}
+						onStatusChange={this._handleStatusChange}
 						onSubmit={this._handleSubmit}
 					/>
 				</ModalConsumer>

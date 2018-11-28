@@ -8,29 +8,60 @@ import FormItem from 'components/FormItem';
 import SpinBox from 'components/SpinBox';
 
 @observer
-class FormBody extends Component {
+export default class FormBody extends Component {
 	static propTypes = {
 		store: PropTypes.object.isRequired,
+		selectedKeys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
 		value: PropTypes.any,
 		footer: PropTypes.node,
 		formRef: PropTypes.any,
 		onChange: PropTypes.func,
 		onSubmit: PropTypes.func,
 		onValidChange: PropTypes.func,
+		onStatusChange: PropTypes.func,
 	};
 
 	formStore = new FormStore();
+
+	isPristine = true;
+	isValid = true;
+	isOk = false;
 
 	_handleChange = (state) => {
 		const { onChange } = this.props;
 		onChange && onChange(state);
 		this.formStore.setState(state.value);
+		if (this.isPristine) {
+			this.isPristine = false;
+			this._handleStatusChange();
+		}
 	};
+
+	_handleValidChange = (isValid) => {
+		const { onValidChange } = this.props;
+		onValidChange && onValidChange(isValid);
+		this.isValid = isValid;
+		this._handleStatusChange();
+	};
+
+	_handleStatusChange() {
+		const { onStatusChange } = this.props;
+		if (onStatusChange) {
+			const ok = !this.isPristine && this.isValid;
+			if (this.isOk !== ok) {
+				this.isOk = ok;
+				onStatusChange(ok);
+			}
+		}
+	}
 
 	_handleSubmit = (body, state) => {
 		if (!state.isInvalid) {
-			const { onSubmit } = this.props;
-			onSubmit && onSubmit(body, state);
+			const { props: { onSubmit, selectedKeys, store } } = this;
+			const options = { selectedKeys, store };
+			if (onSubmit) {
+				onSubmit(body, state, options);
+			}
 		} else if (__DEV__) {
 			warning(false, 'INVALID');
 		}
@@ -38,9 +69,18 @@ class FormBody extends Component {
 
 	render() {
 		const {
-			props: { store: { renderers }, value, formRef, footer, ...other },
+			props: {
+				store,
+				value,
+				formRef,
+				footer,
+				selectedKeys,
+				onStatusChange,
+				...other
+			},
 			formStore,
 		} = this;
+		if (store && store.isFetching) return <SpinBox />;
 		return (
 			<Form
 				{...other}
@@ -48,8 +88,9 @@ class FormBody extends Component {
 				value={value}
 				onSubmit={this._handleSubmit}
 				onChange={this._handleChange}
+				onValidChange={this._handleValidChange}
 			>
-				{renderers.map(({ renderForm }, index) => (
+				{store.renderers.map(({ renderForm }, index) => (
 					<FormItem renderForm={renderForm} formStore={formStore} key={index} />
 				))}
 				{footer}
@@ -57,16 +98,3 @@ class FormBody extends Component {
 		);
 	}
 }
-
-function FormBodyWrapper(props) {
-	const { store, value } = props;
-	if (store.isFetching || value === undefined) return <SpinBox />;
-	return <FormBody {...props} />;
-}
-
-FormBodyWrapper.propTypes = {
-	store: PropTypes.object,
-	value: PropTypes.any,
-};
-
-export default observer(FormBodyWrapper);

@@ -11,7 +11,6 @@ import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
 import { Submit } from 'components/Form';
 import FormBody from 'components/FormBody';
-import joinKeys from 'utils/joinKeys';
 import { CREATER } from 'utils/Issuers';
 import { message } from 'antd';
 import { ModalProvider } from 'components/Modal';
@@ -41,9 +40,8 @@ export default function createFormDetailView(title, issuer, displayName) {
 		};
 
 		state = {
-			isValid: true,
+			isOk: false,
 			isSubmitting: false,
-			isPristine: true,
 		};
 
 		formRef = createRef();
@@ -61,27 +59,20 @@ export default function createFormDetailView(title, issuer, displayName) {
 			}
 		}
 
-		_handleChange = () => {
-			if (this.state.isPristine) {
-				this.setState({ isPristine: false });
+		_handleStatusChange = (isOk) => {
+			if (this.state.isOk !== isOk) {
+				this.setState({ isOk });
 			}
 		};
 
-		_handleValidChange = (isValid) => {
-			this.isValid = isValid;
-			this.setState({ isValid });
-		};
-
-		_handleSubmit = async (body) => {
+		_handleSubmit = async (body, state, { selectedKeys }) => {
 			this.setState({ isSubmitting: true });
 			const { props } = this;
-			const { match, save, store } = props;
-			const selectedKeys = (match.params.key || '').split(',');
-			const url = joinKeys(selectedKeys);
+			const { save, store } = props;
 			try {
 				const reqParams = {
 					...props,
-					url,
+					url: selectedKeys,
 					body,
 					refresh: false,
 					throwError: true,
@@ -89,7 +80,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 				const responseData = isFunction(save) ?
 					await save(reqParams) :
 					await store.call(save, reqParams);
-				this.setState({ isSubmitting: false, isPristine: true });
+				this.setState({ isSubmitting: false });
 
 				// TODO: should add locale support
 				message.info('Success!');
@@ -99,6 +90,8 @@ export default function createFormDetailView(title, issuer, displayName) {
 				}
 			} catch (err) {
 				this.setState({ isSubmitting: false });
+
+				// TODO: should add locale support
 				message.error('Failed!');
 				warning(false, err.message);
 			}
@@ -117,8 +110,8 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		render() {
 			const {
-				props: { store, header: Header, footer: Footer },
-				state: { isValid, isSubmitting, isPristine },
+				props: { store, header: Header, footer: Footer, match },
+				state: { isSubmitting, isOk },
 			} = this;
 			return (
 				<ModalProvider>
@@ -127,15 +120,15 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 						<FormBody
 							ref={this.formRef}
+							selectedKeys={match.params.key}
 							value={isCreater ? this._createrValue : store.getData()}
 							store={store}
 							onSubmit={this._handleSubmit}
-							onChange={this._handleChange}
-							onValidChange={this._handleValidChange}
+							onStatusChange={this._handleStatusChange}
 							layout="vertical"
 							footer={
 								<Submit
-									disabled={isPristine || !isValid || isSubmitting}
+									disabled={!isOk}
 									type="primary"
 									size="large"
 									loading={isSubmitting}
