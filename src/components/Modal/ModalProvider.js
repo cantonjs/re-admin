@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
+import ModalControllerStore from './ModalControllerStore';
 import ModalControllerContext from './ModalControllerContext';
 import Nonconductor from 'components/Nonconductor';
 import ModalPortal from './ModalPortal';
@@ -15,35 +16,12 @@ export default class ModalProvider extends Component {
 		component: 'div',
 	};
 
-	state = {
-		parent: this.props.modalController,
-		state: {},
-		name: '',
-		visible: false,
-		open: (name, state) => {
-			if (name && this.state.name !== name) {
-				this.setState({
-					visible: true,
-					name,
-					state,
-				});
-			}
-		},
-		close: () => {
-			if (this.state.visible) {
-				this.setState({
-					visible: false,
-					name: '',
-					state: {},
-				});
-			}
-		},
-	};
+	modalController = new ModalControllerStore(this.props.modalController);
 
 	render() {
 		const { component: Wrap, children, modalController, ...other } = this.props;
 		return (
-			<ModalControllerContext.Provider value={this.state}>
+			<ModalControllerContext.Provider value={this.modalController}>
 				<Wrap {...other}>
 					{children}
 					<Nonconductor component={ModalPortal} />

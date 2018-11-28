@@ -109,36 +109,36 @@ class RefSelector extends Component {
 		} = this;
 
 		return (
-			<ModalControllerContext.Consumer>
-				{(modalController) => {
-					this.modalController = modalController;
-					return (
-						<Input
-							style={{ ...styles.button, ...style }}
-							placeholder={placeholder}
-							value={value}
-							size="default"
-							onChange={this._handleChange}
-							onKeyPress={onKeyPress}
-							className="ant-input-search ant-input-search-enter-button"
-							suffix={
-								<Button
-									className="ant-input-search-button"
-									onClick={this._handleClick}
-								>
-									<Icon type="bars" />
-								</Button>
-							}
-						/>
-					);
-				}}
-			</ModalControllerContext.Consumer>
+			<Input
+				style={{ ...styles.button, ...style }}
+				placeholder={placeholder}
+				value={value}
+				size="default"
+				onChange={this._handleChange}
+				onKeyPress={onKeyPress}
+				className="ant-input-search ant-input-search-enter-button"
+				suffix={
+					<Button
+						className="ant-input-search-button"
+						onClick={this._handleClick}
+					>
+						<Icon type="bars" />
+					</Button>
+				}
+			/>
 		);
 	}
 
 	render() {
 		const { render } = this.props;
-		return render ? this._render() : this._renderInput();
+		return (
+			<ModalControllerContext.Consumer>
+				{(modalController) => {
+					this.modalController = modalController;
+					return render ? this._render() : this._renderInput();
+				}}
+			</ModalControllerContext.Consumer>
+		);
 	}
 }
 

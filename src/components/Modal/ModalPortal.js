@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import { observer, Observer } from 'mobx-react';
 import ModalPropsStore from './ModalPropsStore';
 import { Modal } from 'antd';
 import Nonconductor from 'components/Nonconductor';
@@ -32,21 +32,25 @@ export default class ModalPortal extends Component {
 		return (
 			<ModalPropsContext.Provider value={this.store}>
 				<ModalControllerContext.Consumer>
-					{(modalController) => {
-						const { visible } = modalController;
-						this.modalController = modalController;
-						return (
-							<Modal
-								maskClosable={false}
-								{...props}
-								visible={visible}
-								onOk={this._handleOk}
-								onCancel={this._handleCancel}
-							>
-								{visible && <Nonconductor component={ModalBody} />}
-							</Modal>
-						);
-					}}
+					{(modalController) => (
+						<Observer>
+							{() => {
+								const { visible } = modalController;
+								this.modalController = modalController;
+								return (
+									<Modal
+										maskClosable={false}
+										{...props}
+										visible={visible}
+										onOk={this._handleOk}
+										onCancel={this._handleCancel}
+									>
+										{visible && <Nonconductor component={ModalBody} />}
+									</Modal>
+								);
+							}}
+						</Observer>
+					)}
 				</ModalControllerContext.Consumer>
 			</ModalPropsContext.Provider>
 		);
