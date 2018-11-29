@@ -32,6 +32,11 @@ class NaviStore {
 		this.state = state;
 	}
 
+	@action
+	setBreadcrumbTitle(breadcrumbTitle) {
+		this.state = { ...this.state, breadcrumbTitle };
+	}
+
 	init(menuArray, location) {
 		this._location = location;
 		this._menuArray = menuArray;
