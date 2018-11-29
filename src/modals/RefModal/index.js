@@ -9,7 +9,7 @@ import withStore from 'hocs/withStore';
 import { ModalConsumer } from 'components/Modal';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
-import DefaultToolbar from 'components/DefaultToolbar';
+import Toolbar from 'components/Toolbar';
 import QueryConnector from 'components/QueryConnector';
 
 @withStore({ prop: 'contextStore' })
@@ -83,7 +83,7 @@ export default class RefModal extends Component {
 					{!noQuery && <TableQuery store={store} />}
 					{ToolbarComponent &&
 						(ToolbarComponent === true ? (
-							<DefaultToolbar />
+							<Toolbar />
 						) : (
 							<ToolbarComponent store={store} />
 						))}
