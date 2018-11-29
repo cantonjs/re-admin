@@ -116,8 +116,18 @@ router
 			};
 		}
 	})
+	.post('/api/article', verify, async (ctx) => {
+		const { body } = ctx.request;
+		body.id = `id_${total}`;
+		total++;
+		testDB.unshift(body);
+		ctx.body = body;
+	})
 	.put('/api/article/:keys', verify, async (ctx) => {
-		const { request: { body }, params: { keys } } = ctx;
+		const {
+			request: { body },
+			params: { keys },
+		} = ctx;
 		const keysArr = keys.split(',');
 		for (const data of testDB) {
 			if (keysArr.includes(data.id)) {
@@ -148,11 +158,16 @@ router
 		ctx.body = body;
 	})
 	.post('/api/test/:keys/bar', verify, async (ctx) => {
-		const { request: { body }, params: { keys } } = ctx;
+		const {
+			request: { body },
+			params: { keys },
+		} = ctx;
 		ctx.body = { ...body, keys };
 	})
 	.post('/api2/test/:keys/bar/:barKeys', verify, async (ctx) => {
-		const { params: { keys, barKeys } } = ctx;
+		const {
+			params: { keys, barKeys },
+		} = ctx;
 		ctx.body = { keys, barKeys };
 	})
 	.post('/api/upload/file', async (ctx) => {
