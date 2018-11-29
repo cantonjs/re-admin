@@ -69,7 +69,8 @@ export default class App extends Component {
 									path="/bar"
 									toolbar={() => (
 										<Toolbar
-											left={<CreateButton />}
+											noUpdateButton
+											noRemoveButton
 											right={
 												<ContextButton
 													onClick={(ev, { dispatch }) => {
