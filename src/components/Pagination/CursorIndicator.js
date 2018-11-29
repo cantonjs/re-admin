@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import { observer } from 'mobx-react';
+import { Icon } from 'antd';
 
 @observer
 export default class CursorIndicator extends Component {
@@ -16,7 +17,9 @@ export default class CursorIndicator extends Component {
 	};
 
 	_handleClickPrev = () => {
-		const { props: { onChange, store } } = this;
+		const {
+			props: { onChange, store },
+		} = this;
 		const { isFetching, prevCursor } = store;
 		if (!isFetching && prevCursor !== undefined && onChange) {
 			onChange(prevCursor);
@@ -25,7 +28,9 @@ export default class CursorIndicator extends Component {
 	};
 
 	_handleClickNext = () => {
-		const { props: { onChange, store } } = this;
+		const {
+			props: { onChange, store },
+		} = this;
 		const { isFetching, nextCursor } = store;
 		if (!isFetching && nextCursor && onChange) {
 			onChange(nextCursor);
@@ -51,13 +56,17 @@ export default class CursorIndicator extends Component {
 					<a
 						className={'ant-pagination-item-link'}
 						onClick={this._handleClickPrev}
-					/>
+					>
+						<Icon type="left" />
+					</a>
 				</li>
 				<li className={`ant-pagination-next ${nextClassName}`}>
 					<a
 						className={'ant-pagination-item-link'}
 						onClick={this._handleClickNext}
-					/>
+					>
+						<Icon type="right" />
+					</a>
 				</li>
 			</ul>
 		);
