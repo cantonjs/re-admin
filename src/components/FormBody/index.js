@@ -10,7 +10,8 @@ import SpinBox from 'components/SpinBox';
 @observer
 export default class FormBody extends Component {
 	static propTypes = {
-		store: PropTypes.object.isRequired,
+		store: PropTypes.object,
+		children: PropTypes.node,
 		selectedKeys: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
 		value: PropTypes.any,
 		footer: PropTypes.node,
@@ -57,8 +58,10 @@ export default class FormBody extends Component {
 
 	_handleSubmit = (body, state) => {
 		if (!state.isInvalid) {
-			const { props: { onSubmit, selectedKeys, store } } = this;
-			const options = { selectedKeys, store };
+			const {
+				props: { onSubmit, selectedKeys },
+			} = this;
+			const options = { selectedKeys };
 			if (onSubmit) {
 				onSubmit(body, state, options);
 			}
@@ -71,6 +74,7 @@ export default class FormBody extends Component {
 		const {
 			props: {
 				store,
+				children,
 				value,
 				formRef,
 				footer,
@@ -90,9 +94,15 @@ export default class FormBody extends Component {
 				onChange={this._handleChange}
 				onValidChange={this._handleValidChange}
 			>
-				{store.renderers.map(({ renderForm }, index) => (
-					<FormItem renderForm={renderForm} formStore={formStore} key={index} />
-				))}
+				{store &&
+					store.renderers.map(({ renderForm }, index) => (
+						<FormItem
+							renderForm={renderForm}
+							formStore={formStore}
+							key={index}
+						/>
+					))}
+				{children}
 				{footer}
 			</Form>
 		);

@@ -26,6 +26,7 @@ import barTable from './tables/bar';
 import articleTable from './tables/article';
 import FooModal from './modals/Foo';
 import Login from './components/Login';
+import CustomFormPage from './components/CustomFormPage';
 
 const isGithubPage = /\.github\.io$/.test(window.location.host);
 const basename = isGithubPage ? '/re-admin' : '/';
@@ -86,6 +87,12 @@ export default class App extends Component {
 							</Menu>
 						</Menu>
 					</Menu>
+					<Menu
+						icon="setting"
+						title="Settings"
+						path="/settings"
+						component={CustomFormPage}
+					/>
 
 					<Menu
 						top
