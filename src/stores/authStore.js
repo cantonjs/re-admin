@@ -81,7 +81,7 @@ class AuthStore {
 			this.accessToken = authRes.accessToken;
 
 			isOk = true;
-			message.success(locale.data.loginSuccess);
+			message.success(locale.data.loginSuccessful);
 		} catch (err) {
 			this.accessToken = null;
 			showError(locale.data.loginFailed, err);

@@ -122,21 +122,24 @@ NavigatorSchema.configuration = {
 
 					if (table) {
 						const breadcrumbParent = { path, breadcrumbTitle };
-						const { updaterParams, createrParams, ...rest } = props;
+						const {
+							updaterParams,
+							createrParams,
+							pageTitle, // prevent parent page title
+							...restProps
+						} = props;
 						routes.push(
 							<Route
-								{...rest}
+								{...restProps}
 								component={updaterComponent}
 								{...updaterParams}
-								breadcrumbTitle="update" // TODO: should add locale support
 								breadcrumbParent={breadcrumbParent}
 								path={`${path}/update/:key`}
 							/>,
 							<Route
-								{...rest}
+								{...restProps}
 								component={createrComponent}
 								{...createrParams}
-								breadcrumbTitle="create" // TODO: should add locale support
 								breadcrumbParent={breadcrumbParent}
 								path={`${path}/create/`}
 							/>

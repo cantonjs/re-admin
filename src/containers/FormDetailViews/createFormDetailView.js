@@ -6,18 +6,25 @@ import { observer } from 'mobx-react';
 import warning from 'warning';
 import { isFunction } from 'utils/fp';
 import routerStore from 'stores/routerStore';
+import localize from 'hocs/localize';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
 import { Submit } from 'components/Form';
+import PageTitle from 'components/PageTitle';
 import FormBody from 'components/FormBody';
 import { CREATER } from 'utils/Issuers';
 import { message } from 'antd';
 import { ModalProvider } from 'components/Modal';
 
-export default function createFormDetailView(title, issuer, displayName) {
+export default function createFormDetailView(
+	defaultTitle,
+	issuer,
+	displayName
+) {
 	const isCreater = issuer === CREATER;
 
+	@localize('FormPage')
 	@withIssuer({ issuer })
 	@withTable({ syncLocation: true, type: 'detail' })
 	@withStore()
@@ -29,13 +36,13 @@ export default function createFormDetailView(title, issuer, displayName) {
 			match: PropTypes.object.isRequired,
 			store: PropTypes.object.isRequired,
 			save: PropTypes.stringOrFunc,
-			title: PropTypes.node,
+			pageTitle: PropTypes.string,
 			header: PropTypes.component,
 			footer: PropTypes.component,
+			localeStore: PropTypes.object.isRequired,
 		};
 
 		static defaultProps = {
-			title,
 			save: isCreater ? 'create' : 'update',
 		};
 
@@ -68,7 +75,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 		_handleSubmit = async (body, state, { selectedKeys }) => {
 			this.setState({ isSubmitting: true });
 			const { props } = this;
-			const { save, store } = props;
+			const { save, store, localeStore } = props;
 			try {
 				const reqParams = {
 					...props,
@@ -81,18 +88,13 @@ export default function createFormDetailView(title, issuer, displayName) {
 					await save(reqParams) :
 					await store.call(save, reqParams);
 				this.setState({ isSubmitting: false });
-
-				// TODO: should add locale support
-				message.info('Success!');
-
+				message.info(localeStore.data.successful);
 				if (isCreater) {
 					this._redirectToUpdate(store, responseData);
 				}
 			} catch (err) {
 				this.setState({ isSubmitting: false });
-
-				// TODO: should add locale support
-				message.error('Failed!');
+				message.error(localeStore.data.failed);
 				warning(false, err.message);
 			}
 		};
@@ -110,13 +112,25 @@ export default function createFormDetailView(title, issuer, displayName) {
 
 		render() {
 			const {
-				props: { store, header: Header, footer: Footer, match },
+				props: {
+					store,
+					header: Header,
+					footer: Footer,
+					match,
+					pageTitle,
+					localeStore,
+				},
 				state: { isSubmitting, isOk },
 			} = this;
+			const title = localeStore.localizeProp(pageTitle, defaultTitle);
 			return (
 				<ModalProvider>
 					<div style={styles.container}>
-						{Header ? <Header title={title} store={store} /> : <h1>{title}</h1>}
+						{Header ? (
+							<Header title={title} store={store} />
+						) : (
+							<PageTitle title={title} />
+						)}
 
 						<FormBody
 							ref={this.formRef}
@@ -133,7 +147,7 @@ export default function createFormDetailView(title, issuer, displayName) {
 									size="large"
 									loading={isSubmitting}
 								>
-									Save
+									{localeStore.data.submit}
 								</Submit>
 							}
 						/>
