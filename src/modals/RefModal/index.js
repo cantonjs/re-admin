@@ -29,7 +29,7 @@ export default class RefModal extends Component {
 		width: PropTypes.stringOrNumber,
 		header: PropTypes.component,
 		footer: PropTypes.component,
-		toolbar: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
+		toolbar: PropTypes.oneOfType([PropTypes.component, PropTypes.bool]),
 		modalFooter: PropTypes.component,
 	};
 
@@ -49,19 +49,16 @@ export default class RefModal extends Component {
 	}
 
 	_handleOk = () => {
-		const { props, props: { keys, save, store: refStore } } = this;
+		const {
+			props,
+			props: { keys, save, store: refStore },
+		} = this;
 		const { pathname } = refStore;
 		const refKeys = refStore.selectedKeys;
 		const url = joinKeys(keys) + `/${pathname}/` + joinKeys(refKeys);
 		const options = { method: 'POST', url, ...props, keys, refKeys, refStore };
 		isFunction(save) ? save(options) : refStore.call(save, options);
 	};
-
-	_renderToolbar() {
-		const { toolbar } = this.props;
-		if (!toolbar) return null;
-		return toolbar === true ? <DefaultToolbar /> : toolbar;
-	}
 
 	render() {
 		const {
@@ -72,6 +69,7 @@ export default class RefModal extends Component {
 			header: Header,
 			footer: Footer,
 			modalFooter: ModalFooter,
+			toolbar: ToolbarComponent,
 		} = this.props;
 		return (
 			<QueryConnector store={store}>
@@ -83,7 +81,12 @@ export default class RefModal extends Component {
 				>
 					{Header && <Header store={store} />}
 					{!noQuery && <TableQuery store={store} />}
-					{this._renderToolbar()}
+					{ToolbarComponent &&
+						(ToolbarComponent === true ? (
+							<DefaultToolbar />
+						) : (
+							<ToolbarComponent store={store} />
+						))}
 					<TableBody store={store} selectionType="radio" />
 					{Footer && <Footer store={store} />}
 				</ModalConsumer>
