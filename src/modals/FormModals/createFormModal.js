@@ -28,12 +28,14 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 			save: PropTypes.stringOrFunc,
 			title: PropTypes.node,
 			width: PropTypes.stringOrNumber,
+			names: PropTypes.array,
 		};
 
 		static defaultProps = {
 			title: defaultTitle,
 			width: 800,
 			save: isCreater ? 'create' : 'update',
+			names: [],
 		};
 
 		state = {
@@ -46,13 +48,20 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 		constructor(props) {
 			super(props);
 
-			const { keys, store } = props;
+			const { store, keys, names } = props;
+			if (names.length) {
+				store.setSelectedNames(names);
+			}
 			if (isCreater) this._createrValue = {};
 			else {
 				const selectedKeys = (keys || '').split(',');
 				store.setSelectedKeys(selectedKeys);
 				store.call('fetch');
 			}
+		}
+
+		componentWillUnmount() {
+			this.props.store.clearSelectedNames();
 		}
 
 		_handleOk = (ev) => {

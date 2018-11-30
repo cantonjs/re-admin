@@ -17,6 +17,7 @@ const locale = LocaleStores.ensure('requests');
 export default class BaseDataStore {
 	@observable query = {};
 	@observable selectedKeys = [];
+	@observable selectedNames = [];
 
 	@computed
 	get cacheKey() {

@@ -251,4 +251,14 @@ export default class DataListStore extends BaseDataStore {
 			(dataItem, index) => key === (uniqueKey ? dataItem[uniqueKey] : index)
 		);
 	}
+
+	@action
+	setSelectedNames(names) {
+		this.selectedNames = names;
+	}
+
+	@action
+	clearSelectedNames() {
+		this.selectedNames = [];
+	}
 }

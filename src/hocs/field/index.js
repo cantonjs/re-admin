@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react';
-import { UPDATER, QUERIER } from 'utils/Issuers';
+import { QUERIER } from 'utils/Issuers';
 import withIssuer from 'hocs/withIssuer';
 import withStore from 'hocs/withStore';
 import hoist, { extractRef } from 'hocs/hoist';
-import ModalControllerContext from 'components/Modal/ModalControllerContext';
 
 export default function field(WrappedComponent) {
 	const defaultProps = {
@@ -45,24 +44,20 @@ export default function field(WrappedComponent) {
 			super(props);
 
 			const { issuers } = props;
-			this._isUpdater = issuers && issuers.has(UPDATER);
 			this._isQuerier = issuers && issuers.has(QUERIER);
 		}
 
 		@computed
 		get _shouldShow() {
 			const {
-				props: { name },
-				_isUpdater,
-				modalController,
+				props: { name, store },
 			} = this;
-			if (_isUpdater) {
-				if (!modalController || !modalController.parent) return true;
-				const { names } = modalController.parent.state;
-				if (!names || !names.length) return true;
-				else if (names.indexOf(name) < 0) return false;
-			}
-			return true;
+
+			return (
+				!store ||
+				!store.selectedNames.length ||
+				~store.selectedNames.indexOf(name)
+			);
 		}
 
 		render() {
@@ -85,18 +80,11 @@ export default function field(WrappedComponent) {
 			} = this;
 
 			return (
-				<ModalControllerContext>
-					{(modalController) => {
-						this.modalController = modalController;
-						return (
-							<WrappedComponent
-								{...extractRef(other)}
-								required={required && !_isQuerier}
-								disabled={disabled && !_isQuerier}
-							/>
-						);
-					}}
-				</ModalControllerContext>
+				<WrappedComponent
+					{...extractRef(other)}
+					required={required && !_isQuerier}
+					disabled={disabled && !_isQuerier}
+				/>
 			);
 		}
 	}
