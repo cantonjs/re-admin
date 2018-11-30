@@ -90,7 +90,10 @@ class RefSelector extends Component {
 	};
 
 	_render() {
-		const { props: { render, style, ...props }, state: { value } } = this;
+		const {
+			props: { render, style, ...props },
+			state: { value },
+		} = this;
 		return (
 			<a
 				onClick={this._handleClick}

@@ -51,7 +51,11 @@ export default function field(WrappedComponent) {
 
 		@computed
 		get _shouldShow() {
-			const { props: { name }, _isUpdater, modalController } = this;
+			const {
+				props: { name },
+				_isUpdater,
+				modalController,
+			} = this;
 			if (_isUpdater) {
 				if (!modalController || !modalController.parent) return true;
 				const { names } = modalController.parent.state;

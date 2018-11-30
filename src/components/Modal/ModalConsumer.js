@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
 import ModalControllerContext from './ModalControllerContext';
 import ModalPropsContext from './ModalPropsContext';
 import withIssuer from 'hocs/withIssuer';
 import { MODAL } from 'utils/Issuers';
 import ModalProvider from './ModalProvider';
+import ModalPropsUpdater from './ModalPropsUpdater';
 
 @withIssuer({ issuer: MODAL })
-@observer
 export default class ModalConsumer extends Component {
 	static propTypes = {
 		children: PropTypes.node,
@@ -26,10 +25,10 @@ export default class ModalConsumer extends Component {
 					<ModalPropsContext.Consumer>
 						{(modalProps) => {
 							this.modalController = modalController;
-							modalProps.set(restProps);
 							return (
 								<ModalProvider modalController={modalController}>
 									{children}
+									<ModalPropsUpdater {...restProps} modalProps={modalProps} />
 								</ModalProvider>
 							);
 						}}

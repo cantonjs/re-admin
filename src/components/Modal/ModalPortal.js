@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { observer, Observer } from 'mobx-react';
 import ModalPropsStore from './ModalPropsStore';
 import { Modal } from 'antd';
-import Nonconductor from 'components/Nonconductor';
 import ModalControllerContext from './ModalControllerContext';
 import ModalPropsContext from './ModalPropsContext';
 import ModalBody from './ModalBody';
@@ -45,7 +44,7 @@ export default class ModalPortal extends Component {
 										onOk={this._handleOk}
 										onCancel={this._handleCancel}
 									>
-										{visible && <Nonconductor component={ModalBody} />}
+										{visible && <ModalBody />}
 									</Modal>
 								);
 							}}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'utils/PropTypes';
 import ModalControllerStore from './ModalControllerStore';
 import ModalControllerContext from './ModalControllerContext';
-import Nonconductor from 'components/Nonconductor';
 import ModalPortal from './ModalPortal';
 
 export default class ModalProvider extends Component {
@@ -24,7 +23,7 @@ export default class ModalProvider extends Component {
 			<ModalControllerContext.Provider value={this.modalController}>
 				<Wrap {...other}>
 					{children}
-					<Nonconductor component={ModalPortal} />
+					<ModalPortal />
 				</Wrap>
 			</ModalControllerContext.Provider>
 		);

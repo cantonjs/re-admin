@@ -82,7 +82,10 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 		};
 
 		render() {
-			const { props: { store, title, width, keys }, state: { isOk } } = this;
+			const {
+				props: { store, title, width, keys },
+				state: { isOk },
+			} = this;
 			return (
 				<ModalConsumer
 					title={title}
