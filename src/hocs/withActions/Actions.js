@@ -57,7 +57,6 @@ export default class Actions {
 			!modalParams &&
 			pageContext.useDetail &&
 			(name === CREATE || name === UPDATE) &&
-			issuers.has(TOOLBAR) &&
 			!issuers.has(MODAL)
 		) {
 			const path = name === UPDATE ? `/update/${keys}` : '/create';
