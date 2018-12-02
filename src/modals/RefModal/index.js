@@ -1,5 +1,6 @@
 import PropTypes from 'utils/PropTypes';
 import React, { Component } from 'react';
+import renderProp from 'utils/renderProp';
 import joinKeys from 'utils/joinKeys';
 import { REF } from 'utils/Issuers';
 import { isFunction } from 'utils/fp';
@@ -29,7 +30,11 @@ export default class RefModal extends Component {
 		width: PropTypes.stringOrNumber,
 		header: PropTypes.component,
 		footer: PropTypes.component,
-		toolbar: PropTypes.oneOfType([PropTypes.component, PropTypes.bool]),
+		toolbar: PropTypes.oneOfType([
+			PropTypes.component,
+			PropTypes.bool,
+			PropTypes.node,
+		]),
 		modalFooter: PropTypes.component,
 	};
 
@@ -69,7 +74,7 @@ export default class RefModal extends Component {
 			header: Header,
 			footer: Footer,
 			modalFooter: ModalFooter,
-			toolbar: ToolbarComponent,
+			toolbar,
 		} = this.props;
 		return (
 			<QueryConnector store={store}>
@@ -79,14 +84,10 @@ export default class RefModal extends Component {
 					onOk={this._handleOk}
 					footer={ModalFooter && <ModalFooter store={store} />}
 				>
+					{renderProp(Header)}
 					{Header && <Header store={store} />}
 					{!noQuery && <TableQuery store={store} />}
-					{ToolbarComponent &&
-						(ToolbarComponent === true ? (
-							<Toolbar />
-						) : (
-							<ToolbarComponent store={store} />
-						))}
+					{toolbar === true ? <Toolbar /> : renderProp(toolbar, { store })}
 					<TableBody store={store} selectionType="radio" />
 					{Footer && <Footer store={store} />}
 				</ModalConsumer>
