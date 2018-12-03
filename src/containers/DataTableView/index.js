@@ -42,13 +42,13 @@ export default class DataTableView extends Component {
 		} = this.props;
 		const title = pageTitle || menuTitle || table;
 		return (
-			<ModalProvider>
+			<div>
 				{Header && <Header store={store} title={title} />}
 				<TableQuery store={store} hidden={!panelsStore.isShowQuery} />
 				{Toolbar && <Toolbar store={store} />}
 				<TableBody store={store} />
 				{Footer && <Footer store={store} />}
-			</ModalProvider>
+			</div>
 		);
 	}
 }

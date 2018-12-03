@@ -12,6 +12,7 @@ import { Layout } from 'antd';
 import SpinBox from 'components/SpinBox';
 import FrameHeader from 'components/FrameHeader';
 import Breadcrumb from 'components/Breadcrumb';
+import { ModalProvider } from 'components/Modal';
 
 const { Header, Content, Footer } = Layout;
 
@@ -70,9 +71,9 @@ export default class FrameView extends Component {
 						<FrameHeader style={styles.headerRight} />
 					</Header>
 					<Content style={styles.content}>
-						<div style={styles.contentBody}>
+						<ModalProvider style={styles.contentBody}>
 							<Switch>{routes}</Switch>
-						</div>
+						</ModalProvider>
 					</Content>
 					{!!footer && <Footer style={styles.footer}>{footer}</Footer>}
 				</Layout>

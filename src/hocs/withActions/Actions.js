@@ -49,13 +49,14 @@ export default class Actions {
 	dispatch = (name, modalParams) => {
 		const {
 			modalController,
+			store,
 			props: { pageContext, issuers, enforceModal },
 		} = this;
 		const keys = this.selectedKeysString;
 		if (
 			!enforceModal &&
 			!modalParams &&
-			pageContext.useDetail &&
+			(pageContext && pageContext.useDetail) &&
 			(name === CREATE || name === UPDATE) &&
 			!issuers.has(MODAL)
 		) {
@@ -64,6 +65,7 @@ export default class Actions {
 		} else {
 			modalController.open(name, {
 				keys,
+				store,
 				...modalParams,
 			});
 			return modalController.close.bind(modalController);

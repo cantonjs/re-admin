@@ -9,13 +9,11 @@ import routerStore from 'stores/routerStore';
 import localize from 'hocs/localize';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
-import withStore from 'hocs/withStore';
 import { Submit } from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import FormBody from 'components/FormBody';
 import { CREATER } from 'utils/Issuers';
 import { message } from 'antd';
-import { ModalProvider } from 'components/Modal';
 
 export default function createFormDetailView(
 	defaultTitle,
@@ -27,7 +25,6 @@ export default function createFormDetailView(
 	@localize('FormPage')
 	@withIssuer({ issuer })
 	@withTable({ syncLocation: true, type: 'detail' })
-	@withStore()
 	@observer
 	class FormDetailView extends Component {
 		static displayName = displayName;
@@ -124,7 +121,7 @@ export default function createFormDetailView(
 			} = this;
 			const title = localeStore.localizeProp(pageTitle, defaultTitle);
 			return (
-				<ModalProvider>
+				<div>
 					<div style={styles.container}>
 						{Header ? (
 							<Header title={title} store={store} />
@@ -153,7 +150,7 @@ export default function createFormDetailView(
 						/>
 						{Footer && <Footer store={store} />}
 					</div>
-				</ModalProvider>
+				</div>
 			);
 		}
 	}

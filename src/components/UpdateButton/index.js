@@ -33,7 +33,10 @@ export default class UpdateButton extends Component {
 
 	_handleClick = (ev, actions) => {
 		ev.preventDefault();
-		const { props: { localeStore }, props } = this;
+		const {
+			props: { localeStore },
+			props,
+		} = this;
 		const { update } = actions;
 		const params = this._getModalParams(props, actions, localeStore);
 		params ? update(params) : update();

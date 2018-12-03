@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import Actions from './Actions';
-import invariant from 'tiny-invariant';
 import hoist, { extractRef } from 'hocs/hoist';
 import withStore from 'hocs/withStore';
 import withIssuer from 'hocs/withIssuer';
@@ -20,7 +19,7 @@ export default function withActions(WrappedComponent) {
 		static propTypes = {
 			store: PropTypes.object.isRequired,
 			issuers: PropTypes.instanceOf(Set).isRequired,
-			pageContext: PropTypes.object.isRequired,
+			pageContext: PropTypes.object,
 			tableRowKey: PropTypes.string,
 			enforceModal: PropTypes.bool,
 		};
@@ -52,23 +51,17 @@ export default function withActions(WrappedComponent) {
 	function WithActionsWrapper(props) {
 		return (
 			<PageContext.Consumer>
-				{(pageContext) => {
-					invariant(
-						pageContext,
-						'You should not use `withActions` outside <EnhancedRoute>'
-					);
-					return (
-						<TableRowKeyContext.Consumer>
-							{(tableRowKey) => (
-								<WithActions
-									{...props}
-									pageContext={pageContext}
-									tableRowKey={tableRowKey}
-								/>
-							)}
-						</TableRowKeyContext.Consumer>
-					);
-				}}
+				{(pageContext) => (
+					<TableRowKeyContext.Consumer>
+						{(tableRowKey) => (
+							<WithActions
+								{...props}
+								pageContext={pageContext}
+								tableRowKey={tableRowKey}
+							/>
+						)}
+					</TableRowKeyContext.Consumer>
+				)}
 			</PageContext.Consumer>
 		);
 	}

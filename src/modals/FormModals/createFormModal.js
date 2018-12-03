@@ -7,7 +7,6 @@ import { isFunction } from 'utils/fp';
 import { observer } from 'mobx-react';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
-import withStore from 'hocs/withStore';
 import { ModalConsumer } from 'components/Modal';
 import FormBody from 'components/FormBody';
 
@@ -15,7 +14,6 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 	const isCreater = issuer === CREATER;
 
 	@withTable()
-	@withStore()
 	@withIssuer({ issuer })
 	@observer
 	class FormModalView extends Component {
@@ -23,7 +21,7 @@ export default function createFormModal(defaultTitle, issuer, displayName) {
 
 		static propTypes = {
 			store: PropTypes.object.isRequired,
-			table: PropTypes.string,
+			// table: PropTypes.string,
 			keys: PropTypes.string,
 			save: PropTypes.stringOrFunc,
 			title: PropTypes.node,

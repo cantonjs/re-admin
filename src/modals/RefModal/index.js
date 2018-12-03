@@ -6,16 +6,15 @@ import { REF } from 'utils/Issuers';
 import { isFunction } from 'utils/fp';
 import withTable from 'hocs/withTable';
 import withIssuer from 'hocs/withIssuer';
-import withStore from 'hocs/withStore';
+// import withStore from 'hocs/withStore';
 import { ModalConsumer } from 'components/Modal';
 import TableBody from 'components/TableBody';
 import TableQuery from 'components/TableQuery';
 import Toolbar from 'components/Toolbar';
 import QueryConnector from 'components/QueryConnector';
 
-@withStore({ prop: 'contextStore' })
+@withTable({ prop: 'contextStore' })
 @withTable()
-@withStore()
 @withIssuer({ issuer: REF })
 export default class RefModal extends Component {
 	static propTypes = {
