@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import hoist, { extractRef } from 'hocs/hoist';
-import { withStoreProvider } from 'hocs/withStore';
 import { observer } from 'mobx-react';
+import TableStoreProvider from 'components/TableStoreProvider';
 
 export default function withTable(options = {}) {
 	const storePropName = options.prop || 'store';
 	return function createWithTableComponent(WrappedComponent) {
 		@hoist(WrappedComponent)
-		@withStoreProvider(options)
-		@observer
-		class WithTable extends Component {
+		class TableStoreComponent extends PureComponent {
 			// DEPRECATED
 			static childContextTypes = {
 				store: PropTypes.object,
@@ -33,6 +31,17 @@ export default function withTable(options = {}) {
 			}
 		}
 
-		return WithTable;
+		const WithTable = function WithTable(props) {
+			return (
+				<TableStoreProvider {...options} {...props}>
+					{({ store }) => {
+						const extraStoreProp = { [storePropName]: store };
+						return <TableStoreComponent {...props} {...extraStoreProp} />;
+					}}
+				</TableStoreProvider>
+			);
+		};
+
+		return observer(WithTable);
 	};
 }

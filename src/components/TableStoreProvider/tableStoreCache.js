@@ -3,28 +3,27 @@ import getRequest from 'utils/getRequest';
 import DataListStore from 'stores/DataListStore';
 import DataDetailStore from 'stores/DataDetailStore';
 
-class DispatcherStore {
-	init(appConfig, authStore) {
-		this.appConfig = appConfig;
-		this.authStore = authStore;
-		this.baseRequest = getRequest(appConfig);
-		this.stores = {
-			list: observable.map(),
-			detail: observable.map(),
-		};
-	}
+class TableStoreCache {
+	list = observable.map();
+	detail = observable.map();
 
 	ensureStore(name, options = {}) {
-		const { type = 'list', config, useCache, router } = options;
+		const {
+			type = 'list',
+			config,
+			useCache,
+			router,
+			appConfig,
+			authStore,
+		} = options;
 
 		const createStore = () => {
-			const { appConfig, authStore, baseRequest } = this;
 			const Store = type === 'list' ? DataListStore : DataDetailStore;
 			return new Store({
 				name,
 				appConfig,
 				authStore,
-				baseRequest,
+				baseRequest: getRequest(appConfig),
 				config,
 				router,
 			});
@@ -35,7 +34,8 @@ class DispatcherStore {
 				`Only type "list" or "detail" is valid, but received "${type}"`
 			);
 		}
-		const stores = this.stores[type];
+		const stores = this[type];
+
 		if (useCache) {
 			if (stores.has(name)) {
 				const store = stores.get(name);
@@ -52,4 +52,4 @@ class DispatcherStore {
 	}
 }
 
-export default new DispatcherStore();
+export default new TableStoreCache();
