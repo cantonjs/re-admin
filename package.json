@@ -46,7 +46,7 @@
     "create-react-context": "^0.2.2",
     "create-react-ref": "^0.1.0",
     "empty-functions": "^1.0.2",
-    "fetch-extra": "^1.0.0-0",
+    "fetch-extra": "^1.0.1",
     "history": "4.x",
     "hoist-non-react-statics": "^2.5.0",
     "moment": "^2.18.1",

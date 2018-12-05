@@ -3229,17 +3229,17 @@ fbjs@^0.8.9:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
-fetch-extra-core@^1.0.0-0:
-  version "1.0.0-0"
-  resolved "http://registry.npm.taobao.org/fetch-extra-core/download/fetch-extra-core-1.0.0-0.tgz#ec3899c5534700efb128b1c05372ce4c88bb1ea4"
+fetch-extra-core@^1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.taobao.org/fetch-extra-core/download/fetch-extra-core-1.0.1.tgz#a9679b48d4c24ab718a7c9ee59fca8d6d9e8072f"
   dependencies:
     tiny-querystring "^0.0.2"
 
-fetch-extra@^1.0.0-0:
-  version "1.0.0-0"
-  resolved "http://registry.npm.taobao.org/fetch-extra/download/fetch-extra-1.0.0-0.tgz#a03c10228a61bc784f9d8b45b0f8f573ec5bc199"
+fetch-extra@^1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.taobao.org/fetch-extra/download/fetch-extra-1.0.1.tgz#8468b5e372c6a2803aa4a2ec9a64e272068a923b"
   dependencies:
-    fetch-extra-core "^1.0.0-0"
+    fetch-extra-core "^1.0.1"
     node-fetch "^2.1.2"
 
 figures@^2.0.0:
@@ -5128,8 +5128,8 @@ node-fetch@^1.0.1:
     is-stream "^1.0.1"
 
 node-fetch@^2.1.2:
-  version "2.1.2"
-  resolved "http://registry.npm.taobao.org/node-fetch/download/node-fetch-2.1.2.tgz#ab884e8e7e57e38a944753cec706f788d1768bb5"
+  version "2.3.0"
+  resolved "http://registry.npm.taobao.org/node-fetch/download/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
 
 node-forge@0.7.1:
   version "0.7.1"
