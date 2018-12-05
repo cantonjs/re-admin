@@ -96,6 +96,10 @@ export default (env = {}) => {
 		resolve: {
 			modules: [srcDir, testDir, 'node_modules'],
 			extensions: ['.js'],
+			alias: {
+				// fix issues when using `npm link` or `yarn link`
+				react: resolve('./node_modules/react'),
+			},
 		},
 		resolveLoader: {
 			moduleExtensions: ['-loader'],
