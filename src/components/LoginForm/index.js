@@ -19,14 +19,21 @@ export default class LoginForm extends Component {
 		authStore: PropTypes.object,
 	};
 
-	state = { isValid: true };
+	state = { isValid: true, isPosting: false };
 
 	async _submit(data) {
 		const {
-			context: { authStore, appConfig: { auth: { defaultLoginRedirection } } },
+			context: {
+				authStore,
+				appConfig: {
+					auth: { defaultLoginRedirection },
+				},
+			},
 		} = this;
 
+		this.setState({ isPosting: true });
 		const isOk = await authStore.login(data);
+		this.setState({ isPosting: false });
 
 		if (isOk) {
 			const { ref } = routerStore.location.query;
@@ -48,7 +55,10 @@ export default class LoginForm extends Component {
 	};
 
 	render() {
-		const { state: { isValid }, props: { localeStore, ...props } } = this;
+		const {
+			state: { isValid, isPosting },
+			props: { localeStore, ...props },
+		} = this;
 		return (
 			<Form
 				onSubmit={this._handleSubmit}
@@ -74,6 +84,7 @@ export default class LoginForm extends Component {
 					style={styles.button}
 					wrapperStyle={styles.buttonWrapper}
 					disabled={!isValid}
+					loading={isPosting}
 				>
 					{localeStore.data.login}
 				</Submit>
