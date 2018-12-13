@@ -17,6 +17,7 @@ export CreateButton from 'components/CreateButton';
 export UpdateButton from 'components/UpdateButton';
 export RemoveButton from 'components/RemoveButton';
 export RefButton from 'components/RefButton';
+export TableStoreProvider from 'components/TableStoreProvider';
 export TableQuerySwitch from 'components/TableQuerySwitch';
 export TableQuery from 'components/TableQuery';
 export TableBody from 'components/TableBody';
