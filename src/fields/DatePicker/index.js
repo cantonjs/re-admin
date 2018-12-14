@@ -4,6 +4,7 @@ import { DatePicker } from 'components/Form';
 import field from 'hocs/field';
 import moment from 'moment';
 import { isString, isObject, isFunction } from 'utils/fp';
+import renderDate from 'utils/renderDate';
 
 const buildInDefaultProps = {
 	inputFilter(val) {
@@ -26,26 +27,25 @@ const buildInDefaultProps = {
 
 function DatePickerField(props) {
 	return (
-		<DatePicker
-			format="date"
-			defaultValue={undefined}
-			{...props}
-			{...buildInDefaultProps}
-		/>
+		<DatePicker defaultValue={undefined} {...props} {...buildInDefaultProps} />
 	);
 }
 
 /* eslint-disable react/prop-types */
-DatePickerField.renderTable = function renderTable({ dateFormat }, { value }) {
-	return <span>{moment(new Date(value)).format(dateFormat)}</span>;
+DatePickerField.renderTable = function renderTable(
+	{ format, dateFormat },
+	{ value }
+) {
+	return <span>{renderDate(value, format, dateFormat)}</span>;
 };
 
 DatePickerField.propTypes = {
+	format: PropTypes.string,
 	dateFormat: PropTypes.string,
 };
 
-DatePickerField.defaultProps = {
-	dateFormat: 'YYYY-MM-DD',
+DatePickerField.defaultProp = {
+	format: 'date',
 };
 
 export default field(DatePickerField);
