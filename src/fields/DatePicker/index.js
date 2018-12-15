@@ -8,20 +8,14 @@ import renderDate from 'utils/renderDate';
 
 const buildInDefaultProps = {
 	inputFilter(val) {
-		if (!val) {
-		} else if (isObject(val)) {
-			return val;
-		} else if (isString(val)) {
-			return moment(val);
-		}
+		if (!val) return;
+		if (isObject(val)) return val;
+		if (isString(val)) return moment(val);
 	},
 	outputFilter(val) {
-		if (!val) {
-		} else if (isFunction(val.toISOString)) {
-			return val.toISOString();
-		} else if (isString(val)) {
-			return val;
-		}
+		if (!val) return;
+		if (isFunction(val.toISOString)) return val.toISOString();
+		if (isString(val)) return val;
 	},
 };
 
@@ -44,7 +38,7 @@ DatePickerField.propTypes = {
 	dateFormat: PropTypes.string,
 };
 
-DatePickerField.defaultProp = {
+DatePickerField.defaultProps = {
 	format: 'date',
 };
 
