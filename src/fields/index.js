@@ -6,6 +6,8 @@ export TextArea from './TextArea';
 export Checkbox from './Checkbox';
 export Slider from './Slider';
 export DatePicker from './DatePicker';
+export TimePicker from './TimePicker';
+export DateTimePicker from './DateTimePicker';
 export RangePicker from './RangePicker';
 export Uploader from './Uploader';
 export Ref from './Ref';

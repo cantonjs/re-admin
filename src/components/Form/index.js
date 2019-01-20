@@ -5,6 +5,7 @@ import {
 	Checkbox as AntdCheckbox,
 	Slider as AntdSlider,
 	DatePicker as AntdDatePicker,
+	TimePicker as AntdTimePicker,
 } from 'antd';
 
 const {
@@ -17,6 +18,7 @@ export Submit from './Submit';
 export Reset from './Reset';
 export Clear from './Clear';
 export Upload from './Upload';
+export DateTimePicker from './DateTimePicker';
 export Editor from './Editor';
 
 export const Input = createComponent(AntdInput, {
@@ -43,6 +45,20 @@ export const Select = createComponent(AntdSelect, {
 
 export const DatePicker = createComponent(AntdDatePicker, {
 	displayName: 'DatePicker',
+	defaultProps: {
+		defaultValue: undefined,
+	},
+	mapForwardedProps(props) {
+		const { dateFormat, ...other } = props;
+		return { ...other, format: dateFormat };
+	},
+	getValueFromChangeEvent(value) {
+		return value;
+	},
+});
+
+export const TimePicker = createComponent(AntdTimePicker, {
+	displayName: 'TimePicker',
 	defaultProps: {
 		defaultValue: undefined,
 	},

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-	Table,
-	Text,
-	DatePicker,
-	RangePicker,
-	Html,
-	EditorToolbar,
-} from '../../src';
+import { Table, Text, DateTimePicker, Html, EditorToolbar } from '../../src';
 import CustomEditorButton from '../components/CustomEditorButton';
 
 const modules = {
@@ -34,14 +27,6 @@ export default (
 			}}
 			inForm
 		/>
-
-		<DatePicker
-			name="createdAt"
-			label="Date Created"
-			disabled
-			inQuery={(props) => <RangePicker {...props} />}
-			inTable
-			inForm
-		/>
+		<DateTimePicker name="createdAt" label="Date Created" inTable inForm />
 	</Table>
 );
