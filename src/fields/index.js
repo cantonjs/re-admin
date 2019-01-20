@@ -3,6 +3,7 @@ export Option from './Option';
 export Select from './Select';
 export Text from './Text';
 export TextArea from './TextArea';
+export InputNumber from './InputNumber';
 export Checkbox from './Checkbox';
 export Slider from './Slider';
 export DatePicker from './DatePicker';

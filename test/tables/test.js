@@ -6,6 +6,7 @@ import {
 	Option,
 	Image,
 	Slider,
+	InputNumber,
 	Uploader,
 	Checkbox,
 	RangePicker,
@@ -90,7 +91,7 @@ export default (
 			<ArrayOf name="languages" label="Language">
 				<ObjectOf>
 					<Text name="name" label="Language Name" placeholder="language name" />
-					<Text
+					<InputNumber
 						name="score"
 						label="Language Score"
 						placeholder="language score"

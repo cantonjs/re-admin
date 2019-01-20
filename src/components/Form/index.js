@@ -1,6 +1,7 @@
 import createComponent from './createComponent';
 import {
 	Input as AntdInput,
+	InputNumber as AntdInputNumber,
 	Select as AntdSelect,
 	Checkbox as AntdCheckbox,
 	Slider as AntdSlider,
@@ -23,6 +24,13 @@ export Editor from './Editor';
 
 export const Input = createComponent(AntdInput, {
 	displayName: 'Input',
+});
+
+export const InputNumber = createComponent(AntdInputNumber, {
+	displayName: 'InputNumber',
+	getValueFromChangeEvent(value) {
+		return value;
+	},
 });
 
 export const TextArea = createComponent(AntdInput.TextArea, {
