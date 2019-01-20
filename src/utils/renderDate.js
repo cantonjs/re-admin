@@ -1,8 +1,8 @@
 import moment from 'moment';
 
 const DefaultDateFormat = 'YYYY-MM-DD';
-const DefaultTimeFormat = 'hh:mm:ss';
-const DefaultDateTimeFormat = 'YYYY-MM-DD hh:mm:ss';
+const DefaultTimeFormat = 'HH:mm:ss';
+const DefaultDateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
 
 export default function renderDate(date, formFormat, displayFormat) {
 	let format;
