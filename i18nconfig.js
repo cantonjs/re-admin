@@ -47,7 +47,7 @@ module.exports = {
 		return `/* eslint-disable */
 'use strict';
 var antd = require('antd/lib/locale-provider/${langOutput}');
-const locale = ${outputStr};
+var locale = ${outputStr};
 locale.antd = antd;
 locale.language = '${langOutput}';
 module.exports = locale;
