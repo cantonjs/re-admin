@@ -18,6 +18,7 @@ export default (env = {}) => {
 	const { build, min } = env;
 	const config = {
 		devtool: isDev ? 'source-map' : 'none',
+		mode: build ? 'production' : 'development',
 		entry: {
 			app: [isDev && 'react-hot-loader/patch', './test/client.js'].filter(
 				Boolean
@@ -127,6 +128,10 @@ export default (env = {}) => {
 			libraryTarget: 'umd',
 			filename: `re-admin${min ? '.min' : ''}.js`,
 		});
+
+		config.optimization = {
+			minimize: !!min,
+		};
 
 		config.externals = {
 			react: 'React',

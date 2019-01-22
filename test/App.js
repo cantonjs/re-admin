@@ -29,7 +29,7 @@ import Login from './components/Login';
 import CustomFormPage from './components/CustomFormPage';
 
 const isGithubPage = /\.github\.io$/.test(window.location.host);
-const basename = isGithubPage ? '/re-admin' : '/';
+const basename = isGithubPage ? '/re-admin' : '/admin';
 
 export default class App extends Component {
 	render() {
