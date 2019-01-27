@@ -11,12 +11,15 @@ AuthSchema.propTypes = {
 	loginPath: PropTypes.string.isRequired,
 	getUserPath: PropTypes.string.isRequired,
 	defaultLoginRedirection: PropTypes.string,
+	crypto: PropTypes.func,
+	mapOnLoginRequestBody: PropTypes.func,
 	mapOnLoginResponse: PropTypes.func,
 	mapOnGetUserResponse: PropTypes.func,
 };
 
 AuthSchema.defaultProps = {
 	defaultLoginRedirection: '/',
+	mapOnLoginRequestBody: returnsArgument,
 	mapOnLoginResponse: returnsArgument,
 	mapOnGetUserResponse: returnsArgument,
 };

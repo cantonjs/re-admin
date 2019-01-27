@@ -3,7 +3,7 @@ import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
 import getRequest from 'utils/getRequest';
-import { isString } from 'utils/fp';
+import { isString, isFunction } from 'utils/fp';
 import deprecated from 'utils/deprecated';
 import showError from 'utils/showError';
 import warning from 'warning';
@@ -69,11 +69,17 @@ class AuthStore {
 	async login(body) {
 		let isOk = false;
 
+		const { crypto } = this._config;
+		if (body && body.password && isFunction(crypto)) {
+			body.password = crypto(body.password);
+		}
+
 		try {
 			const res = await this._request.fetch({
 				url: this._config.loginPath,
 				method: 'POST',
 				body,
+				bodyTransformer: this._config.mapOnLoginRequestBody,
 			});
 
 			const authRes = this._config.mapOnLoginResponse(res);
@@ -84,6 +90,7 @@ class AuthStore {
 			message.success(locale.data.loginSuccessful);
 		} catch (err) {
 			this.accessToken = null;
+			console.error(err);
 			showError(locale.data.loginFailed, err);
 		}
 		return isOk;
