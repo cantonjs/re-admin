@@ -12,6 +12,18 @@ import { Form, Input, Submit } from 'components/Form';
 export default class LoginForm extends Component {
 	static propTypes = {
 		localeStore: PropTypes.object.isRequired,
+		fields: PropTypes.arrayOf(
+			PropTypes.shape({
+				name: PropTypes.string.isRequired,
+				icon: PropTypes.string,
+				placeholder: PropTypes.string,
+				required: PropTypes.bool,
+			})
+		),
+	};
+
+	static defaultProps = {
+		fields: [],
 	};
 
 	static contextTypes = {
@@ -57,7 +69,7 @@ export default class LoginForm extends Component {
 	render() {
 		const {
 			state: { isValid, isPosting },
-			props: { localeStore, ...props },
+			props: { localeStore, fields, ...props },
 		} = this;
 		return (
 			<Form
@@ -66,17 +78,27 @@ export default class LoginForm extends Component {
 				onInvalid={this._handleInvalid}
 				{...props}
 			>
-				<Input
-					required
-					name="username"
-					prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-					placeholder={localeStore.data.usernamePlaceholder}
-				/>
+				{fields.length > 0 ? (
+					fields.map(({ icon, ...restProps }, index) => (
+						<Input
+							key={index}
+							{...restProps}
+							prefix={<Icon type={icon} style={styles.icon} />}
+						/>
+					))
+				) : (
+					<Input
+						required
+						name="username"
+						prefix={<Icon type="user" style={styles.icon} />}
+						placeholder={localeStore.data.usernamePlaceholder}
+					/>
+				)}
 				<Input
 					required
 					name="password"
 					type="password"
-					prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+					prefix={<Icon type="lock" style={styles.icon} />}
 					placeholder={localeStore.data.passwordPlaceholder}
 				/>
 				<Submit

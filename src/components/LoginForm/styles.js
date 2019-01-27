@@ -5,4 +5,7 @@ export default {
 	button: {
 		width: '100%',
 	},
+	icon: {
+		fontSize: 13,
+	},
 };
