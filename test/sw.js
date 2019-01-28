@@ -41,13 +41,15 @@ const verify = async (ctx, next) => {
 	}
 };
 
+const username = 'admin';
+
 router
 	.get('/api/auth/getUser', verify, async (ctx) => {
-		ctx.body = { accessToken: validAccessToken, expiresIn };
+		ctx.body = { accessToken: validAccessToken, expiresIn, username };
 	})
 	.post('/api/auth/login', async (ctx) => {
-		const { username, password } = ctx.request.body;
-		if (username === 'admin' && password === '000000') {
+		const { username: user, password } = ctx.request.body;
+		if (user === username && password === '000000') {
 			ctx.body = { accessToken: validAccessToken, expiresIn };
 		} else {
 			ctx.status = 400;

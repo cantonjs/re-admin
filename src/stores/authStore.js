@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import cookie from 'utils/cookie';
 import { ACCESS_TOKEN } from 'constants/CookieKeys';
 import { message } from 'antd';
@@ -28,6 +28,7 @@ const verifyAndSaveAccessToken = (authRes = {}) => {
 class AuthStore {
 	@observable isFetching = true;
 	@observable accessToken = cookie.get(ACCESS_TOKEN);
+	@observable username = 'Admin';
 
 	set(config) {
 		this._apiConfig = config.api;
@@ -41,6 +42,7 @@ class AuthStore {
 		'`getAccessToken()` is deprecated, please use `accessToken` instead'
 	);
 
+	@action
 	async auth() {
 		this.isFetching = true;
 		let isOk = false;
@@ -56,16 +58,26 @@ class AuthStore {
 			const res = await this._request.fetch(options);
 			const authRes = this._config.mapOnGetUserResponse(res);
 			verifyAndSaveAccessToken(authRes);
-			this.accessToken = authRes.accessToken;
+			const { username } = authRes;
+			runInAction(() => {
+				this.isFetching = false;
+				this.accessToken = authRes.accessToken;
+				if (username) {
+					this.username = username;
+				}
+			});
 			isOk = true;
 		} catch (err) {
-			this.accessToken = null;
+			runInAction(() => {
+				this.isFetching = false;
+				this.accessToken = null;
+			});
 			showError(locale.data.invalidToken, err);
 		}
-		this.isFetching = false;
 		return isOk;
 	}
 
+	@action
 	async login(body) {
 		let isOk = false;
 
@@ -84,12 +96,17 @@ class AuthStore {
 
 			const authRes = this._config.mapOnLoginResponse(res);
 			verifyAndSaveAccessToken(authRes);
-			this.accessToken = authRes.accessToken;
+
+			runInAction(() => {
+				this.accessToken = authRes.accessToken;
+			});
 
 			isOk = true;
 			message.success(locale.data.loginSuccessful);
 		} catch (err) {
-			this.accessToken = null;
+			runInAction(() => {
+				this.accessToken = null;
+			});
 			console.error(err);
 			showError(locale.data.loginFailed, err);
 		}

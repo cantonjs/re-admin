@@ -1,22 +1,21 @@
 import styles from './styles';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import routerStore from 'stores/routerStore';
-import { Modal, Icon, Menu, Dropdown, Avatar } from 'antd';
+import authStore from 'stores/authStore';
 import localize from 'hocs/localize';
+import { Modal, Icon, Menu, Dropdown, Avatar } from 'antd';
 
 const { confirm } = Modal;
 const { Item } = Menu;
 
 @localize('UserMenu')
+@observer
 export default class UserMenu extends Component {
 	static propTypes = {
 		localeStore: PropTypes.object.isRequired,
 		style: PropTypes.object,
-	};
-
-	static contextTypes = {
-		authStore: PropTypes.object,
 	};
 
 	_handleClick = (ev) => {
@@ -25,7 +24,7 @@ export default class UserMenu extends Component {
 		confirm({
 			title: confirmSignOut,
 			onOk: () => {
-				this.context.authStore.logout();
+				authStore.logout();
 				routerStore.history.replace('/login');
 			},
 			okText: signOut,
@@ -34,6 +33,7 @@ export default class UserMenu extends Component {
 
 	render() {
 		const { style, localeStore } = this.props;
+		const { username } = authStore;
 		return (
 			<Dropdown
 				overlay={
@@ -49,7 +49,7 @@ export default class UserMenu extends Component {
 			>
 				<div style={styles.container(style)}>
 					<Avatar icon="user" size="small" />
-					<span style={styles.text}>Admin</span>
+					<span style={styles.text}>{username}</span>
 					<Icon type="down" />
 				</div>
 			</Dropdown>
