@@ -4,6 +4,7 @@ import { flatMap } from 'utils/fp';
 import FrameView from 'containers/FrameView';
 import IndexView from 'containers/IndexView';
 import LoginView from 'containers/LoginView';
+import SetPasswordView from 'containers/SetPasswordView';
 import DataTableView from 'containers/DataTableView';
 import NotFoundView from 'containers/NotFoundView';
 import Route from 'components/EnhancedRoute';
@@ -23,6 +24,7 @@ NavigatorSchema.propTypes = {
 	noUserMenu: PropTypes.bool,
 	index: PropTypes.component,
 	login: PropTypes.component,
+	setPassword: PropTypes.component,
 	frame: PropTypes.component,
 	tableComponent: PropTypes.component,
 	updaterComponent: PropTypes.component,
@@ -37,6 +39,7 @@ NavigatorSchema.defaultProps = {
 	noUserMenu: false,
 	index: IndexView,
 	login: LoginView,
+	setPassword: SetPasswordView,
 	frame: FrameView,
 	tableComponent: DataTableView,
 	updaterComponent: UpdaterFormDetailView,

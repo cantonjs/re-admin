@@ -48,7 +48,13 @@ export default class AdminContext extends Component {
 		const {
 			title,
 			footer,
-			navigator: { frame: Frame, login: Login, basename, ...otherNaviProps },
+			navigator: {
+				frame: Frame,
+				login: Login,
+				setPassword: SetPassword,
+				basename,
+				...otherNaviProps
+			},
 		} = this.props.appConfig;
 		return (
 			<AppConfigContext.Provider value={this._appConfig}>
@@ -61,6 +67,7 @@ export default class AdminContext extends Component {
 						<div style={styles.container}>
 							<Switch>
 								<Route path="/login" component={Login} />
+								<Route path="/password" component={SetPassword} />
 								<Route
 									render={({ location }) => (
 										<Frame
