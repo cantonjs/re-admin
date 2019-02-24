@@ -182,7 +182,7 @@ export default class DataListStore extends BaseDataStore {
 
 	refresh() {
 		this.clearCache();
-		this.fetch({ query: this.query });
+		this.call('fetch', { query: this.query });
 		this.clearSelectedKeys();
 	}
 
