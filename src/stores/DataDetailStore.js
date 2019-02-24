@@ -27,7 +27,10 @@ export default class DataDetailStore extends BaseDataStore {
 			headers,
 		} = options;
 
-		const { cacheKey } = this;
+		const {
+			cacheKey,
+			config: { mapOnFetchOneRequest, mapOnFetchOneResponse },
+		} = this;
 		if (this.cache.has(cacheKey)) {
 			return this.cache.get(cacheKey);
 		}
@@ -41,8 +44,10 @@ export default class DataDetailStore extends BaseDataStore {
 			headers,
 			query,
 		};
-		const res = await this.request(omitBy(fetchOptions, isUndefined));
-		const data = await this.config.mapOnFetchOneResponse(res);
+		const res = await this.request(
+			omitBy(mapOnFetchOneRequest(fetchOptions), isUndefined)
+		);
+		const data = await mapOnFetchOneResponse(res);
 		runInAction(() => {
 			this.cache.set(cacheKey, data);
 			this.isFetching = false;

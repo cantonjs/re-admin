@@ -15,6 +15,8 @@ export default function TableSchema() {
 TableSchema.propTypes = {
 	name: PropTypes.string.isRequired,
 	api: PropTypes.stringOrObject,
+	mapOnFetchRequest: PropTypes.func,
+	mapOnFetchOneRequest: PropTypes.func,
 	mapOnFetchResponse: PropTypes.func,
 	mapOnFetchOneResponse: PropTypes.func,
 	mapOnSave: PropTypes.func,
@@ -26,6 +28,8 @@ TableSchema.propTypes = {
 };
 
 TableSchema.defaultProps = {
+	mapOnFetchRequest: returnsArgument,
+	mapOnFetchOneRequest: returnsArgument,
 	mapOnFetchResponse: returnsArgument,
 	mapOnFetchOneResponse: returnsArgument,
 	mapOnSave: returnsArgument,

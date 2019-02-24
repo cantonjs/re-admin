@@ -118,7 +118,11 @@ export default class DataListStore extends BaseDataStore {
 	@action
 	async fetch(options = {}) {
 		const { query: queryOptions, method, url, body, headers } = options;
-		const { cacheKey, useCursor } = this;
+		const {
+			cacheKey,
+			useCursor,
+			config: { mapOnFetchRequest, mapOnFetchResponse },
+		} = this;
 
 		if (this.collections.has(cacheKey)) {
 			const collection = this.collections.get(cacheKey);
@@ -143,11 +147,11 @@ export default class DataListStore extends BaseDataStore {
 		};
 
 		const res = await this.request({
-			...omitBy(fetchOptions, isUndefined),
+			...omitBy(mapOnFetchRequest(fetchOptions), isUndefined),
 			refresh: false,
 		});
 
-		const requestRes = await this.config.mapOnFetchResponse(res);
+		const requestRes = await mapOnFetchResponse(res);
 		const { total, list = [], nextCursor } = requestRes || {};
 
 		const collection = list.map((data, index) => {
