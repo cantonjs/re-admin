@@ -61,8 +61,13 @@ export default class DataDetailStore extends BaseDataStore {
 	}
 
 	@action
-	refresh() {
+	clearCache() {
 		this.cache.clear();
+	}
+
+	@action
+	refresh() {
+		this.clearCache();
 		this.fetch();
 	}
 
