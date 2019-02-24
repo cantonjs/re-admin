@@ -19,13 +19,7 @@ export default class DataDetailStore extends BaseDataStore {
 
 	@action
 	async fetch(options = {}) {
-		const {
-			query = {},
-			method,
-			url = joinKeys(this.selectedKeys),
-			body,
-			headers,
-		} = options;
+		const { query = {}, url = joinKeys(this.selectedKeys) } = options;
 
 		const {
 			cacheKey,
@@ -37,17 +31,11 @@ export default class DataDetailStore extends BaseDataStore {
 
 		this.isFetching = true;
 
-		const fetchOptions = {
-			method,
-			url,
-			body,
-			headers,
-			query,
-		};
+		const fetchOptions = { ...options, url, query };
 		const res = await this.request(
-			omitBy(mapOnFetchOneRequest(fetchOptions), isUndefined)
+			omitBy(mapOnFetchOneRequest(fetchOptions, this), isUndefined)
 		);
-		const data = await mapOnFetchOneResponse(res);
+		const data = await mapOnFetchOneResponse(res, this);
 		runInAction(() => {
 			this.cache.set(cacheKey, data);
 			this.isFetching = false;

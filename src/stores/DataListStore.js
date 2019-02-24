@@ -117,10 +117,11 @@ export default class DataListStore extends BaseDataStore {
 
 	@action
 	async fetch(options = {}) {
-		const { query: queryOptions, method, url, body, headers } = options;
+		const { query: queryOptions } = options;
 		const {
 			cacheKey,
 			useCursor,
+			size,
 			config: { mapOnFetchRequest, mapOnFetchResponse },
 		} = this;
 
@@ -130,7 +131,7 @@ export default class DataListStore extends BaseDataStore {
 		}
 
 		this.isFetching = true;
-		const query = { count: this.size, ...queryOptions };
+		const query = size ? { count: size, ...queryOptions } : queryOptions;
 		if (useCursor) {
 			if (query.cursor === null) delete query.cursor;
 		} else {
@@ -138,20 +139,14 @@ export default class DataListStore extends BaseDataStore {
 			query.page = page < 1 ? 1 : page;
 		}
 
-		const fetchOptions = {
-			method,
-			url,
-			body,
-			headers,
-			query,
-		};
+		const fetchOptions = { ...options, query };
 
 		const res = await this.request({
-			...omitBy(mapOnFetchRequest(fetchOptions), isUndefined),
+			...omitBy(mapOnFetchRequest(fetchOptions, this), isUndefined),
 			refresh: false,
 		});
 
-		const requestRes = await mapOnFetchResponse(res);
+		const requestRes = await mapOnFetchResponse(res, this);
 		const { total, list = [], nextCursor } = requestRes || {};
 
 		const collection = list.map((data, index) => {
