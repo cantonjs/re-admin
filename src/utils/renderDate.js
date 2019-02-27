@@ -5,6 +5,7 @@ const DefaultTimeFormat = 'HH:mm:ss';
 const DefaultDateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
 
 export default function renderDate(date, formFormat, displayFormat) {
+	if (!date) return '';
 	let format;
 	if (displayFormat) format = displayFormat;
 	else if (formFormat === 'time') format = DefaultTimeFormat;
