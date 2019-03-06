@@ -30,6 +30,7 @@ export default class TableView extends Component {
 			query: PropTypes.object.isRequired,
 			config: PropTypes.object.isRequired,
 		}),
+		rowSelection: PropTypes.any,
 		selectionType: PropTypes.oneOf(['checkbox', 'radio']),
 	};
 
@@ -61,7 +62,9 @@ export default class TableView extends Component {
 		const {
 			context: {
 				appConfig,
-				appConfig: { api: { sortKey, orderKey, descValue, ascValue } },
+				appConfig: {
+					api: { sortKey, orderKey, descValue, ascValue },
+				},
 			},
 			props: { store },
 		} = this;
@@ -76,7 +79,9 @@ export default class TableView extends Component {
 	};
 
 	render() {
-		const { props: { store, selectionType } } = this;
+		const {
+			props: { store, selectionType, rowSelection },
+		} = this;
 		const {
 			columns,
 			collection,
@@ -87,7 +92,7 @@ export default class TableView extends Component {
 			config,
 		} = store;
 
-		const rowSelection = maxSelections ?
+		const defaultRowSelection = maxSelections ?
 			{
 				type: selectionType,
 				selectedRowKeys: selectedKeys,
@@ -99,13 +104,13 @@ export default class TableView extends Component {
 							selectedKeys.length >= maxSelections &&
 							selectedKeys.indexOf(record[uniqueKey]) < 0,
 				}),
-			} :
+			  } :
 			undefined;
 
 		return (
 			<TableContext.Provider value={this.tableContext}>
 				<AntdTable
-					rowSelection={rowSelection}
+					rowSelection={rowSelection || defaultRowSelection}
 					columns={columns}
 					dataSource={toJS(collection)}
 					loading={isFetching}
